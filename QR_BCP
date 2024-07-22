@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to top, #017AB1, #02202B);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            color: white;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            width: 100%;
+            max-width: 800px;
+        }
+        input, button, select {
+            padding: 5px;
+            font-size: 1rem;
+            flex: 1 1 auto;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #017AB1;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: auto; /* Largura do botão */
+            height: auto; /* Altura do botão */
+            font-size: 1rem; /* Tamanho da fonte */
+            padding: 10px; /* Espaçamento interno do botão */
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+        button:hover {
+            background-color: #015f86;
+        }
+        .qr-code {
+            margin-top: 20px;
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            max-width: 800px;
+            height: 50px;
+            margin-top: 20px;
+            resize: none;
+            border-radius: 10px;
+            border: none;
+            padding: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+        .footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .footer img {
+            width: 100px;
+            height: auto;
+        }
+        .footer p {
+            margin: 10px 0 0;
+            font-size: 1.2rem;
+            color: white;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            input, button {
+                flex: 1 1 100%;
+            }
+            .footer img {
+                width: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>GERADOR DE CODIGO QR</h1>
+    <div class="input-group">
+        <input type="text" id="nif_vendedor" placeholder="NIF do Fornecedor (números)">
+        <input type="text" id="nif_empresa" placeholder="NIF da empresa (números)">
+        <input type="text" id="pais" placeholder="País (PT, EU)">
+        <input type="text" id="tipologia" placeholder="Tipologia (FT, NC)">
+        <input type="text" id="data" placeholder="Data (AAAAMMDD)">
+        <input type="text" id="numero_fatura" placeholder="Número da fatura">
+        <select id="espaco_fiscal">
+            <option value="">Selecionar Espaço Fiscal</option>
+            <option value="PT">PT</option>
+            <option value="PT-AC">PT-AC</option>
+            <option value="PT-MA">PT-MA</option>
+        </select>
+        <input type="number" step="0.01" id="base_isenta" placeholder="Base isenta">
+        <input type="number" step="0.01" id="base_reduzida" placeholder="Base reduzida">
+        <input type="number" step="0.01" id="base_intermedia" placeholder="Base intermédia">
+        <input type="number" step="0.01" id="base_normal" placeholder="Base normal">
+        <input type="number" step="0.01" id="irs" placeholder="IRS">
+    </div>
+    <button onclick="generateQRCode()">GERAR CODIGO</button>
+    <div class="qr-code" id="qrcode"></div>
+    <textarea id="qr_data" readonly></textarea>
+    
+    <div class="footer">
+        <img src="imagen.png" alt="Logo">
+    </div>
+
+    <script>
+        function validateNumeric(input) {
+            return /^[0-9]*$/.test(input);
+        }
+
+        function validateAlphabetic(input) {
+            return /^[a-zA-Z]*$/.test(input);
+        }
+
+        function limitCharacters(input, maxLength) {
+            return input.slice(0, maxLength);
+        }
+
+        function updateIVARates() {
+            const espacoFiscal = document.getElementById("espaco_fiscal").value;
+            let baseIsenta = document.getElementById("base_isenta");
+            let baseReduzida = document.getElementById("base_reduzida");
+            let baseIntermedia = document.getElementById("base_intermedia");
+            let baseNormal = document.getElementById("base_normal");
+
+            switch (espacoFiscal) {
+                case "PT":
+                    baseReduzida.placeholder = "Base reduzida (6%)";
+                    baseIntermedia.placeholder = "Base intermédia (13%)";
+                    baseNormal.placeholder = "Base normal (23%)";
+                    baseIsenta.value = baseIsenta.value || "";
+                    break;
+                case "PT-AC":
+                    baseReduzida.placeholder = "Base reduzida (4%)";
+                    baseIntermedia.placeholder = "Base intermédia (9%)";
+                    baseNormal.placeholder = "Base normal (18%)";
+                    baseIsenta.value = baseIsenta.value || "";
+                    break;
+                case "PT-MA":
+                    baseReduzida.placeholder = "Base reduzida (5%)";
+                    baseIntermedia.placeholder = "Base intermédia (12%)";
+                    baseNormal.placeholder = "Base normal (22%)";
+                    baseIsenta.value = baseIsenta.value || "";
+                    break;
+                default:
+                    baseReduzida.placeholder = "Base reduzida";
+                    baseIntermedia.placeholder = "Base intermédia";
+                    baseNormal.placeholder = "Base normal";
+                    baseIsenta.value = baseIsenta.value || "";
+                    break;
+            }
+        }
+
+        document.getElementById("espaco_fiscal").addEventListener("change", updateIVARates);
+
+        function generateQRCode() {
+            const nif_vendedor = limitCharacters(document.getElementById("nif_vendedor").value || '0', 9);
+            const nif_empresa = limitCharacters(document.getElementById("nif_empresa").value || '0', 9);
+            const pais = document.getElementById("pais").value.toUpperCase() || '0';
+            const tipologia = document.getElementById("tipologia").value || '0';
+            const data = limitCharacters(document.getElementById("data").value || '0', 8);
+            const numero_fatura = document.getElementById("numero_fatura").value || '0';
+            const espaco_fiscal = document.getElementById("espaco_fiscal").value.toUpperCase() || '0';
+            const base_isenta = document.getElementById("base_isenta").value === '' ? '*' : parseFloat(document.getElementById("base_isenta").value).toFixed(2);
+            const base_reduzida = parseFloat(document.getElementById("base_reduzida").value) || 0;
+            const base_intermedia = parseFloat(document.getElementById("base_intermedia").value) || 0;
+            const base_normal = parseFloat(document.getElementById("base_normal").value) || 0;
+            const irs = parseFloat(document.getElementById("irs").value) || 0;
+
+            if (!validateNumeric(nif_vendedor) || !validateNumeric(nif_empresa) || !validateNumeric(data)) {
+                alert("NIF do fornecedor, NIF da empresa e data devem conter apenas números.");
+                return;
+            }
+
+            if (!validateAlphabetic(pais) || !validateAlphabetic(espaco_fiscal.replace("-", ""))) {
+                alert("Os campos devem ser preenchidos corretamente.");
+                return;
+            }
+
+            let taxa_iva_reduzida, taxa_iva_intermedia, taxa_iva_normal;
+            switch (espaco_fiscal) {
+                case "PT":
+                    taxa_iva_reduzida = 0.06;
+                    taxa_iva_intermedia = 0.13;
+                    taxa_iva_normal = 0.23;
+                    break;
+                case "PT-MA":
+                    taxa_iva_reduzida = 0.05;
+                    taxa_iva_intermedia = 0.12;
+                    taxa_iva_normal = 0.22;
+                    break;
+                case "PT-AC":
+                    taxa_iva_reduzida = 0.04;
+                    taxa_iva_intermedia = 0.09;
+                    taxa_iva_normal = 0.18;
+                    break;
+                default:
+                    alert("Espaço fiscal desconhecido. Por favor, insira um espaço fiscal válido (PT, PT-MA, PT-AC).");
+                    return;
+            }
+
+            const iva_reduzida = base_reduzida * taxa_iva_reduzida;
+            const iva_intermedia = base_intermedia * taxa_iva_intermedia;
+            const iva_normal = base_normal * taxa_iva_normal;
+            const total_impostos = iva_reduzida + iva_intermedia + iva_normal;
+            const total_fatura = parseFloat(base_isenta === '*' ? 0 : base_isenta) + base_reduzida + base_intermedia + base_normal + total_impostos - irs;
+
+            const dados_qr_code = `A:${nif_vendedor}*B:${nif_empresa}*C:${pais}*D:${tipologia}*E:N*F:${data}*G:${numero_fatura}*H:*I1:${espaco_fiscal}*I2:${base_isenta}*I3:${base_reduzida.toFixed(2)}*I4:${iva_reduzida.toFixed(4)}*I5:${base_intermedia.toFixed(2)}*I6:${iva_intermedia.toFixed(4)}*I7:${base_normal.toFixed(2)}*I8:${iva_normal.toFixed(4)}*N:${total_impostos.toFixed(4)}*O:${total_fatura.toFixed(4)}*P:${irs.toFixed(2)}*Q:*R:*`
+            .replace(/\s+/g, ' ').trim();
+
+            QRCode.toDataURL(dados_qr_code, { errorCorrectionLevel: 'M' }, function (err, url) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                const qrCodeImage = new Image();
+                qrCodeImage.src = url;
+                document.getElementById('qrcode').innerHTML = '';
+                document.getElementById('qrcode').appendChild(qrCodeImage);
+                document.getElementById('qr_data').value = dados_qr_code;
+            });
+        }
+    </script>
+</body>
+</html>
