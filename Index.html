@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suporte Servinform PT</title>
+    <style>
+        body {
+            background: linear-gradient(to top, #02202B, #017AB1);
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .tool-card {
+            background-color: #ffffff;
+            color: #207899;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .tool-card:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .tool-card:active {
+            background-color: #e0e0e0;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 24px;
+            width: 100%;
+            grid-column: span 3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Suporte Servinform PT</div>
+        <div class="tool-card" onclick="location.href='ferramenta1.html'">Gerador QR Code Trivalor</div>
+        <div class="tool-card" onclick="location.href='ferramenta2.html'">Gerador QR Code BCP</div>
+        <div class="tool-card" onclick="location.href='ferramenta3.html'">Mesclar PDF</div>
+        <div class="tool-card" onclick="location.href='ferramenta4.html'">Separar PDF</div>
+        <div class="tool-card" onclick="location.href='ferramenta5.html'">Conversor para PDF</div>
+        <div class="tool-card" onclick="location.href='ferramenta6.html'">Site Serviform</div>
+    </div>
+</body>
+</html>
