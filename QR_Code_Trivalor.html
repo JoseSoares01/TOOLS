@@ -31,7 +31,7 @@
         input, button {
             padding: 5px;
             font-size: 1rem;
-            flex: 1 1 px;
+            flex: 1 1 auto;
             border: none;
             border-radius: 16px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -42,7 +42,7 @@
             color: white;
             cursor: pointer;
             transition: background-color 0.3s;
-            width: 200px;/* Largura do botão */
+            width: 200px; /* Largura do botão */
             height: 50px; /* Altura do botão */
             font-size: 1rem; /* Tamanho da fonte */
             padding: 10px; /* Espaçamento interno do botão */
@@ -71,12 +71,13 @@
             box-sizing: border-box;
         }
         .footer {
+            display: flex;
+            flex-direction: column;
             align-items: center;
             margin-top: 20px;
         }
         .footer img {
-		height:200px;
-		
+            height: 200px;
         }
         .footer p {
             margin: 10px 0 0;
@@ -89,6 +90,8 @@
             input, button {
                 flex: 1 1 100%;
             }
+        }
+
         .home-button {
             position: fixed;
             top: 20px;
