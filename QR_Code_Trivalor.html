@@ -98,29 +98,30 @@
         .home-button {
             position: fixed;
             top: 20px;
-            left: 60px;
-            background-color: #ffffff;
-            color: #207899;
+            left: 20px;
+            background-color: transparent;
             border: none;
-            border-radius: 16px;
-            padding: 10px 20px;
-            font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
+            transition: transform 0.3s;
         }
 
-        .home-button:hover {
-            background-color: #f0f0f0;
+        .home-button img {
+            width: 40px;
+            height: 40px;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .home-button:hover img {
             transform: scale(1.05);
         }
 
-        .home-button:active {
-            background-color: #e0e0e0;
+        .home-button:active img {
+            transform: scale(0.95);
         }
     </style>
 </head>
 <body>
-<button class="home-button" onclick="location.href='index.html'">Home</button>
+    <a href="index.html" class="home-button"><img src="home-button.png" alt="Home"></a>
     <h2>GERADOR DE CÓDIGO QR TRIVALOR</h2>
     <div class="input-group">
         <input type="text" id="nif_vendedor" placeholder="NIF do vendedor (números)">
