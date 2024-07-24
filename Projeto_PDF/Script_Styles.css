@@ -78,7 +78,10 @@ input[type="file"] {
 }
 
 .footer img {
-    height: 50px;
+    height: 30px;
+    position: fixed;
+    top: 450px;
+    left: px;
 }
 
 .home-button {
