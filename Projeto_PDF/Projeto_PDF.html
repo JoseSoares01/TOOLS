@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesclar e Separar PDFs</title>
+    <link rel="stylesheet" href="Script_Styles.css">
+</head>
+<body>
+    <a href="index.html" class="home-button"><img src="home-button.png" alt="Home"></a>
+    <h1>Mesclar e Separar PDFs</h1>
+    <input type="file" id="entrada-pdf" multiple accept="application/pdf">
+    <div class="lista-pdfs" id="lista-pdfs"></div>
+    <button id="exportar-pdf">Exportar PDF Mesclado</button>
+    <button id="separar-pdf">Separar PDFs</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="Script_Js.js"></script>
+</body>
+</html>
