@@ -345,4 +345,24 @@ ol li ul li {
 	margin:30px 0px 0px 50px;
 }
 
+.home-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+.home-button img {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s, background-color 0.3s;
+}
+.home-button:hover img {
+    transform: scale(1.05);
+}
+.home-button:active img {
+    transform: scale(0.95);
+}
 /* Existe também a posição 'fixed' que fixa o elemento na tela. Ideal para cabeçalhos e menus de sites. */
