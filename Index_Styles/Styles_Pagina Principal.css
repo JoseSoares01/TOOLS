@@ -79,3 +79,11 @@ footer {
     width: 100%;
     bottom: 0;
 }
+.footer img {
+    height: 50px;
+    transition: margin-top 0.3s ease;
+}
+
+.tamanho_logo{
+        font-size: 10px;
+      }
