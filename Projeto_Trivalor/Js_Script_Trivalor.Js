@@ -10,6 +10,47 @@ function limitCharacters(input, maxLength) {
     return input.slice(0, maxLength);
 }
 
+function updateIVARates() {
+    const espacoFiscal = document.getElementById("espaco_fiscal").value;
+    let baseIsenta = document.getElementById("base_isenta");
+    let baseReduzida = document.getElementById("base_reduzida");
+    let baseIntermedia = document.getElementById("base_intermedia");
+    let baseNormal = document.getElementById("base_normal");
+
+    switch (espacoFiscal) {
+        case "PT":
+            baseIsenta.placeholder = "Base isenta (0%)";
+            baseReduzida.placeholder = "Base reduzida (6%)";
+            baseIntermedia.placeholder = "Base intermédia (13%)";
+            baseNormal.placeholder = "Base normal (23%)";
+            break;
+        case "PT-AC":
+            baseIsenta.placeholder = "Base isenta (0%)";
+            baseReduzida.placeholder = "Base reduzida (4%)";
+            baseIntermedia.placeholder = "Base intermédia (9%)";
+            baseNormal.placeholder = "Base normal (18%)";
+            break;
+        case "PT-MA":
+            baseIsenta.placeholder = "Base isenta (0%)";
+            baseReduzida.placeholder = "Base reduzida (5%)";
+            baseIntermedia.placeholder = "Base intermédia (12%)";
+            baseNormal.placeholder = "Base normal (22%)";
+            break;
+        default:
+            baseIsenta.placeholder = "Base isenta (0%)";
+            baseReduzida.placeholder = "Base reduzida";
+            baseIntermedia.placeholder = "Base intermédia";
+            baseNormal.placeholder = "Base normal";
+            break;
+    }
+}
+
+// Certifique-se de adicionar o event listener após o DOM estar completamente carregado
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("espaco_fiscal").addEventListener("change", updateIVARates);
+    updateIVARates(); // Chame para definir os placeholders corretos inicialmente
+});
+
 function generateQRCode() {
     const nif_vendedor = limitCharacters(document.getElementById("nif_vendedor").value || '0', 9);
     const nif_empresa = limitCharacters(document.getElementById("nif_empresa").value || '0', 9);
