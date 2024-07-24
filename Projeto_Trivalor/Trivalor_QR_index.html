@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <link rel="stylesheet" href="/Projeto_Trivalor/Css_Styless_Trivalor.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+</head>
+<body>
+    <a href="/Pagina_Principal/Pagina Principal.html" class="home-button"><img src="home-button.png" alt="Home"></a>
+    <h2>GERADOR DE CÓDIGO QR TRIVALOR</h2>
+    <div class="input-group">
+        <input type="text" id="nif_vendedor" placeholder="NIF do vendedor (números)">
+        <input type="text" id="nif_empresa" placeholder="NIF da empresa (números)">
+        <input type="text" id="pais" placeholder="País (PT, EU)">
+        <input type="text" id="tipologia" placeholder="Tipologia (FT, NC)">
+        <input type="text" id="data" placeholder="Data (AAAAMMDD)">
+        <input type="text" id="numero_fatura" placeholder="Número da fatura">
+        <input type="text" id="espaco_fiscal" placeholder="Espaço fiscal (PT, PT-MA, PT-AC, EU)">
+        <input type="number" step="0.01" id="base_isenta" placeholder="Base isenta">
+        <input type="number" step="0.01" id="base_reduzida" placeholder="Base reduzida">
+        <input type="number" step="0.01" id="base_intermedia" placeholder="Base intermédia">
+        <input type="number" step="0.01" id="base_normal" placeholder="Base normal">
+        <input type="number" step="0.01" id="imposto_selo" placeholder="Imposto selo">
+    </div>
+    <button onclick="generateQRCode()">GERAR CÓDIGO</button>
+    <div class="qr-code" id="qrcode"></div>
+    <textarea id="qr_data" readonly></textarea>
+    
+    <div class="footer">
+        <img src="imagen.png" alt="Logo">
+    </div>
+
+    <script src="/Projeto_Trivalor/Js_Script_Trivalor.Js"></script>
+</body>
+</html>
