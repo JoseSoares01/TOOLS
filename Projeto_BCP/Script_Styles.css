@@ -1,0 +1,104 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to top, #017AB1, #02202B);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    color: white;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.input-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    width: 100%;
+    max-width: 800px;
+}
+
+input, button, select {
+    padding: 5px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #017AB1;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 200px; /* Largura do botão */
+    height: 50px; /* Altura do botão */
+    font-size: 1rem; /* Tamanho da fonte */
+    padding: 10px; /* Espaçamento interno do botão */
+    border-radius: 50px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+button:hover {
+    background-color: #015f86;
+}
+
+.qr-code {
+    margin-top: 20px;
+    text-align: center;
+}
+
+textarea {
+    width: 100%;
+    max-width: 800px;
+    height: 50px;
+    margin-top: 20px;
+    resize: none;
+    border-radius: 13px;
+    border: none;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.footer img {
+    height: 80px;
+}
+
+.home-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.home-button img {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.home-button:hover img {
+    transform: scale(1.05);
+}
+
+.home-button:active img {
+    transform: scale(0.95);
+}
