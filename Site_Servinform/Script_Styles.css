@@ -357,6 +357,8 @@ ol li ul li {
 .home-button img {
     width: 40px;
     height: 40px;
+    margin-left:-10px;
+    margin-top: -20px;
     transition: transform 0.3s, background-color 0.3s;
 }
 .home-button:hover img {
