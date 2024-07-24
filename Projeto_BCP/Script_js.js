@@ -61,11 +61,6 @@ function generateQRCode() {
     const base_normal = parseFloat(document.getElementById("base_normal").value) || 0;
     const irs = parseFloat(document.getElementById("irs").value) || 0;
 
-    if (!validateNumeric(nif_vendedor) || !validateNumeric(nif_empresa) || !validateNumeric(data)) {
-        alert("NIF do fornecedor, NIF da empresa e data devem conter apenas números.");
-        return;
-    }
-
     if (!validateAlphabetic(pais) || !validateAlphabetic(espaco_fiscal.replace("-", ""))) {
         alert("Os campos devem ser preenchidos corretamente.");
         return;
