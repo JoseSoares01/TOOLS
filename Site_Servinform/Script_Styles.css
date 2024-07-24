@@ -1,370 +1,126 @@
-/* O formato do CSS é:
+/* styles.css */
 
-selector {
-	property:value;
-}
+@import url('https://fonts.googleapis.com/css?family=Lato:100&display=swap');
 
-Sendo que o selector representa qualquer tag HTML. Dessa forma, ao invés de formatar todo título H1 individualmente, usamos o seguinte CSS para formatar todos de uma vez só. Assim, toda tag h1 que for utilizada no HTML, será formatada com a fonte Arial: */
-h1 {
-	font-family:Arial;
-}
-
-/* Toda tag p do html será formatado com a cor azul. */
-p {
-	color:blue;
-}
-
-/* Toda tag span do html será formatado com a cor verde e em negrito. */
-span {
-	color:green;
-	font-weight:bold;
-}
-
-/* Quando uma tag possui um id, ele é referenciado aqui com #. O ID significa uma formatação única para determinada situação. Cada página HTML pode ter somente uma tag usando este ID. */
-#sou-unico {
-	/* Use cores em hexadecimal para obter mais variedades. */
-	background-color:#FFD700;
-	color:#000000;
-	font-family:Courier;
-}
-
-/* Quando uma tag possui uma classe, ela é referenciada aqui com um ponto. As classes podem ser reutilizadas quantas vezes for necessário por diversas tags por página HTML. */
-.listas {
-	/* Informar mais de uma fonte, significa que o navegador tentará usar a primeira que foi informada, caso não consiga ele vai tentar usar a segunda e assim sucessivamente. */
-	font-family:Garamond, Arial, sans-serif;
-	font-size:15px;
-}
-	
-/* A seguinte formatação será feita na tag span que está dentro da classe 'listas' apenas. O CSS vai dar preferência sempre para o código mais detalhado. Sendo assim, o código a seguir vai sobrescrever o que já foi definido para a tag span (mais acima nesse documento). */
-.listas span {
-	font-size:2em;
-	color:red;
-}
-
-/* Formatação da classe 'primeira_div' */
-.primeira-div {
-	background-color:blue;
-	/* Largura */
-	width:150px;
-	/* Altura */
-	height:150px;
-}
-
-/* Isso significa que toda tag 'p' que está dentro da classe 'primeira_div' vai ser formatada da seguinte forma. Sendo assim, isso sobrescreverá a formatação da tag 'p' que foi declarada acima. */
-.primeira-div > p {
-	color:white;
-	text-align:center;
-	padding-top:50px;
-}
-	
-/* O parâmetro border suporta mais de um valor (tamanho, formato e cor). */
-.borda {
-	border:2px dotted green;
-}
-
-/* Formatação do link, cujo id é 'link_principal'. Na formatação de links, existem as pseudo-classes, que nos permite formatar não somente o link, mas também seu estado:
-- link = link normal, não visitado;
-- hover = quando o mouse está sobre o link;
-- visited = um link que o usuário já visitou;
-- active = link no momento em que é clicado. */
-#link-principal:link {
-	/* Com o parâmetro text decoration você indica se quer o sublinhado abaixo, acima, cortado ou nada. */
-	text-decoration:none;
-	font-size:20px;
-	font-family:Courier, sans-serif;
-	background-color:blue;
-	color:white;
-	font-weight:bold;
-	/* Com text transform você pode dizer se quer o texto maiúsculo ou minúsculo. */
-	text-transform:uppercase;
-}
-
-#link-principal:hover {
-	background-color:green;
-}
-
-#link-principal:visited {
-	color:white;
-}
-
-#link-principal:active {
-	font-weight: normal;
-}
-/* Formatação da div (botao-twitter + a (link-twitter) + span (span-twitter) usadas no botão do Twitter */
-.botao-twitter {
-	/* A tag border-radius arredonda a borda de acordo com o número informado. Sendo que border-radius:100% é um círculo. */
-	border-radius:4px;
-	border:1px solid #4169E1;
-	background-color:#87CEEB;
-	width:100px;
-	height:50px;
-	text-align:center;
-	/* margin:auto é usada para dizer ao navegador que queremos a mesma margem em todo esse elemento. Sendo assim, esse elemento será centralizado na página. É o equivalente de text-align:center (mas esse é usado somente para elementos de texto). */
-	margin:auto;
-}
-
-/* É possível usar as pseudo-classes também nas DIVs, não somente em links. */
-.botao-twitter:hover {
-	background-color:#ADD8E6;
-}
-
-.link-twitter {
-	text-decoration:none;
-	color:white;
-	font-family:Tahoma;
-}
-
-.span-twitter {
-	color:blue;
-	font-weight:bold;
-	font-family:Tahoma;
-	font-size:20px;
-}
-
-/* Para alterar a cor do fundo inteiro do seu HTML, basta tirar o comentário da próxima instrução: */
-/*
 body {
-	background-color:#90EE90;
-}
-*/
-
-/* Para formatar tudo dentro do seu HTML, basta usar o seletor *. Para ver o exemplo, tire o comentário da próxima instrução: */
-/*
-* {
-	border:1px solid red;
-}
- */
-
-/* É possível descer quantos níveis forem necessários. Este código vai formatar os itens de uma lista não ordenada que está dentro de uma lista ordenada. */ 
-ol li ul li {
-	color:#9400D3;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #20272e;
+    color: #ffffff;
 }
 
-/* Formata apenas a primeira tag 'p' da div cuja classe é 'filho' */
-.filho p:first-child {
-	color:green;
-	font-weight:bold;
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
 }
 
-/* Formata apenas a segunda tag 'p' da div cuja classe é 'filho' */
-.filho p:nth-child(2) {
-	color:red;
+.logo {
+    display: flex;
+    align-items: center;
 }
 
-/* Formata apenas a segunda tag 'p' da div cuja classe é 'filho' */
-.filho p:nth-child(3) {
-	font-family:Verdana, serif;
-}
-
-/* Formata as DIVs cuja classe é 'posicao-block'. */
-.posicao-block {
-	width:30px;
-	height:30px;
-	border-radius:100%;
-	/* display:block é o default (um elemento em cima do outro). */
-	display:block;
-}
-
-#posicao1 {
-	background-color:red;
-}
-
-#posicao2 {
-	background-color:yellow;
-}
-
-#posicao3 {
-	background-color:green;
-}
-
-/* Formata as DIVs cuja classe é 'posicao-iblock'. */
-.posicao-iblock {
-	width:30px;
-	height:30px;
-	border-radius:100%;
-	/* display:inline-block coloca os elementos na mesma linha. */
-	display:inline-block;
-}
-
-#posicao4 {
-	background-color:red;
-}
-
-#posicao5 {
-	background-color:yellow;
-}
-
-#posicao6 {
-	background-color:green;
-}
-
-/* Formata as DIVs cuja classe é 'posicao-inline'. */
-.posicao-inline {
-	width:30px;
-	height:30px;
-	border-radius:100%;
-	/* display:inline coloca os elementos na mesma linha, não respeitando suas dimensões. */
-	display:inline;
-	border:5px solid black;
-}
-
-#posicao7 {
-	background-color:red;
-}
-
-#posicao8 {
-	background-color:yellow;
-}
-
-#posicao9 {
-	background-color:green;
-}
-
-/* Aplica margem na DIV cujo ID é margem1 */
-#margem1 {
-	width:30px;
-	height:30px;
-	border-radius:100%;
-	background-color:blue;
-	/* Margens podem ser aplicadas com as tags:
-	margin-top:<valor>px;
-	margin-right:<valor>px;
-	margin-bottom:<valor>px;
-	margin-left:<valor>px;
-	OU (todas de uma vez):
-	margin:<top>px <right>px <bottom>px <left>px; */
-	margin:50px 30px 30px 100px;
-}
-
-/* Aplica preenchimento na DIV cujo ID é preenc1 */
-#preenc1 {
-	width:30px;
-	height:30px;
-	border-radius:100%;
-	background-color:blue;
-	/* Preenchimentos podem ser aplicados com as tags:
-	padding-top:<valor>px;
-	padding-right:<valor>px;
-	padding-bottom:<valor>px;
-	padding-left:<valor>px;
-	OU (para aplicar o mesmo valor em todas as direções):
-	padding: 10px (isso aplica 10px em todas as direções)
-	OU (todas de uma vez):
-	padding:<top>px <right>px <bottom>px <left>px; */
-	padding:50px 30px 50px 100px;
-}
-
-/* Aplica margem na DIV cujo ID é margem2 */
-#margem2 {
-	width:50px;
-	height:50px;
-	border-radius:100%;
-	background-color:blue;
-	margin-left:-30px;
-}
-
-/* Formata um quadrado fixo, para inserirmos um elemento float dentro dele. A tag float serve para fazer um elemento flutuar dentro do elemento em que ele se encontra. */
-.fixo {
-	width:100px;
-	height:100px;
-	background-color:blue;
-}
-
-/* Insere um elemento flutuante dentro da DIV cuja classe é 'fixo'. Esse elemento flutua à direita dessa DIV. */
-#flutuando1 {
-	width:30px;
-	height:90px;
-	background-color:yellow;
-	float:right;
-}
-
-/* Insere um elemento flutuante dentro da DIV cuja classe é 'fixo'. Esse elemento flutua à esquerda dessa DIV. */
-#flutuando2 {
-	width:30px;
-	height:90px;
-	background-color:yellow;
-	float:left;
-}
-
-/* Insere dois elementos flutuantes dentro da DIV cuja classe é 'fixo'. Esses elementos flutuam à esquerda e a direita dessa DIV. */
-#flutuando3 {
-	width:30px;
-	height:90px;
-	background-color:yellow;
-	float:left;
-}
-
-#flutuando4 {
-	width:50px;
-	height:90px;
-	background-color:green;
-	float:right;
-}
-
-/* Insere dois elementos flutuantes dentro da DIV cuja classe é 'fixo'. */
-#flutuando5 {
-	width:60px;
-	height:80px;
-	background-color:yellow;
-	float:right;
-}
-
-#flutuando6 {
-	width:40px;
-	height:80px;
-	background-color:green;
-	float:right;
-}
-
-/* Insere um 'rodapé' dentro da DIV. */
-#clear1 {
-	width:100px;
-	height:20px;
-	background-color:gray;
-	/* A tag clear serve para posicionar o elemento abaixo dos elementos flutuantes. Dessa forma, eles não ficam sobrepostos.
-	- clear:left posiciona o elemento abaixo do elemento flutuante à esquerda.
-	- clear:right posiciona o elemento abaixo do elemento flutuante à direita.
-	- clear:both posiciona o elemento abaixo dos elementos flutuantes à esquerda e direita. */
-	clear:both;
-}
-
-/* Posição relativa significa que o elemento será ajustado de acordo com sua posição normal.  */
-#relative-position1 {
-	width:100px;
-	height:100px;
-	background-color:green;
-	position:relative;
-}
-
-/* Posição absoluta significa que o elemento será posicionado relativamente ao parente mais próximo, cuja position não seja static. */
-#absolute-position1 {
-	width:40px;
-	height:40px;
-	background-color:yellow;
-	position:absolute;
-	margin:30px 0px 0px 50px;
-}
-
-.home-button {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.3s;
-}
-.home-button img {
-    width: 40px;
+.logo img {
     height: 40px;
-    margin-left:-10px;
-    margin-top: -20px;
-    transition: transform 0.3s, background-color 0.3s;
+    margin-right: 10px;
 }
-.home-button:hover img {
-    transform: scale(1.05);
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
 }
-.home-button:active img {
-    transform: scale(0.95);
+
+nav ul li {
+    position: relative;
 }
-/* Existe também a posição 'fixed' que fixa o elemento na tela. Ideal para cabeçalhos e menus de sites. */
+
+nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+    padding: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+nav ul li a:before,
+nav ul li a:after {
+    content: "";
+    position: absolute;
+    border: 1px solid #91C9FF;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transition: all 0.5s;
+    z-index: -1;
+}
+
+nav ul li a:before {
+    transform: scaleX(0);
+    transform-origin: left;
+}
+
+nav ul li a:after {
+    transform: scaleY(0);
+    transform-origin: top;
+}
+
+nav ul li a:hover:before {
+    transform: scaleX(1);
+    transform-origin: right;
+}
+
+nav ul li a:hover:after {
+    transform: scaleY(1);
+    transform-origin: bottom;
+}
+
+nav ul li a:hover {
+    background: #4F95DA;
+}
+
+nav ul li a.appointment {
+    border: 1px solid #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px;
+}
+
+.text-content p {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.text-content h1 {
+    font-size: 3em;
+    margin: 10px 0;
+}
+
+.image-content img {
+    height: 400px;
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+}
+
+.nav-buttons button {
+    background: none;
+    border: 1px solid #ffffff;
+    color: #ffffff
+}

@@ -1,156 +1,55 @@
-
 <!DOCTYPE html>
-
-<!-- Esse documento HTML será usado para aplicar o CSS exemplo (basico_css3.css). Dessa forma, ele está comentado apenas nas partes que dizem respeito ao CSS.
-
-Se você não está familiarizado com HTML5, talvez seja interessante que você veja o seguinte documento antes: https://github.com/thiagobottoni/Exemplos/blob/master/HTML5/B%C3%A1sico%20de%20HTML5.html -->
-
-<html>
-	<head>
-		<meta charset="UTF-8">
-		
-		<!-- Use a tag link para relacionar código externo com o seu HTML. Com a linha abaixo, estamos associando um CSS ao nosso HTML. -->
-		<link type="text/css" rel="stylesheet" href="/Site_Servinform/Script_Styles.css" />
-		
-		<!-- Ao invés de link, pode ser utilizada a tag style. Com ela, o CSS pode ser usado na própria página HTML, sem o uso de código externo. Exemplo:
-		
-		<style>
-		p {
-		color:blue;
-		} 
-		</style> -->
-
-		<title>Básico de HTML5 + CSS3</title>
-	</head>
-	<body>
-        <a href="/index.html" class="home-button"><img src="home-button.png" alt="Home"></a>
-        
-        <p><p>
-            <h1>Servinform</h1>
-        </p></p>
-	
-		<h2>#### Parágrafo Formatado ####</h2>
-		
-		<p>Este é um HTML exemplo para ser formatado usando CSS. Até aqui é azul. <span> Agora é verde.</span></p>
-		
-		<h2>#### ID ####</h2>
-		
-		<p id="sou-unico">Nenhum outro parágrafo terá essa formatação.</p>
-		
-		<h2>#### Classe ####</h2>
-		
-		<ol class="listas">
-			<li>Sou uma lista ordenada.</li>
-			<li>Sou uma lista ordenada.</li>
-		</ol>
-		
-		<ul class="listas">
-			<li>Sou uma lista não ordenada formatada da mesma forma que a lista anterior.</li>
-			<li>Sou uma lista não ordenada formatada da mesma forma que a <span>lista anterior</span>, exceto pelo tamanho das palavras "lista anterior" deste item.</li>
-		</ul>
-		
-		<h2>#### DIV ####</h2>
-		
-		<div class="primeira-div">
-			<p>Isso é uma div.</p>
-		</div>
-		
-		<h2>#### Bordas ####</h2>
-			
-		<p class="borda">Este parágrafo tem uma borda pontilhada.</p>
-		
-		<h2>#### Link Formatado + Pseudo-Classes ####</h2>
-		
-		<a href="https://cafetiria.wordpress.com" id="link-principal">Este é um link formatado</a>
-		
-		<h2>#### Botão ####</h2>
-		
-		<div class="botao-twitter">
-			<a href="https://twitter.com/thiagobottoni" class="link-twitter">Me siga no <span class="span-twitter">Twitter</span></a>
-		</div>
-		
-		<h2>#### Vários seletores ####</h2>
-		
-		<ol>
-			<li>Este item não deve estar formatado.
-				<ul>
-					<li>Este item deve estar formatado com a cor roxa.</li>
-					<li>Este item deve estar formatado com a cor roxa.</li>
-				</ul>
-			</li>
-		</ol>
-			
-		<h2>#### Descendentes ####</h2>
-		
-		<div class="filho">
-			<p>Sou o filho número 1.</p>
-			<p>Sou o filho número 2.</p>
-			<p>Sou o filho número 3.</p>
-		</div>
-		
-		<h2>#### Posicionamento - display:block ####</h2>
-		
-		<!-- É possível usar ID e classe na mesma tag. -->
-		<div id="posicao1" class="posicao-block"></div>
-		<div id="posicao2" class="posicao-block"></div>
-		<div id="posicao3" class="posicao-block"></div>
-		
-		<h2>#### Posicionamento - display:inline-block ####</h2>
-		
-		<div id="posicao4" class="posicao-iblock"></div>
-		<div id="posicao5" class="posicao-iblock"></div>
-		<div id="posicao6" class="posicao-iblock"></div>
-		
-		<h2>#### Posicionamento - display:inline ####</h2>
-		
-		<div id="posicao7" class="posicao-inline"></div>
-		<div id="posicao8" class="posicao-inline"></div>
-		<div id="posicao9" class="posicao-inline"></div>
-		
-		<h2>#### Margens ####</h2>
-		
-		<div id="margem1"></div>
-		
-		<h2>#### Preenchimento ####</h2>
-		
-		<div id="preenc1"></div>
-		
-		<h2>#### Valores negativos ####</h2>
-		
-		<div id="margem2"></div>
-		
-		<h2>#### Float - Direita ####</h2>
-		
-		<div class="fixo">
-			<div id="flutuando1"></div>
-		</div>
-		
-		<h2>#### Float - Esquerda ####</h2>
-			
-		<div class="fixo">
-			<div id="flutuando2"></div>
-		</div>
-		
-		<h2>#### Float - Esquerda e Direita ####</h2>
-		
-		<div class="fixo">
-			<div id="flutuando3"></div>
-			<div id="flutuando4"></div>
-		</div>
-		
-		<h2>#### Float + Clear ####</h2>
-		
-		<div class="fixo">
-			<div id="flutuando5"></div>
-			<div id="flutuando6"></div>
-			<div id="clear1"></div>
-		</div>
-		
-		<h2>#### Position - Relative/Absolute ####</h2>
-		
-		<div id="relative-position1">
-			<div id="absolute-position1"></div>
-		</div>		
-		
-	</body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GridGum</title>
+    <link rel="stylesheet" href="css_styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="home-button.png" alt="GridGum Logo">
+            <span>GRIDGUM</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">HOME</a></li>
+                <li><a href="#">ABOUT US</a></li>
+                <li><a href="#">PORTFOLIO</a></li>
+                <li><a href="#">SERVICES</a></li>
+                <li><a href="#">BLOG</a></li>
+                <li><a href="#">CONTACT</a></li>
+                <li><a href="#" class="appointment">APPOINTMENT</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <div class="text-content">
+                <p>WE LOVE TO</p>
+                <h1>Creative & UNIQUE</h1>
+                <p>We are a Gridgum web design & digital marketing agency based in United State</p>
+            </div>
+            <div class="image-content">
+                <img src="imagen.png" alt="Cheetah Image">
+            </div>
+        </section>
+        <div class="navigation">
+            <span>01/02</span>
+            <div class="nav-buttons">
+                <button>PREV</button>
+                <button>NEXT</button>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="social-links">
+            <a href="#">FB</a>
+            <a href="#">TW</a>
+            <a href="#">G+</a>
+            <a href="#">P</a>
+        </div>
+    </footer>
+</body>
 </html>
