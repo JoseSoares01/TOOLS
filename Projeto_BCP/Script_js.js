@@ -19,24 +19,28 @@ function updateIVARates() {
 
     switch (espacoFiscal) {
         case "PT":
+            baseIsenta.placeholder = "Base isenta (0%)";
             baseReduzida.placeholder = "Base reduzida (6%)";
             baseIntermedia.placeholder = "Base intermédia (13%)";
             baseNormal.placeholder = "Base normal (23%)";
             baseIsenta.value = baseIsenta.value || "";
             break;
         case "PT-AC":
+            baseIsenta.placeholder = "Base isenta (0%)";
             baseReduzida.placeholder = "Base reduzida (4%)";
             baseIntermedia.placeholder = "Base intermédia (9%)";
             baseNormal.placeholder = "Base normal (18%)";
             baseIsenta.value = baseIsenta.value || "";
             break;
         case "PT-MA":
+            baseIsenta.placeholder = "Base isenta (0%)";
             baseReduzida.placeholder = "Base reduzida (5%)";
             baseIntermedia.placeholder = "Base intermédia (12%)";
             baseNormal.placeholder = "Base normal (22%)";
             baseIsenta.value = baseIsenta.value || "";
             break;
         default:
+            baseIsenta.placeholder = "Base isenta (0%)";
             baseReduzida.placeholder = "Base reduzida";
             baseIntermedia.placeholder = "Base intermédia";
             baseNormal.placeholder = "Base normal";
@@ -60,6 +64,7 @@ function generateQRCode() {
     const base_intermedia = parseFloat(document.getElementById("base_intermedia").value) || 0;
     const base_normal = parseFloat(document.getElementById("base_normal").value) || 0;
     const irs = parseFloat(document.getElementById("irs").value) || 0;
+
 
     if (!validateAlphabetic(pais) || !validateAlphabetic(espaco_fiscal.replace("-", ""))) {
         alert("Os campos devem ser preenchidos corretamente.");
