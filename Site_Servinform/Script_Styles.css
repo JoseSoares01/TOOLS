@@ -1,21 +1,24 @@
-/* styles.css */
-
 @import url('https://fonts.googleapis.com/css?family=Lato:100&display=swap');
 
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #20272e;
+    background: linear-gradient(to top, #02202B, #017AB1); /* Fundo gradiente */
     color: #ffffff;
 }
 
+/* Cabeçalho */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
+    background: linear-gradient(to top, #02202B, #017AB1); /* Fundo gradiente do cabeçalho */
+    width: 100%;
+    box-sizing: border-box;
 }
 
+/* Logo */
 .logo {
     display: flex;
     align-items: center;
@@ -26,6 +29,7 @@ header {
     margin-right: 10px;
 }
 
+/* Navegação */
 nav ul {
     list-style-type: none;
     margin: 0;
@@ -34,10 +38,12 @@ nav ul {
     gap: 20px;
 }
 
+/* Itens do Menu */
 nav ul li {
     position: relative;
 }
 
+/* Links do Menu */
 nav ul li a {
     color: #ffffff;
     text-decoration: none;
@@ -48,6 +54,7 @@ nav ul li a {
     z-index: 1;
 }
 
+/* Efeitos de Hover */
 nav ul li a:before,
 nav ul li a:after {
     content: "";
@@ -85,19 +92,24 @@ nav ul li a:hover {
     background: #4F95DA;
 }
 
+/* Botão Agendamento */
 nav ul li a.appointment {
     border: 1px solid #ffffff;
     padding: 5px 10px;
     border-radius: 5px;
 }
 
+/* Seção Hero */
 .hero {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 50px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
+/* Texto Hero */
 .text-content p {
     margin: 0;
     font-size: 1.2em;
@@ -108,19 +120,53 @@ nav ul li a.appointment {
     margin: 10px 0;
 }
 
+/* Imagem Hero */
 .image-content img {
     height: 400px;
 }
 
+/* Navegação Inferior */
 .navigation {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 50px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
+/* Botões de Navegação */
 .nav-buttons button {
     background: none;
     border: 1px solid #ffffff;
-    color: #ffffff
+    color: #ffffff;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.nav-buttons button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Rodapé */
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Links Sociais */
+.social-links a {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s;
+}
+
+.social-links a:hover {
+    color: #91C9FF;
 }
