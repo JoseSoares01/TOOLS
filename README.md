@@ -3,6 +3,7 @@
 
 
 
+Autor: José Soares
 
 Projeto Ferramentas Web
 Descrição
@@ -60,4 +61,5 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para d
 Contato
 Para qualquer dúvida ou sugestão, entre em contato:
 
-Seu Nome - seu-email@example.com
+Seu Nome -José Soares
+Email: janyelrodrigues@hotmail.com
