@@ -5,12 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Button-Home</title>
     <link rel="stylesheet" href="/Site_Servinform/Script_Styles.css">
+    <style>
+        /* Adicione este bloco de estilo ao seu arquivo CSS ou na seção head */
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .social-links a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
     <header>
         <div class="logo">
             <a href="https://suportesvf.pt">
-  <img src="https://suportesvf.pt/imagen.png" alt="GridGum Logo">
+                <img src="https://suportesvf.pt/imagen.png" alt="GridGum Logo">
             </a>
         </div>
         <nav>
@@ -33,7 +62,7 @@
     <main>
         <section class="hero">
             <div class="text-content">
-                <p>SITE EM DESEVOLVIMENTO</p>
+                <p>SITE EM DESENVOLVIMENTO</p>
                 <h1>SERVINFORM WEB SITE</h1>
                 <p>Em breve teremos um web site com todo contúdo
                 by: suporte Servinform</p>
@@ -59,11 +88,29 @@
         </div>
         <div class="tamanho_logo">
             <section class="apresentacao__conteudo">
-        <p1>&copy; 2024 Servinform PT</p1>
-            </div>
+                <p>&copy; 2024 Servinform PT</p>
+            </section>
+        </div>
     </footer>
-    <div>
-        <script src="/Site_Servinform/Script_JS.js"></script>
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Dropdown menu functionality
+            const dropdowns = document.querySelectorAll('nav ul li');
+            dropdowns.forEach(dropdown => {
+                dropdown.addEventListener('mouseover', function() {
+                    const submenu = this.querySelector('ul');
+                    if (submenu) {
+                        submenu.style.display = 'block';
+                    }
+                });
+                dropdown.addEventListener('mouseout', function() {
+                    const submenu = this.querySelector('ul');
+                    if (submenu) {
+                        submenu.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

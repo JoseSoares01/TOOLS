@@ -3,9 +3,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const dropdowns = document.querySelectorAll('nav ul li');
     dropdowns.forEach(dropdown => {
         dropdown.addEventListener('mouseover', function() {
-            this.querySelector('ul').style.display = 'block';
+            const submenu = this.querySelector('ul');
+            if (submenu) {
+                submenu.style.display = 'block';
+            }
         });
         dropdown.addEventListener('mouseout', function() {
-            this.querySelector('ul').style.display = 'none';
+            const submenu = this.querySelector('ul');
+            if (submenu) {
+                submenu.style.display = 'none';
+            }
         });
-    })
+    });
+});
