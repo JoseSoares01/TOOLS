@@ -170,3 +170,52 @@ footer {
 .social-links a:hover {
     color: #91C9FF;
 }
+
+nav {
+    display: flex;
+    justify-content: center;
+    background-color: #183856;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+nav.dark-mode {
+    background-color: #91C9FF;;
+}
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+nav ul li {
+    position: relative;
+}
+nav ul li a {
+    display: block;
+    padding: 15px 20px;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+nav ul li a:hover {
+    background-color: #1ca0e7;
+}
+nav ul li ul {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    background-color: #91C9FF;
+    padding: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+nav ul li ul li a {
+    padding: 10px 20px;
+    white-space: nowrap;
+}
+nav ul li ul li a:hover {
+    background-color: #28bbec;
+}
+nav ul li:hover ul {
+    display: block;
