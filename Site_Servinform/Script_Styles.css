@@ -1,133 +1,159 @@
 /* Estilos globais */
 body {
-    margin: 0; /* Remove a margem padrão do corpo */
-    display: flex; /* Define o corpo como um contêiner flexível */
-    flex-direction: column; /* Organiza os filhos em coluna */
-    min-height: 100vh; /* Define a altura mínima do corpo para ocupar toda a altura da janela */
-    font-family: Arial, sans-serif; /* Define a fonte padrão */
-}
-
-main {
-    flex: 1; /* Faz com que o main expanda para preencher o espaço disponível */
-}
-
-header, nav, footer {
-    background: #333; /* Cor de fundo escura */
-    color: #fff; /* Cor do texto branca */
+    display: flex;
+    height: 100vh;
+    padding: 0 5rem;
+    box-sizing: border-box;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    background-color: #fff; /* Corrigido de background-image */
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
 }
 
 header {
-    display: flex; /* Define o header como um contêiner flexível */
-    justify-content: space-between; /* Espaça os elementos do header */
-    align-items: center; /* Alinha os elementos ao centro */
-    padding: 10px 20px; /* Adiciona padding ao header */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
 }
 
 .logo img {
-    max-width: 100%; /* Faz a imagem do logo ocupar 100% da largura do contêiner */
-    height: auto; /* Ajusta a altura automaticamente */
+    max-width: 100%;
+    height: auto;
 }
 
-nav ul {
-    list-style: none; /* Remove os marcadores da lista */
-    padding: 0; /* Remove o padding da lista */
-    margin: 0; /* Remove a margem da lista */
-    display: flex; /* Define a lista como flexível */
-    flex-wrap: wrap; /* Permite que os itens da lista quebrem para a próxima linha */
+nav.menu {
+    background-image: linear-gradient(to right, #ed6ea0 0%, #ec8c69 100%);
+    border-radius: 0.5rem;
+    text-transform: uppercase;
+    box-shadow: inset 0.1rem 0.1rem 0.5rem rgba(0, 0, 0, 0.15);
 }
 
-nav ul li {
-    position: relative; /* Necessário para posicionamento absoluto dos submenus */
+nav.menu ol {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    list-style: none;
 }
 
-nav ul li a {
-    color: #fff; /* Cor do texto dos links */
-    padding: 10px 20px; /* Adiciona padding aos links */
-    text-decoration: none; /* Remove a decoração dos links */
-    display: block; /* Define os links como blocos */
+nav.menu .menu-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-nav ul li ul {
-    display: none; /* Esconde os submenus inicialmente */
-    position: absolute; /* Posiciona os submenus */
-    top: 100%; /* Posiciona os submenus abaixo do item pai */
-    left: 0; /* Alinha os submenus à esquerda */
-    background: #444; /* Cor de fundo dos submenus */
+nav.menu a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 300;
 }
 
-nav ul li ul li {
-    width: 100%; /* Faz os itens do submenu ocuparem toda a largura */
+nav.menu > ol > li > a {
+    padding: 2rem 0;
+    font-size: 1.6vw;
+    text-align: center;
+    z-index: 1;
+    opacity: 0.7;
+    transition: 250ms ease all;
+}
+
+nav.menu > ol > li > a:hover {
+    opacity: 1 !important;
+}
+
+nav.menu .sub-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    visibility: hidden;
+    background: rgba(0,0,0,0.1);
+    box-shadow: inset 0.1rem 0.1rem 0.5rem rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    max-height: 0;
+    transition: 250ms ease all;
+}
+
+nav.menu .sub-menu .menu-item {
+    margin-top: 0.5rem;
+}
+
+nav.menu .sub-menu a {
+    display: block;
+    font-size: 1.4vw;
+    padding: 1rem 0.5rem;
+    background: #ec8c69;
+    color: rgba(255, 255, 255, 0.6);
+    border-radius: 0.2rem;
+    transition: 250ms ease all;
+}
+
+nav.menu .sub-menu a:hover {
+    box-shadow: inset 0 0 0 3rem rgba(0, 0, 0, 0.1);
+    color: rgba(255, 255, 255, 1);
+}
+
+nav.menu li:hover > .sub-menu,
+nav.menu li:focus-within > .sub-menu {
+    visibility: visible;
+    max-height: 12rem;
 }
 
 .hero {
-    display: flex; /* Define a hero section como flexível */
-    flex-direction: column; /* Organiza os filhos em coluna */
-    align-items: center; /* Alinha os filhos ao centro */
-    text-align: center; /* Centraliza o texto */
-    padding: 20px; /* Adiciona padding à hero section */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
 }
 
 .hero .text-content, .hero .image-content {
-    max-width: 90%; /* Define a largura máxima do conteúdo */
-    margin: 10px; /* Adiciona margem ao conteúdo */
+    max-width: 90%;
+    margin: 10px;
 }
 
 .hero img {
-    max-width: 100%; /* Faz a imagem ocupar 100% da largura do contêiner */
-    height: auto; /* Ajusta a altura automaticamente */
+    max-width: 100%;
+    height: auto;
 }
 
 .navigation {
-    display: flex; /* Define a seção de navegação como flexível */
-    justify-content: space-between; /* Espaça os elementos da seção */
-    padding: 10px 20px; /* Adiciona padding à seção */
-    background: #444; /* Cor de fundo da seção */
-    color: #fff; /* Cor do texto da seção */
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background: #444;
+    color: #fff;
 }
 
 .nav-buttons button {
-    padding: 10px 20px; /* Adiciona padding aos botões */
-    margin: 5px; /* Adiciona margem aos botões */
-    background: #333; /* Cor de fundo dos botões */
-    color: #fff; /* Cor do texto dos botões */
-    border: none; /* Remove a borda dos botões */
-    cursor: pointer; /* Altera o cursor para pointer */
+    padding: 10px 20px;
+    margin: 5px;
+    background: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.nav-buttons button:hover {
+    background: #555;
 }
 
 .social-links a {
-    color: #fff; /* Cor dos links das redes sociais */
-    margin: 0 10px; /* Adiciona margem aos links */
-    text-decoration: none; /* Remove a decoração dos links */
+    color: #fff;
+    margin: 0 10px;
+    text-decoration: none;
 }
 
 footer {
-    background: #333; /* Cor de fundo do rodapé */
-    color: #fff; /* Cor do texto do rodapé */
-    text-align: center; /* Centraliza o texto */
-    padding: 10px 0; /* Adiciona padding ao rodapé */
-    position: fixed; /* Define o rodapé como fixo */
-    bottom: 0; /* Posiciona o rodapé na parte inferior */
-    width: 100%; /* Faz o rodapé ocupar 100% da largura */
-}
-
-/* Estilos responsivos */
-@media (max-width: 768px) {
-    header, nav, .navigation {
-        flex-direction: column; /* Organiza os elementos em coluna */
-        align-items: center; /* Alinha os elementos ao centro */
-    }
-
-    nav ul {
-        flex-direction: column; /* Organiza os itens da lista em coluna */
-        align-items: center; /* Alinha os itens da lista ao centro */
-    }
-
-    .navigation {
-        flex-direction: column; /* Organiza os elementos da seção em coluna */
-        align-items: center; /* Alinha os elementos da seção ao centro */
-    }
-
-    .nav-buttons button {
-        margin: 5px 0; /* Adiciona margem vertical aos botões */
-    }
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }

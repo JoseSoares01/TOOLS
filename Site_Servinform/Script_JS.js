@@ -1,22 +1,23 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Função renomeada para Script_Js
     Script_Js();
 });
 
 function Script_Js() {
     // Dropdown menu functionality
-    const dropdowns = document.querySelectorAll('nav ul li');
-    dropdowns.forEach(dropdown => {
-        dropdown.addEventListener('mouseover', function() {
-            const submenu = this.querySelector('ul');
+    const menuItems = document.querySelectorAll('nav.menu .menu-item');
+    menuItems.forEach(menuItem => {
+        menuItem.addEventListener('mouseover', function() {
+            const submenu = this.querySelector('.sub-menu');
             if (submenu) {
-                submenu.style.display = 'block'; // Mostra o submenu quando o item é "mouseover"
+                submenu.style.visibility = 'visible';
+                submenu.style.maxHeight = '12rem';
             }
         });
-        dropdown.addEventListener('mouseout', function() {
-            const submenu = this.querySelector('ul');
+        menuItem.addEventListener('mouseout', function() {
+            const submenu = this.querySelector('.sub-menu');
             if (submenu) {
-                submenu.style.display = 'none'; // Esconde o submenu quando o item é "mouseout"
+                submenu.style.visibility = 'hidden';
+                submenu.style.maxHeight = '0';
             }
         });
     });
