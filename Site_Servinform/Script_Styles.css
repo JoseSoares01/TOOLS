@@ -7,9 +7,9 @@ body {
     flex-direction: column;
     justify-content: center;
     align-content: center;
-    background-color: #fff; /* Cor de fundo branca */
+    background-color: #2880c3; /* Cor de fundo branca */
     font-family: 'Open Sans', sans-serif;
-    margin: 0; /* Remove a margem padrão do body */
+    margin: 10px; /* Remove a margem padrão do body */
 }
 
 /* Estilos do cabeçalho */
@@ -17,12 +17,12 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: -50px -50px;
 }
 
 /* Estilos do logo */
 .logo img {
-    max-width: 100%;
+    max-width: 60%;
     height: auto; /* Mantém a proporção da imagem */
 }
 
@@ -37,8 +37,8 @@ nav.menu {
 /* Estilos da lista do menu */
 nav.menu ol {
     display: flex;
-    padding: 0;
-    margin: 0;
+    padding: 16;
+    margin: 5;
     list-style: none; /* Remove os marcadores da lista */
 }
 
@@ -64,7 +64,7 @@ nav.menu > ol > li > a {
     text-align: center;
     z-index: 1;
     opacity: 0.7;
-    transition: 250ms ease all;
+    transition: 11ms ease all;
 }
 
 /* Efeito de hover para os links principais do menu */
