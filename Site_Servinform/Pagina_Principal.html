@@ -4,18 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Button-Home</title>
-    <link rel="stylesheet" href="/Site_Servinform/Script_Styles.css">
+    <link rel="stylesheet" href="/styles.css">
     <style>
-        /* Adicione este bloco de estilo ao seu arquivo CSS ou na seção head */
+        /* Estilos globais */
         body {
             margin: 0;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            font-family: Arial, sans-serif;
         }
 
         main {
             flex: 1;
+        }
+
+        header, nav, footer {
+            background: #333;
+            color: #fff;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .logo img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav ul li a {
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            display: block;
+        }
+
+        nav ul li ul {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #444;
+        }
+
+        nav ul li ul li {
+            width: 100%;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero .text-content, .hero .image-content {
+            max-width: 90%;
+            margin: 10px;
+        }
+
+        .hero img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background: #444;
+            color: #fff;
+        }
+
+        .nav-buttons button {
+            padding: 10px 20px;
+            margin: 5px;
+            background: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .social-links a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
         }
 
         footer {
@@ -28,10 +118,26 @@
             width: 100%;
         }
 
-        .social-links a {
-            color: #fff;
-            margin: 0 10px;
-            text-decoration: none;
+        /* Estilos responsivos */
+        @media (max-width: 768px) {
+            header, nav, .navigation {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .navigation {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-buttons button {
+                margin: 5px 0;
+            }
         }
     </style>
 </head>
@@ -93,7 +199,7 @@
         </div>
     </footer>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('script.js', function() {
             // Dropdown menu functionality
             const dropdowns = document.querySelectorAll('nav ul li');
             dropdowns.forEach(dropdown => {
