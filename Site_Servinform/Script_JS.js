@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Função renomeada para Script_Js
+    Script_Js();
+});
+
+function Script_Js() {
     // Dropdown menu functionality
     const dropdowns = document.querySelectorAll('nav ul li');
     dropdowns.forEach(dropdown => {
@@ -15,4 +20,4 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-});
+}
