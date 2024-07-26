@@ -2,16 +2,17 @@
 body {
     display: flex;
     height: 100vh;
-    padding: 0 5rem;
+    padding: 0 5rem; /* Espaçamento lateral */
     box-sizing: border-box;
     flex-direction: column;
     justify-content: center;
     align-content: center;
-    background-color: #fff; /* Corrigido de background-image */
+    background-color: #fff; /* Cor de fundo branca */
     font-family: 'Open Sans', sans-serif;
-    margin: 0;
+    margin: 0; /* Remove a margem padrão do body */
 }
 
+/* Estilos do cabeçalho */
 header {
     display: flex;
     justify-content: space-between;
@@ -19,11 +20,13 @@ header {
     padding: 10px 20px;
 }
 
+/* Estilos do logo */
 .logo img {
     max-width: 100%;
-    height: auto;
+    height: auto; /* Mantém a proporção da imagem */
 }
 
+/* Estilos do menu de navegação */
 nav.menu {
     background-image: linear-gradient(to right, #ed6ea0 0%, #ec8c69 100%);
     border-radius: 0.5rem;
@@ -31,13 +34,15 @@ nav.menu {
     box-shadow: inset 0.1rem 0.1rem 0.5rem rgba(0, 0, 0, 0.15);
 }
 
+/* Estilos da lista do menu */
 nav.menu ol {
     display: flex;
     padding: 0;
     margin: 0;
-    list-style: none;
+    list-style: none; /* Remove os marcadores da lista */
 }
 
+/* Estilos dos itens do menu */
 nav.menu .menu-item {
     position: relative;
     display: flex;
@@ -45,12 +50,14 @@ nav.menu .menu-item {
     justify-content: center;
 }
 
+/* Estilos dos links do menu */
 nav.menu a {
     color: #fff;
     text-decoration: none;
     font-weight: 300;
 }
 
+/* Estilos dos links principais do menu */
 nav.menu > ol > li > a {
     padding: 2rem 0;
     font-size: 1.6vw;
@@ -60,10 +67,12 @@ nav.menu > ol > li > a {
     transition: 250ms ease all;
 }
 
+/* Efeito de hover para os links principais do menu */
 nav.menu > ol > li > a:hover {
     opacity: 1 !important;
 }
 
+/* Estilos do submenu */
 nav.menu .sub-menu {
     position: absolute;
     top: 100%;
@@ -77,10 +86,12 @@ nav.menu .sub-menu {
     transition: 250ms ease all;
 }
 
+/* Estilos dos itens do submenu */
 nav.menu .sub-menu .menu-item {
     margin-top: 0.5rem;
 }
 
+/* Estilos dos links do submenu */
 nav.menu .sub-menu a {
     display: block;
     font-size: 1.4vw;
@@ -91,17 +102,20 @@ nav.menu .sub-menu a {
     transition: 250ms ease all;
 }
 
+/* Efeito de hover para os links do submenu */
 nav.menu .sub-menu a:hover {
     box-shadow: inset 0 0 0 3rem rgba(0, 0, 0, 0.1);
     color: rgba(255, 255, 255, 1);
 }
 
+/* Exibe o submenu quando o item é hover ou focus */
 nav.menu li:hover > .sub-menu,
 nav.menu li:focus-within > .sub-menu {
     visibility: visible;
     max-height: 12rem;
 }
 
+/* Estilos da seção hero */
 .hero {
     display: flex;
     flex-direction: column;
@@ -110,16 +124,19 @@ nav.menu li:focus-within > .sub-menu {
     padding: 20px;
 }
 
+/* Estilos do conteúdo textual e da imagem na seção hero */
 .hero .text-content, .hero .image-content {
     max-width: 90%;
     margin: 10px;
 }
 
+/* Estilos da imagem na seção hero */
 .hero img {
     max-width: 100%;
     height: auto;
 }
 
+/* Estilos da navegação inferior */
 .navigation {
     display: flex;
     justify-content: space-between;
@@ -128,6 +145,7 @@ nav.menu li:focus-within > .sub-menu {
     color: #fff;
 }
 
+/* Estilos dos botões de navegação */
 .nav-buttons button {
     padding: 10px 20px;
     margin: 5px;
@@ -138,16 +156,19 @@ nav.menu li:focus-within > .sub-menu {
     transition: background 0.3s ease;
 }
 
+/* Efeito de hover para os botões de navegação */
 .nav-buttons button:hover {
     background: #555;
 }
 
+/* Estilos dos links sociais no rodapé */
 .social-links a {
     color: #fff;
     margin: 0 10px;
     text-decoration: none;
 }
 
+/* Estilos do rodapé */
 footer {
     background: #333;
     color: #fff;
