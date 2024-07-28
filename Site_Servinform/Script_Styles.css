@@ -5,7 +5,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #20272e;
+    background-color: #407fbf;
     color: #ffffff;
 }
 
@@ -14,7 +14,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 25px;
 }
 
 /* Estilos para o logo */
@@ -25,7 +25,7 @@ header {
 
 .logo img {
     height: 40px;
-    margin-right: 10px;
+    margin-right: 40px;
 }
 
 /* Estilos para a navegação principal */
@@ -115,7 +115,7 @@ nav ul li a.appointment {
 }
 
 .image-content img {
-    height: 400px;
+    height: 300px;
 }
 
 /* Estilos para a navegação secundária */
