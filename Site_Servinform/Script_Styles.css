@@ -1,7 +1,7 @@
-/* styles.css */
-
+/* Importa uma fonte externa */
 @import url('https://fonts.googleapis.com/css?family=Lato:100&display=swap');
 
+/* Define estilos globais para o corpo do documento */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -9,6 +9,7 @@ body {
     color: #ffffff;
 }
 
+/* Estilos para o cabeçalho */
 header {
     display: flex;
     justify-content: space-between;
@@ -16,6 +17,7 @@ header {
     padding: 20px;
 }
 
+/* Estilos para o logo */
 .logo {
     display: flex;
     align-items: center;
@@ -26,6 +28,7 @@ header {
     margin-right: 10px;
 }
 
+/* Estilos para a navegação principal */
 nav ul {
     list-style-type: none;
     margin: 0;
@@ -48,6 +51,7 @@ nav ul li a {
     z-index: 1;
 }
 
+/* Animação para o hover dos links */
 nav ul li a:before,
 nav ul li a:after {
     content: "";
@@ -85,12 +89,14 @@ nav ul li a:hover {
     background: #4F95DA;
 }
 
+/* Estilos para o link de agendamento */
 nav ul li a.appointment {
     border: 1px solid #ffffff;
     padding: 5px 10px;
     border-radius: 5px;
 }
 
+/* Estilos para a seção de destaque/hero */
 .hero {
     display: flex;
     align-items: center;
@@ -112,6 +118,7 @@ nav ul li a.appointment {
     height: 400px;
 }
 
+/* Estilos para a navegação secundária */
 .navigation {
     display: flex;
     justify-content: space-between;
@@ -119,8 +126,9 @@ nav ul li a.appointment {
     padding: 20px 50px;
 }
 
+/* Estilos para os botões de navegação */
 .nav-buttons button {
     background: none;
     border: 1px solid #ffffff;
-    color: #ffffff
+    color: #ffffff;
 }
