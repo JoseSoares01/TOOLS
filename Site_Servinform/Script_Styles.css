@@ -132,3 +132,24 @@ nav ul li a.appointment {
     border: 1px solid #ffffff;
     color: #ffffff;
 }
+
+/* Estilos para o rodapé */
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #101317;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+/* Estilos para os links sociais no rodapé */
+.social-links a {
+    color: #ffffff;
+    margin-right: 10px;
+    text-decoration: none;
+    font-size: 1.2em;
+}
