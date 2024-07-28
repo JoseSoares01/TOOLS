@@ -89,67 +89,47 @@ nav ul li a:hover {
     background: #4F95DA;
 }
 
-/* Estilos para o link de agendamento */
+/* Estilo para o link de agendamento */
 nav ul li a.appointment {
     border: 1px solid #ffffff;
     padding: 5px 10px;
     border-radius: 5px;
 }
 
-/* Estilos para a seção de destaque/hero */
-.hero {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 50px;
-}
-
-.text-content p {
+/* Adiciona estilo para o submenu dropdown */
+nav ul li ul.dropdown {
+    display: none; /* Oculta o dropdown por padrão */
+    position: absolute;
+    background-color: #20272e;
+    list-style-type: none;
     margin: 0;
-    font-size: 1.2em;
+    padding: 0;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
 }
 
-.text-content h1 {
-    font-size: 3em;
-    margin: 10px 0;
-}
-
-.image-content img {
-    height: 300px;
-}
-
-/* Estilos para a navegação secundária */
-.navigation {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 50px;
-}
-
-/* Estilos para os botões de navegação */
-.nav-buttons button {
-    background: none;
-    border: 1px solid #ffffff;
-    color: #ffffff;
-}
-
-/* Estilos para o rodapé */
-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #101317;
+/* Estilo para itens do submenu */
+nav ul li ul.dropdown li {
     width: 100%;
-    position: fixed;
-    bottom: 0;
-    left: 0;
 }
 
-/* Estilos para os links sociais no rodapé */
-.social-links a {
+nav ul li ul.dropdown li a {
+    padding: 10px;
+    display: block;
     color: #ffffff;
-    margin-right: 10px;
     text-decoration: none;
-    font-size: 1.2em;
+    font-weight: bold;
+    border: 1px solid #91C9FF; /* Adiciona borda como nos outros itens */
+    transition: background-color 0.5s, border-color 0.5s; /* Animações de transição */
+}
+
+/* Estilo de hover para itens do submenu */
+nav ul li ul.dropdown li a:hover {
+    background-color: #4F95DA;
+    border-color: #4F95DA;
+}
+
+/* Mostra o dropdown ao passar o mouse sobre o item pai */
+nav ul li:hover ul.dropdown {
+    display: block;
 }
