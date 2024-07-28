@@ -1,180 +1,126 @@
-/* Estilos globais */
+/* styles.css */
+
+@import url('https://fonts.googleapis.com/css?family=Lato:100&display=swap');
+
 body {
-    display: flex;
-    height: 100vh;
-    padding: 0 5rem; /* Espaçamento lateral */
-    box-sizing: border-box;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-    background-color: #2880c3; /* Cor de fundo branca */
-    font-family: 'Open Sans', sans-serif;
-    margin: 10px; /* Remove a margem padrão do body */
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #20272e;
+    color: #ffffff;
 }
 
-/* Estilos do cabeçalho */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: -50px -50px;
-}
-
-/* Estilos do logo */
-.logo img {
-    max-width: 60%;
-    height: auto; /* Mantém a proporção da imagem */
-}
-
-/* Estilos do menu de navegação */
-nav.menu {
-    background-image: linear-gradient(to right, #ed6ea0 0%, #ec8c69 100%);
-    border-radius: 0.5rem;
-    text-transform: uppercase;
-    box-shadow: inset 0.1rem 0.1rem 0.5rem rgba(0, 0, 0, 0.15);
-}
-
-/* Estilos da lista do menu */
-nav.menu ol {
-    display: flex;
-    padding: 16;
-    margin: 5;
-    list-style: none; /* Remove os marcadores da lista */
-}
-
-/* Estilos dos itens do menu */
-nav.menu .menu-item {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Estilos dos links do menu */
-nav.menu a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 300;
-}
-
-/* Estilos dos links principais do menu */
-nav.menu > ol > li > a {
-    padding: 2rem 0;
-    font-size: 1.6vw;
-    text-align: center;
-    z-index: 1;
-    opacity: 0.7;
-    transition: 11ms ease all;
-}
-
-/* Efeito de hover para os links principais do menu */
-nav.menu > ol > li > a:hover {
-    opacity: 1 !important;
-}
-
-/* Estilos do submenu */
-nav.menu .sub-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    visibility: hidden;
-    background: rgba(0,0,0,0.1);
-    box-shadow: inset 0.1rem 0.1rem 0.5rem rgba(0, 0, 0, 0.15);
-    overflow: hidden;
-    max-height: 0;
-    transition: 250ms ease all;
-}
-
-/* Estilos dos itens do submenu */
-nav.menu .sub-menu .menu-item {
-    margin-top: 0.5rem;
-}
-
-/* Estilos dos links do submenu */
-nav.menu .sub-menu a {
-    display: block;
-    font-size: 1.4vw;
-    padding: 1rem 0.5rem;
-    background: #ec8c69;
-    color: rgba(255, 255, 255, 0.6);
-    border-radius: 0.2rem;
-    transition: 250ms ease all;
-}
-
-/* Efeito de hover para os links do submenu */
-nav.menu .sub-menu a:hover {
-    box-shadow: inset 0 0 0 3rem rgba(0, 0, 0, 0.1);
-    color: rgba(255, 255, 255, 1);
-}
-
-/* Exibe o submenu quando o item é hover ou focus */
-nav.menu li:hover > .sub-menu,
-nav.menu li:focus-within > .sub-menu {
-    visibility: visible;
-    max-height: 12rem;
-}
-
-/* Estilos da seção hero */
-.hero {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
     padding: 20px;
 }
 
-/* Estilos do conteúdo textual e da imagem na seção hero */
-.hero .text-content, .hero .image-content {
-    max-width: 90%;
-    margin: 10px;
+.logo {
+    display: flex;
+    align-items: center;
 }
 
-/* Estilos da imagem na seção hero */
-.hero img {
-    max-width: 100%;
-    height: auto;
+.logo img {
+    height: 40px;
+    margin-right: 10px;
 }
 
-/* Estilos da navegação inferior */
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li {
+    position: relative;
+}
+
+nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+    padding: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+nav ul li a:before,
+nav ul li a:after {
+    content: "";
+    position: absolute;
+    border: 1px solid #91C9FF;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transition: all 0.5s;
+    z-index: -1;
+}
+
+nav ul li a:before {
+    transform: scaleX(0);
+    transform-origin: left;
+}
+
+nav ul li a:after {
+    transform: scaleY(0);
+    transform-origin: top;
+}
+
+nav ul li a:hover:before {
+    transform: scaleX(1);
+    transform-origin: right;
+}
+
+nav ul li a:hover:after {
+    transform: scaleY(1);
+    transform-origin: bottom;
+}
+
+nav ul li a:hover {
+    background: #4F95DA;
+}
+
+nav ul li a.appointment {
+    border: 1px solid #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px;
+}
+
+.text-content p {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.text-content h1 {
+    font-size: 3em;
+    margin: 10px 0;
+}
+
+.image-content img {
+    height: 400px;
+}
+
 .navigation {
     display: flex;
     justify-content: space-between;
-    padding: 10px 20px;
-    background: #444;
-    color: #fff;
+    align-items: center;
+    padding: 20px 50px;
 }
 
-/* Estilos dos botões de navegação */
 .nav-buttons button {
-    padding: 10px 20px;
-    margin: 5px;
-    background: #333;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-/* Efeito de hover para os botões de navegação */
-.nav-buttons button:hover {
-    background: #555;
-}
-
-/* Estilos dos links sociais no rodapé */
-.social-links a {
-    color: #fff;
-    margin: 0 10px;
-    text-decoration: none;
-}
-
-/* Estilos do rodapé */
-footer {
-    background: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+    background: none;
+    border: 1px solid #ffffff;
+    color: #ffffff
 }
