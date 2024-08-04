@@ -5,7 +5,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #407fbf;
+    background: linear-gradient(to top, #02202B, #017AB1);
     color: #ffffff;
 }
 
@@ -18,12 +18,12 @@ header {
 }
 
 /* Estilos para o logo */
-.logo {
+.home-button {
     display: flex;
     align-items: center;
 }
 
-.logo img {
+.home-button img {
     height: 40px;
     margin-right: 40px;
 }
@@ -133,3 +133,14 @@ nav ul li ul.dropdown li a:hover {
 nav ul li:hover ul.dropdown {
     display: block;
 }
+
+.image-content {
+    position: absolute;
+    top: 0;
+    right: 0; /* ou left: 0 para colocar na esquerda */
+    height: 100vh;
+    width: 20vw; /* ajuste a largura conforme necessário */
+    background-image: url('/Site_Servinform/nova-imagem.png');
+    background-size: cover;
+    background-position: center;
+  }
