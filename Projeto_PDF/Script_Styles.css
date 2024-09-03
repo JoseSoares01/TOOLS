@@ -4,51 +4,69 @@ body {
     background: radial-gradient(circle at center center, black, #1162ac);
     color: white;
     text-align: center; /* Centralizar todo o conteúdo */
+    min-height: 100vh; /* Garante que o body ocupe pelo menos a altura da tela */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Espaça o conteúdo para distribuir verticalmente */
 }
+
+.lista-pdfs {
+    margin-top: 30px;
+    max-height: 300px; /* Limita a altura para evitar overflow excessivo */
+    overflow-y: auto; /* Adiciona barra de rolagem quando há muitos PDFs */
+}
+
 .pdf-item {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
     justify-content: space-between;
+    word-wrap: break-word; /* Quebra as palavras longas */
 }
+
 .pdf-item span {
     margin-left: 10px;
     flex-grow: 1;
+    overflow: hidden; /* Esconde o excesso de texto */
+    text-overflow: ellipsis; /* Adiciona reticências ao texto longo */
+    white-space: nowrap; /* Impede quebra de linha */
 }
-.lista-pdfs {
-    margin-top: 30px;
-}
+
 button {
     margin-top: 30px;
     margin-left: 10px; /* Adiciona espaçamento entre os botões */
-    padding: 30px;
+    padding: 10px; /* Tamanho adequado para o padding */
     font-size: 16px;
     background-color: #1162ac;
     color: white;
-    border: 16px solid transparent; /* Ajuste da borda */
+    border: none; /* Remove bordas sólidas para evitar overflow */
     border-radius: 16px; /* Bordas arredondadas */
     cursor: pointer;
     display: inline-block; /* Manter os botões inline */
 }
+
 button:hover {
     background-color: #0e4f87;
 }
+
 input[type="file"] {
-    border: 16px solid transparent; /* Ajuste da borda do input */
+    border: none; /* Remove bordas sólidas para evitar overflow */
     border-radius: 16px; /* Bordas arredondadas */
     padding: 10px;
     cursor: pointer;
     margin-bottom: 30px; /* Adiciona espaçamento abaixo do input */
 }
+
 .pdf-item button {
     padding: 5px 10px; /* Tamanho dos botões de seta e remover */
     margin-left: 5px;
-    margin-top: 0;
     border-radius: 8px; /* Bordas arredondadas para os botões menores */
 }
+
 .pdf-item button:hover {
     background-color: #0e4f87;
 }
+
 .home-button {
     position: fixed;
     top: 20px;
@@ -58,14 +76,17 @@ input[type="file"] {
     cursor: pointer;
     transition: transform 0.3s;
 }
+
 .home-button img {
     width: 40px;
     height: 40px;
     transition: transform 0.3s, background-color 0.3s;
 }
+
 .home-button:hover img {
     transform: scale(1.05);
 }
+
 .home-button:active img {
     transform: scale(0.95);
 }
@@ -74,22 +95,11 @@ input[type="file"] {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    margin-top: auto; /* Empurra o footer para o final */
 }
 
 .footer img {
     height: 100px;
-    position: fixed;
-    top: 450px;
-    left: fixend;
-}
-
-.home-button {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.3s;
+    max-width: 100%; /* Garante que a imagem não exceda a largura do container */
+    margin-top: 20px;
 }
