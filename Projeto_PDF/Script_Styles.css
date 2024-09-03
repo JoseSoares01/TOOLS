@@ -81,7 +81,7 @@ input[type="file"] {
     height: 100px;
     position: fixed;
     top: 450px;
-    left: px;
+    left: fixend;
 }
 
 .home-button {
