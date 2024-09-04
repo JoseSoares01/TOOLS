@@ -4,12 +4,16 @@ const botaoExportar = document.getElementById('exportar-pdf');
 const botaoSeparar = document.getElementById('separar-pdf');
 let arquivosPdf = [];
 
+// Desativa o botão de exportação por padrão
+botaoExportar.disabled = true;
+
 entradaPdf.addEventListener('change', (evento) => {
     const arquivos = Array.from(evento.target.files);
     arquivos.forEach(arquivo => {
         arquivosPdf.push(arquivo);
         renderizarListaPdfs();
     });
+    verificarBotaoExportar(); // Verifica se o botão deve ser ativado
 });
 
 function moverParaCima(arquivo) {
@@ -31,6 +35,7 @@ function moverParaBaixo(arquivo) {
 function removerArquivo(arquivo) {
     arquivosPdf = arquivosPdf.filter(f => f !== arquivo);
     renderizarListaPdfs();
+    verificarBotaoExportar(); // Verifica se o botão deve ser desativado
 }
 
 function renderizarListaPdfs() {
@@ -59,7 +64,21 @@ function renderizarListaPdfs() {
     });
 }
 
+function verificarBotaoExportar() {
+    // Ativa ou desativa o botão de exportar com base na quantidade de PDFs selecionados
+    if (arquivosPdf.length === 0) {
+        botaoExportar.disabled = true;
+    } else {
+        botaoExportar.disabled = false;
+    }
+}
+
 async function mesclarPDFs() {
+    if (arquivosPdf.length === 0) {
+        alert('Nenhum PDF selecionado para mesclar!');
+        return;
+    }
+
     const pdfMesclado = await PDFLib.PDFDocument.create();
     for (const arquivo of arquivosPdf) {
         const arrayBuffer = await arquivo.arrayBuffer();
@@ -72,6 +91,11 @@ async function mesclarPDFs() {
 }
 
 async function separarPDFs() {
+    if (arquivosPdf.length === 0) {
+        alert('Nenhum PDF selecionado para separar!');
+        return;
+    }
+
     for (const arquivo of arquivosPdf) {
         const arrayBuffer = await arquivo.arrayBuffer();
         const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
