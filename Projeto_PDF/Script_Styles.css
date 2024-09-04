@@ -101,5 +101,5 @@ input[type="file"] {
 .footer img {
     height: 100px;
     max-width: 100%; /* Garante que a imagem não exceda a largura do container */
-    margin-top: 20px;
+    margin-top: 15px;
 }
