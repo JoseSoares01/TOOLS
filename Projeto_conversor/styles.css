@@ -1,0 +1,65 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: radial-gradient(circle at center center, black, #1162ac);
+    color: white;
+    text-align: center;
+}
+
+.imagem-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+.imagem-item span {
+    margin-left: 10px;
+    flex-grow: 1;
+}
+
+.lista-imagens {
+    margin-top: 30px;
+}
+
+button {
+    margin-top: 30px;
+    margin-left: 10px;
+    padding: 15px;
+    font-size: 16px;
+    background-color: #1162ac;
+    color: white;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+button:hover {
+    background-color: #0e4f87;
+}
+
+input[type="file"] {
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    margin-bottom: 30px;
+}
+
+.imagem-item button {
+    padding: 5px 10px;
+    margin-left: 5px;
+    border-radius: 8px;
+}
+
+.imagem-item button:hover {
+    background-color: #0e4f87;
+}
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
