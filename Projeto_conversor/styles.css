@@ -63,3 +63,13 @@ input[type="file"] {
     align-items: center;
     margin-top: 20px;
 }
+
+.imagem-item button {
+    padding: 5px 10px;
+    margin-left: 5px;
+    border-radius: 8px;
+}
+
+.imagem-item button:hover {
+    background-color: #0e4f87;
+}
