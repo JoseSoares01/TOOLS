@@ -74,7 +74,7 @@ function verificarBotaoExportar() {
 
 async function converterImagensParaPDF() {
     if (arquivosImagens.length === 0) {
-        alert('Nenhuma imagem selecionada para converter!');
+        alert('Nenhuma imagem selecionada!');
         return;
     }
 
