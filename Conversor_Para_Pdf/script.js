@@ -12,39 +12,52 @@ async function processPDF() {
     const page = await pdfDoc.getPage(0);
     const { width, height } = page.getSize();
 
+    // Criar canvas para renderizar a página
     const canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
     const context = canvas.getContext('2d');
 
-    // Exemplo fictício de renderização da página em um canvas
-    // Aqui a lógica de renderização do PDF deve ser adicionada.
+    // Renderizar a página em um canvas (aqui você deve implementar a renderização do PDF na página)
+    // Aqui, usa-se uma abordagem fictícia. Use bibliotecas como PDF.js para isso.
 
+    // Exemplo de imagem do canvas fictício
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
     // Detectar QR codes
     const qrCode1 = jsQR(imageData.data, canvas.width, canvas.height);
-    if (qrCode1) {
-        console.log('QR Code 1 encontrado: ', qrCode1.data);
-    } else {
-        console.log('QR Code 1 não encontrado.');
+    const qrCode2 = jsQR(imageData.data, canvas.width, canvas.height, { inversionAttempts: 'dontInvert' });
+
+    if (!qrCode1 || !qrCode2) {
+        alert('Não foi possível detectar os QR codes.');
+        return;
     }
 
-    if (qrCode1) {
-        await createNewPDF(pdfDoc, qrCode1.data, 'qr1.pdf');
-    }
+    console.log('QR Code 1 encontrado:', qrCode1.data);
+    console.log('QR Code 2 encontrado:', qrCode2.data);
 
-    const qrCode2 = jsQR(imageData.data, canvas.width, canvas.height);
-    if (qrCode2) {
-        await createNewPDF(pdfDoc, qrCode2.data, 'qr2.pdf');
-    }
+    // Criar PDFs separados com os QR codes removidos
+    await createPDFWithRemovedQRCode(pdfDoc, qrCode1, 'qr1_removed.pdf');
+    await createPDFWithRemovedQRCode(pdfDoc, qrCode2, 'qr2_removed.pdf');
 }
 
-async function createNewPDF(pdfDoc, qrData, fileName) {
+async function createPDFWithRemovedQRCode(pdfDoc, qrCodeToRemove, fileName) {
     const newPdf = await PDFLib.PDFDocument.create();
     const [copiedPage] = await newPdf.copyPages(pdfDoc, [0]);
+    const page = copiedPage;
 
-    newPdf.addPage(copiedPage);
+    const { x, y, width, height } = qrCodeToRemove.location.topLeftCorner;
+
+    // Remover a área do QR code do PDF (desenhar um retângulo branco para "apagar")
+    page.drawRectangle({
+        x: x - 10, // Pequena margem para garantir que o QR code seja coberto
+        y: y - 10,
+        width: width + 20,
+        height: height + 20,
+        color: PDFLib.rgb(1, 1, 1), // Cor branca
+    });
+
+    newPdf.addPage(page);
 
     const pdfBytes = await newPdf.save();
     download(pdfBytes, fileName, 'application/pdf');
