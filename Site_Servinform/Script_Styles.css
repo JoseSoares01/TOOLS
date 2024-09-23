@@ -4,21 +4,18 @@
 
 /* Define estilos globais para o corpo do documento */
 
-
-/* Define estilos globais para o corpo do documento */
-
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3)), /* Esfumado preto */
-    url('/Site_Servinform/thumb-1920-438132.jpg');
-    /* Caminho para sua imagem de fundo */
+    url('/mnt/data/thumb-1920-438132.jpg');
+    /* Caminho da sua imagem de fundo */
     background-size: cover;
     /* Ajusta a imagem para cobrir toda a tela */
     background-position: center;
     /* Centraliza a imagem */
     background-repeat: no-repeat;
-    /* Evita a repetição da imagem */
+    /* Evita repetição da imagem */
     color: #ffffff;
 }
 
