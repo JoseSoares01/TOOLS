@@ -4,7 +4,7 @@ body {
     font-family: Arial, sans-serif;
     background: 
         linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), /* Fundo preto */
-        url('/Site_Servinform/data/thumb-1920-438132.jpg') no-repeat center top; /* Imagem centralizada no topo */
+        url('/Site_Servinform/thumb-1920-438132.jpg') no-repeat center top; /* Imagem centralizada no topo */
     background-size: contain; /* Mantém a imagem centralizada e ajusta conforme o tamanho da tela */
     background-attachment: fixed; /* Mantém a imagem fixa no topo ao rolar a página */
     color: #ffffff;
