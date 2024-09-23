@@ -1,15 +1,30 @@
 /* Importa uma fonte externa */
+
 @import url('https://fonts.googleapis.com/css?family=Lato:100&display=swap');
 
 /* Define estilos globais para o corpo do documento */
+
+
+/* Define estilos globais para o corpo do documento */
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(to top, #02202B, #017AB1);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3)), /* Esfumado preto */
+    url('/Site_Servinform/thumb-1920-438132.jpg');
+    /* Caminho para sua imagem de fundo */
+    background-size: cover;
+    /* Ajusta a imagem para cobrir toda a tela */
+    background-position: center;
+    /* Centraliza a imagem */
+    background-repeat: no-repeat;
+    /* Evita a repetição da imagem */
     color: #ffffff;
 }
 
+
 /* Estilos para o cabeçalho */
+
 header {
     display: flex;
     justify-content: space-between;
@@ -17,7 +32,9 @@ header {
     padding: 25px;
 }
 
+
 /* Estilos para o logo */
+
 .home-button {
     display: flex;
     align-items: center;
@@ -28,7 +45,9 @@ header {
     margin-right: 40px;
 }
 
+
 /* Estilos para a navegação principal */
+
 nav ul {
     list-style-type: none;
     margin: 0;
@@ -51,7 +70,9 @@ nav ul li a {
     z-index: 1;
 }
 
+
 /* Animação para o hover dos links */
+
 nav ul li a:before,
 nav ul li a:after {
     content: "";
@@ -89,16 +110,21 @@ nav ul li a:hover {
     background: #4F95DA;
 }
 
+
 /* Estilo para o link de agendamento */
+
 nav ul li a.appointment {
     border: 1px solid #ffffff;
     padding: 5px 10px;
     border-radius: 5px;
 }
 
+
 /* Adiciona estilo para o submenu dropdown */
+
 nav ul li ul.dropdown {
-    display: none; /* Oculta o dropdown por padrão */
+    display: none;
+    /* Oculta o dropdown por padrão */
     position: absolute;
     background-color: #20272e;
     list-style-type: none;
@@ -108,7 +134,9 @@ nav ul li ul.dropdown {
     z-index: 1;
 }
 
+
 /* Estilo para itens do submenu */
+
 nav ul li ul.dropdown li {
     width: 100%;
 }
@@ -119,17 +147,23 @@ nav ul li ul.dropdown li a {
     color: #ffffff;
     text-decoration: none;
     font-weight: bold;
-    border: 1px solid #91C9FF; /* Adiciona borda como nos outros itens */
-    transition: background-color 0.5s, border-color 0.5s; /* Animações de transição */
+    border: 1px solid #91C9FF;
+    /* Adiciona borda como nos outros itens */
+    transition: background-color 0.5s, border-color 0.5s;
+    /* Animações de transição */
 }
 
+
 /* Estilo de hover para itens do submenu */
+
 nav ul li ul.dropdown li a:hover {
     background-color: #4F95DA;
     border-color: #4F95DA;
 }
 
+
 /* Mostra o dropdown ao passar o mouse sobre o item pai */
+
 nav ul li:hover ul.dropdown {
     display: block;
 }
@@ -137,10 +171,12 @@ nav ul li:hover ul.dropdown {
 .image-content {
     position: absolute;
     top: 0;
-    right: 0; /* ou left: 0 para colocar na esquerda */
+    right: 0;
+    /* ou left: 0 para colocar na esquerda */
     height: 100vh;
-    width: 20vw; /* ajuste a largura conforme necessário */
+    width: 20vw;
+    /* ajuste a largura conforme necessário */
     background-image: url('/Site_Servinform/nova-imagem.png');
     background-size: cover;
     background-position: center;
-  }
+}
