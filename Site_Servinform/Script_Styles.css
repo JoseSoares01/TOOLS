@@ -4,11 +4,11 @@ body {
     font-family: Arial, sans-serif;
     background: 
         linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), /* Fundo preto */
-        url('/Site_Servinform/thumb-1920-438132.jpg') no-repeat center top; /* Imagem centralizada no topo */
+        url('/Site_Servinform/data/thumb-1920-438132.jpg') no-repeat center top; /* Imagem centralizada no topo */
     background-size: contain; /* Mantém a imagem centralizada e ajusta conforme o tamanho da tela */
     background-attachment: fixed; /* Mantém a imagem fixa no topo ao rolar a página */
     color: #ffffff;
-    height: 100%; /* Garante que a altura seja ajustada */
+    height: 100%;
 }
 
 /* Define estilos para garantir que o conteúdo ocupe a tela corretamente */
@@ -24,7 +24,7 @@ header {
     padding: 20px;
     background-color: rgba(0, 0, 0, 0.8); /* Fundo semi-transparente no cabeçalho */
     position: relative;
-    z-index: 10; /* Certifica-se de que o cabeçalho fique sobre a imagem */
+    z-index: 10;
 }
 
 /* Estilos para o conteúdo principal */
@@ -41,7 +41,39 @@ main {
     display: block;
 }
 
-/* Ajustes para smartphones */
+/* Botões de navegação */
+.nav-buttons button {
+    background-color: #017AB1;
+    border: none;
+    color: white;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.nav-buttons button:hover {
+    background-color: #005f8d;
+}
+
+/* Ajustes para a navegação */
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.navigation span {
+    font-size: 16px;
+    color: white;
+}
+
+/* Responsividade para smartphones */
 @media (max-width: 767px) {
     header {
         flex-direction: column;
@@ -64,9 +96,19 @@ main {
     main {
         padding: 10px;
     }
+
+    .nav-buttons button {
+        width: 100%; /* Os botões ocupam toda a largura */
+        margin: 10px 0;
+    }
+
+    .navigation {
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
-/* Ajustes para tablets */
+/* Responsividade para tablets */
 @media (min-width: 768px) and (max-width: 1024px) {
     header {
         padding: 15px;
@@ -83,9 +125,14 @@ main {
     main {
         padding: 15px;
     }
+
+    .nav-buttons button {
+        padding: 12px 25px;
+        font-size: 14px;
+    }
 }
 
-/* Ajustes para PCs */
+/* Estilos para PCs */
 @media (min-width: 1025px) {
     header {
         padding: 25px;
@@ -101,5 +148,15 @@ main {
 
     main {
         padding: 25px;
+    }
+
+    .nav-buttons button {
+        padding: 15px 30px;
+        font-size: 16px;
+    }
+
+    .navigation {
+        flex-direction: row;
+        justify-content: space-between;
     }
 }
