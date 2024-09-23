@@ -1,51 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Define o conjunto de caracteres do documento -->
     <meta charset="UTF-8">
-    <!-- Define a configuração da viewport para responsividade -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Define o título da página -->
-    <title>GridGum</title>
-    <!-- Link para o arquivo de estilos CSS -->
-    <link rel="stylesheet" href="/Site_Servinform/Script_Styles.css">
+    <title>GridGum com Lavalamp</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Cabeçalho da página -->
     <header>
-        <!-- Logo da empresa -->
+        <!-- Logo e Navegação com Lavalamp CSS Menu -->
         <div class="home-button">
             <a href="/index.html" class="home-button"><img src="/Site_Servinform/home-button.png" alt="Home"></a>
             <span></span>
         </div>
-        <!-- Navegação principal do site -->
         <nav>
-            <ul>
-                <li><a href="#">HOME</a></li>
-                <li><a href="#">SOBRE NÓS</a></li>
-                <li><a href="#">AGENDA</a></li>
-                <li><a href="#">BLOG</a></li>
-                <li><a href="#">CONTACTOS</a></li>
-        <!-- Item de menu com dropdown -->
-                 <li>
-                    <a href="#" class="tools" data-translate="tools">FERRAMENTAS</a>
-        <!-- Submenu dropdown -->
-            <ul class="dropdown">
-                <li><a href="#">Trivalor</a></li>
-                <li><a href="#">Millenniun</a></li>
-
-            </ul>
-            
+            <a href="#" class="menu-link" data-translate="HOME">Home</a>
+            <a href="#" class="menu-link" data-translate="ABOUT_US">Sobre Nós</a>
+            <a href="#" class="menu-link" data-translate="SERVICES">Serviços</a>
+            <a href="#" class="menu-link" data-translate="BLOG">Blog</a>
+            <a href="#" class="menu-link" data-translate="CONTACT">Contatos</a>
+            <div class="animation start-home"></div>
         </nav>
-        <!-- Botão para alternar o idioma -->
-        <button id="languageToggle">PT/EN</button>
     </header>
+
     <!-- Conteúdo principal da página -->
     <main>
-        <!-- Seção de destaque/hero -->
+        <!-- Seção hero com a imagem centralizada -->
         <section class="hero">
             <div class="text-content">
-                <p>Pagina Principal</p>
+                <p>Página Principal</p>
                 <h1>Servinform PT</h1>
                 <p>Em breve teremos um Web Site com todo o Conteúdo. Suporte Servinform</p>
             </div>
@@ -53,29 +37,29 @@
                 <img src="/Site_Servinform/Logo-Lateral.png" alt="logo-lateral">
             </div>
         </section>
-        <!-- Navegação secundária -->
+
+        <!-- Navegação secundária com os botões Voltar e Próximo -->
         <div class="navigation">
             <span>28/07/2024</span>
             <div class="nav-buttons">
-                <!-- Botão com ID colorToggle para alternar a cor de fundo -->
                 <button id="colorToggle">Voltar</button>
-                <button>Proximo</button>
+                <button>Próximo</button>
             </div>
         </div>
     </main>
+
     <!-- Rodapé da página -->
     <footer>
-        <!-- Links para redes sociais -->
         <div class="social-links">
             <a href="#">FB</a>
             <a href="#">TW</a>
             <a href="#">G+</a>
             <a href="#">P</a>
         </div>
-        <!-- Texto fixo no rodapé -->
-        <p1>&copy; 2024 Servinform PT</p1>
+        <p>&copy; 2024 Servinform PT</p>
     </footer>
-    <!-- Inclusão do script JavaScript -->
+
+    <!-- Script para alternar cor e idioma -->
     <script src="/Site_Servinform/Script_Functions.js"></script>
 </body>
 </html>
