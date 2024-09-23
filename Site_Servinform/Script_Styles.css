@@ -1,191 +1,105 @@
-/* Importa uma fonte externa */
-
-@import url('https://fonts.googleapis.com/css?family=Lato:100&display=swap');
-
 /* Define estilos globais para o corpo do documento */
-
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3)), /* Esfumado preto */
-    url('/Site_Servinform/thumb-1920-438132.jpg');
-    /* Caminho da sua imagem de fundo */
-    background-size: cover;
-    /* Ajusta a imagem para cobrir toda a tela */
-    background-position: center;
-    /* Centraliza a imagem */
-    background-repeat: no-repeat;
-    /* Evita repetição da imagem */
+    background: 
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), /* Fundo preto */
+        url('/Site_Servinform/thumb-1920-438132.jpg') no-repeat center top; /* Imagem centralizada no topo */
+    background-size: contain; /* Mantém a imagem centralizada e ajusta conforme o tamanho da tela */
+    background-attachment: fixed; /* Mantém a imagem fixa no topo ao rolar a página */
     color: #ffffff;
+    height: 100%; /* Garante que a altura seja ajustada */
 }
 
+/* Define estilos para garantir que o conteúdo ocupe a tela corretamente */
+html, body {
+    min-height: 100%;
+}
 
 /* Estilos para o cabeçalho */
-
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 25px;
-}
-
-
-/* Estilos para o logo */
-
-.home-button {
-    display: flex;
-    align-items: center;
-}
-
-.home-button img {
-    height: 40px;
-    margin-right: 40px;
-}
-
-
-/* Estilos para a navegação principal */
-
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    gap: 20px;
-}
-
-nav ul li {
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.8); /* Fundo semi-transparente no cabeçalho */
     position: relative;
+    z-index: 10; /* Certifica-se de que o cabeçalho fique sobre a imagem */
 }
 
-nav ul li a {
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: bold;
-    display: block;
-    padding: 10px;
-    position: relative;
-    z-index: 1;
+/* Estilos para o conteúdo principal */
+main {
+    padding: 20px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), #017AB1); /* Degradê preto para azul */
+    flex-grow: 1;
 }
 
-
-/* Animação para o hover dos links */
-
-nav ul li a:before,
-nav ul li a:after {
-    content: "";
-    position: absolute;
-    border: 1px solid #91C9FF;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    transition: all 0.5s;
-    z-index: -1;
-}
-
-nav ul li a:before {
-    transform: scaleX(0);
-    transform-origin: left;
-}
-
-nav ul li a:after {
-    transform: scaleY(0);
-    transform-origin: top;
-}
-
-nav ul li a:hover:before {
-    transform: scaleX(1);
-    transform-origin: right;
-}
-
-nav ul li a:hover:after {
-    transform: scaleY(1);
-    transform-origin: bottom;
-}
-
-nav ul li a:hover {
-    background: #4F95DA;
-}
-
-
-/* Estilo para o link de agendamento */
-
-nav ul li a.appointment {
-    border: 1px solid #ffffff;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
-
-/* Adiciona estilo para o submenu dropdown */
-
-nav ul li ul.dropdown {
-    display: none;
-    /* Oculta o dropdown por padrão */
-    position: absolute;
-    background-color: #20272e;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-}
-
-
-/* Estilo para itens do submenu */
-
-nav ul li ul.dropdown li {
-    width: 100%;
-}
-
-nav ul li ul.dropdown li a {
-    padding: 10px;
-    display: block;
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: bold;
-    border: 1px solid #91C9FF;
-    /* Adiciona borda como nos outros itens */
-    transition: background-color 0.5s, border-color 0.5s;
-    /* Animações de transição */
-}
-
-
-/* Estilo de hover para itens do submenu */
-
-nav ul li ul.dropdown li a:hover {
-    background-color: #4F95DA;
-    border-color: #4F95DA;
-}
-
-
-/* Mostra o dropdown ao passar o mouse sobre o item pai */
-
-nav ul li:hover ul.dropdown {
+/* Torna a imagem lateral responsiva */
+.image-content img {
+    max-width: 100%;
+    height: auto;
     display: block;
 }
 
-.image-content {
-    position: absolute;
-    top: 0;
-    right: 0;
-    /* ou left: 0 para colocar na esquerda */
-    height: 100vh;
-    width: 20vw;
-    /* ajuste a largura conforme necessário */
-    background-image: url('/Site_Servinform/nova-imagem.png');
-    background-size: cover;
-    background-position: center;
+/* Ajustes para smartphones */
+@media (max-width: 767px) {
+    header {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .home-button img {
+        height: 30px; /* Reduz o tamanho do logo em dispositivos móveis */
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    nav ul li a {
+        padding: 8px;
+    }
+
+    main {
+        padding: 10px;
+    }
 }
 
+/* Ajustes para tablets */
+@media (min-width: 768px) and (max-width: 1024px) {
+    header {
+        padding: 15px;
+    }
 
-/* Classe que adiciona o efeito ao fundo, mantendo a imagem */
+    .home-button img {
+        height: 35px;
+    }
 
-.blue-bg {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3)), url('/Site_Servinform/thumb-1920-438132.jpg');
-    /* Caminho da imagem */
-    background-size: cover;
-    /* Garante que a imagem cubra a tela */
-    background-position: center;
-    background-repeat: no-repeat;
+    nav ul {
+        gap: 15px;
+    }
+
+    main {
+        padding: 15px;
+    }
+}
+
+/* Ajustes para PCs */
+@media (min-width: 1025px) {
+    header {
+        padding: 25px;
+    }
+
+    .home-button img {
+        height: 40px;
+    }
+
+    nav ul {
+        gap: 20px;
+    }
+
+    main {
+        padding: 25px;
+    }
 }
