@@ -1,162 +1,161 @@
-/* Define estilos globais para o corpo do documento */
+/* Estilos Globais */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: 
-        linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), /* Fundo preto */
-        url('/Site_Servinform/thumb-1920-438132.jpg') no-repeat center top; /* Imagem centralizada no topo */
-    background-size: contain; /* Mantém a imagem centralizada e ajusta conforme o tamanho da tela */
-    background-attachment: fixed; /* Mantém a imagem fixa no topo ao rolar a página */
+    background: linear-gradient(to bottom, #000000, #0f1c26); /* Gradiente preto mais sutil */
     color: #ffffff;
-    height: 100%;
 }
 
-/* Define estilos para garantir que o conteúdo ocupe a tela corretamente */
-html, body {
-    min-height: 100%;
-}
-
-/* Estilos para o cabeçalho */
+/* Cabeçalho e Menu Lavalamp */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    background-color: rgba(0, 0, 0, 0.8); /* Fundo semi-transparente no cabeçalho */
+}
+
+nav {
     position: relative;
-    z-index: 10;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 
-/* Estilos para o conteúdo principal */
-main {
-    padding: 20px;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), #017AB1); /* Degradê preto para azul */
-    flex-grow: 1;
-}
-
-/* Torna a imagem lateral responsiva */
-.image-content img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Botões de navegação */
-.nav-buttons button {
-    background-color: #017AB1;
-    border: none;
-    color: white;
-    padding: 15px 30px;
-    text-align: center;
+nav a {
+    position: relative;
+    padding: 10px 15px;
     text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 10px 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-weight: bold;
+    color: #ffffff;
+    transition: color 0.3s ease;
 }
 
-.nav-buttons button:hover {
-    background-color: #005f8d;
+nav a:hover {
+    color: #e67e22;
 }
 
-/* Ajustes para a navegação */
+nav .animation {
+    position: absolute;
+    bottom: 0;
+    height: 4px;
+    background-color: #e67e22;
+    transition: 0.5s;
+}
+
+nav .start-home {
+    width: 120px;
+    left: 0px;
+}
+
+nav a:nth-child(2):hover ~ .animation {
+    width: 130px;
+    left: 150px;
+}
+
+nav a:nth-child(3):hover ~ .animation {
+    width: 110px;
+    left: 290px;
+}
+
+nav a:nth-child(4):hover ~ .animation {
+    width: 140px;
+    left: 420px;
+}
+
+nav a:nth-child(5):hover ~ .animation {
+    width: 120px;
+    left: 570px;
+}
+
+/* Responsividade para o Menu */
+@media (max-width: 768px) {
+    nav a {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+
+    nav .animation {
+        height: 3px;
+    }
+}
+
+/* Estilos para a seção hero com a imagem centralizada */
+.hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 70vh;
+    background: url('/Site_Servinform/your-image.jpg') center/cover no-repeat, linear-gradient(to bottom, #000000, transparent 50%);
+}
+
+.text-content h1 {
+    font-size: 2rem;
+}
+
+.text-content p {
+    font-size: 1.2rem;
+}
+
+/* Botões de navegação secundária */
 .navigation {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     padding: 20px;
 }
 
-.navigation span {
+.nav-buttons button {
+    padding: 10px 20px;
     font-size: 16px;
-    color: white;
+    background-color: #e67e22;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-/* Responsividade para smartphones */
-@media (max-width: 767px) {
-    header {
-        flex-direction: column;
-        padding: 10px;
-    }
-
-    .home-button img {
-        height: 30px; /* Reduz o tamanho do logo em dispositivos móveis */
-    }
-
-    nav ul {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    nav ul li a {
-        padding: 8px;
-    }
-
-    main {
-        padding: 10px;
-    }
-
-    .nav-buttons button {
-        width: 100%; /* Os botões ocupam toda a largura */
-        margin: 10px 0;
-    }
-
-    .navigation {
-        flex-direction: column;
-        align-items: center;
-    }
+.nav-buttons button:hover {
+    background-color: #d35400;
 }
 
-/* Responsividade para tablets */
-@media (min-width: 768px) and (max-width: 1024px) {
-    header {
-        padding: 15px;
+/* Estilos para o rodapé */
+footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #0f1c26;
+}
+
+.social-links a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+footer p {
+    font-size: 14px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    header, .hero, .navigation, footer {
+        flex-direction: column;
+        text-align: center;
     }
 
-    .home-button img {
-        height: 35px;
-    }
-
-    nav ul {
-        gap: 15px;
-    }
-
-    main {
-        padding: 15px;
-    }
-
-    .nav-buttons button {
-        padding: 12px 25px;
+    nav a {
         font-size: 14px;
     }
-}
 
-/* Estilos para PCs */
-@media (min-width: 1025px) {
-    header {
-        padding: 25px;
+    .hero .text-content h1 {
+        font-size: 1.5rem;
     }
 
-    .home-button img {
-        height: 40px;
-    }
-
-    nav ul {
-        gap: 20px;
-    }
-
-    main {
-        padding: 25px;
+    .hero .text-content p {
+        font-size: 1rem;
     }
 
     .nav-buttons button {
-        padding: 15px 30px;
-        font-size: 16px;
-    }
-
-    .navigation {
-        flex-direction: row;
-        justify-content: space-between;
+        font-size: 14px;
     }
 }
