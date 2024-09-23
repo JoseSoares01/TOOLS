@@ -177,3 +177,15 @@ nav ul li:hover ul.dropdown {
     background-size: cover;
     background-position: center;
 }
+
+
+/* Classe que adiciona o efeito ao fundo, mantendo a imagem */
+
+.blue-bg {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3)), url('/mnt/data/thumb-1920-438132.jpg');
+    /* Caminho da imagem */
+    background-size: cover;
+    /* Garante que a imagem cubra a tela */
+    background-position: center;
+    background-repeat: no-repeat;
+}
