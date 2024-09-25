@@ -118,3 +118,21 @@ function generateQRCode() {
         document.getElementById('qr_data').value = dados_qr_code;
     });
 }
+// Código do botão de copiar
+document.getElementById("copyButton").addEventListener("click", function() {
+    const qrText = document.getElementById("qr_data").value;
+    navigator.clipboard.writeText(qrText).then(() => {
+        alert("Texto copiado com sucesso!");
+        
+        // Adiciona a classe .active para mostrar o feedback visual
+        const copyButton = document.querySelector(".copy-text");
+        copyButton.classList.add("active");
+
+        // Remove a classe .active após um tempo para ocultar o feedback
+        setTimeout(() => {
+            copyButton.classList.remove("active");
+        }, 2000);
+    }).catch(err => {
+        console.error("Erro ao copiar o texto: ", err);
+    });
+});

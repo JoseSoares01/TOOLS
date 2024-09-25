@@ -101,3 +101,46 @@ textarea {
 .home-button:active img {
     transform: scale(0.95);
 }
+
+.copy-text button {
+    padding: 5px;
+    background: #2587ad;
+    color: #fff;
+    border-radius: 18px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    display: inline-block; /* Usar valores válidos para display */
+}
+
+.copy-text button:active {
+    background: #809ce2; /* Removeu o espaço extra */
+}
+
+.copy-text button:before {
+    content: "Copied"; /* Texto ao clicar */
+    position: absolute; /* Corrigido de 'abosolute' para 'absolute' */
+    top: -50px;
+    right: 0;
+    background: #5c81dc;
+    padding: 8px 10px;
+    font-size: 15px;
+    display: none; /* Inicialmente não exibido */
+}
+
+.copy-text button:after {
+    content: "";
+    position: absolute;
+    top: -20px;
+    right: 25px;
+    width: 10px;
+    height: 10px;
+    background: #5c81dc;
+    transform: rotate(45deg);
+    display: none; /* Inicialmente não exibido */
+}
+
+.copy-text.active button:before,
+.copy-text.active button:after {
+    display: block; /* Exibir o conteúdo quando a classe active estiver presente */
+}
