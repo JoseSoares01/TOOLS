@@ -103,44 +103,23 @@ textarea {
 }
 
 .copy-text button {
-    padding: 5px;
-    background: #2587ad;
-    color: #fff;
-    border-radius: 18px;
+    
+    display: inline-block;
+    outline: 0;
     cursor: pointer;
-    border: none;
-    outline: none;
-    display: inline-block; /* Usar valores válidos para display */
-}
-
-.copy-text button:active {
-    background: #809ce2; /* Removeu o espaço extra */
-}
-
-.copy-text button:before {
-    content: "Copied"; /* Texto ao clicar */
-    position: absolute; /* Corrigido de 'abosolute' para 'absolute' */
-    top: -50px;
-    right: 0;
-    background: #5c81dc;
-    padding: 8px 10px;
-    font-size: 15px;
-    display: none; /* Inicialmente não exibido */
-}
-
-.copy-text button:after {
-    content: "";
-    position: absolute;
-    top: -20px;
-    right: 25px;
-    width: 10px;
-    height: 10px;
-    background: #5c81dc;
-    transform: rotate(45deg);
-    display: none; /* Inicialmente não exibido */
-}
-
-.copy-text.active button:before,
-.copy-text.active button:after {
-    display: block; /* Exibir o conteúdo quando a classe active estiver presente */
+    border-radius: 16px;
+    box-shadow: 0 2px 5px 0 rgba(5, 17, 17, 0.5);
+    background: #337fae;
+    border: 1px solid #f8faf9;
+    font-size: 11px;
+    height: 20px;
+    padding: 1px;
+    text-align: center;
+    font-weight: 500;
+    color: #e8efef;
+    :hover{
+        background: #b6c2c7;
+        border-color: #3c97b7;
+        box-shadow: 0 2px 5px 0 rgba(162, 189, 194, 0.967);
+    }
 }
