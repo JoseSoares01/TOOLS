@@ -28,14 +28,18 @@
     <div class="qr-code" id="qrcode"></div>
     <textarea id="qr_data" readonly></textarea>
    <!-- Botão para copiar o conteúdo do textarea -->
-<div class="copy-text">
-    <button id="copyButton"><i class="fa fa-clone"></i> Copiar Código</button>
-</div>
+   <button type="button" class="copy" data-copy="#qr_data" disabled>
+    <ion-icon name="copy-outline" class="copy-icon"></ion-icon>
+    <span class="copy-label">Copy</span>
+</button>
 
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</div>
     <div class="footer">
         <img src="imagen.png" alt="Logo">
     </div>
-
     <script src="/Projeto_Trivalor/Js_Script_Trivalor.Js"></script>
+
 </body>
 </html>

@@ -102,24 +102,25 @@ textarea {
     transform: scale(0.95);
 }
 
-.copy-text button {
-    
-    display: inline-block;
-    outline: 0;
+.copy {
+    background-color: #3890b6;
+    color: #fff;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    gap: 8px;
+    border: none;
+    outline: none;
     cursor: pointer;
-    border-radius: 16px;
-    box-shadow: 0 2px 5px 0 rgba(5, 17, 17, 0.5);
-    background: #337fae;
-    border: 1px solid #f8faf9;
-    font-size: 11px;
-    height: 20px;
-    padding: 1px;
-    text-align: center;
-    font-weight: 500;
-    color: #e8efef;
-    :hover{
-        background: #b6c2c7;
-        border-color: #3c97b7;
-        box-shadow: 0 2px 5px 0 rgba(162, 189, 194, 0.967);
-    }
+}
+
+.copy:active {
+    background: #9aa758;
+}
+
+.copy:disabled {
+    background: #2678a0;
+    color: #ffffff;
+    cursor: not-allowed;
 }
