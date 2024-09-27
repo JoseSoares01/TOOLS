@@ -84,6 +84,7 @@ textarea {
 .footer img {
     height: 50px;
 }
+
 .footer p {
     margin: 10px 0 0;
     font-size: 1.2rem;
@@ -92,7 +93,8 @@ textarea {
 }
 
 @media (max-width: 600px) {
-    input, button {
+    input,
+    button {
         flex: 1 1 100%;
     }
 }
@@ -124,7 +126,7 @@ textarea {
 .copy {
     background-color: #3890b6;
     color: #fff;
-    border-radius: 6px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     padding: 8px 12px;
