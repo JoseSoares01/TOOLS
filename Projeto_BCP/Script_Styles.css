@@ -22,7 +22,9 @@ body {
     max-width: 800px;
 }
 
-input, button, select {
+input,
+button,
+select {
     padding: 5px;
     font-size: 1rem;
     border: none;
@@ -36,10 +38,14 @@ button {
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;
-    width: 200px; /* Largura do botão */
-    height: 50px; /* Altura do botão */
-    font-size: 1rem; /* Tamanho da fonte */
-    padding: 10px; /* Espaçamento interno do botão */
+    width: 200px;
+    /* Largura do botão */
+    height: 50px;
+    /* Altura do botão */
+    font-size: 1rem;
+    /* Tamanho da fonte */
+    padding: 10px;
+    /* Espaçamento interno do botão */
     border-radius: 50px;
     border: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -101,4 +107,27 @@ textarea {
 
 .home-button:active img {
     transform: scale(0.95);
+}
+
+.copy {
+    background-color: #3890b6;
+    color: #fff;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    gap: 8px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.copy:active {
+    background: #9aa758;
+}
+
+.copy:disabled {
+    background: #2678a0;
+    color: #ffffff;
+    cursor: not-allowed;
 }

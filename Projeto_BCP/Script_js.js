@@ -100,9 +100,9 @@ function generateQRCode() {
     const total_fatura = parseFloat(base_isenta === '*' ? 0 : base_isenta) + base_reduzida + base_intermedia + base_normal + total_impostos - irs;
 
     const dados_qr_code = `A:${nif_vendedor}*B:${nif_empresa}*C:${pais}*D:${tipologia}*E:N*F:${data}*G:${numero_fatura}*H:*I1:${espaco_fiscal}*I2:${base_isenta}*I3:${base_reduzida.toFixed(2)}*I4:${iva_reduzida.toFixed(4)}*I5:${base_intermedia.toFixed(2)}*I6:${iva_intermedia.toFixed(4)}*I7:${base_normal.toFixed(2)}*I8:${iva_normal.toFixed(4)}*N:${total_impostos.toFixed(4)}*O:${total_fatura.toFixed(4)}*P:${irs.toFixed(2)}*Q:*R:*`
-    .replace(/\s+/g, ' ').trim();
+        .replace(/\s+/g, ' ').trim();
 
-    QRCode.toDataURL(dados_qr_code, { errorCorrectionLevel: 'M' }, function (err, url) {
+    QRCode.toDataURL(dados_qr_code, { errorCorrectionLevel: 'M' }, function(err, url) {
         if (err) {
             console.error(err);
             return;
@@ -114,3 +114,23 @@ function generateQRCode() {
         document.getElementById('qr_data').value = dados_qr_code;
     });
 }
+// TEXTO do botão de copiar
+document.querySelectorAll(".copy").forEach(copyButton => {
+    copyButton.addEventListener("click", () => {
+        const targetElement = document.querySelector(copyButton.dataset.copy);
+        const textToCopy = targetElement.value.trim(); // Usa `.value` para `textarea`
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            const label = copyButton.querySelector(".copy-label");
+            const originalText = label.textContent;
+
+            copyButton.disabled = true;
+            label.textContent = "Copied!";
+
+            setTimeout(() => {
+                copyButton.disabled = false;
+                label.textContent = originalText;
+            }, 1000);
+        });
+    });
+});
