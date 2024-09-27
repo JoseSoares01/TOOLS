@@ -11,6 +11,7 @@ body {
     padding: 10px;
     box-sizing: border-box;
 }
+
 .input-group {
     display: flex;
     flex-wrap: wrap;
@@ -20,7 +21,10 @@ body {
     width: 100%;
     max-width: 800px;
 }
-input, button, select {
+
+input,
+button,
+select {
     padding: 5px;
     font-size: 1rem;
     border: none;
@@ -28,27 +32,35 @@ input, button, select {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
 }
+
 button {
     background-color: #017AB1;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;
-    width: 200px; /* Largura do botão */
-    height: 50px; /* Altura do botão */
-    font-size: 1rem; /* Tamanho da fonte */
-    padding: 10px; /* Espaçamento interno do botão */
+    width: 200px;
+    /* Largura do botão */
+    height: 50px;
+    /* Altura do botão */
+    font-size: 1rem;
+    /* Tamanho da fonte */
+    padding: 10px;
+    /* Espaçamento interno do botão */
     border-radius: 50px;
     border: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
 }
+
 button:hover {
     background-color: #015f86;
 }
+
 .qr-code {
     margin-top: 20px;
     text-align: center;
 }
+
 textarea {
     width: 100%;
     max-width: 800px;
@@ -61,10 +73,12 @@ textarea {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
 }
+
 .footer img {
     height: 50px;
     transition: margin-top 0.3s ease;
 }
+
 .footer p {
     margin: 10px 0 0;
     font-size: 1.2rem;
@@ -73,7 +87,8 @@ textarea {
 }
 
 @media (max-width: 600px) {
-    input, button {
+    input,
+    button {
         flex: 1 1 100%;
     }
 }
