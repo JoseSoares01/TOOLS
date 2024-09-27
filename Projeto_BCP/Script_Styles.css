@@ -84,6 +84,18 @@ textarea {
 .footer img {
     height: 50px;
 }
+.footer p {
+    margin: 10px 0 0;
+    font-size: 1.2rem;
+    color: white;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    input, button {
+        flex: 1 1 100%;
+    }
+}
 
 .home-button {
     position: fixed;
