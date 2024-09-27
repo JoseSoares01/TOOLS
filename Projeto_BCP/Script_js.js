@@ -89,7 +89,7 @@ function generateQRCode() {
             taxa_iva_normal = 0.18;
             break;
         default:
-            alert("Espaço fiscal desconhecido. Por favor, insira um espaço fiscal válido (PT, PT-MA, PT-AC).");
+            alert("Espaço fiscal desconhecido. Por favor, insira um espaço fiscal válido (PT, PT-MA, PT-AC, ou EU).");
             return;
     }
 
