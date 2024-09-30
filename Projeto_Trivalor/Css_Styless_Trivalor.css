@@ -12,6 +12,7 @@ body {
     box-sizing: border-box;
 }
 
+.select,
 .input-group {
     display: flex;
     flex-wrap: wrap;
