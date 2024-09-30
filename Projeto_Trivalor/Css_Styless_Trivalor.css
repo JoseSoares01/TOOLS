@@ -22,6 +22,15 @@ body {
     max-width: 700px;
 }
 
+.pais {
+    padding: 5px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
 input,
 button,
 select {
