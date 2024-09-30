@@ -12,16 +12,6 @@ body {
     box-sizing: border-box;
 }
 
-.input-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 25px;
-    width: 100%;
-    max-width: 800px;
-}
-
 input,
 button,
 select {
