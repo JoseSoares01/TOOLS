@@ -1,3 +1,5 @@
+/* CSS Global */
+
 body {
     font-family: Arial, sans-serif;
     background: linear-gradient(to top, #017AB1, #02202B);
@@ -12,15 +14,35 @@ body {
     box-sizing: border-box;
 }
 
+
+/* Alteração para alinhar os inputs em 4 linhas e 3 colunas */
+
 .input-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 colunas */
     gap: 10px;
-    margin-bottom: 25px;
-    width: 100%;
-    max-width: 700px;
+    /* Espaçamento entre os elementos */
+    max-width: 800px;
+    /* Largura máxima do container */
+    margin: 0 auto;
+    /* Centralizar o container */
 }
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    /* Preencher o espaço disponível na coluna */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+button {
+    margin-top: 20px;
+}
+
+
+/* Demais estilos */
 
 .pais {
     padding: 5px;
@@ -48,13 +70,9 @@ button {
     cursor: pointer;
     transition: background-color 0.3s;
     width: 200px;
-    /* Largura do botão */
     height: 50px;
-    /* Altura do botão */
     font-size: 1rem;
-    /* Tamanho da fonte */
     padding: 10px;
-    /* Espaçamento interno do botão */
     border-radius: 50px;
     border: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
