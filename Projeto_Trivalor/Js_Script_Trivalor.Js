@@ -67,6 +67,7 @@ function generateQRCode() {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     if (!validateNumeric(nif_vendedor) || !validateNumeric(nif_empresa) || !validateNumeric(data)) {
         alert("NIF do vendedor, NIF da empresa e data devem conter apenas números.");
@@ -177,6 +178,10 @@ QRCode.toDataURL(dados_qr_code, { errorCorrectionLevel: 'M' }, function(err, url
     if (!validateNumeric(nif_vendedor) || !validateNumeric(nif_empresa) || !validateNumeric(data)) {
         alert("NIF do vendedor, NIF da empresa e data devem conter apenas números.");
 >>>>>>> parent of 4f8683e (})
+=======
+    if (!validateNumeric(nif_vendedor) || !validateNumeric(nif_empresa) || !validateNumeric(data)) {
+        alert("NIF do vendedor, NIF da empresa e data devem conter apenas números.");
+>>>>>>> parent of 4f8683e (})
         return;
     }
 
@@ -229,6 +234,7 @@ QRCode.toDataURL(dados_qr_code, { errorCorrectionLevel: 'M' }, function(err, url
     });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // TEXTO do botão de copiar
 document.querySelectorAll(".copy").forEach(copyButton => {
     copyButton.addEventListener("click", () => {
@@ -270,6 +276,16 @@ document.querySelectorAll(".copy").forEach(copyButton => {
                 input.value = ""; // Limpa todos os inputs exceto o QR code
             }
         });
+=======
+    // Função para limpar todos os inputs, exceto o campo de QR code
+    function clearInputs() {
+        const inputs = document.querySelectorAll("input");
+        inputs.forEach(input => {
+            if (input.id !== "qr_data") {
+                input.value = ""; // Limpa todos os inputs exceto o QR code
+            }
+        });
+>>>>>>> parent of 4f8683e (})
     }
 
     // TEXTO do botão de copiar
@@ -294,5 +310,9 @@ document.querySelectorAll(".copy").forEach(copyButton => {
                 }, 1000);
             });
         });
+<<<<<<< HEAD
+    });
+>>>>>>> parent of 4f8683e (})
+=======
     });
 >>>>>>> parent of 4f8683e (})
