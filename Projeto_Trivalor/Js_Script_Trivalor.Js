@@ -112,6 +112,7 @@ function generateQRCode() {
         .replace(/\s+/g, ' ').trim();
 
     QRCode.toDataURL(dados_qr_code, { errorCorrectionLevel: 'M' }, function (err, url) {
+<<<<<<< HEAD
         if (err) {
             console.error(err);
             return;
@@ -227,6 +228,8 @@ QRCode.toDataURL(dados_qr_code, { errorCorrectionLevel: 'M' }, function(err, url
         .replace(/\s+/g, ' ').trim();
 
     QRCode.toDataURL(dados_qr_code, { errorCorrectionLevel: 'M' }, function(err, url) {
+=======
+>>>>>>> parent of 0933a7f (clearinputs)
         if (err) {
             console.error(err);
             return;
@@ -237,6 +240,7 @@ QRCode.toDataURL(dados_qr_code, { errorCorrectionLevel: 'M' }, function(err, url
         document.getElementById('qrcode').appendChild(qrCodeImage);
         document.getElementById('qr_data').value = dados_qr_code;
     });
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -303,12 +307,14 @@ document.querySelectorAll(".copy").forEach(copyButton => {
         });
 >>>>>>> parent of 4f8683e (})
     }
+=======
+>>>>>>> parent of 0933a7f (clearinputs)
 }
 // TEXTO do botão de copiar
 document.querySelectorAll(".copy").forEach(copyButton => {
     copyButton.addEventListener("click", () => {
         const targetElement = document.querySelector(copyButton.dataset.copy);
-        const textToCopy = targetElement.value.trim(); // Usa `.value` para `textarea`
+        const textToCopy = targetElement.value.trim();  // Usa `.value` para `textarea`
 
         navigator.clipboard.writeText(textToCopy).then(() => {
             const label = copyButton.querySelector(".copy-label");
@@ -316,8 +322,6 @@ document.querySelectorAll(".copy").forEach(copyButton => {
 
             copyButton.disabled = true;
             label.textContent = "Copied!";
-            // Chama a função para limpar os inputs
-            clearInputs();
 
             setTimeout(() => {
                 copyButton.disabled = false;
@@ -328,6 +332,7 @@ document.querySelectorAll(".copy").forEach(copyButton => {
 <<<<<<< HEAD
 <<<<<<< HEAD
     });
+<<<<<<< HEAD
 >>>>>>> parent of 4f8683e (})
 =======
     });
@@ -339,3 +344,6 @@ document.querySelectorAll(".copy").forEach(copyButton => {
     });
 });
 >>>>>>> parent of 13598d0 (DELET IMPUTS)
+=======
+});
+>>>>>>> parent of 0933a7f (clearinputs)
