@@ -143,8 +143,6 @@ document.querySelectorAll(".copy").forEach(copyButton => {
             copyButton.disabled = true;
             label.textContent = "Copied!";
 
-            // Chama a função para limpar os inputs
-            clearInputs();
 
             setTimeout(() => {
                 label.textContent = originalText;
