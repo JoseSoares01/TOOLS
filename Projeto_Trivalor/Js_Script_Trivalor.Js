@@ -147,7 +147,6 @@ document.querySelectorAll(".copy").forEach(copyButton => {
             clearInputs();
 
             setTimeout(() => {
-                copyButton.disabled = false;
                 label.textContent = originalText;
             }, 1000);
         });
