@@ -14,7 +14,7 @@
 <body>
     <a href="/index.html" class="home-button"><img src="home-button.png" alt="Home"></a>
     <h2>GERADOR DE CÓDIGO QR TRIVALOR</h2>
-    <div class="input-group", id="qr_data">
+    <div class="input-group">
         <input type="text" id="nif_vendedor" placeholder="NIF do vendedor (números)">
         <input type="text" id="nif_empresa" placeholder="NIF da empresa (números)">
         <select id="pais">
@@ -36,7 +36,7 @@
         <input type="number" step="0.01" id="base_normal" placeholder="Base normal">
         <input type="number" step="0.01" id="imposto_selo" placeholder="Imposto selo">
     </div>
-    <button onclick="generateQRCode()", onclick="clearInputs()" >GERAR CÓDIGO</button>
+    <button onclick="generateQRCode()" >GERAR CÓDIGO</button>
 
     <!-- Novo botão para selecionar o hospital -->
     <button id="openModalBtn">Selecionar Hospital</button>
