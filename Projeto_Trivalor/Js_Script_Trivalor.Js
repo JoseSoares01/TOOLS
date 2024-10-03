@@ -124,7 +124,7 @@ QRCode.toDataURL(dados_qr_code, { errorCorrectionLevel: 'M' }, function(err, url
 function clearInputs() {
     const inputs = document.querySelectorAll("input");
     inputs.forEach(input => {
-        if (input.id !== "qr_data") {
+        if (input.id !== "qrinputdata") {
             input.value = ""; // Limpa todos os inputs exceto o QR code
         }
     });
