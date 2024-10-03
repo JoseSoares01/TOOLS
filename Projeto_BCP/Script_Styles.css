@@ -13,10 +13,11 @@ body {
 }
 
 .input-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 colunas */
+    grid-gap: 20px;
+    /* Espaçamento entre os inputs */
     margin-bottom: 25px;
     width: 100%;
     max-width: 800px;
@@ -34,9 +35,7 @@ select {
     box-sizing: border-box;
     width: 100%;
     max-width: 300px;
-    /* Limita a largura dos inputs */
     text-align: center;
-    /* Centraliza o texto dentro dos inputs */
 }
 
 button {
@@ -53,6 +52,9 @@ button {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     text-align: center;
+    grid-column: span 3;
+    /* Botão ocupa 3 colunas */
+    margin-top: 20px;
 }
 
 button:hover {
@@ -76,7 +78,6 @@ textarea {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     text-align: center;
-    /* Centraliza o texto dentro do textarea */
 }
 
 .footer {
@@ -98,9 +99,13 @@ textarea {
 }
 
 @media (max-width: 600px) {
+    .input-group {
+        grid-template-columns: 1fr;
+        /* Coluna única em telas menores */
+    }
     input,
     button {
-        flex: 1 1 100%;
+        width: 100%;
     }
 }
 
@@ -140,6 +145,8 @@ textarea {
     outline: none;
     cursor: pointer;
     justify-content: center;
+    margin-top: 20px;
+    /* Espaçamento entre o botão "copy" e o output */
 }
 
 .copy:active {
