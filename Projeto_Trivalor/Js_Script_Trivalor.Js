@@ -119,6 +119,9 @@ function generateQRCode() {
         document.getElementById('qrcode').appendChild(qrCodeImage);
         document.getElementById('qr_data').value = dados_qr_code;
     });
+<<<<<<< HEAD
+>>>>>>> parent of 0933a7f (clearinputs)
+=======
 >>>>>>> parent of 0933a7f (clearinputs)
 }
 
@@ -198,9 +201,12 @@ document.querySelectorAll(".copy").forEach(copyButton => {
             copyButton.disabled = true;
             label.textContent = "Copied!";
 <<<<<<< HEAD
+<<<<<<< HEAD
 
             // Chama a função para limpar os inputs
             clearInputs();
+=======
+>>>>>>> parent of 0933a7f (clearinputs)
 =======
 >>>>>>> parent of 0933a7f (clearinputs)
 
