@@ -303,31 +303,30 @@ document.querySelectorAll(".copy").forEach(copyButton => {
         });
 >>>>>>> parent of 4f8683e (})
     }
+}
+// TEXTO do botão de copiar
+document.querySelectorAll(".copy").forEach(copyButton => {
+    copyButton.addEventListener("click", () => {
+        const targetElement = document.querySelector(copyButton.dataset.copy);
+        const textToCopy = targetElement.value.trim(); // Usa `.value` para `textarea`
 
-    // TEXTO do botão de copiar
-    document.querySelectorAll(".copy").forEach(copyButton => {
-        copyButton.addEventListener("click", () => {
-            const targetElement = document.querySelector(copyButton.dataset.copy);
-            const textToCopy = targetElement.value.trim(); // Usa `.value` para `textarea`
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            const label = copyButton.querySelector(".copy-label");
+            const originalText = label.textContent;
 
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                const label = copyButton.querySelector(".copy-label");
-                const originalText = label.textContent;
+            copyButton.disabled = true;
+            label.textContent = "Copied!";
+            // Chama a função para limpar os inputs
+            clearInputs();
 
-                copyButton.disabled = true;
-                label.textContent = "Copied!";
-
-                // Chama a função para limpar os inputs
-                clearInputs();
-
-                setTimeout(() => {
-                    copyButton.disabled = false;
-                    label.textContent = originalText;
-                }, 1000);
-            });
+            setTimeout(() => {
+                copyButton.disabled = false;
+                label.textContent = originalText;
+            }, 1000);
         });
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     });
 >>>>>>> parent of 4f8683e (})
 =======
@@ -336,3 +335,7 @@ document.querySelectorAll(".copy").forEach(copyButton => {
 =======
     });
 >>>>>>> parent of 4f8683e (})
+=======
+    });
+});
+>>>>>>> parent of 13598d0 (DELET IMPUTS)
