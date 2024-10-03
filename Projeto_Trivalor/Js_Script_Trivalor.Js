@@ -217,6 +217,7 @@ document.querySelectorAll(".copy").forEach(copyButton => {
 >>>>>>> parent of 0933a7f (clearinputs)
 
             setTimeout(() => {
+                copyButton.disabled = false;
                 label.textContent = originalText;
             }, 1000);
         });
