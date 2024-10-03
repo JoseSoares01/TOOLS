@@ -124,7 +124,7 @@ QRCode.toDataURL(dados_qr_code, { errorCorrectionLevel: 'M' }, function(err, url
 function clearInputs() {
     const inputs = document.querySelectorAll("input");
     inputs.forEach(input => {
-        if (input.id !== "qrinputdata") {
+        if (input.id !== "qr_data") {
             input.value = ""; // Limpa todos os inputs exceto o QR code
         }
     });
@@ -143,6 +143,8 @@ document.querySelectorAll(".copy").forEach(copyButton => {
             copyButton.disabled = true;
             label.textContent = "Copied!";
 
+            // Chama a função para limpar os inputs
+            clearInputs();
 
             setTimeout(() => {
                 label.textContent = originalText;
