@@ -60,6 +60,7 @@ button {
     grid-column: span 3;
     /* Botão ocupa 3 colunas */
     margin-top: 20px;
+    cursor: pointer;
 }
 
 button:hover {
