@@ -12,8 +12,19 @@ body {
     box-sizing: border-box;
 }
 
-select>a>:hover{
-    background-color: aqua;
+select.esp_fiscal {
+    background-color: #02202B; /* cor de fundo do select */
+    color: white; /* cor do texto */
+    /* outros estilos já presentes */
+}
+
+select.esp_fiscal option {
+    background-color: #02202B; /* cor de fundo das opções */
+    color: white; /* cor do texto das opções */
+}
+
+select.esp_fiscal option:hover {
+    background-color: aqua; /* cor de fundo ao passar o mouse */
 }
 
 .input-group {
