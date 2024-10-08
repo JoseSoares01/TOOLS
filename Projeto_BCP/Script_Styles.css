@@ -12,10 +12,8 @@ body {
     box-sizing: border-box;
 }
 
-select.esp_fiscal {
-    background-color: #02202B; /* cor de fundo do select */
-    color: white; /* cor do texto */
-    /* outros estilos já presentes */
+select>option{
+    background-color: aqua;
 }
 
 select.esp_fiscal option {
