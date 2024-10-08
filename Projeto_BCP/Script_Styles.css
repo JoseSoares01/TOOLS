@@ -12,7 +12,7 @@ body {
     box-sizing: border-box;
 }
 
-select:hover{
+select option:hover{
     background-color: aqua;
 }
 
