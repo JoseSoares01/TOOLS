@@ -12,10 +12,12 @@ body {
     box-sizing: border-box;
 }
 
-select option:hover{
+select {
+    background-color: rgb(219, 23, 23);
+}
+option:hover{
     background-color: aqua;
 }
-
 .input-group {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
