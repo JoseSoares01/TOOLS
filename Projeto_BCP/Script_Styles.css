@@ -34,7 +34,7 @@ select {
     box-sizing: border-box;
     width: 100%;
     max-width: 300px;
-    text-align: center;
+    
 }
 
 button {
@@ -62,7 +62,6 @@ button:hover {
 
 .qr-code {
     margin-top: 20px;
-    text-align: center;
 }
 
 textarea {
@@ -76,7 +75,6 @@ textarea {
     padding: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
-    text-align: center;
 }
 
 .footer {
