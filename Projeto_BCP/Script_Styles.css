@@ -12,7 +12,7 @@ body {
     box-sizing: border-box;
 }
 
-.esp_fiscal>a>:hover {
+select>a>:hover{
     background-color: aqua;
 }
 
