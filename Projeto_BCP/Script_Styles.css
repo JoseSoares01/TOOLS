@@ -13,7 +13,7 @@ body {
 }
 
 select {
-    background-color: rgb(219, 23, 23);
+    background-color: rgb(107, 189, 209);
 }
 option:hover{
     background-color: aqua;
