@@ -12,11 +12,9 @@ body {
     box-sizing: border-box;
 }
 
-select {
+select, option:hover {
     background-color: rgb(107, 189, 209);
-}
-option:hover{
-    background-color: aqua;
+    color: #fff;
 }
 .input-group {
     display: grid;
