@@ -13,7 +13,7 @@ body {
 }
 
 select, option:hover {
-    background-color: rgb(107, 189, 209);
+    background-color: #023c54;
     color: #fff;
 }
 .input-group {
