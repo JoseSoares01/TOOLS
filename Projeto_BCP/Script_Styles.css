@@ -13,7 +13,7 @@ body {
 }
 
 select {
-    border: 1px solid white; /* Borda branca fina */
+    border: 5px solid white; /* Borda branca fina */
     background-color: #023c54; /* Cor de fundo */
     color: #fff; /* Cor do texto */
     padding: 5px; /* Espaçamento interno */
