@@ -22,7 +22,7 @@ select {
 select:hover {
     background-color: #023c54; /* Mantenha a cor ao passar o mouse */
     color: #fff; /* Cor do texto ao passar o mouse */
-    border: 1px solid white; /* Mantém a borda ao passar o mouse */
+    
 }
 
 .input-group {
