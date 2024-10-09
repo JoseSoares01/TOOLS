@@ -13,17 +13,12 @@ body {
 }
 
 select {
-    border: 5px solid white; /* Borda branca fina */
+    border: 1px solid white; /* Borda branca fina */
     background-color: #023c54; /* Cor de fundo */
     color: #fff; /* Cor do texto */
     padding: 5px; /* Espaçamento interno */
 }
 
-select:hover {
-    background-color: #023c54; /* Mantenha a cor ao passar o mouse */
-    color: #fff; /* Cor do texto ao passar o mouse */
-    border: 5px solid white; /* Mantém a borda branca ao passar o mouse */
-}
 
 .input-group {
     display: grid;
