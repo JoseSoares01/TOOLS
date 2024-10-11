@@ -157,11 +157,11 @@ textarea {
 }
 
 .copy:active {
-    background: #9aa758;
+    background: #9aa75800;
 }
 
 .copy:disabled {
-    background: #2678a0;
+    background: #2677a000;
     color: #ffffff;
     cursor: not-allowed;
 }
