@@ -25,6 +25,7 @@ body {
     cursor: pointer;
     justify-content: center;
     margin-top: 20px;
+    box-shadow: none;
     /* Espaçamento entre o botão "copy" e o output */
 }
 
