@@ -14,6 +14,35 @@ body {
     box-sizing: border-box;
 }
 
+/*Botão de copiar*/
+.copy {
+    background-color: #ffffff00;
+    color: #fff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    gap: 8px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    justify-content: center;
+    margin-top: 20px;
+    box-shadow: none;
+    
+    /* Espaçamento entre o botão "copy" e o output */
+}
+
+.copy:active {
+    background: #ffffff00;
+}
+
+.copy:disabled {
+    background: #ffffff00;
+    color: #ffffff;
+    cursor: not-allowed;
+}
+/*Fim botão de copiar*/
 
 /* Alteração para alinhar os inputs em 4 linhas e 3 colunas */
 
@@ -143,33 +172,3 @@ textarea {
 .home-button:active img {
     transform: scale(0.95);
 }
-
-/*Botão de copiar*/
-.copy {
-    background-color: #ffffff00;
-    color: #fff;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    padding: 8px 12px;
-    gap: 8px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    justify-content: center;
-    margin-top: 20px;
-    box-shadow: none;
-    
-    /* Espaçamento entre o botão "copy" e o output */
-}
-
-.copy:active {
-    background: #ffffff00;
-}
-
-.copy:disabled {
-    background: #ffffff00;
-    color: #ffffff;
-    cursor: not-allowed;
-}
-/*Fim botão de copiar*/
