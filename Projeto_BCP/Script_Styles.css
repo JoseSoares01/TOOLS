@@ -143,30 +143,3 @@ textarea {
     }
 }
 
-.home-button {
-    background-image: url(home-button.png);
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    cursor: pointer;
-    transition: transform 0.3s;
-}
-.home-button span {
-    display: none;
-  }
-
-.home-button img {
-    width: 40px;
-    height: 40px;
-    transition: transform 0.3s, background-color 0.3s;
-}
-
-.home-button:hover img {
-    transform: scale(1.05);
-}
-
-.home-button:active img {
-    transform: scale(0.95);
-}
