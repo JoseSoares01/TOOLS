@@ -146,7 +146,23 @@ function openNav() {
     document.getElementById("mySidenav").style.width = "0";
   }
 //SIDEBAR END//
+//SIDEBAR DROP DOWN START//
+//* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+var dropdown = document.getElementsByClassName("dropdown-btn");
+var i;
 
+for (i = 0; i < dropdown.length; i++) {
+  dropdown[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var dropdownContent = this.nextElementSibling;
+    if (dropdownContent.style.display === "block") {
+      dropdownContent.style.display = "none";
+    } else {
+      dropdownContent.style.display = "block";
+    }
+  });
+}
+//SIDEBAR DROP DOWN END//
 // TEXTO do botão de copiar
 document.querySelectorAll(".copy").forEach(copyButton => {
     copyButton.addEventListener("click", () => {
