@@ -33,9 +33,6 @@ body {
 .copy:active {
     background: #ffffff00;
 }
-.copy:hover {
-    content: "Copy";
-}
 
 .copy:disabled {
     background: #ffffff00;
