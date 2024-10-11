@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<!--- HEADER START --->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="/css/Trivalor.css">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 </head>
-
+<!--- HEADER END --->
+<!------------------>
+<!--- BODY START --->
 <body>
     <img src="/images/home-button.png" width=40px class="home-button" onclick="openNav()">
    <!-- SIDEBAR START --> 
@@ -64,21 +66,23 @@
     <!-- Novo botão para selecionar o hospital -->
     <button id="openModalBtn">Selecionar Hospital</button>
 
-    <!-- Modal para a lista de hospitais -->
+    <!--- MODAL MENU START --->
     <div id="hospitalModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h3>Selecione o Hospital</h3>
+            <!--- HOSPITAL LIST START --->
             <select id="hospital_select" onchange="fillHospitalData()">
                 <option value="">Selecione um hospital</option>
                 <option value="509463371_502734914">ASSOC.PORTUG.HOTELARIA HOSPITALAR</option>
                 <option value="509821197_502117281">CENTRO HOSPITALAR SÃO JOÃO, EPE</option>
                 <option value="509822932_500142858">CENTRO HOSPITALAR LEIRIA-POMBAL</option>
-                <!-- Adicione outros hospitais aqui -->
+                <!--- ADD HOSPITALS HERE --->
             </select>
+            <!--- HOSPITAL LIST END --->
         </div>
     </div>
-
+    <!--- MODAL MENU END --->
     <div class="qr-code" id="qrcode"></div>
     <textarea id="qr_data" readonly></textarea>
 
@@ -96,9 +100,12 @@
     </div>
 
     <script src="/JScripts/ModalHospital.js"></script>
-    <!-- Adicione esta linha para o novo JS -->
+    <!--- SCRIPTS --->
     <script src="/JScripts/Trivalor.Js"></script>
 
 </body>
-
+<!--- BODY END --->
 </html>
+
+
+    <!--- FALTA TERMINAR ESTE--->
