@@ -144,7 +144,7 @@ textarea {
 }
 
 .home-button {
-    background-image: url(/home-button.png);
+    background-image: url(home-button.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     position: fixed;
@@ -156,7 +156,7 @@ textarea {
 .home-button span {
     display: none;
   }
-  
+
 .home-button img {
     width: 40px;
     height: 40px;
