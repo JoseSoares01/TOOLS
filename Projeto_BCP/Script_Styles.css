@@ -153,7 +153,10 @@ textarea {
     cursor: pointer;
     transition: transform 0.3s;
 }
-
+.home-button span {
+    display: none;
+  }
+  
 .home-button img {
     width: 40px;
     height: 40px;
