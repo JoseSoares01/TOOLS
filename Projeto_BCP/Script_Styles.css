@@ -141,7 +141,7 @@ textarea {
 }
 
 .copy {
-    background-color: #3890b600;
+    background-color: #ffffff00;
     color: #fff;
     border-radius: 8px;
     display: flex;
@@ -157,11 +157,11 @@ textarea {
 }
 
 .copy:active {
-    background: #9aa75800;
+    background: #ffffff00;
 }
 
 .copy:disabled {
-    background: #2677a000;
+    background: #ffffff00;
     color: #ffffff;
     cursor: not-allowed;
 }
