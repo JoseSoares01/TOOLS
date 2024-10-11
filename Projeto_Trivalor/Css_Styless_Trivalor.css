@@ -251,7 +251,10 @@ textarea {
         font-size: 25px;
         color: #818181;
         display: block;
-        transition: 0.3s; ;
+        transition: 0.3s; 
+        width: 200px;
+        height: 50px;
+        box-shadow: none ;
       }
       .dropdown-navbar a:hover {
         color: #f1f1f1;
