@@ -143,6 +143,14 @@ textarea {
     }
 }
 
+.home-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
 /* SIDEBAR START */
 /* The side navigation menu */
 .sidenav {
@@ -228,4 +236,3 @@ textarea {
       .dropdown-navbar a:hover {
         color: #f1f1f1;
       }
-
