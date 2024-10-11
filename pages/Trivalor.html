@@ -5,33 +5,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator</title>
-    <link rel="stylesheet" href="/Projeto_BCP/Script_Styles.css">
+    <link rel="stylesheet" href="/css/ModalHospital.css">
+    <link rel="stylesheet" href="/css/Trivalor.css">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 </head>
 
 <body>
     <img src="/images/home-button.png" width=40px class="home-button" onclick="openNav()">
-    <!-- SIDEBAR START --> 
-     <div id="mySidenav" class="sidenav">
-         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-         <a href="/Html_teste/index.html">Home</a>
-         <a href="/index.html">Login</a>
-         <a href="#">Link 3</a>
-         <a href="#">Link 4</a>
-         <button class="dropdown-navbar">Tools
-             <i class="fa fa-caret-down"></i>
-           </button>
-           <div class="dropdown-container">
-             <a href="#">ferramenta 1</a>
-             <a href="#">ferramenta 2</a>
-             <a href="#">ferramenta 3</a>
-           </div>
-       </div>
-     <!-- SIDEBAR END --> 
-
-    <h2>Codigo QR BCP Millenium</h2>
+   <!-- SIDEBAR START --> 
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="/Html_teste/index.html">Home</a>
+        <a href="/index.html">Login</a>
+        <a href="#">Link 3</a>
+        <a href="#">Link 4</a>
+        <button class="dropdown-navbar">Tools
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-container">
+            <a href="#">ferramenta 1</a>
+            <a href="#">ferramenta 2</a>
+            <a href="#">ferramenta 3</a>
+          </div>
+      </div>
+    <!-- SIDEBAR END --> 
+    
+    <h2>GERADOR DE CÓDIGO QR TRIVALOR</h2>
     <div class="input-group">
-        <input type="text" id="nif_vendedor" placeholder="NIF do Fornecedor (números)">
+        <input type="text" id="nif_vendedor" placeholder="NIF do vendedor (números)">
         <input type="text" id="nif_empresa" placeholder="NIF da empresa (números)">
         <select id="pais">
             <option value="">Escolha o País</option>
@@ -55,11 +56,32 @@
         <input type="number" step="0.01" id="base_reduzida" placeholder="Base reduzida">
         <input type="number" step="0.01" id="base_intermedia" placeholder="Base intermédia">
         <input type="number" step="0.01" id="base_normal" placeholder="Base normal">
-        <input type="number" step="0.01" id="irs" placeholder="IRS">
+        <input type="number" step="0.01" id="imposto_selo" placeholder="Imposto selo">
     </div>
-    <button onclick="generateQRCode()">GERAR CODIGO</button>
+
+    <button onclick="generateQRCode()">GERAR CÓDIGO</button>
+
+    <!-- Novo botão para selecionar o hospital -->
+    <button id="openModalBtn">Selecionar Hospital</button>
+
+    <!-- Modal para a lista de hospitais -->
+    <div id="hospitalModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Selecione o Hospital</h3>
+            <select id="hospital_select" onchange="fillHospitalData()">
+                <option value="">Selecione um hospital</option>
+                <option value="509463371_502734914">ASSOC.PORTUG.HOTELARIA HOSPITALAR</option>
+                <option value="509821197_502117281">CENTRO HOSPITALAR SÃO JOÃO, EPE</option>
+                <option value="509822932_500142858">CENTRO HOSPITALAR LEIRIA-POMBAL</option>
+                <!-- Adicione outros hospitais aqui -->
+            </select>
+        </div>
+    </div>
+
     <div class="qr-code" id="qrcode"></div>
     <textarea id="qr_data" readonly></textarea>
+
     <!-- Botão para copiar o conteúdo do textarea -->
     <button type="button" class="copy" data-copy="#qr_data">
         <ion-icon name="copy-outline" class="copy-icon"></ion-icon>
@@ -68,13 +90,15 @@
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    </div>
 
     <div class="footer">
         <img src="/images/imagen.png" alt="Logo">
     </div>
 
-    <script src="/Projeto_BCP/Script_js.js"></script>
+    <script src="/JScripts/ModalHospital.js"></script>
+    <!-- Adicione esta linha para o novo JS -->
+    <script src="/JScripts/Trivalor.Js"></script>
+
 </body>
 
 </html>
