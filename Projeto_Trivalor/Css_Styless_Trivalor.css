@@ -245,5 +245,11 @@ textarea {
         padding-right: 8px;
       }
       .dropdown-navbar{
-        background-color:#012e42 ;
+        background-color:#012e42;
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s; ;
       }
