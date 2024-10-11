@@ -228,14 +228,14 @@ textarea {
   /* SIDEBAR DROP DOWN*/
     /* Add an active class to the active dropdown button */
     .active {
-        background-color: green;
+        background-color: rgb(0, 0, 0);
         color: white;
       }
     
       /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
       .dropdown-container {
         display: none;
-        background-color: #262626;
+        background-color: #012e42; 
         padding-left: 8px;
       }
       
@@ -252,4 +252,7 @@ textarea {
         color: #818181;
         display: block;
         transition: 0.3s; ;
+      }
+      .dropdown-navbar a:hover {
+        color: #f1f1f1;
       }
