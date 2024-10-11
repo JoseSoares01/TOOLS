@@ -63,10 +63,6 @@ select {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
 }
-select {
-    border: 1px solid white; /* Borda branca fina */
-    padding: 5px; /* Espaçamento interno */
-}
 
 button {
     background-color: #017AB1;
@@ -148,8 +144,9 @@ textarea {
     transform: scale(0.95);
 }
 
+/*Botão de copiar*/
 .copy {
-    background-color: #3890b6;
+    background-color: #ffffff00;
     color: #fff;
     border-radius: 8px;
     display: flex;
@@ -159,14 +156,20 @@ textarea {
     border: none;
     outline: none;
     cursor: pointer;
+    justify-content: center;
+    margin-top: 20px;
+    box-shadow: none;
+    
+    /* Espaçamento entre o botão "copy" e o output */
 }
 
 .copy:active {
-    background: #9aa758;
+    background: #ffffff00;
 }
 
 .copy:disabled {
-    background: #2678a0;
+    background: #ffffff00;
     color: #ffffff;
     cursor: not-allowed;
 }
+/*Fim botão de copiar*/
