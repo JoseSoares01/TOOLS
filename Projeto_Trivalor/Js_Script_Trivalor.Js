@@ -135,6 +135,18 @@ function clearInputs() {
     document.getElementById("imposto_selo").value = "";
 }
 
+//SIDEBAR START//
+/* Set the width of the side navigation to 250px */
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+  }
+  
+  /* Set the width of the side navigation to 0 */
+  function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+  }
+//SIDEBAR END//
+
 // TEXTO do botão de copiar
 document.querySelectorAll(".copy").forEach(copyButton => {
     copyButton.addEventListener("click", () => {
