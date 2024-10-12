@@ -2,7 +2,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(to top, #017AB1, #02202B);
+    background: linear-gradient(to top, #017AB1, hsl(196, 91%, 9%));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -78,7 +78,7 @@ button {
     font-size: 1rem;
     border: none;
     border-radius: 16px;
-    box-shadow: 0 4px 6px rgba(248, 247, 247, 0.1);
+    box-shadow: 0 4px 6px rgba(248, 247, 247, 0.227);
     box-sizing: border-box;
 }
 
@@ -89,12 +89,12 @@ select {
     font-size: 1rem;
     border: solid;
     border-radius: 16px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.207);
     box-sizing: border-box;
 }
 
 button {
-    background-color: #017AB1;
+    background-color: #0179b14e;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -104,7 +104,7 @@ button {
     padding: 10px;
     border-radius: 50px;
     border: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.616);
     box-sizing: border-box;
 }
 
@@ -120,13 +120,13 @@ button:hover {
 textarea {
     width: 100%;
     max-width: 800px;
-    height: 50px;
-    margin-top: 20px;
+    height: 55px;
+    margin-top: 30px;
     resize: none;
     border-radius: 13px;
     border: none;
     padding: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.249);
     box-sizing: border-box;
 }
 
