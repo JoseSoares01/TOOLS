@@ -22,7 +22,7 @@ const usuariosValidos = {
     if (usuariosValidos[login] && usuariosValidos[login] === senha) {
       // Se válidos, redireciona para a página protegida
       alert('Login bem-sucedido! Redirecionando...');
-      window.location.href = 'index.html'; // Substitua pela URL da sua página protegida
+      window.location.href = 'https://suportesvf.pt/index.html'; // Substitua pela URL da sua página protegida
     } else {
       // Se inválidos, exibe uma mensagem de erro
       alert('Login ou senha incorretos. Tente novamente.');
