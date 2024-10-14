@@ -29,7 +29,7 @@ function updateIVARates() {
             baseIsenta.placeholder = "Base isenta (0%)";
             baseReduzida.placeholder = "Base reduzida (4%)";
             baseIntermedia.placeholder = "Base intermédia (9%)";
-            baseNormal.placeholder = "Base normal (18%)";
+            baseNormal.placeholder = "Base normal (16%)";
             baseIsenta.value = baseIsenta.value || "";
             break;
         case "PT-MA":
@@ -86,7 +86,7 @@ function generateQRCode() {
         case "PT-AC":
             taxa_iva_reduzida = 0.04;
             taxa_iva_intermedia = 0.09;
-            taxa_iva_normal = 0.18;
+            taxa_iva_normal = 0.16;
             break;
         default:
             alert("Espaço fiscal desconhecido. Por favor, insira um espaço fiscal válido (PT, PT-MA, PT-AC, ou EU).");
