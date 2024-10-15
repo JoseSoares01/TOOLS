@@ -50,11 +50,35 @@ button:hover {
 }
 
 input[type="file"] {
-    border: 2px solid #6c5ce7;
-    border-radius: 16px; /* Bordas arredondadas */
-    padding: 10px;
-    cursor: pointer;
-    margin-bottom: 30px; /* Adiciona espaçamento abaixo do input */
+  border: 2px solid #6c5ce7;
+  border-radius: 16px;
+  padding: 10px;
+  cursor: pointer;
+  margin-bottom: 30px;
+  /* Estilo para o botão do seletor de arquivo */
+}
+
+input[type="file"]::file-selector-button {
+  background-image: linear-gradient(
+      to right,
+      #ff7a18,
+      #af002d,
+      #319197 100%,
+      #319197 200%
+  );
+  background-position-x: 0%;
+  background-size: 200%;
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  padding: 1rem 1.25rem;
+  text-shadow: 0 1px 1px #333;
+  transition: all 0.25s;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-position-x: 100%;
+  transform: scale(1.1);
 }
 
 .pdf-item button {
