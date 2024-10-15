@@ -50,26 +50,36 @@
     /* Define o estilo do título h1, centralizando o texto e ajustando a cor e o tamanho da fonte. */
     
     button {
-        padding: 10px;
-        align-self: center;
         /* Centraliza o botão dentro do form */
-        width: 160px;
-        border-radius: 30px;
-        /* Cor de fundo com gradiente */
-        background-image: linear-gradient(#2894BB, #1977AB);
+        align-self: center;
+        padding: 10px 20px;
+        font-size: 16px;
+        text-align: center;
+        cursor: pointer;
+        width: 170px;
+        height: 40px;
+        color: #fff;
+        background-color: #0894b8;
+        border-radius: 40px;
+        font-weight: 700;
+        text-transform: uppercase;
+        /* Sombra e bordas adaptadas */
         border: solid 1px #36ADCB;
+        /* Borda com cor do gradiente anterior */
         border-right-width: 4px;
         border-bottom-width: 4px;
-        font-size: 16px;
-        color: rgb(255, 255, 255);
-        /* Cor do texto em branco */
-        font-weight: 700;
-        /* Negrito */
-        text-transform: uppercase;
-        /* Texto em maiúsculas */
-        cursor: pointer;
+        /* Mesma sombra da nova versão, adaptada */
     }
-    /* Estilo para o botão: gradiente no fundo, bordas arredondadas, centralização e ajuste de cor e fonte. */
+    
+    button:hover {
+        background-color: #066e88;
+    }
+    
+    button:active {
+        background-color: #1775A9;
+        box-shadow: 0 3px #0894b8;
+        transform: translateY(4px);
+    }
     
     input {
         padding: 10px 20px;
@@ -82,7 +92,7 @@
     /* Estiliza os campos de input com bordas arredondadas e um fundo claro. */
     
     a {
-        color: #36ADCB;
+        color: #1895b4;
     }
     /* Define a cor dos links como azul. */
     
