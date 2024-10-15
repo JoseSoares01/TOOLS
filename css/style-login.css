@@ -1,146 +1,143 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-
-/* Aplica um "reset" global, removendo margens e paddings padrão de todos os elementos,
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    /* Aplica um "reset" global, removendo margens e paddings padrão de todos os elementos,
  e garantindo que o tamanho da caixa inclua border e padding no cálculo. */
-
-body {
-    font-family: "Montserrat";
-    color: #404040;
-    /* Container flexível */
-    display: flex;
-    height: 100vh;
-    /* Altura da janela de visualização */
-    background-color: rgb(255, 255, 255);
-    justify-content: center;
-    /* Centraliza horizontalmente */
-    align-items: center;
-    /* Centraliza verticalmente */
-    background-image: url(/images/background-login.jpg);
-    /* Define a imagem de fundo */
-    background-size: cover;
-    /* Faz com que a imagem cubra todo o fundo */
-    background-position: center;
-    /* Centraliza a imagem de fundo */
-    padding: 20px;
-}
-
-
-/* Define o estilo do corpo da página, usando uma fonte específica, centralizando o conteúdo com flexbox e adicionando uma imagem de fundo. */
-
-form {
-    /* Filho flexível do body */
-    background-color: white;
-    padding: 50px;
-    border-radius: 30px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    /* Define o form como container flexível */
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    /* Espaçamento entre os itens internos */
-}
-
-
-/* Estiliza o formulário, tornando-o um elemento flex, com espaçamento interno (padding) e bordas arredondadas. */
-
-h1 {
-    font-size: 24px;
-    text-align: center;
-    color: #404040;
-}
-
-
-/* Define o estilo do título h1, centralizando o texto e ajustando a cor e o tamanho da fonte. */
-
-button {
-    padding: 10px;
-    align-self: center;
-    /* Centraliza o botão dentro do form */
-    width: 160px;
-    border-radius: 30px;
-    /* Cor de fundo com gradiente */
-    background-image: linear-gradient(#256a8a, #3393c1);
-    border: solid 1px #256a8a;
-    border-right-width: 4px;
-    border-bottom-width: 4px;
-    font-size: 16px;
-    color: rgb(255, 255, 255);
-    /* Cor do texto em branco */
-    font-weight: 700;
-    /* Negrito */
-    text-transform: uppercase;
-    /* Texto em maiúsculas */
-}
-
-
-/* Estilo para o botão: gradiente no fundo, bordas arredondadas, centralização e ajuste de cor e fonte. */
-
-input {
-    padding: 10px 20px;
-    border-radius: 10px;
-    border: none;
-    /* Remove a borda */
-    background-color: #f1f1f1;
-    /* Fundo cinza claro */
-}
-
-
-/* Estiliza os campos de input com bordas arredondadas e um fundo claro. */
-
-a {
-    color: #009dff;
-}
-
-
-/* Define a cor dos links como azul. */
-
-.barra-horizontal {
-    background-color: #0169a5;
-    height: 5px;
-    width: 210px;
-}
-
-
-/* Estilo para a barra horizontal, definindo altura, largura e cor de fundo. */
-
-.campo-input {
-    /* Container flexível */
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    /* Espaçamento entre os itens */
-}
-
-
-/* Define os campos de input como uma coluna flexível com espaçamento entre os itens. */
-
-.lembrar-me {
-    /* Container flexível */
-    display: flex;
-    gap: 5px;
-    /* Espaçamento entre os itens */
-}
-
-
-/* Define o layout flexível para a seção "lembrar-me", com espaçamento entre o checkbox e o texto. */
-
-.titulo {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-
-/* Define o layout para o título, organizando-o em uma coluna com espaçamento entre os elementos. */
-
-.esqueceu-senha {
-    text-align: center;
-}
-
-
-/* Centraliza o texto do link "esqueceu-senha". */
+    
+    body {
+        font-family: "Montserrat";
+        color: #404040;
+        /* Container flexível */
+        display: flex;
+        height: 100vh;
+        /* Altura da janela de visualização */
+        background-color: rgb(255, 255, 255);
+        justify-content: center;
+        /* Centraliza horizontalmente */
+        align-items: center;
+        /* Centraliza verticalmente */
+        background-image: url(/images/background-login.jpg);
+        /* Define a imagem de fundo */
+        background-size: cover;
+        /* Faz com que a imagem cubra todo o fundo */
+        background-position: center;
+        /* Centraliza a imagem de fundo */
+        padding: 20px;
+    }
+    /* Define o estilo do corpo da página, usando uma fonte específica, centralizando o conteúdo com flexbox e adicionando uma imagem de fundo. */
+    
+    form {
+        /* Filho flexível do body */
+        background-color: white;
+        padding: 50px;
+        border-radius: 30px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        /* Define o form como container flexível */
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        /* Espaçamento entre os itens internos */
+    }
+    /* Estiliza o formulário, tornando-o um elemento flex, com espaçamento interno (padding) e bordas arredondadas. */
+    
+    h1 {
+        font-size: 24px;
+        text-align: center;
+        color: #404040;
+    }
+    /* Define o estilo do título h1, centralizando o texto e ajustando a cor e o tamanho da fonte. */
+    
+    button {
+        padding: 10px;
+        align-self: center;
+        /* Centraliza o botão dentro do form */
+        width: 160px;
+        border-radius: 30px;
+        /* Cor de fundo com gradiente */
+        background-image: linear-gradient(#2894BB, #1977AB);
+        border: solid 1px #36ADCB;
+        border-right-width: 4px;
+        border-bottom-width: 4px;
+        font-size: 16px;
+        color: rgb(255, 255, 255);
+        /* Cor do texto em branco */
+        font-weight: 700;
+        /* Negrito */
+        text-transform: uppercase;
+        /* Texto em maiúsculas */
+        cursor: pointer;
+    }
+    /* Estilo para o botão: gradiente no fundo, bordas arredondadas, centralização e ajuste de cor e fonte. */
+    
+    input {
+        padding: 10px 20px;
+        border-radius: 10px;
+        border: none;
+        /* Remove a borda */
+        background-color: #eeebeb;
+        /* Fundo cinza claro */
+    }
+    /* Estiliza os campos de input com bordas arredondadas e um fundo claro. */
+    
+    a {
+        color: #36ADCB;
+    }
+    /* Define a cor dos links como azul. */
+    
+    .barra-horizontal {
+        background-color: #013781;
+        height: 5px;
+        width: 210px;
+    }
+    /* Estilo para a barra horizontal, definindo altura, largura e cor de fundo. */
+    
+    .campo-input {
+        /* Container flexível */
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        /* Espaçamento entre os itens */
+    }
+    /* Define os campos de input como uma coluna flexível com espaçamento entre os itens. */
+    
+    .lembrar-me {
+        /* Container flexível */
+        display: flex;
+        gap: 5px;
+        /* Espaçamento entre os itens */
+    }
+    /* Define o layout flexível para a seção "lembrar-me", com espaçamento entre o checkbox e o texto. */
+    
+    .titulo {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    /* Define o layout para o título, organizando-o em uma coluna com espaçamento entre os elementos. */
+    
+    .esqueceu-senha {
+        text-align: center;
+    }
+    /* Centraliza o texto do link "esqueceu-senha". */
+    /* logo servinform". */
+    
+    footer {
+        width: 100%;
+        text-align: center;
+        padding: 20px 0;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+    
+    .image-svf img {
+        height: 55px;
+    }
+    
+    .image-svf p {
+        margin: 10px 0 0;
+        font-size: 1.2rem;
+        color: white;
+    }
