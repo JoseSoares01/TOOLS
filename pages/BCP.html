@@ -7,27 +7,38 @@
     <title>QR Code Generator</title>
     <link rel="stylesheet" href="/css/BCP.css">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <script>
+        // Verifica se o usuário está logado
+        const usuarioLogado = localStorage.getItem('usuarioLogado');
+
+        // Se não houver token de login, redireciona para a página de login
+        if (!usuarioLogado) {
+            alert('Você precisa fazer login para acessar esta página.');
+            window.location.href = 'https://suportesvf.pt/login.html'; // URL da página de login
+        }
+    </script>
+
 </head>
 
 <body>
     <img src="/images/home-button.png" width=40px class="home-button" onclick="openNav()">
-    <!-- SIDEBAR START --> 
-     <div id="mySidenav" class="sidenav">
-         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-         <a href="/Html_teste/index.html">Home</a>
-         <a href="/index.html">Login</a>
-         <a href="#">Link 3</a>
-         <a href="#">Link 4</a>
-         <button class="dropdown-navbar">Tools
+    <!-- SIDEBAR START -->
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="/Html_teste/index.html">Home</a>
+        <a href="/index.html">Login</a>
+        <a href="#">Link 3</a>
+        <a href="#">Link 4</a>
+        <button class="dropdown-navbar">Tools
              <i class="fa fa-caret-down"></i>
            </button>
-           <div class="dropdown-container">
-             <a href="#">ferramenta 1</a>
-             <a href="#">ferramenta 2</a>
-             <a href="#">ferramenta 3</a>
-           </div>
-       </div>
-     <!-- SIDEBAR END --> 
+        <div class="dropdown-container">
+            <a href="#">ferramenta 1</a>
+            <a href="#">ferramenta 2</a>
+            <a href="#">ferramenta 3</a>
+        </div>
+    </div>
+    <!-- SIDEBAR END -->
 
     <h2>Codigo QR BCP Millenium</h2>
     <div class="input-group">

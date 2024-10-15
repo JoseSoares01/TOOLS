@@ -1,11 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GridGum com Lavalamp</title>
     <link rel="stylesheet" href="/css/ServinformSite.css">
+    <script>
+        // Verifica se o usuário está logado
+        const usuarioLogado = localStorage.getItem('usuarioLogado');
+
+        // Se não houver token de login, redireciona para a página de login
+        if (!usuarioLogado) {
+            alert('Você precisa fazer login para acessar esta página.');
+            window.location.href = 'https://suportesvf.pt/login.html'; // URL da página de login
+        }
+    </script>
+
 </head>
+
 <body>
     <!-- Cabeçalho da página -->
     <header>
@@ -62,4 +75,5 @@
     <!-- Script para alternar cor e idioma -->
     <script src="/JScripts/ServinformSite.js"></script>
 </body>
+
 </html>
