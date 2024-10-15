@@ -7,7 +7,7 @@
  e garantindo que o tamanho da caixa inclua border e padding no cálculo. */
     
     body {
-        font-family: "Montserrat";
+        font-family: "Kanit", sans-serif;
         color: #404040;
         /* Container flexível */
         display: flex;
