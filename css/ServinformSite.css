@@ -86,7 +86,7 @@ nav a:nth-child(5):hover ~ .animation {
     align-items: center;
     flex-direction: column;
     min-height: 70vh;
-    background: url('/Site_Servinform/thumb-1920-438132.jpg') center/cover no-repeat, linear-gradient(to bottom, #000000, transparent 50%);
+    background: url('/images/rb_5220.png') center/cover no-repeat, linear-gradient(to bottom, #000000, transparent 50%);
 }
 
 .text-content h1 {
