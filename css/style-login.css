@@ -64,7 +64,7 @@
         font-weight: 700;
         text-transform: uppercase;
         /* Sombra e bordas adaptadas */
-        border: solid 1px #36ADCB;
+        border: solid 1px #0b5f9d;
         /* Borda com cor do gradiente anterior */
         border-right-width: 4px;
         border-bottom-width: 4px;
@@ -97,9 +97,11 @@
     /* Define a cor dos links como azul. */
     
     .barra-horizontal {
-        background-color: #013781;
+        background-color: #0b5f9d;
         height: 5px;
         width: 210px;
+        border-radius: 16px;
+        margin: 0 auto;
     }
     /* Estilo para a barra horizontal, definindo altura, largura e cor de fundo. */
     
@@ -137,7 +139,7 @@
         width: 100%;
         text-align: center;
         padding: 20px 0;
-        position: absolute;
+        position: fixed;
         bottom: 0;
         left: 0;
     }
