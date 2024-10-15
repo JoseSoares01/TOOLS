@@ -22,7 +22,7 @@ form.addEventListener('submit', function(event) {
         // Se válidos, cria um token de login e armazena no localStorage
         localStorage.setItem('usuarioLogado', login); // Armazenando o login como token de autenticação
         alert('Login bem-sucedido! Redirecionando...');
-        window.location.href = 'https://suportesvf.pt/index.html'; // Redireciona para a página protegida
+        window.location.href = 'https://suportesvf.pt/pages/Main.html'; // Redireciona para a página protegida
     } else {
         // Se inválidos, exibe uma mensagem de erro
         alert('Login ou senha incorretos. Tente novamente.');
