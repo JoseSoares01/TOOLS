@@ -18,7 +18,7 @@
         /* Centraliza horizontalmente */
         align-items: center;
         /* Centraliza verticalmente */
-        background-image: url(/images/colorbluebg.jpg);
+        background-image: url(/images/background-login.jpg);
         /* Define a imagem de fundo */
         background-size: cover;
         /* Faz com que a imagem cubra todo o fundo */
@@ -72,7 +72,7 @@
     }
     
     button:hover {
-        background-color: #066e88;
+        background-color: #077e9c;
     }
     
     button:active {
