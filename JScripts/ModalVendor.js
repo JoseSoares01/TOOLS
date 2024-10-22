@@ -1,79 +1,67 @@
-// ModalVendor.js
-import { createClient } from '@supabase/supabase-js'; // Import Supabase
+// Lista de vendors
+const vendors = [
+    { value: "", label: "Selecione um vendor" },
+    { value: "500135088", label: "AUTORIDADE TRIBUTARIA" },
+    // Adicione mais vendors aqui conforme necessário
+];
 
-const supabaseUrl = 'https://cmxvccqnkipadmiqalyd.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNteHZjY3Fua2lwYWRtaXFhbHlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk2MDA2MDksImV4cCI6MjA0NTE3NjYwOX0.2dz9xleUx2vv8NKvUE6UNFRgu-3b9iMhOedNE3Ls6OE'; // Use the actual key
-const supabase = createClient(supabaseUrl, supabaseKey); // Initialize Supabase client
-
-// Function to open the modal and fetch the vendors
-document.getElementById('openModalBtn').addEventListener('click', openModal);
-
+// Função para abrir o modal
 function openModal() {
     const modal = document.getElementById("ModalVendor");
     modal.style.display = "block";
-    populateVendorList(); // Call the function to populate the vendor list
+    populateVendorList(); // Corrigido nome da função
 }
 
-// Function to close the modal
+// Função para fechar o modal
 function closeModal() {
     const modal = document.getElementById("ModalVendor");
     modal.style.display = "none";
 }
 
-// Function to fetch vendors from Supabase and populate the dropdown
-async function populateVendorList() {
+// Função para preencher o select com os vendors
+function populateVendorList() { // Corrigido nome da função
     const vendorSelect = document.getElementById("vendor_select");
 
-    // Show a loading message before fetching
-    vendorSelect.innerHTML = "<option>Loading...</option>";
+    // Limpa o select antes de adicionar os novos vendors
+    vendorSelect.innerHTML = "";
 
-    try {
-        const { data, error } = await supabase
-            .from('VENDORSBCP') // Ensure this table name matches exactly in Supabase
-            .select('NIF, VENDOR'); // Ensure these are the correct column names
-        console.log(data)
-        if (error) {
-            throw error;
-        }
+    // Adiciona todos os vendors da lista
+    vendors.forEach(function(vendor) { // Usando a lista correta de vendors
+        const option = document.createElement("option");
+        option.value = vendor.value;
+        option.text = vendor.label;
+        vendorSelect.appendChild(option);
+    });
+}
 
-        // Clear previous options
-        vendorSelect.innerHTML = "";
+// Função para preencher o campo de NIF com base na seleção do vendor
+function fillVendorData() { // Corrigido nome da função para match com o HTML
+    const selectedValue = document.getElementById('vendor_select').value;
 
-        // Add default option
-        const defaultOption = document.createElement("option");
-        defaultOption.value = "";
-        defaultOption.text = "Selecione um vendor";
-        vendorSelect.appendChild(defaultOption);
-
-        // Populate with the fetched vendors
-        data.forEach(function(vendor) {
-            const option = document.createElement("option");
-            option.value = vendor.NIF; // Assuming 'NIF' is the vendor ID
-            option.text = vendor.VENDOR; // Assuming 'VENDOR' is the name of the vendor
-            vendorSelect.appendChild(option);
-        });
-    } catch (error) {
-        console.error("Error fetching vendors:", error.message);
-        alert("Não foi possível carregar os vendors.");
+    if (selectedValue) {
+        document.getElementById('nif_vendedor').value = selectedValue;
+    } else {
+        // Limpa o campo se nenhum vendor for selecionado
+        document.getElementById('nif_vendedor').value = '';
     }
 }
 
-// Event listeners for modal open/close behavior
+// Event listeners para o modal
 window.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById("ModalVendor");
     const btn = document.getElementById("openModalBtn");
     const span = document.getElementsByClassName("close")[0];
 
-    // Open modal when button is clicked
-    btn.addEventListener('click', openModal); // Changed to use addEventListener
+    // Abrir modal ao clicar no botão
+    btn.onclick = openModal;
 
-    // Close modal when "X" is clicked
-    span.addEventListener('click', closeModal); // Changed to use addEventListener
+    // Fechar modal ao clicar no "X"
+    span.onclick = closeModal;
 
-    // Close modal if clicked outside of it
-    window.addEventListener('click', function(event) {
+    // Fechar modal ao clicar fora dele
+    window.onclick = function(event) {
         if (event.target == modal) {
             closeModal();
         }
-    });
+    };
 });
