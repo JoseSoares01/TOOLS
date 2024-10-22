@@ -69,6 +69,22 @@
         <input type="number" step="0.01" id="irs" placeholder="IRS">
     </div>
     <button onclick="generateQRCode()">GERAR CODIGO</button>
+
+    <!-- Botão para abrir o modal -->
+    <button id="openModalBtn" onclick="openModal()">Selecionar Hospital</button>
+
+    <!-- MODAL MENU START -->
+    <div id="ModalVendor" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3>Selecione Vendor</h3>
+
+            <!-- VENDOR LIST START -->
+            <select id="vendor_select" onchange="fillVendorlData()">
+        </select>
+        </div>
+    </div>
+
     <div class="qr-code" id="qrcode"></div>
     <textarea id="qr_data" readonly></textarea>
     <!-- Botão para copiar o conteúdo do textarea -->
@@ -84,7 +100,7 @@
     <div class="footer">
         <img src="/images/imagen.png" alt="Logo">
     </div>
-
+    <script src="/JScripts/ModalVendor.js"></script>
     <script src="/JScripts/BCP.js"></script>
 </body>
 
