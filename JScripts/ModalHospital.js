@@ -1,32 +1,66 @@
-// Função para preencher os campos de NIF com base na seleção do hospital
-function fillHospitalData() {
-    const selectedValue = document.getElementById('hospital_select').value;
-    const [nifVendedor, nifEmpresa] = selectedValue.split('_');
-    document.getElementById('nif_vendedor').value = nifVendedor || '';
-    document.getElementById('nif_empresa').value = nifEmpresa || '';
-}
-
 // Função para abrir o modal
-var modal = document.getElementById("hospitalModal");
-var btn = document.getElementById("openModalBtn");
-var span = document.getElementsByClassName("close")[0];
-
-// Abrir modal ao clicar no botão
-btn.onclick = function() {
+function openModal() {
+    const modal = document.getElementById("hospitalModal");
     modal.style.display = "block";
+    populateHospitalList(); // Popula a lista de hospitais
 }
 
-// Fechar modal ao clicar no "X"
-span.onclick = function() {
+// Função para fechar o modal
+function closeModal() {
+    const modal = document.getElementById("hospitalModal");
     modal.style.display = "none";
 }
 
-// Fechar modal ao clicar fora dele
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
+// Função para preencher o select com os hospitais
+function populateHospitalList() {
+    const hospitalSelect = document.getElementById("hospital_select");
+
+    // Limpa o select antes de adicionar os novos hospitais
+    hospitalSelect.innerHTML = "";
+
+    // Adiciona todos os hospitais da lista global
+    hospitais.forEach(function(hospital) {
+        const option = document.createElement("option");
+        option.value = hospital.value;
+        option.text = hospital.label;
+        hospitalSelect.appendChild(option);
+    });
+}
+
+// Função para preencher os campos de NIF com base na seleção do hospital
+function fillHospitalData() {
+    const selectedValue = document.getElementById('hospital_select').value;
+
+    if (selectedValue) {
+        const [nifVendedor, nifEmpresa] = selectedValue.split('_');
+        document.getElementById('nif_vendedor').value = nifVendedor || '';
+        document.getElementById('nif_empresa').value = nifEmpresa || '';
+    } else {
+        // Limpa os campos se nenhum hospital for selecionado
+        document.getElementById('nif_vendedor').value = '';
+        document.getElementById('nif_empresa').value = '';
     }
 }
+
+// Event listeners para o modal
+window.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById("hospitalModal");
+    const btn = document.getElementById("openModalBtn");
+    const span = document.getElementsByClassName("close")[0];
+
+    // Abrir modal ao clicar no botão
+    btn.onclick = openModal;
+
+    // Fechar modal ao clicar no "X"
+    span.onclick = closeModal;
+
+    // Fechar modal ao clicar fora dele
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            closeModal();
+        }
+    };
+});
 
 //HOSP.ITAU-->
 const hospitais = [
@@ -128,41 +162,3 @@ const hospitais = [
     { value: "515330086_502145820", label: "YOUNAN HOSPITALITY PORTUGAL, UNIP." },
 
 ];
-
-// Função para abrir o modal
-function openModal() {
-    document.getElementById("hospitalModal").style.display = "block";
-    populateHospitalList(); // Popula a lista de hospitais
-}
-
-// Função para fechar o modal
-function closeModal() {
-    document.getElementById("hospitalModal").style.display = "none";
-}
-
-// Função para preencher o select com os hospitais
-function populateHospitalList() {
-    var hospitalSelect = document.getElementById("hospital_select");
-    var hospitals = [
-        { value: "500989001_503257567", label: "IRMÃS HOSPITALEIRAS" },
-        { value: "503035416_503257567", label: "HOSPITAL PROF.DR.FERNANDO FONSECA" },
-        { value: "504188755_503257567", label: "SGH-SOC-GESTÃO HOSPITALAR, S.A." },
-        // Continue adicionando hospitais aqui
-    ];
-
-    // Limpa o select antes de adicionar os novos hospitais
-    hospitalSelect.innerHTML = "";
-
-    hospitals.forEach(function(hospital) {
-        var option = document.createElement("option");
-        option.value = hospital.value;
-        option.text = hospital.label;
-        hospitalSelect.appendChild(option);
-    });
-}
-
-// Função para capturar a seleção do hospital e preencher os dados do QR code (exemplo)
-function fillHospitalData() {
-    var selectedHospital = document.getElementById("hospital_select").value;
-    document.getElementById("qr_data").value = selectedHospital;
-}
