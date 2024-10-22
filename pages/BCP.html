@@ -8,12 +8,6 @@
     <link rel="stylesheet" href="/css/BCP.css">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script>
-        import { createClient } from '@supabase/supabase-js'
-
-        const supabaseUrl = 'https://cmxvccqnkipadmiqalyd.supabase.co'
-        const supabaseKey = process.env.SUPABASE_KEY
-        const supabase = createClient(supabaseUrl, supabaseKey)</script>
     <script type="module">
         import { openModal, closeModal, fillVendorData } from '/JScripts/ModalVendor.js'; window.openModal = openModal; window.closeModal = closeModal; window.fillVendorData = fillVendorData;
     </script>
