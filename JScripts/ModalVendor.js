@@ -11,13 +11,13 @@ document.getElementById('openModalBtn').addEventListener('click', openModal);
 function openModal() {
     const modal = document.getElementById("ModalVendor");
     modal.style.display = "block";
-    await populateVendorList(); // Call the function to populate the vendor list
+    populateVendorList(); // Call the function to populate the vendor list
 }
 
 // Function to close the modal
 function closeModal() {
     const modal = document.getElementById("ModalVendor");
-    modal.style.display = "none"; 
+    modal.style.display = "none";
 }
 
 // Function to fetch vendors from Supabase and populate the dropdown
@@ -31,7 +31,7 @@ async function populateVendorList() {
         const { data, error } = await supabase
             .from('VENDORSBCP') // Ensure this table name matches exactly in Supabase
             .select('NIF, VENDOR'); // Ensure these are the correct column names
-console.log(data)
+        console.log(data)
         if (error) {
             throw error;
         }
@@ -46,7 +46,7 @@ console.log(data)
         vendorSelect.appendChild(defaultOption);
 
         // Populate with the fetched vendors
-        data.forEach(function (vendor) {
+        data.forEach(function(vendor) {
             const option = document.createElement("option");
             option.value = vendor.NIF; // Assuming 'NIF' is the vendor ID
             option.text = vendor.VENDOR; // Assuming 'VENDOR' is the name of the vendor
@@ -59,7 +59,7 @@ console.log(data)
 }
 
 // Event listeners for modal open/close behavior
-window.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById("ModalVendor");
     const btn = document.getElementById("openModalBtn");
     const span = document.getElementsByClassName("close")[0];
@@ -71,7 +71,7 @@ window.addEventListener('DOMContentLoaded', function () {
     span.addEventListener('click', closeModal); // Changed to use addEventListener
 
     // Close modal if clicked outside of it
-    window.addEventListener('click', function (event) {
+    window.addEventListener('click', function(event) {
         if (event.target == modal) {
             closeModal();
         }
