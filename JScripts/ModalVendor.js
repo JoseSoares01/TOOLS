@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js'
 
 // Initialize the Supabase client
@@ -49,16 +48,24 @@ async function addVendor(name, nif) {
     }
 }
 
-// Modal control
+// Modal control functions
 function openModal() {
     const modal = document.getElementById("ModalVendor");
-    modal.style.display = "block";
-    populateVendorList();
+    if (modal) {
+        modal.style.display = "block";  // Show the modal
+        populateVendorList();           // Populate vendor dropdown
+    } else {
+        console.error('Modal element not found!');
+    }
 }
 
 function closeModal() {
     const modal = document.getElementById("ModalVendor");
-    modal.style.display = "none";
+    if (modal) {
+        modal.style.display = "none";  // Hide the modal
+    } else {
+        console.error('Modal element not found!');
+    }
 }
 
 // Populate NIF field when a vendor is selected
@@ -69,28 +76,46 @@ function fillVendorData() {
 
 // Event listeners for modal and form submission
 window.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById("ModalVendor");
     const btn = document.getElementById("openModalBtn");
+
+    // Check if button exists and attach event listener to open modal
+    if (btn) {
+        btn.onclick = openModal;
+    } else {
+        console.error('Button with id "openModalBtn" not found!');
+    }
+
     const span = document.getElementsByClassName("close")[0];
 
-    btn.onclick = openModal;
-    span.onclick = closeModal;
+    // Close modal when the "X" button is clicked
+    if (span) {
+        span.onclick = closeModal;
+    } else {
+        console.error('Close button not found!');
+    }
 
+    // Close modal when clicking outside of it
     window.onclick = function(event) {
+        const modal = document.getElementById("ModalVendor");
         if (event.target == modal) {
             closeModal();
         }
     };
 
+    // Handle form submission for adding new vendors
     document.getElementById('vendorForm').addEventListener('submit', async function(event) {
         event.preventDefault();
 
         const vendorName = document.getElementById('vendor_name').value;
         const vendorNif = document.getElementById('nif_vendedor').value;
 
+        // Add the new vendor to Supabase
         await addVendor(vendorName, vendorNif);
 
-        populateVendorList();  // Refresh vendor list
+        // Refresh vendor list after adding
+        populateVendorList();
+
+        // Clear form inputs
         document.getElementById('vendor_name').value = '';
         document.getElementById('nif_vendedor').value = '';
     });
