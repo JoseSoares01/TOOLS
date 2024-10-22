@@ -9,7 +9,7 @@ const supabase = createClient(supabaseUrl, supabaseKey); // Initialize Supabase 
 function openModal() {
     const modal = document.getElementById("ModalVendor");
     modal.style.display = "block";
-    populateVendorList(); // Call the function to populate the vendor list
+    await populateVendorList(); // Call the function to populate the vendor list
 }
 
 // Function to close the modal
@@ -29,7 +29,7 @@ async function populateVendorList() {
         const { data, error } = await supabase
             .from('VENDORSBCP') // Ensure this table name matches exactly in Supabase
             .select('NIF, VENDOR'); // Ensure these are the correct column names
-
+console.log(data)
         if (error) {
             throw error;
         }
