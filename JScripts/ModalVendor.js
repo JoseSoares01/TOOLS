@@ -1,36 +1,41 @@
-// Import Supabase and initialize the client
+// ModalVendor.js
 import { createClient } from '@supabase/supabase-js'; // Import Supabase
-const supabaseUrl = 'https://cmxvccqnkipadmiqalyd.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNteHZjY3Fua2lwYWRtaXFhbHlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk2MDA2MDksImV4cCI6MjA0NTE3NjYwOX0.2dz9xleUx2vv8NKvUE6UNFRgu-3b9iMhOedNE3Ls6OE'; // Replace with your actual Supabase anon/public key
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-// Função para abrir o modal
+const supabaseUrl = 'https://cmxvccqnkipadmiqalyd.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNteHZjY3Fua2lwYWRtaXFhbHlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk2MDA2MDksImV4cCI6MjA0NTE3NjYwOX0.2dz9xleUx2vv8NKvUE6UNFRgu-3b9iMhOedNE3Ls6OE'; // Use the actual key
+const supabase = createClient(supabaseUrl, supabaseKey); // Initialize Supabase client
+
+// Function to open the modal and fetch the vendors
 function openModal() {
     const modal = document.getElementById("ModalVendor");
     modal.style.display = "block";
-    populateVendorList(); // Corrigido nome da função
+    populateVendorList(); // Call the function to populate the vendor list
 }
 
-// Função para fechar o modal
+// Function to close the modal
 function closeModal() {
     const modal = document.getElementById("ModalVendor");
     modal.style.display = "none";
 }
 
-// Função para preencher o select com os vendors do banco de dados Supabase
+// Function to fetch vendors from Supabase and populate the dropdown
 async function populateVendorList() {
     const vendorSelect = document.getElementById("vendor_select");
 
-    // Limpa o select antes de adicionar os novos vendors
-    vendorSelect.innerHTML = "";
+    // Show a loading message before fetching
+    vendorSelect.innerHTML = "<option>Loading...</option>";
 
-    // Fetch vendors from Supabase
     try {
         const { data, error } = await supabase
-            .from('VENDORSBCP') // Assuming your table is named VENDORS
-            .select('*'); // Replace 'id' and 'name' with your actual column names
+            .from('VENDORSBCP') // Ensure this table name matches exactly in Supabase
+            .select('NIF, VENDOR'); // Ensure these are the correct column names
 
-        if (error) throw error;
+        if (error) {
+            throw error;
+        }
+
+        // Clear previous options
+        vendorSelect.innerHTML = "";
 
         // Add default option
         const defaultOption = document.createElement("option");
@@ -38,11 +43,11 @@ async function populateVendorList() {
         defaultOption.text = "Selecione um vendor";
         vendorSelect.appendChild(defaultOption);
 
-        // Populate the select with vendors from the database
+        // Populate with the fetched vendors
         data.forEach(function (vendor) {
             const option = document.createElement("option");
-            option.value = vendor.NIF; // Assuming 'id' is the column for vendor value
-            option.text = vendor.VENDOR; // Assuming 'name' is the column for vendor label
+            option.value = vendor.NIF; // Assuming 'NIF' is the vendor ID
+            option.text = vendor.VENDOR; // Assuming 'VENDOR' is the name of the vendor
             vendorSelect.appendChild(option);
         });
     } catch (error) {
@@ -51,34 +56,22 @@ async function populateVendorList() {
     }
 }
 
-// Função para preencher o campo de NIF com base na seleção do vendor
-function fillVendorData() {
-    const selectedValue = document.getElementById('vendor_select').value;
-
-    if (selectedValue) {
-        document.getElementById('nif_vendedor').value = selectedValue;
-    } else {
-        // Limpa o campo se nenhum vendor for selecionado
-        document.getElementById('nif_vendedor').value = '';
-    }
-}
-
-// Event listeners para o modal
+// Event listeners for modal open/close behavior
 window.addEventListener('DOMContentLoaded', function () {
     const modal = document.getElementById("ModalVendor");
     const btn = document.getElementById("openModalBtn");
     const span = document.getElementsByClassName("close")[0];
 
-    // Abrir modal ao clicar no botão
-    btn.onclick = openModal;
+    // Open modal when button is clicked
+    btn.addEventListener('click', openModal); // Changed to use addEventListener
 
-    // Fechar modal ao clicar no "X"
-    span.onclick = closeModal;
+    // Close modal when "X" is clicked
+    span.addEventListener('click', closeModal); // Changed to use addEventListener
 
-    // Fechar modal ao clicar fora dele
-    window.onclick = function (event) {
+    // Close modal if clicked outside of it
+    window.addEventListener('click', function (event) {
         if (event.target == modal) {
             closeModal();
         }
-    };
+    });
 });
