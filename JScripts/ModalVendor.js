@@ -6,7 +6,7 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = createClient(supabaseUrl, supabaseKey); // Initialize Supabase client
 
 // Function to open the modal and fetch the vendors
-async function openModal() {
+function openModal() {
     const modal = document.getElementById("ModalVendor");
     modal.style.display = "block";
     await populateVendorList(); // Call the function to populate the vendor list

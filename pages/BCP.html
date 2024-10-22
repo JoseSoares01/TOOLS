@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/BCP.css">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script type="module" src="/JScripts/ModalVendor.js"></script>
     <script>
         // Verifica se o usuário está logado
         const usuarioLogado = localStorage.getItem('usuarioLogado');
@@ -73,7 +74,6 @@
 
     <!-- Botão para abrir o modal -->
     <button id="openModalBtn" onclick="openModal()">Selecione o Vendor</button>
-
     <!-- MODAL MENU START -->
     <div id="ModalVendor" class="modal" style="display: none;">
         <div class="modal-content">
@@ -102,9 +102,6 @@
     <div class="footer">
         <img src="/images/imagen.png" alt="Logo">
     </div>
-    <script type="module" src="/JScripts/ModalVendor.js"></script>
     <script src="/JScripts/BCP.js"></script>
-    
 </body>
-
 </html>
