@@ -2,9 +2,9 @@
 const usuariosValidos = {
     JanyelSVF: "SVF_010203",
     HenriqueSVF: "SVF_020304",
-    TcbSVF: "SVF_030405",
+    TABSVF: "SVF_030405",
     AndreSVF: "SVF_040506",
-    SterMBCP: "SVF_050607"
+    EsterMBCP: "SVF_050607"
 };
 
 // Capturando o formulário de login

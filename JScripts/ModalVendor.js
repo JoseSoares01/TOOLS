@@ -32,7 +32,7 @@ function fillHospitalData() {
     const selectedValue = document.getElementById('vendor_select').value;
 
     if (selectedValue) {
-        const [nifVendedor, nifEmpresa] = selectedValue.split('_');
+        const [nifVendedor] = selectedValue.split('_');
         document.getElementById('nif_vendedor').value = nifVendedor || '';
     } else {
         // Limpa os campos se nenhum vendor for selecionado
@@ -60,8 +60,8 @@ window.addEventListener('DOMContentLoaded', function() {
     };
 });
 
-//List_VendorU-->
+//List_Vendor-->
 const vendor = [
     { value: "", label: "Selecione um vendor" },
-    { value: "500135088", label: "AUTORIDADE TRIBUARIA" },
+    { value: "500135088", label: "AUTORIDADE TRIBUTARIA" },
 ]
