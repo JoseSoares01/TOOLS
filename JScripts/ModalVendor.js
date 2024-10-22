@@ -1,4 +1,5 @@
 // Import Supabase and initialize the client
+import { createClient } from '@supabase/supabase-js'; // Import Supabase
 const supabaseUrl = 'https://cmxvccqnkipadmiqalyd.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNteHZjY3Fua2lwYWRtaXFhbHlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk2MDA2MDksImV4cCI6MjA0NTE3NjYwOX0.2dz9xleUx2vv8NKvUE6UNFRgu-3b9iMhOedNE3Ls6OE'; // Replace with your actual Supabase anon/public key
 const supabase = supabase.createClient(supabaseUrl, supabaseKey);
