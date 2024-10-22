@@ -26,8 +26,8 @@ async function populateVendorList() {
     // Fetch vendors from Supabase
     try {
         const { data, error } = await supabase
-            .from('VENDORS') // Assuming your table is named VENDORS
-            .select('id, name'); // Replace 'id' and 'name' with your actual column names
+            .from('VendorsBCP') // Assuming your table is named VENDORS
+            .select('NIF, VENDOR'); // Replace 'id' and 'name' with your actual column names
 
         if (error) throw error;
 
