@@ -1,67 +1,97 @@
-// Lista de vendors
-const vendors = [
-    { value: "", label: "Selecione um vendor" },
-    { value: "500135088", label: "AUTORIDADE TRIBUTARIA" },
-    // Adicione mais vendors aqui conforme necessário
-];
 
-// Função para abrir o modal
+import { createClient } from '@supabase/supabase-js'
+
+// Initialize the Supabase client
+const supabaseUrl = 'https://cmxvccqnkipadmiqalyd.supabase.co'
+const supabaseKey = process.env.SUPABASE_KEY
+const supabase = createClient(supabaseUrl, supabaseKey)
+
+async function fetchVendors() {
+    const { data, error } = await supabase
+        .from('vendors')
+        .select('*');
+    if (error) {
+        console.error('Error fetching vendors:', error);
+        return [];
+    }
+    return data;
+}
+
+async function populateVendorList() {
+    const vendorSelect = document.getElementById("vendor_select");
+    vendorSelect.innerHTML = "";  // Clear the existing vendor options
+
+    // Default option
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.text = "Selecione um vendor";
+    vendorSelect.appendChild(defaultOption);
+
+    const vendors = await fetchVendors();
+
+    vendors.forEach(function(vendor) {
+        const option = document.createElement("option");
+        option.value = vendor.nif;  // Assuming NIF is the value field
+        option.text = vendor.name;  // Assuming name is the label field
+        vendorSelect.appendChild(option);
+    });
+}
+
+async function addVendor(name, nif) {
+    const { data, error } = await supabase
+        .from('vendors')
+        .insert([{ name: name, nif: nif }]);
+
+    if (error) {
+        console.error('Error adding vendor:', error);
+    } else {
+        console.log('Vendor added:', data);
+    }
+}
+
+// Modal control
 function openModal() {
     const modal = document.getElementById("ModalVendor");
     modal.style.display = "block";
-    populateVendorList(); // Corrigido nome da função
+    populateVendorList();
 }
 
-// Função para fechar o modal
 function closeModal() {
     const modal = document.getElementById("ModalVendor");
     modal.style.display = "none";
 }
 
-// Função para preencher o select com os vendors
-function populateVendorList() { // Corrigido nome da função
-    const vendorSelect = document.getElementById("vendor_select");
-
-    // Limpa o select antes de adicionar os novos vendors
-    vendorSelect.innerHTML = "";
-
-    // Adiciona todos os vendors da lista
-    vendors.forEach(function(vendor) { // Usando a lista correta de vendors
-        const option = document.createElement("option");
-        option.value = vendor.value;
-        option.text = vendor.label;
-        vendorSelect.appendChild(option);
-    });
-}
-
-// Função para preencher o campo de NIF com base na seleção do vendor
-function fillVendorData() { // Corrigido nome da função para match com o HTML
+// Populate NIF field when a vendor is selected
+function fillVendorData() {
     const selectedValue = document.getElementById('vendor_select').value;
-
-    if (selectedValue) {
-        document.getElementById('nif_vendedor').value = selectedValue;
-    } else {
-        // Limpa o campo se nenhum vendor for selecionado
-        document.getElementById('nif_vendedor').value = '';
-    }
+    document.getElementById('nif_vendedor').value = selectedValue || '';
 }
 
-// Event listeners para o modal
+// Event listeners for modal and form submission
 window.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById("ModalVendor");
     const btn = document.getElementById("openModalBtn");
     const span = document.getElementsByClassName("close")[0];
 
-    // Abrir modal ao clicar no botão
     btn.onclick = openModal;
-
-    // Fechar modal ao clicar no "X"
     span.onclick = closeModal;
 
-    // Fechar modal ao clicar fora dele
     window.onclick = function(event) {
         if (event.target == modal) {
             closeModal();
         }
     };
+
+    document.getElementById('vendorForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const vendorName = document.getElementById('vendor_name').value;
+        const vendorNif = document.getElementById('nif_vendedor').value;
+
+        await addVendor(vendorName, vendorNif);
+
+        populateVendorList();  // Refresh vendor list
+        document.getElementById('vendor_name').value = '';
+        document.getElementById('nif_vendedor').value = '';
+    });
 });
