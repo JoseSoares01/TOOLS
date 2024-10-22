@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="/css/BCP.css">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script type="module" src="/JScripts/ModalVendor.js"></script>
+    <script type="module">
+        import { openModal, closeModal, fillVendorData } from '/JScripts/ModalVendor.js'; window.openModal = openModal; window.closeModal = closeModal; window.fillVendorData = fillVendorData;
+    </script>
     <script>
         // Verifica se o usuário está logado
         const usuarioLogado = localStorage.getItem('usuarioLogado');
@@ -81,9 +83,9 @@
             <h3>Selecione Vendor</h3>
 
             <!-- VENDOR LIST START -->
-            <select id="vendor_select" onchange="fillVendorData()">
+            <select id="vendor_select" onchange="fillVendorData()"></select>
             <!-- Options serão preenchidas via JavaScript -->
-        </select>
+            </select>
         </div>
     </div>
 
@@ -104,4 +106,5 @@
     </div>
     <script src="/JScripts/BCP.js"></script>
 </body>
+
 </html>
