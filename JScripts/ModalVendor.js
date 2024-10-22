@@ -1,8 +1,15 @@
+// Lista de vendors
+const vendors = [
+    { value: "", label: "Selecione um vendor" },
+    { value: "500135088", label: "AUTORIDADE TRIBUTARIA" },
+    // Adicione mais vendors aqui conforme necessário
+];
+
 // Função para abrir o modal
 function openModal() {
     const modal = document.getElementById("ModalVendor");
     modal.style.display = "block";
-    populateHospitalList(); // Popula a lista de hospitais
+    populateVendorList(); // Corrigido nome da função
 }
 
 // Função para fechar o modal
@@ -11,15 +18,15 @@ function closeModal() {
     modal.style.display = "none";
 }
 
-// Função para preencher o select com os vendor's
-function populateHospitalList() {
+// Função para preencher o select com os vendors
+function populateVendorList() { // Corrigido nome da função
     const vendorSelect = document.getElementById("vendor_select");
 
-    // Limpa o select antes de adicionar os novos vendor's
+    // Limpa o select antes de adicionar os novos vendors
     vendorSelect.innerHTML = "";
 
-    // Adiciona todos os hospitais da lista global
-    hospitais.forEach(function(hospital) {
+    // Adiciona todos os vendors da lista
+    vendors.forEach(function(vendor) { // Usando a lista correta de vendors
         const option = document.createElement("option");
         option.value = vendor.value;
         option.text = vendor.label;
@@ -27,15 +34,14 @@ function populateHospitalList() {
     });
 }
 
-// Função para preencher os campos de NIF com base na seleção do vendor's
-function fillHospitalData() {
+// Função para preencher o campo de NIF com base na seleção do vendor
+function fillVendorData() { // Corrigido nome da função para match com o HTML
     const selectedValue = document.getElementById('vendor_select').value;
 
     if (selectedValue) {
-        const [nifVendedor] = selectedValue.split('_');
-        document.getElementById('nif_vendedor').value = nifVendedor || '';
+        document.getElementById('nif_vendedor').value = selectedValue;
     } else {
-        // Limpa os campos se nenhum vendor for selecionado
+        // Limpa o campo se nenhum vendor for selecionado
         document.getElementById('nif_vendedor').value = '';
     }
 }
@@ -59,9 +65,3 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     };
 });
-
-//List_Vendor-->
-const vendor = [
-    { value: "", label: "Selecione um vendor" },
-    { value: "500135088", label: "AUTORIDADE TRIBUTARIA" },
-]
