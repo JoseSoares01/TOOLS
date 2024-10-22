@@ -40,8 +40,8 @@ async function populateVendorList() {
         // Populate the select with vendors from the database
         data.forEach(function (vendor) {
             const option = document.createElement("option");
-            option.value = vendor.id; // Assuming 'id' is the column for vendor value
-            option.text = vendor.name; // Assuming 'name' is the column for vendor label
+            option.value = vendor.NIF; // Assuming 'id' is the column for vendor value
+            option.text = vendor.VENDOR; // Assuming 'name' is the column for vendor label
             vendorSelect.appendChild(option);
         });
     } catch (error) {
