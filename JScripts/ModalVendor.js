@@ -1,7 +1,7 @@
 // Lista de vendors
 const vendors = [
     { value: "", label: "Selecione um vendor" },
-    { value: "500135088", label: "AUTORIDADE TRIBUTARIA" },
+    { value: "600086178", label: "AUTORIDADE TRIBUTARIA" },
     { value: "508184258", label: "INST REG NOTARIADO" },
     // Adicione mais vendors aqui conforme necessário
 ];
