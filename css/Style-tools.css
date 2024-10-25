@@ -18,6 +18,7 @@ nav {
 .nav-left {
     display: flex;
     gap: 1rem;
+    background-color: #f8f9fa;
 }
 
 button {
