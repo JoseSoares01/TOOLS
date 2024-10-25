@@ -5,16 +5,23 @@
     font-family: Arial, sans-serif;
     
 }
-html, body {
-    height: 100%; /* Garante que a altura ocupe toda a tela */
+.background-image {
+    background-image: url(/images/1175.jpg);
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1; /* Coloca a imagem atrás de todo o conteúdo */
 }
 
-body {
-    background: linear-gradient(to top, #017AB1, hsl(196, 91%, 9%));
-    display: flex;
-    flex-direction: column;
+.content {
+    position: relative;
+    z-index: 1; /* Garante que o conteúdo fique sobre a imagem de fundo */
 }
-
 nav {
     background-color: #072745;
     padding: 1rem;
@@ -27,8 +34,7 @@ nav {
 .nav-left {
     display: flex;
     gap: 1rem;
-        background-color: #072745;
-
+    background-color: #072745;
 }
 
 button {
@@ -75,7 +81,7 @@ button:hover {
 }
 
 .card {
-    background: #0179b100;
+    background-color: #0be91209;
     padding: 2rem;
     border-radius: 16px;
     box-shadow: 0 10px 6px rgba(0, 0, 0, 0.397);
@@ -179,12 +185,11 @@ button:hover {
 footer {
 
     text-align: center;
-    padding: 10px 0;
+    padding: 15px 0;
     position: fixed;
     width: 100%;
     bottom: 0;
-    background-color:#0173A0;
-    color:white;
+    
 }
 
 .footer img {
@@ -195,4 +200,6 @@ footer {
 .tamanho_logo {
     font-size: 10px;
     color: rgba(255, 255, 255, 0.527);
+    text-align: center;
+    padding: 190px 0;
 }
