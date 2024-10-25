@@ -65,7 +65,7 @@ button:hover {
 }
 
 .card {
-    background: white;
+    background: #072745;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -76,7 +76,7 @@ button:hover {
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    color: #333;
+    color: #f1ecec;
     position: relative;
     overflow: hidden;
 }
@@ -97,6 +97,7 @@ button:hover {
     opacity: 0;
     pointer-events: none;
     transition: all 0.5s ease;
+    background-color: #072745;
 }
 
 .overlay {
@@ -163,4 +164,22 @@ button:hover {
 
 .fade-out {
     animation: fadeOut 0.5s ease forwards;
+}
+
+footer {
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+.footer img {
+    height: 50px;
+    transition: margin-top 0.3s ease;
+}
+
+.tamanho_logo {
+    font-size: 10px;
 }

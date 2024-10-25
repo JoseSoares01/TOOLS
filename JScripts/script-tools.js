@@ -1,5 +1,11 @@
 function navigate(page) {
-    alert(`Navigating to ${page} page`);
+    // Verifica se ainda está logado antes de navegar
+    if (!localStorage.getItem('usuarioLogado')) {
+        alert('Sua sessão expirou. Por favor, faça login novamente.');
+        window.location.href = 'https://suportesvf.pt/login.html';
+        return;
+    }
+    window.location.href = `https://suportesvf.pt/pages/${page}.html`;
 }
 
 function logout() {
@@ -12,7 +18,7 @@ document.querySelectorAll('.card').forEach(card => {
         e.preventDefault();
         const url = this.dataset.url;
         const overlay = document.querySelector('.overlay');
-        
+
         // Ativa o overlay com fade
         overlay.style.display = 'block';
         setTimeout(() => overlay.classList.add('active'), 10);
@@ -25,23 +31,13 @@ document.querySelectorAll('.card').forEach(card => {
             overlay.classList.remove('active');
             overlay.style.display = 'none';
             this.classList.remove('expanding');
-            // Aqui você pode adicionar o redirecionamento real
-            alert(`Redirecionando para: ${url}`);
-            // window.location.href = url;
+            // Redirecionamento real
+            window.location.href = `https://suportesvf.pt/pages/${url}.html`;
         }, 500);
     });
 });
 
-function navigate(page) {
-    // Verifica se ainda está logado antes de navegar
-    if (!localStorage.getItem('usuarioLogado')) {
-        alert('Sua sessão expirou. Por favor, faça login novamente.');
-        window.location.href = 'https://suportesvf.pt/login.html';
-        return;
-    }
-    window.location.href = `https://suportesvf.pt/pages/${page}.html`;
-}
-
+// Função para animação
 function handleLogout() {
     // Adiciona efeito visual ao botão
     const logoutBtn = document.querySelector('.logout-btn');
@@ -57,25 +53,17 @@ function handleLogout() {
 
         // Redireciona para a página de login
         window.location.href = 'https://suportesvf.pt/login.html';
-    }, 500);
+    }, 500); // Ajuste o tempo conforme necessário
 }
 
-
-
-function handleLogout() {
-    // Adiciona efeito visual ao botão
-    const logoutBtn = document.querySelector('.logout-btn');
-    logoutBtn.classList.add('logging-out');
-
-    // Adiciona efeito de fade out na página
-    document.body.classList.add('fade-out');
-
-    // Aguarda a animação terminar
+function expandAndRedirect(url, cardElement) {
+    expandCard(cardElement); // Chama a função de expansão
     setTimeout(() => {
-        // Remove o token de login
-        localStorage.removeItem('usuarioLogado');
+        window.location.href = url; // Redireciona após o efeito de expansão
+    }, 500); // Ajuste o tempo conforme necessário
+}
 
-        // Redireciona para a página de login
-        window.location.href = 'https://suportesvf.pt/login.html';
-    }, 500);
+function expandCard(cardElement) {
+    // Sua lógica de expansão aqui
+    cardElement.classList.toggle('expanded'); // Exemplo: adiciona ou remove uma classe para expansão
 }

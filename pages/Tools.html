@@ -16,15 +16,29 @@
         <button onclick="logout()">Logout</button>
     </nav>
 
-    <h1 class="page-title">Ferramentas Servinform</h1>
     <div class="cards-container">
-        <div class="card " onclick="expandCard(this) ">1</div>
-        <div class="card " onclick="expandCard(this) ">2</div>
-        <div class="card " onclick="expandCard(this) ">3</div>
-        <div class="card " onclick="expandCard(this) ">4</div>
-        <div class="card" onclick="expandCard.href='/pages/Convert.html'">Conversor de Imagens</div>
-        <div class="card " onclick="expandCard(this) ">6</div>
+        <div class="card" onclick="expandCard(this)">1</div>
+        <div class="card" onclick="expandCard(this)">2</div>
+        <div class="card" onclick="expandCard(this)">3</div>
+        <div class="card" onclick="expandCard(this)">4</div>
+        <div class="card" onclick="expandAndRedirect(this)" data-url="Convert">Conversor de Imagens</div>
+        <div class="card" onclick="expandCard(this)">6</div>
+
     </div>
+
+    <!--- FOOTER START --->
+    <footer>
+        <div class="footer">
+            <img src="/images/imagen.png" alt="Logo">
+        </div>
+        </div>
+        <div class="tamanho_logo">
+            <section class="apresentacao__conteudo">
+                <p1>&copy; 2024 Servinform PT</p1>
+        </div>
+    </footer>
+    <!--- FOOTER END --->
+
 
     <div class="overlay " onclick="closeExpandedCard() "></div>
 
