@@ -3,11 +3,20 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
-    background-color: #208BB4;
+    
+}
+html, body {
+    height: 100%; /* Garante que a altura ocupe toda a tela */
+}
+
+body {
+    background: linear-gradient(to top, #017AB1, hsl(196, 91%, 9%));
+    display: flex;
+    flex-direction: column;
 }
 
 nav {
-    background: #f8f9fa;
+    background-color: #072745;
     padding: 1rem;
     display: flex;
     justify-content: space-between;
@@ -18,7 +27,8 @@ nav {
 .nav-left {
     display: flex;
     gap: 1rem;
-    background-color: #f8f9fa;
+        background-color: #072745;
+
 }
 
 button {
@@ -65,13 +75,13 @@ button:hover {
 }
 
 .card {
-    background: #072745;
+    background: #0179b100;
     padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 10px 6px rgba(0, 0, 0, 0.397);
     cursor: pointer;
     transition: all 0.3s ease;
-    min-height: 200px;
+    min-height: 170px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -167,12 +177,14 @@ button:hover {
 }
 
 footer {
-    color: white;
+
     text-align: center;
     padding: 10px 0;
     position: fixed;
     width: 100%;
     bottom: 0;
+    background-color:#0173A0;
+    color:white;
 }
 
 .footer img {
@@ -182,4 +194,5 @@ footer {
 
 .tamanho_logo {
     font-size: 10px;
+    color: rgba(255, 255, 255, 0.527);
 }
