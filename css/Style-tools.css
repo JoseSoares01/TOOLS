@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
+    background-color: #208BB4;
 }
 
 nav {
@@ -11,7 +12,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .nav-left {
@@ -37,7 +38,7 @@ button:hover {
 .page-title {
     text-align: center;
     padding: 2rem;
-    color: #333;
+    color: #f1ecec;
     font-size: 2rem;
     font-weight: bold;
     margin-top: 1rem;
@@ -66,7 +67,7 @@ button:hover {
     background: white;
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: all 0.3s ease;
     min-height: 200px;
@@ -81,7 +82,7 @@ button:hover {
 
 .card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .card.expanding {
@@ -104,7 +105,7 @@ button:hover {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 999;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -114,7 +115,9 @@ button:hover {
     opacity: 1;
 }
 
+
 /* Links dentro dos cards */
+
 .card a {
     position: absolute;
     top: 0;
@@ -128,7 +131,9 @@ button:hover {
     justify-content: center;
 }
 
+
 /* Novo estilo para o botão de logout */
+
 .logout-btn {
     background: #086da4;
     transition: all 0.3s ease;
@@ -143,10 +148,16 @@ button:hover {
     transform: scale(0.95);
 }
 
+
 /* Animation for logout effect */
+
 @keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }
 
 .fade-out {

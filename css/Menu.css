@@ -58,7 +58,8 @@ body {
 }
 
 .home-button img {
-    width: 40px; /* Ajuste o tamanho conforme necessário */
+    width: 40px;
+    /* Ajuste o tamanho conforme necessário */
     height: auto;
     transition: transform 0.3s, background-color 0.3s;
 }
@@ -79,11 +80,12 @@ footer {
     width: 100%;
     bottom: 0;
 }
+
 .footer img {
     height: 50px;
     transition: margin-top 0.3s ease;
 }
 
-.tamanho_logo{
-        font-size: 10px;
-      }
+.tamanho_logo {
+    font-size: 10px;
+}
