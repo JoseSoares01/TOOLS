@@ -7,7 +7,7 @@
 }
 .background-image {
     background-image: url(/images/1175.jpg);
-    background-size: 100%;
+    background-size: cover; /* Muda de 100% para cover */
     background-position: center;
     background-repeat: no-repeat;
     position: fixed;
@@ -15,8 +15,9 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -1; /* Coloca a imagem atrás de todo o conteúdo */
+    z-index: -1;
 }
+
 
 .content {
     position: relative;
@@ -189,7 +190,7 @@ footer {
     position: fixed;
     width: 100%;
     bottom: 0;
-    
+
 }
 
 .footer img {
@@ -202,4 +203,88 @@ footer {
     color: rgba(255, 255, 255, 0.527);
     text-align: center;
     padding: 190px 0;
+}
+
+/*tentaiva de responsividade:
+
+/* Ajuste para telas pequenas (ex. iPhone 14) */
+@media (max-width: 480px) {
+    .page-title {
+        font-size: 1.5rem;
+        padding: 1rem;
+    }
+
+    .cards-container {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .card {
+        padding: 1rem;
+        font-size: 1.2rem;
+    }
+
+    nav {
+        padding: 0.5rem;
+    }
+
+    button, .logout-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    footer {
+        font-size: 0.8rem;
+    }
+}
+
+/* Ajuste para telas médias (ex. iPad) */
+@media (max-width: 820px) {
+    .page-title {
+        font-size: 1.8rem;
+    }
+
+    .cards-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .card {
+        font-size: 1.3rem;
+        padding: 1.5rem;
+    }
+}
+
+/* Ajuste para telas de largura intermediária (ex. Pixel 7) */
+@media (max-width: 1040px) {
+    .page-title {
+        font-size: 1.8rem;
+        padding: 1.5rem;
+    }
+
+    .cards-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .card {
+        font-size: 1.3rem;
+    }
+}
+
+/*responsividade na imagem de fundo*/
+
+@media (max-width: 480px) {
+    .background-image {
+        background-image: url(/images/BG-Toolss.jpg); /* Imagem específica para telas pequenas */
+        background-size: cover;
+    }
+}
+
+@media (max-width: 820px) {
+    .background-image {
+        background-image: url(/images/BG-Toolss.jpg); /* Imagem específica para telas médias */
+        background-size: cover;
+    }
 }
