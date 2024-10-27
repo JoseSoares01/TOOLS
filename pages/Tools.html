@@ -1,52 +1,92 @@
 <!DOCTYPE html>
 <html lang="pt">
-
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <link rel="stylesheet" href="/css/Style-tools.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 </head>
-
 <body>
     <div class="background-image"></div>
     <div class="content">
-    <nav>
-        <div class="nav-left">
-            <button onclick="navigate('home')">🏠 Home</button>
-            <button onclick="navigate('support')">🔧 Support</button>
+        <nav>
+            <div class="nav-left">
+                <button onclick="navigate('home')">🏠 Home</button>
+                <button onclick="navigate('support')">🔧 Support</button>
+            </div>
+            <button onclick="logout()">Logout</button>
+        </nav>
+
+        <h1 class="page-title">Ferramentas Servinform</h1>
+
+        <div class="cards-container">
+            <div class="card" data-url="Trivalor">
+                <div class="box">
+                    <div class="content">
+                        <h2>01</h2>
+                        <h3>Gerador QR code Trivalor</h3>
+                        <p>Gere códigos QR para o sistema Trivalor</p>
+                        <a href="#" onclick="expandAndRedirect(this.parentElement.parentElement.parentElement)">Acessar</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-url="BCP">
+                <div class="box">
+                    <div class="content">
+                        <h2>02</h2>
+                        <h3>Gerador QR code MBCP</h3>
+                        <p>Gere códigos QR para o sistema MBCP</p>
+                        <a href="#" onclick="expandAndRedirect(this.parentElement.parentElement.parentElement)">Acessar</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-url="SplitPDF">
+                <div class="box">
+                    <div class="content">
+                        <h2>03</h2>
+                        <h3>Editar PDF's</h3>
+                        <p>Ferramentas para edição de arquivos PDF</p>
+                        <a href="#" onclick="expandAndRedirect(this.parentElement.parentElement.parentElement)">Acessar</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-url="Convert">
+                <div class="box">
+                    <div class="content">
+                        <h2>04</h2>
+                        <h3>Conversor de Imagens</h3>
+                        <p>Converta imagens entre diferentes formatos</p>
+                        <a href="#" onclick="expandAndRedirect(this.parentElement.parentElement.parentElement)">Acessar</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-url="ServinformSite">
+                <div class="box">
+                    <div class="content">
+                        <h2>05</h2>
+                        <h3>Site Servinform</h3>
+                        <p>Acesse o site oficial da Servinform</p>
+                        <a href="#" onclick="expandAndRedirect(this.parentElement.parentElement.parentElement)">Acessar</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button onclick="logout()">Logout</button>
-    </nav>
 
-    <h1 class="page-title">Ferramentas Servinform</h1>
+        <footer>
+            <div class="footer">
+                <img src="/images/imagen.png" alt="Logo">
+            </div>
+            <div class="tamanho_logo">
+                <p1>&copy; 2024 Servinform PT</p1>
+            </div>
+        </footer>
 
-    <div class="cards-container">
-        <div class="card" onclick="expandAndRedirect(this)" data-url="Trivalor">Gerador QR code Trivalor</div>
-        <div class="card" onclick="expandAndRedirect(this)" data-url="BCP">Gerador QR code MBCP</div>
-        <div class="card" onclick="expandCard(this)">3</div>
-        <div class="card" onclick="expandAndRedirect(this)" data-url="SplitPDF">Editar PDF'S</div>
-        <div class="card" onclick="expandAndRedirect(this)" data-url="Convert">Conversor de Imagens</div>
-        <div class="card" onclick="expandAndRedirect(this)" data-url="ServinformSite">Site Servinform</div>
-
+        <div class="overlay" onclick="closeExpandedCard()"></div>
     </div>
-
-    <!--- FOOTER START --->
-    <footer>
-        <div class="footer">
-            <img src="/images/imagen.png" alt="Logo">
-        </div>
-        </div>
-        <div class="tamanho_logo">
-            <p1>&copy; 2024 Servinform PT</p1>
-        </div>
-    </footer>
-    <!--- FOOTER END --->
-
-
-    <div class="overlay " onclick="closeExpandedCard() "></div>
-
-    <script src="/JScripts/script-tools.js "></script>
+    <script src="/JScripts/script-tools.js"></script>
 </body>
-
 </html>
-<!--end{code}
