@@ -172,7 +172,7 @@ button:hover {
 }
 
 .card .box .content a:hover {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 10px 20px rgba(120, 255, 2, 0.6);
     background: #fff;
     color: #072745;
 }
