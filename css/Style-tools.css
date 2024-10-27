@@ -4,7 +4,12 @@
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
 }
-
+body {
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 100px; /* Espaço para o footer */
+    margin: 0;
+}
 .background-image {
     background-image: url(/images/1175.jpg);
     background-size: cover;
@@ -172,12 +177,14 @@ button:hover {
     color: #072745;
 }
 
+/* Ajuste o footer */
 footer {
     text-align: center;
     padding: 15px 0;
-    position: fixed;
+    position: fixed; /* ou fixed, dependendo do seu caso de uso */
     width: 100%;
     bottom: 0;
+
 }
 
 .footer img {
@@ -189,7 +196,8 @@ footer {
     font-size: 10px;
     color: rgba(255, 255, 255, 0.527);
     text-align: center;
-    padding: 20px 0;
+    padding: 10px 0;
+    margin: 0;
 }
 
 /* Responsividade */
