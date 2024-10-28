@@ -3,6 +3,7 @@ const vendors = [
     { value: "", label: "Selecione um vendor" },
     { value: "600086178", label: "AUTORIDADE TRIBUTARIA" },
     { value: "508184258", label: "INST REG NOTARIADO" },
+    { value: "600086593", label: "SINTRA LISBOA OESTE" },
     // Adicione mais vendors aqui conforme necessário
 ];
 
