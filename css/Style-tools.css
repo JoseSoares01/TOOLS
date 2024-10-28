@@ -4,12 +4,15 @@
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
 }
+
 body {
     min-height: 100vh;
     position: relative;
-    padding-bottom: 100px; /* Espaço para o footer */
+    padding-bottom: 100px;
+    /* Espaço para o footer */
     margin: 0;
 }
+
 .background-image {
     background-image: url(/images/1175.jpg);
     background-size: cover;
@@ -91,10 +94,7 @@ button:hover {
     position: relative;
     min-width: 320px;
     height: 440px;
-    box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.2),
-        inset -5px -5px 15px rgba(255, 255, 255, 0.1),
-        5px 5px 15px rgba(0, 0, 0, 0.3),
-        -5px -5px 15px rgba(255, 255, 255, 0.1);
+    box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.2), inset -5px -5px 15px rgba(255, 255, 255, 0.1), 5px 5px 15px rgba(0, 0, 0, 0.3), -5px -5px 15px rgba(255, 255, 255, 0.1);
     border-radius: 15px;
     margin: 30px;
     transition: 0.5s;
@@ -177,14 +177,16 @@ button:hover {
     color: #072745;
 }
 
+
 /* Ajuste o footer */
+
 footer {
     text-align: center;
     padding: 15px 0;
-    position: fixed; /* ou fixed, dependendo do seu caso de uso */
+    position: absolute;
+    /* ou fixed, dependendo do seu caso de uso */
     width: 100%;
     bottom: 0;
-
 }
 
 .footer img {
@@ -200,31 +202,28 @@ footer {
     margin: 0;
 }
 
+
 /* Responsividade */
+
 @media (max-width: 480px) {
     .page-title {
         font-size: 1.5rem;
         padding: 1rem;
     }
-
     .card {
         min-width: 280px;
         height: 400px;
         margin: 20px;
     }
-
     .card .box .content h2 {
         font-size: 6rem;
     }
-
     .card .box .content h3 {
         font-size: 1.5rem;
     }
-
     nav {
         padding: 0.5rem;
     }
-
     button {
         padding: 0.4rem 0.8rem;
         font-size: 0.9rem;
@@ -235,7 +234,6 @@ footer {
     .cards-container {
         padding: 0 10px;
     }
-
     .card {
         min-width: 300px;
     }
