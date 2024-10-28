@@ -59,7 +59,7 @@ h2 {
 input, select {
     background-color: rgb(61, 61, 61);
     padding: 15px;
-    border-radius: 5px;
+    border-radius: 12px;
     border: none;
     color: #ddd;
     width: 100%;
@@ -81,7 +81,7 @@ button {
 }
 
 button:hover {
-    background-color: #a8a8a8;
+    background-color: #0c71de;
 }
 
 .qr-output {
