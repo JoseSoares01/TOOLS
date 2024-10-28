@@ -27,10 +27,11 @@ body {
 .child1 {
     width: 90%;
     max-width: 800px;
-    background-color: #00285f;
+    background-color: #e4e7ea22;
     border-radius: 15px;
     padding: 20px;
     margin-bottom: 20px;
+
 }
 
 form {
