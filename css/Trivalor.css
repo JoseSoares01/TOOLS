@@ -1,261 +1,171 @@
-/* CSS Global */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(to top, #017AB1, hsl(196, 91%, 9%));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    flex-direction: column;
     margin: 0;
-    color: white;
-    padding: 10px;
-    box-sizing: border-box;
 }
 
-/*Botão de copiar*/
-.copy {
-    background-color: #ffffff00;
-    color: #fff;
-    border-radius: 8px;
+.container {
+    min-height: 100vh;
+    width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    padding: 8px 12px;
-    gap: 8px;
-    border: none;
-    outline: none;
-    cursor: pointer;
     justify-content: center;
-    margin-top: 20px;
-    box-shadow: none;
-    
-    /* Espaçamento entre o botão "copy" e o output */
+    background-image: url("/images/BG-Toolss.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px;
 }
 
-.copy:active {
-    background: #ffffff00;
+/* Rest of the CSS remains the same */
+.child1 {
+    width: 90%;
+    max-width: 800px;
+    background-color: #00285f;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
 }
 
-.copy:disabled {
-    background: #ffffff00;
-    color: #ffffff;
-    cursor: not-allowed;
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
-/*Fim botão de copiar*/
 
-/* Alteração para alinhar os inputs em 4 linhas e 3 colunas */
-
+h2 {
+    color: #ddd;
+    font-size: 28px;
+    font-family: 'Courier New', Courier, monospace;
+    margin-bottom: 20px;
+    text-align: center;
+}
 .input-group {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    /* 3 colunas */
-    gap: 10px;
-    /* Espaçamento entre os elementos */
-    max-width: 800px;
-    /* Largura máxima do container */
-    margin: 0 auto;
-    /* Centralizar o container */
-}
-
-.input-group input,
-.input-group select {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
     width: 100%;
-    /* Preencher o espaço disponível na coluna */
-    padding: 10px;
-    box-sizing: border-box;
+    margin-bottom: 20px;
 }
 
-button {
-    margin-top: 20px;
-}
-
-
-/* Demais estilos */
-
-.pais {
-    padding: 5px;
-    font-size: 1rem;
+input, select {
+    background-color: rgb(61, 61, 61);
+    padding: 15px;
+    border-radius: 5px;
     border: none;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px rgba(248, 247, 247, 0.227);
-    box-sizing: border-box;
+    color: #ddd;
+    width: 100%;
 }
 
-input,
-button,
-select {
-    padding: 5px;
-    font-size: 1rem;
-    border: solid;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.207);
-    box-sizing: border-box;
+input::placeholder {
+    color: #ddd;
 }
 
 button {
-    background-color: #0179b14e;
-    color: white;
+    background-color: silver;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    margin: 10px 0;
     width: 200px;
-    height: 50px;
-    font-size: 1rem;
-    padding: 10px;
-    border-radius: 50px;
-    border: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.616);
-    box-sizing: border-box;
+    transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #015f86;
+    background-color: #a8a8a8;
+}
+
+.qr-output {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
 }
 
 .qr-code {
-    margin-top: 20px;
-    text-align: center;
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
 }
 
 textarea {
     width: 100%;
-    max-width: 800px;
-    height: 55px;
-    margin-top: 30px;
-    resize: none;
-    border-radius: 13px;
+    background-color: rgb(61, 61, 61);
+    color: #ddd;
+    padding: 15px;
     border: none;
-    padding: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.249);
-    box-sizing: border-box;
+    border-radius: 5px;
+    margin: 10px 0;
+    resize: none;
+    height: 100px;
 }
 
-.footer img {
-    height: 50px;
-    transition: margin-top 0.3s ease;
+.copy {
+    background-color: transparent;
+    color: #ddd;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.footer p {
-    margin: 10px 0 0;
-    font-size: 1.2rem;
-    color: white;
-    text-align: center;
+.copy:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-@media (max-width: 600px) {
-    input,
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: rgb(22, 22, 22);
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 15px;
+    width: 80%;
+    max-width: 500px;
+    color: #ddd;
+}
+
+.close {
+    color: #ddd;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #999;
+}
+
+@media screen and (max-width: 630px) {
+    .child1 {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .input-group {
+        grid-template-columns: 1fr;
+    }
+
     button {
-        flex: 1 1 100%;
+        width: 100%;
     }
 }
-
-.home-button {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.3s;
-}
-
-.home-button img {
-    width: 40px;
-    height: 40px;
-    transition: transform 0.3s, background-color 0.3s;
-}
-
-.home-button:hover img {
-    transform: scale(1.05);
-}
-
-.home-button:active img {
-    transform: scale(0.95);
-}
-
-
-/* SIDEBAR START */
-/* The side navigation menu */
-.sidenav {
-    height: 100%; /* 100% Full-height */
-    width: 0; /* 0 width - change this with JavaScript */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
-    left: 0;
-    background-color: #012e42; /* Black*/
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
-    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
-  }
-  
-  /* The navigation menu links */
-  .sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-  }
-  
-  /* When you mouse over the navigation links, change their color */
-  .sidenav a:hover {
-    color: #f1f1f1;
-  }
-  
-  /* Position and style the close button (top right corner) */
-  .sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-  }
-  
-  /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
-  #main {
-    transition: margin-left .5s;
-    padding: 20px;
-  }
-  
-  /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-  @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
-  }
-  /* SIDEBAR END */
-  /* SIDEBAR DROP DOWN*/
-    /* Add an active class to the active dropdown button */
-    .active {
-        background-color: rgb(0, 0, 0);
-        color: white;
-      }
-    
-      /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
-      .dropdown-container {
-        display: none;
-        background-color: #012e42; 
-        padding-left: 8px;
-      }
-      
-      /* Optional: Style the caret down icon */
-      .fa-caret-down {
-        float: right;
-        padding-right: 8px;
-      }
-      .dropdown-navbar{
-        background-color:#012e42;
-        padding: 8px 8px 8px 32px;
-        text-decoration: none;
-        font-size: 25px;
-        color: #818181;
-        display: block;
-        transition: 0.3s; 
-        width: 200px;
-        height: 50px;
-        box-shadow: none ;
-      }
-      .dropdown-navbar a:hover {
-        color: #f1f1f1;
-      }

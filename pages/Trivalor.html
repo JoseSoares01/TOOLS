@@ -1,119 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<!--- HEADER START --->
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator</title>
-    <link rel="stylesheet" href="/css/ModalHospital.css">
-    <link rel="stylesheet" href="/css/Trivalor.css">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <link rel="stylesheet" href="/css/Trivalor.css">
     <script>
-        // Verifica se o usuário está logado
         const usuarioLogado = localStorage.getItem('usuarioLogado');
-
-        // Se não houver token de login, redireciona para a página de login
         if (!usuarioLogado) {
             alert('Você precisa fazer login para acessar esta página.');
-            window.location.href = 'https://suportesvf.pt/login.html'; // URL da página de login
+            window.location.href = 'https://suportesvf.pt/login.html';
         }
     </script>
-
 </head>
-<!--- HEADER END --->
-<!------------------>
-<!--- BODY START --->
-
 
 <body>
-    <img src="/images/home-button.png" width=40px class="home-button" onclick="openNav()">
-    <!-- SIDEBAR START -->
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="/Html_teste/index.html">Home</a>
-        <a href="/index.html">Login</a>
-        <a href="#">Link 3</a>
-        <a href="#">Link 4</a>
-        <button class="dropdown-navbar">Tools
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
-            <a href="#">ferramenta 1</a>
-            <a href="#">ferramenta 2</a>
-            <a href="#">ferramenta 3</a>
+    <div class="container">
+        <div class="child1">
+            <form id="qr-form">
+                <h2>Gerador de Codigo QR Trivalor</h2>
+                
+                <div class="input-group">
+                    <input type="text" id="nif_vendedor" placeholder="NIF do vendedor (números)">
+                    <input type="text" id="nif_empresa" placeholder="NIF da empresa (números)">
+                    
+                    <select id="pais">
+                        <option value="">Escolha o País</option>
+                        <option value="PT">PT</option>
+                        <option value="EU">EU</option>
+                    </select>
+                    
+                    <select id="tipologia">
+                        <option value="">Tipologia (FT,NC)</option>
+                        <option value="FT">FT</option>
+                        <option value="NC">NC</option>
+                    </select>
+                    
+                    <input type="text" id="data" placeholder="Data (AAAAMMDD)">
+                    <input type="text" id="numero_fatura" placeholder="Número da fatura">
+                    
+                    <select id="espaco_fiscal">
+                        <option value="">Escolha o Espaço Fiscal</option>
+                        <option value="PT">PT</option>
+                        <option value="PT-AC">PT-AC</option>
+                        <option value="PT-MA">PT-MA</option>
+                    </select>
+                    
+                    <input type="number" step="0.01" id="base_isenta" placeholder="Base isenta">
+                    <input type="number" step="0.01" id="base_reduzida" placeholder="Base reduzida">
+                    <input type="number" step="0.01" id="base_intermedia" placeholder="Base intermédia">
+                    <input type="number" step="0.01" id="base_normal" placeholder="Base normal">
+                    <input type="number" step="0.01" id="imposto_selo" placeholder="Imposto selo">
+                </div>
+
+                <button type="button" onclick="generateQRCode()">GERAR CÓDIGO</button>
+                <button type="button" id="openModalBtn" onclick="openModal()">Selecionar Hospital</button>
+            </form>
+
+            <div class="qr-output">
+                <div class="qr-code" id="qrcode"></div>
+                <textarea id="qr_data" readonly></textarea>
+                <button type="button" class="copy" data-copy="#qr_data">
+                    <ion-icon name="copy-outline" class="copy-icon"></ion-icon>
+                    <span class="copy-label"></span>
+                </button>
+            </div>
         </div>
-    </div>
-    <!-- SIDEBAR END -->
-
-    <h2>GERADOR DE CÓDIGO QR TRIVALOR</h2>
-    <div class="input-group">
-        <input type="text" id="nif_vendedor" placeholder="NIF do vendedor (números)">
-        <input type="text" id="nif_empresa" placeholder="NIF da empresa (números)">
-        <select id="pais">
-            <option value="">Escolha o País</option>
-            <option value="PT">PT</option>
-            <option value="EU">EU</option>
-        </select>
-        <select id="tipologia">
-            <option value="">Tipologia (FT,NC)</option>
-            <option value="FT">FT</option>
-            <option value="NC">NC</option>
-        </select>
-        <input type="text" id="data" placeholder="Data (AAAAMMDD)">
-        <input type="text" id="numero_fatura" placeholder="Número da fatura">
-        <select id="espaco_fiscal">
-            <option value="">Escolha o Espaço Fisical</option>
-            <option value="PT">PT</option>
-            <option value="PT-AC">PT-AC</option>
-            <option value="PT-MA">PT-MA</option>
-        </select>
-        <input type="number" step="0.01" id="base_isenta" placeholder="Base isenta">
-        <input type="number" step="0.01" id="base_reduzida" placeholder="Base reduzida">
-        <input type="number" step="0.01" id="base_intermedia" placeholder="Base intermédia">
-        <input type="number" step="0.01" id="base_normal" placeholder="Base normal">
-        <input type="number" step="0.01" id="imposto_selo" placeholder="Imposto selo">
+        
     </div>
 
-    <button onclick="generateQRCode()">GERAR CÓDIGO</button>
-    <!-- Botão para abrir o modal -->
-    <button id="openModalBtn" onclick="openModal()">Selecionar Hospital</button>
-
-    <!-- MODAL MENU START -->
-    <div id="hospitalModal" class="modal" style="display: none;">
+    <!-- Modal -->
+    <div id="hospitalModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h3>Selecione o Hospital</h3>
-            <!-- HOSPITAL LIST START -->
-            <select id="hospital_select" onchange="fillHospitalData()">
-            <!-- A lista de hospitais será preenchida aqui -->
-        </select>
+            <select id="hospital_select" onchange="fillHospitalData()"></select>
         </div>
     </div>
-    <div class="qr-code" id="qrcode"></div>
-    <textarea id="qr_data" readonly></textarea>
-
-    <!-- Botão para copiar o conteúdo do textarea -->
-    <button type="button" class="copy" data-copy="#qr_data">
-        <ion-icon name="copy-outline" class="copy-icon"></ion-icon>
-        <span class="copy-label"></span>
-    </button>
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
-    <div class="footer">
-        <img src="/images/imagen.png" alt="Logo">
-    </div>
-
-    <script src="/JScripts/ModalHospital.js"></script>
-    <!--- SCRIPTS --->
     <script src="/JScripts/Trivalor.Js"></script>
-
+    <script src="/JScripts/ModalHospital.js"></script>
 </body>
-<!--- BODY END --->
-
 </html>
-
-
-<!--- FALTA TERMINAR ESTE--->
