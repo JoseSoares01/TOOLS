@@ -192,6 +192,7 @@ footer {
 .footer img {
     height: 50px;
     transition: margin-top 0.3s ease;
+    position: absolute;
 }
 
 .tamanho_logo {
