@@ -187,6 +187,7 @@ footer {
     /* ou fixed, dependendo do seu caso de uso */
     width: 100%;
     bottom: 0;
+    top: 50px;
 }
 
 .footer img {
