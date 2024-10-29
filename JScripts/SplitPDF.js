@@ -59,16 +59,24 @@ async function handleFiles(files) {
                 const fileItem = document.createElement('div');
                 fileItem.className = 'file-item';
                 fileItem.dataset.fileName = file.name;
+
+                // Adicionar visual de seleção
+                fileItem.addEventListener('click', () => toggleFileSelection(fileItem));
+                
                 fileItem.innerHTML = `
                     <div class="loading"></div>
                     <div class="page-preview"></div>
                     <p class="file-name">${file.name}</p>
                     <button class="remove-btn" title="Remover arquivo">&times;</button>
                 `;
+                
                 filesList.appendChild(fileItem);
+                
                 await generatePDFPreview(file, fileItem);
+                
                 const loading = fileItem.querySelector('.loading');
                 if (loading) loading.remove();
+                
                 const removeBtn = fileItem.querySelector('.remove-btn');
                 removeBtn.addEventListener('click', () => removeFile(file.name, fileItem));
             } catch (error) {
@@ -79,36 +87,33 @@ async function handleFiles(files) {
             showError(`${file.name} não é um arquivo PDF válido`);
         }
     }
+    
     updateButtonsState();
 }
 
-// Gerar preview do PDF com tamanho fixo
+// Função para gerar preview do PDF com largura fixa e altura proporcional
 async function generatePDFPreview(file, fileItem) {
     const reader = new FileReader();
+    
     reader.onload = async function(e) {
         try {
             const pdfData = new Uint8Array(e.target.result);
             const loadingTask = pdfjsLib.getDocument({data: pdfData});
             const pdf = await loadingTask.promise;
             const page = await pdf.getPage(1);
-
-            // Defina a largura desejada para a pré-visualização
-            const fixedWidth = 200;
-            const viewport = page.getViewport({scale: 1});
-            const scale = fixedWidth / viewport.width;
-            const scaledViewport = page.getViewport({scale});
-
-            // Canvas com tamanho fixo
+            const scale = 0.5;
+            const viewport = page.getViewport({scale});
+            
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
-            canvas.width = scaledViewport.width;
-            canvas.height = scaledViewport.height;
-
+            canvas.width = 200; // Largura fixa
+            canvas.height = viewport.height * (200 / viewport.width); // Proporcional
+            
             await page.render({
                 canvasContext: context,
-                viewport: scaledViewport
+                viewport: page.getViewport({scale: canvas.width / viewport.width})
             }).promise;
-
+            
             const previewDiv = fileItem.querySelector('.page-preview');
             previewDiv.innerHTML = '';
             previewDiv.appendChild(canvas);
@@ -118,7 +123,13 @@ async function generatePDFPreview(file, fileItem) {
             previewDiv.innerHTML = '<p>Erro ao gerar preview</p>';
         }
     };
+    
     reader.readAsArrayBuffer(file);
+}
+
+// Toggle para selecionar/desselecionar arquivos
+function toggleFileSelection(fileItem) {
+    fileItem.classList.toggle('selected');
 }
 
 // Remover arquivo
@@ -141,62 +152,41 @@ function showError(message) {
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
     errorDiv.textContent = message;
+    
     document.body.appendChild(errorDiv);
-    setTimeout(() => errorDiv.remove(), 3000);
+    
+    setTimeout(() => {
+        errorDiv.remove();
+    }, 3000);
 }
 
-// Lógica de separação de páginas do PDF
+// Função para mesclar PDFs
+mergeBtn.addEventListener('click', async () => {
+    if (pdfFiles.length < 2) {
+        showError('Selecione pelo menos 2 arquivos para mesclar');
+        return;
+    }
+    // Implementar lógica de mesclagem
+});
+
+// Função para separar PDF
 splitBtn.addEventListener('click', async () => {
-    if (pdfFiles.length !== 1) {
+    const selectedFiles = document.querySelectorAll('.file-item.selected');
+    if (selectedFiles.length !== 1) {
         showError('Selecione apenas 1 arquivo para separar');
         return;
     }
-    const pdfFile = pdfFiles[0];
-    try {
-        const arrayBuffer = await pdfFile.arrayBuffer();
-        const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
-        const pageCount = pdfDoc.getPageCount();
-        for (let i = 0; i < pageCount; i++) {
-            const singlePagePdf = await PDFLib.PDFDocument.create();
-            const [page] = await singlePagePdf.copyPages(pdfDoc, [i]);
-            singlePagePdf.addPage(page);
-            const pdfBytes = await singlePagePdf.saveAsBase64({ dataUri: true });
-            const downloadLink = document.createElement('a');
-            downloadLink.href = pdfBytes;
-            downloadLink.download = `page-${i + 1}.pdf`;
-            downloadLink.click();
-        }
-    } catch (error) {
-        console.error('Erro ao separar PDF:', error);
-        showError('Erro ao separar o arquivo PDF');
-    }
+    // Implementar lógica de separação
 });
 
-// Lógica de reordenação de páginas do PDF
-reorderBtn.addEventListener('click', async () => {
-    if (pdfFiles.length !== 1) {
-        showError('Selecione apenas 1 arquivo para reordenar');
+// Função para reordenar PDFs
+reorderBtn.addEventListener('click', () => {
+    const selectedFiles = document.querySelectorAll('.file-item.selected');
+    if (selectedFiles.length === 0) {
+        showError('Nenhum arquivo selecionado para reordenar');
         return;
     }
-    const pageOrder = [2, 0, 1]; // Defina a ordem das páginas desejada
-    const pdfFile = pdfFiles[0];
-    try {
-        const arrayBuffer = await pdfFile.arrayBuffer();
-        const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
-        const reorderedPdf = await PDFLib.PDFDocument.create();
-        for (const pageIndex of pageOrder) {
-            const [page] = await reorderedPdf.copyPages(pdfDoc, [pageIndex]);
-            reorderedPdf.addPage(page);
-        }
-        const pdfBytes = await reorderedPdf.saveAsBase64({ dataUri: true });
-        const downloadLink = document.createElement('a');
-        downloadLink.href = pdfBytes;
-        downloadLink.download = 'reordered.pdf';
-        downloadLink.click();
-    } catch (error) {
-        console.error('Erro ao reordenar PDF:', error);
-        showError('Erro ao reordenar o arquivo PDF');
-    }
+    // Implementar lógica de reordenação
 });
 
 // Inicializar PDF.js
