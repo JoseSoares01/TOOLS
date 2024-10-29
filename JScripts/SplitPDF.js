@@ -1,156 +1,203 @@
-const entradaPdf = document.getElementById('entrada-pdf');
-const listaPdfs = document.getElementById('lista-pdfs');
-const botaoExportar = document.getElementById('exportar-pdf');
-const botaoSeparar = document.getElementById('separar-pdf');
-let arquivosPdf = [];
+// Array para armazenar os arquivos PDF
+let pdfFiles = [];
 
-// Desativa o botão de exportação por padrão
-botaoExportar.disabled = true;
+// Elementos do DOM
+const dropArea = document.getElementById('dropArea');
+const fileInput = document.getElementById('fileInput');
+const filesList = document.getElementById('filesList');
+const mergeBtn = document.getElementById('mergeBtn');
+const splitBtn = document.getElementById('splitBtn');
+const reorderBtn = document.getElementById('reorderBtn');
 
-entradaPdf.addEventListener('change', (evento) => {
-    const arquivos = Array.from(evento.target.files);
-    arquivos.forEach(arquivo => {
-        arquivosPdf.push(arquivo);
-        renderizarListaPdfs();
-    });
-    verificarBotaoExportar(); // Verifica se o botão deve ser ativado
+// Prevenir comportamento padrão de drag and drop
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    dropArea.addEventListener(eventName, preventDefaults, false);
 });
 
-function moverParaCima(arquivo) {
-    const indice = arquivosPdf.indexOf(arquivo);
-    if (indice > 0) {
-        [arquivosPdf[indice], arquivosPdf[indice - 1]] = [arquivosPdf[indice - 1], arquivosPdf[indice]];
-        renderizarListaPdfs();
-    }
+function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
 }
 
-function moverParaBaixo(arquivo) {
-    const indice = arquivosPdf.indexOf(arquivo);
-    if (indice < arquivosPdf.length - 1) {
-        [arquivosPdf[indice], arquivosPdf[indice + 1]] = [arquivosPdf[indice + 1], arquivosPdf[indice]];
-        renderizarListaPdfs();
-    }
+// Adicionar efeitos visuais durante o drag
+['dragenter', 'dragover'].forEach(eventName => {
+    dropArea.addEventListener(eventName, highlight, false);
+});
+
+['dragleave', 'drop'].forEach(eventName => {
+    dropArea.addEventListener(eventName, unhighlight, false);
+});
+
+function highlight(e) {
+    dropArea.classList.add('drag-over');
 }
 
-function removerArquivo(arquivo) {
-    arquivosPdf = arquivosPdf.filter(f => f !== arquivo);
-    renderizarListaPdfs();
-    verificarBotaoExportar(); // Verifica se o botão deve ser desativado
+function unhighlight(e) {
+    dropArea.classList.remove('drag-over');
 }
 
-function renderizarListaPdfs() {
-    listaPdfs.innerHTML = '';
-    arquivosPdf.forEach(arquivo => {
-        const div = document.createElement('div');
-        div.classList.add('pdf-item');
-        div.textContent = arquivo.name;
+// Manipulação do evento de drop
+dropArea.addEventListener('drop', handleDrop, false);
 
-        const botaoCima = document.createElement('button');
-        botaoCima.textContent = '↑';
-        botaoCima.onclick = () => moverParaCima(arquivo);
-
-        const botaoBaixo = document.createElement('button');
-        botaoBaixo.textContent = '↓';
-        botaoBaixo.onclick = () => moverParaBaixo(arquivo);
-
-        const botaoRemover = document.createElement('button');
-        botaoRemover.textContent = 'Remover';
-        botaoRemover.onclick = () => removerArquivo(arquivo);
-
-        div.appendChild(botaoCima);
-        div.appendChild(botaoBaixo);
-        div.appendChild(botaoRemover);
-        listaPdfs.appendChild(div);
-    });
+function handleDrop(e) {
+    const dt = e.dataTransfer;
+    const files = dt.files;
+    handleFiles(files);
 }
 
-//SIDEBAR START//
-/* Set the width of the side navigation to 250px */
-function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-  }
-  
-  /* Set the width of the side navigation to 0 */
-  function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-  }
-//SIDEBAR END//
-//SIDEBAR DROP DOWN START//
-//* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-var dropdown = document.getElementsByClassName("dropdown-navbar");
-var i;
+// Manipulação do evento de seleção de arquivo
+fileInput.addEventListener('change', function(e) {
+    handleFiles(this.files);
+});
 
-for (i = 0; i < dropdown.length; i++) {
-  dropdown[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var dropdownContent = this.nextElementSibling;
-    if (dropdownContent.style.display === "block") {
-      dropdownContent.style.display = "none";
-    } else {
-      dropdownContent.style.display = "block";
-    }
-  });
-}
-//SIDEBAR DROP DOWN END//
-
-function verificarBotaoExportar() {
-    // Ativa ou desativa o botão de exportar com base na quantidade de PDFs selecionados
-    if (arquivosPdf.length === 0) {
-        botaoExportar.disabled = true;
-    } else {
-        botaoExportar.disabled = false;
-    }
-}
-
-async function mesclarPDFs() {
-    if (arquivosPdf.length === 0) {
-        alert('Nenhum PDF selecionado para mesclar!');
-        return;
-    }
-
-    const pdfMesclado = await PDFLib.PDFDocument.create();
-    for (const arquivo of arquivosPdf) {
-        const arrayBuffer = await arquivo.arrayBuffer();
-        const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
-        const paginasCopiadas = await pdfMesclado.copyPages(pdf, pdf.getPageIndices());
-        paginasCopiadas.forEach(pagina => pdfMesclado.addPage(pagina));
-    }
-    const arquivoPdfMesclado = await pdfMesclado.save();
-    baixar(arquivoPdfMesclado, 'mesclado.pdf', 'application/pdf');
-}
-
-async function separarPDFs() {
-    if (arquivosPdf.length === 0) {
-        alert('Nenhum PDF selecionado para separar!');
-        return;
-    }
-
-    for (const arquivo of arquivosPdf) {
-        const arrayBuffer = await arquivo.arrayBuffer();
-        const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
-        for (const [index, pagina] of pdf.getPages().entries()) {
-            const novoPdf = await PDFLib.PDFDocument.create();
-            const [paginaCopiada] = await novoPdf.copyPages(pdf, [index]);
-            novoPdf.addPage(paginaCopiada);
-            const pdfSeparado = await novoPdf.save();
-            baixar(pdfSeparado, `${arquivo.name.replace('.pdf', '')}_pagina_${index + 1}.pdf`, 'application/pdf');
+// Função principal para processar os arquivos
+async function handleFiles(files) {
+    for (const file of files) {
+        if (file.type === 'application/pdf') {
+            try {
+                pdfFiles.push(file);
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.dataset.fileName = file.name;
+                fileItem.innerHTML = `
+                    <div class="loading"></div>
+                    <div class="page-preview"></div>
+                    <p class="file-name">${file.name}</p>
+                    <button class="remove-btn" title="Remover arquivo">&times;</button>
+                `;
+                filesList.appendChild(fileItem);
+                await generatePDFPreview(file, fileItem);
+                const loading = fileItem.querySelector('.loading');
+                if (loading) loading.remove();
+                const removeBtn = fileItem.querySelector('.remove-btn');
+                removeBtn.addEventListener('click', () => removeFile(file.name, fileItem));
+            } catch (error) {
+                console.error('Erro ao processar arquivo:', error);
+                showError(`Erro ao processar ${file.name}`);
+            }
+        } else {
+            showError(`${file.name} não é um arquivo PDF válido`);
         }
     }
+    updateButtonsState();
 }
 
-botaoExportar.addEventListener('click', mesclarPDFs);
-botaoSeparar.addEventListener('click', separarPDFs);
+// Gerar preview do PDF com tamanho fixo
+async function generatePDFPreview(file, fileItem) {
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+        try {
+            const pdfData = new Uint8Array(e.target.result);
+            const loadingTask = pdfjsLib.getDocument({data: pdfData});
+            const pdf = await loadingTask.promise;
+            const page = await pdf.getPage(1);
 
-function baixar(dados, nomeArquivo, tipo) {
-    const arquivo = new Blob([dados], { type: tipo });
-    const a = document.createElement('a');
-    const url = URL.createObjectURL(arquivo);
-    a.href = url;
-    a.download = nomeArquivo;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => {
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-    }, 0);
+            // Defina a largura desejada para a pré-visualização
+            const fixedWidth = 200;
+            const viewport = page.getViewport({scale: 1});
+            const scale = fixedWidth / viewport.width;
+            const scaledViewport = page.getViewport({scale});
+
+            // Canvas com tamanho fixo
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = scaledViewport.width;
+            canvas.height = scaledViewport.height;
+
+            await page.render({
+                canvasContext: context,
+                viewport: scaledViewport
+            }).promise;
+
+            const previewDiv = fileItem.querySelector('.page-preview');
+            previewDiv.innerHTML = '';
+            previewDiv.appendChild(canvas);
+        } catch (error) {
+            console.error('Erro ao gerar preview:', error);
+            const previewDiv = fileItem.querySelector('.page-preview');
+            previewDiv.innerHTML = '<p>Erro ao gerar preview</p>';
+        }
+    };
+    reader.readAsArrayBuffer(file);
 }
+
+// Remover arquivo
+function removeFile(fileName, fileItem) {
+    pdfFiles = pdfFiles.filter(file => file.name !== fileName);
+    fileItem.remove();
+    updateButtonsState();
+}
+
+// Atualizar estado dos botões
+function updateButtonsState() {
+    const hasFiles = pdfFiles.length > 0;
+    mergeBtn.disabled = !hasFiles || pdfFiles.length < 2;
+    splitBtn.disabled = !hasFiles;
+    reorderBtn.disabled = !hasFiles;
+}
+
+// Mostrar mensagem de erro
+function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.textContent = message;
+    document.body.appendChild(errorDiv);
+    setTimeout(() => errorDiv.remove(), 3000);
+}
+
+// Lógica de separação de páginas do PDF
+splitBtn.addEventListener('click', async () => {
+    if (pdfFiles.length !== 1) {
+        showError('Selecione apenas 1 arquivo para separar');
+        return;
+    }
+    const pdfFile = pdfFiles[0];
+    try {
+        const arrayBuffer = await pdfFile.arrayBuffer();
+        const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+        const pageCount = pdfDoc.getPageCount();
+        for (let i = 0; i < pageCount; i++) {
+            const singlePagePdf = await PDFLib.PDFDocument.create();
+            const [page] = await singlePagePdf.copyPages(pdfDoc, [i]);
+            singlePagePdf.addPage(page);
+            const pdfBytes = await singlePagePdf.saveAsBase64({ dataUri: true });
+            const downloadLink = document.createElement('a');
+            downloadLink.href = pdfBytes;
+            downloadLink.download = `page-${i + 1}.pdf`;
+            downloadLink.click();
+        }
+    } catch (error) {
+        console.error('Erro ao separar PDF:', error);
+        showError('Erro ao separar o arquivo PDF');
+    }
+});
+
+// Lógica de reordenação de páginas do PDF
+reorderBtn.addEventListener('click', async () => {
+    if (pdfFiles.length !== 1) {
+        showError('Selecione apenas 1 arquivo para reordenar');
+        return;
+    }
+    const pageOrder = [2, 0, 1]; // Defina a ordem das páginas desejada
+    const pdfFile = pdfFiles[0];
+    try {
+        const arrayBuffer = await pdfFile.arrayBuffer();
+        const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+        const reorderedPdf = await PDFLib.PDFDocument.create();
+        for (const pageIndex of pageOrder) {
+            const [page] = await reorderedPdf.copyPages(pdfDoc, [pageIndex]);
+            reorderedPdf.addPage(page);
+        }
+        const pdfBytes = await reorderedPdf.saveAsBase64({ dataUri: true });
+        const downloadLink = document.createElement('a');
+        downloadLink.href = pdfBytes;
+        downloadLink.download = 'reordered.pdf';
+        downloadLink.click();
+    } catch (error) {
+        console.error('Erro ao reordenar PDF:', error);
+        showError('Erro ao reordenar o arquivo PDF');
+    }
+});
+
+// Inicializar PDF.js
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js';

@@ -1,55 +1,49 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
-
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mesclar e Separar PDFs</title>
+    <title>PDF Tools - Mesclar e Separar PDFs</title>
     <link rel="stylesheet" href="/css/SplitPDF.css">
-    <script>
-        // Verifica se o usuário está logado
-        const usuarioLogado = localStorage.getItem('usuarioLogado');
-
-        // Se não houver token de login, redireciona para a página de login
-        if (!usuarioLogado) {
-            alert('Você precisa fazer login para acessar esta página.');
-            window.location.href = 'https://suportesvf.pt/login.html'; // URL da página de login
-        }
-    </script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
 </head>
-
 <body>
-    <img src="/images/home-button.png" width=40px class="home-button" onclick="openNav()">
-    <!-- SIDEBAR START -->
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="/Html_teste/index.html">Home</a>
-        <a href="/index.html">Login</a>
-        <a href="#">Link 3</a>
-        <a href="#">Link 4</a>
-        <button class="dropdown-navbar">Tools
-             <i class="fa fa-caret-down"></i>
-           </button>
-        <div class="dropdown-container">
-            <a href="#">ferramenta 1</a>
-            <a href="#">ferramenta 2</a>
-            <a href="#">ferramenta 3</a>
-        </div>
-    </div>
-    <!-- SIDEBAR END -->
-    <h2>Mesclar e Separar PDFs</h2>
-    <input type="file" id="entrada-pdf" multiple accept="application/pdf">
-    <div class="lista-pdfs" id="lista-pdfs"></div>
-    <button id="exportar-pdf">Exportar PDF Mesclado</button>
-    <button id="separar-pdf">Separar PDFs</button>
+    <div class="container">
+        <header class="header">
+            <div class="home-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+            </div>
+            <h1>Mesclar e Separar PDFs</h1>
+        </header>
 
-    <div class="footer">
-        <img src="/images/imagen.png" alt="Logo">
+        <main>
+            <div class="drop-area" id="dropArea">
+                <input type="file" multiple accept=".pdf" class="file-input" id="fileInput">
+                <h3>Arraste seus arquivos PDF aqui</h3>
+                <p>ou</p>
+                <button class="select-files-btn" onclick="document.getElementById('fileInput').click()">
+                    Selecionar Arquivos
+                </button>
+                <div class="files-list" id="filesList">
+                    <!-- Files will be listed here -->
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-btn primary" id="mergeBtn">Mesclar PDFs</button>
+                <button class="action-btn" id="splitBtn">Separar PDF</button>
+                <button class="action-btn" id="reorderBtn">Ordenar Páginas</button>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <img src="/api/placeholder/150/50" alt="Servinform.PT" />
+        </footer>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <script src="/JScripts/SplitPDF.js"></script>
 </body>
-
 </html>

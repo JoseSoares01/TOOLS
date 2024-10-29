@@ -1,215 +1,182 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    background: radial-gradient(circle at center center, black, #1162ac);
-    color: white;
-    text-align: center; /* Centralizar todo o conteúdo */
-    min-height: 100vh; /* Garante que o body ocupe pelo menos a altura da tela */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Espaça o conteúdo para distribuir verticalmente */
-}
-
-.lista-pdfs {
-    margin-top: 30px;
-    max-height: 300px; /* Limita a altura para evitar overflow excessivo */
-    overflow-y: auto; /* Adiciona barra de rolagem quando há muitos PDFs */
-}
-
-.pdf-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    justify-content: space-between;
-    word-wrap: break-word; /* Quebra as palavras longas */
-}
-
-.pdf-item span {
-    margin-left: 10px;
-    flex-grow: 1;
-    overflow: hidden; /* Esconde o excesso de texto */
-    text-overflow: ellipsis; /* Adiciona reticências ao texto longo */
-    white-space: nowrap; /* Impede quebra de linha */
-}
-
-button {
-    margin-top: 30px;
-    margin-left: 15px; /* Adiciona espaçamento entre os botões */
-    padding: 10px; /* Tamanho adequado para o padding */
-    font-size: 16px;
-    background-color: #1162ac;
-    color: white;
-    border: none; /* Remove bordas sólidas para evitar overflow */
-    border-radius: 16px; /* Bordas arredondadas */
-    cursor: pointer;
-    display: inline-block; /* Manter os botões inline */
-}
-
-button:hover {
-    background-color: #0e4f87;
-}
-
-input[type="file"] {
-  border: 2px solid #6c5ce7;
-  border-radius: 16px;
-  padding: 10px;
-  cursor: pointer;
-  margin-bottom: 30px;
-  /* Estilo para o botão do seletor de arquivo */
-}
-
-input[type="file"]::file-selector-button {
-  background-image: linear-gradient(
-      to right,
-      #ff7a18,
-      #af002d,
-      #319197 100%,
-      #319197 200%
-  );
-  background-position-x: 0%;
-  background-size: 200%;
-  border: 0;
-  border-radius: 8px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   color: #fff;
-  padding: 1rem 1.25rem;
-  text-shadow: 0 1px 1px #333;
-  transition: all 0.25s;
+  background-image: url("/images/BG-Toolss.jpg");
 }
 
-input[type="file"]::file-selector-button:hover {
-  background-position-x: 100%;
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 3rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.home-btn {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.home-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
   transform: scale(1.1);
 }
 
-.pdf-item button {
-    padding: 5px 10px; /* Tamanho dos botões de seta e remover */
-    margin-left: 5px;
-    border-radius: 8px; /* Bordas arredondadas para os botões menores */
+h1 {
+  font-size: 2rem;
+  text-align: center;
+  flex-grow: 1;
 }
 
-.pdf-item button:hover {
-    background-color: #0e4f87;
+.drop-area {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
 }
 
-.home-button {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.3s;
+.drop-area.drag-over {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.02);
 }
 
-.home-button img {
-    width: 40px;
-    height: 40px;
-    transition: transform 0.3s, background-color 0.3s;
+.file-input {
+  display: none;
 }
 
-.home-button:hover img {
-    transform: scale(1.05);
+.select-files-btn {
+  background: #ff6b6b;
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  margin: 1rem 0;
 }
 
-.home-button:active img {
-    transform: scale(0.95);
+.select-files-btn:hover {
+  background: #ff5252;
+  transform: translateY(-2px);
+}
+
+.files-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.file-item {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.file-item .remove-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(255, 0, 0, 0.5);
+  border: none;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.file-item .remove-btn:hover {
+  background: rgba(255, 0, 0, 0.8);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.action-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.action-btn.primary {
+  background: #4CAF50;
+}
+
+.action-btn.primary:hover {
+  background: #45a049;
 }
 
 .footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: auto; /* Empurra o footer para o final */
+  text-align: center;
+  margin-top: 3rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
 }
 
-.footer img {
-    height: 100px;
-    max-width: 100%; /* Garante que a imagem não exceda a largura do container */
-    margin-top: 30px;
-}
+@media (max-width: 768px) {
+  .container {
+      padding: 1rem;
+  }
 
-/* SIDEBAR START */
-/* The side navigation menu */
-.sidenav {
-    height: 100%; /* 100% Full-height */
-    width: 0; /* 0 width - change this with JavaScript */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
-    left: 0;
-    background-color: #012e42; /* Black*/
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
-    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  .files-list {
+      grid-template-columns: 1fr;
   }
-  
-  /* The navigation menu links */
-  .sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
+
+  .action-buttons {
+      flex-direction: column;
   }
-  
-  /* When you mouse over the navigation links, change their color */
-  .sidenav a:hover {
-    color: #f1f1f1;
-  }
-  
-  /* Position and style the close button (top right corner) */
-  .sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-  }
-  
-  /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
-  #main {
-    transition: margin-left .5s;
-    padding: 20px;
-  }
-  
-  /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-  @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
-  }
-  /* SIDEBAR END */
-  /* SIDEBAR DROP DOWN*/
-    /* Add an active class to the active dropdown button */
-    .active {
-        background-color: rgb(0, 0, 0);
-        color: white;
-      }
-    
-      /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
-      .dropdown-container {
-        display: none;
-        background-color: #012e42; 
-        padding-left: 8px;
-      }
-      
-      /* Optional: Style the caret down icon */
-      .fa-caret-down {
-        float: right;
-        padding-right: 8px;
-      }
-      .dropdown-navbar{
-        background-color:#012e42;
-        padding: 8px 8px 8px 32px;
-        text-decoration: none;
-        font-size: 25px;
-        color: #818181;
-        display: block;
-        transition: 0.3s; 
-        width: 200px;
-        height: 50px;
-        box-shadow: none ;
-      }
-      .dropdown-navbar a:hover {
-        color: #f1f1f1;
-      }
+}
