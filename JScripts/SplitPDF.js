@@ -1,3 +1,5 @@
+import PDFMerger from 'pdf-merger-js/browser';
+
 // Array para armazenar os arquivos PDF
 let pdfFiles = [];
 
@@ -189,8 +191,7 @@ mergeBtn.addEventListener('click', async () => {
                 throw new Error(`Arquivo não encontrado: ${fileItem.dataset.fileName}`);
             }
             
-            const arrayBuffer = await pdfFile.arrayBuffer();
-            await merger.add(new Uint8Array(arrayBuffer));
+            await merger.add(pdfFile);
         }
 
         const mergedPdfFile = await merger.saveAsBlob();
