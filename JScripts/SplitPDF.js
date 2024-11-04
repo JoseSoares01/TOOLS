@@ -9,6 +9,9 @@ const mergeBtn = document.getElementById('mergeBtn');
 const splitBtn = document.getElementById('splitBtn');
 const reorderBtn = document.getElementById('reorderBtn');
 
+// Configurar o input de arquivo para aceitar múltiplos PDFs
+fileInput.setAttribute('multiple', 'true');
+
 // Prevenir comportamento padrão de drag and drop
 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
     dropArea.addEventListener(eventName, preventDefaults, false);
@@ -193,58 +196,23 @@ mergeBtn.addEventListener('click', async () => {
     }
 
     try {
-        const mergedPdf = await PDFLib.PDFDocument.create();
+        const merger = new PDFMerger();
 
         for (const fileItem of selectedFiles) {
             const pdfFile = pdfFiles.find(file => file.name === fileItem.dataset.fileName);
-            const pdfBytes = await pdfFile.arrayBuffer();
-            const pdf = await PDFLib.PDFDocument.load(pdfBytes);
-            const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-            copiedPages.forEach((page) => mergedPdf.addPage(page));
+            await merger.add(pdfFile);
         }
 
-        const pdfBytes = await mergedPdf.save();
-        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const mergedPdfFile = await merger.saveAsBlob();
+        const url = URL.createObjectURL(mergedPdfFile);
         const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
+        link.href = url;
         link.download = 'merged.pdf';
         link.click();
+        URL.revokeObjectURL(url);
     } catch (error) {
         console.error('Erro ao mesclar PDFs:', error);
         showError('Erro ao mesclar PDFs');
-    }
-});
-
-// Função para separar PDF
-splitBtn.addEventListener('click', async () => {
-    const selectedFiles = document.querySelectorAll('.file-item.selected');
-    if (selectedFiles.length !== 1) {
-        showError('Selecione apenas 1 arquivo para separar');
-        return;
-    }
-
-    const selectedFile = pdfFiles.find(file => file.name === selectedFiles[0].dataset.fileName);
-
-    try {
-        const pdfBytes = await selectedFile.arrayBuffer();
-        const pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
-        const pageCount = pdfDoc.getPageCount();
-
-        for (let i = 0; i < pageCount; i++) {
-            const newPdf = await PDFLib.PDFDocument.create();
-            const [copiedPage] = await newPdf.copyPages(pdfDoc, [i]);
-            newPdf.addPage(copiedPage);
-
-            const newPdfBytes = await newPdf.save();
-            const blob = new Blob([newPdfBytes], { type: 'application/pdf' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `${selectedFile.name.replace('.pdf', '')}_page${i + 1}.pdf`;
-            link.click();
-        }
-    } catch (error) {
-        console.error('Erro ao separar PDF:', error);
-        showError('Erro ao separar PDF');
     }
 });
 
