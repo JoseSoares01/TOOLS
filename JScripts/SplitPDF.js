@@ -191,7 +191,8 @@ mergeBtn.addEventListener('click', async () => {
                 throw new Error(`Arquivo não encontrado: ${fileItem.dataset.fileName}`);
             }
             
-            await merger.add(pdfFile);
+            const arrayBuffer = await pdfFile.arrayBuffer();
+            await merger.add(new Uint8Array(arrayBuffer));
         }
 
         const mergedPdfFile = await merger.saveAsBlob();
