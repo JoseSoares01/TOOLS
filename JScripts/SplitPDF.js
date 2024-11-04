@@ -158,40 +158,65 @@ function showError(message) {
 
 // Função para mesclar PDFs
 mergeBtn.addEventListener('click', async () => {
-    console.log('Starting merge process');
     const selectedFiles = document.querySelectorAll('.file-item.selected');
     if (selectedFiles.length < 2) {
         showError('Selecione pelo menos 2 arquivos para mesclar');
         return;
     }
+
     try {
-        const merger = new PDFMerger();
+        // Criar uma nova instância do PDFDocument
+        const mergedPdf = await PDFLib.PDFDocument.create();
+        
+        // Processar cada arquivo selecionado
         for (const fileItem of selectedFiles) {
-            console.log(`Processing file: ${fileItem.dataset.fileName}`);
             const pdfFile = pdfFiles.find(file => file.name === fileItem.dataset.fileName);
-            console.log('Found PDF file:', pdfFile);
-            if (pdfFile && pdfFile.type === 'application/pdf') {
-                await merger.add(pdfFile);
-                console.log('File added to merger');
-            } else {
-                throw new Error(`Invalid PDF file: ${fileItem.dataset.fileName}`);
+            if (!pdfFile) {
+                throw new Error(`Arquivo não encontrado: ${fileItem.dataset.fileName}`);
             }
+
+            // Converter o arquivo para ArrayBuffer
+            const arrayBuffer = await pdfFile.arrayBuffer();
+            
+            // Carregar o PDF
+            const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+            
+            // Copiar todas as páginas do PDF atual
+            const pages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+            
+            // Adicionar todas as páginas ao PDF mesclado
+            pages.forEach(page => {
+                mergedPdf.addPage(page);
+            });
         }
-        console.log('All files added, saving blob');
-        const mergedPdfFile = await merger.saveAsBlob();
-        console.log('Blob saved, creating URL');
-        const url = URL.createObjectURL(mergedPdfFile);
+
+        // Salvar o PDF mesclado
+        const mergedPdfBytes = await mergedPdf.save();
+        
+        // Criar um Blob com os bytes do PDF
+        const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+        
+        // Criar URL do blob e fazer download
+        const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = 'merged.pdf';
+        link.download = 'documento_mesclado.pdf';
+        
+        // Trigger do download
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
+        
+        // Limpar a URL do blob
         URL.revokeObjectURL(url);
+        
+        showError('PDFs mesclados com sucesso!');
+        
     } catch (error) {
         console.error('Erro ao mesclar PDFs:', error);
         showError(`Erro ao mesclar PDFs: ${error.message}`);
     }
 });
-
 // Função para separar PDF
 splitBtn.addEventListener('click', async () => {
     const selectedFiles = document.querySelectorAll('.file-item.selected');
