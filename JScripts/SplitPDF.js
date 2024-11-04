@@ -1,3 +1,4 @@
+import PDFMerger from 'pdf-merger-js/browser';
 // Array para armazenar os arquivos PDF
 let pdfFiles = [];
 
