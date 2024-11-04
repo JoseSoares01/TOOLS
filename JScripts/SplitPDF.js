@@ -61,9 +61,6 @@ async function handleFiles(files) {
                 fileItem.dataset.fileName = file.name;
                 fileItem.draggable = true;
 
-                // Adicionar visual de seleção
-                fileItem.addEventListener('click', () => toggleFileSelection(fileItem));
-                
                 fileItem.innerHTML = `
                     <div class="loading"></div>
                     <div class="page-preview"></div>
@@ -79,12 +76,18 @@ async function handleFiles(files) {
                 if (loading) loading.remove();
                 
                 const removeBtn = fileItem.querySelector('.remove-btn');
-                removeBtn.addEventListener('click', () => removeFile(file.name, fileItem));
+                removeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    removeFile(file.name, fileItem);
+                });
 
                 // Adicionar eventos de drag and drop para reordenação
                 fileItem.addEventListener('dragstart', dragStart);
                 fileItem.addEventListener('dragover', dragOver);
                 fileItem.addEventListener('drop', drop);
+
+                // Adicionar evento de clique para seleção
+                fileItem.addEventListener('click', () => toggleFileSelection(fileItem));
             } catch (error) {
                 console.error('Erro ao processar arquivo:', error);
                 showError(`Erro ao processar ${file.name}`);
@@ -135,7 +138,20 @@ async function generatePDFPreview(file, fileItem) {
 
 // Toggle para selecionar/desselecionar arquivos
 function toggleFileSelection(fileItem) {
-    fileItem.classList.toggle('selected');
+    const isForSplitting = splitBtn.disabled === false;
+    
+    if (isForSplitting) {
+        // Se estiver no modo de divisão, permite apenas uma seleção
+        document.querySelectorAll('.file-item').forEach(item => {
+            item.classList.remove('selected');
+        });
+        fileItem.classList.add('selected');
+    } else {
+        // Se não estiver no modo de divisão, permite múltiplas seleções
+        fileItem.classList.toggle('selected');
+    }
+    
+    updateButtonsState();
 }
 
 // Remover arquivo
@@ -148,8 +164,10 @@ function removeFile(fileName, fileItem) {
 // Atualizar estado dos botões
 function updateButtonsState() {
     const hasFiles = pdfFiles.length > 0;
-    mergeBtn.disabled = !hasFiles || pdfFiles.length < 2;
-    splitBtn.disabled = !hasFiles;
+    const selectedFiles = document.querySelectorAll('.file-item.selected');
+    
+    mergeBtn.disabled = !hasFiles || selectedFiles.length < 2;
+    splitBtn.disabled = !hasFiles || selectedFiles.length !== 1;
     reorderBtn.disabled = !hasFiles;
 }
 
@@ -168,7 +186,8 @@ function showError(message) {
 
 // Função para mesclar PDFs
 mergeBtn.addEventListener('click', async () => {
-    if (pdfFiles.length < 2) {
+    const selectedFiles = document.querySelectorAll('.file-item.selected');
+    if (selectedFiles.length < 2) {
         showError('Selecione pelo menos 2 arquivos para mesclar');
         return;
     }
@@ -176,7 +195,8 @@ mergeBtn.addEventListener('click', async () => {
     try {
         const mergedPdf = await PDFLib.PDFDocument.create();
 
-        for (const pdfFile of pdfFiles) {
+        for (const fileItem of selectedFiles) {
+            const pdfFile = pdfFiles.find(file => file.name === fileItem.dataset.fileName);
             const pdfBytes = await pdfFile.arrayBuffer();
             const pdf = await PDFLib.PDFDocument.load(pdfBytes);
             const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
@@ -235,7 +255,6 @@ reorderBtn.addEventListener('click', () => {
         showError('Nenhum arquivo selecionado para reordenar');
         return;
     }
-    // A reordenação agora é feita através do drag and drop
     showError('Arraste e solte os arquivos para reordená-los');
 });
 
