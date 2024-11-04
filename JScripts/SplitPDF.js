@@ -185,7 +185,12 @@ mergeBtn.addEventListener('click', async () => {
 
         for (const fileItem of selectedFiles) {
             const pdfFile = pdfFiles.find(file => file.name === fileItem.dataset.fileName);
-            await merger.add(pdfFile);
+            if (!pdfFile) {
+                throw new Error(`Arquivo não encontrado: ${fileItem.dataset.fileName}`);
+            }
+            
+            const arrayBuffer = await pdfFile.arrayBuffer();
+            await merger.add(new Uint8Array(arrayBuffer));
         }
 
         const mergedPdfFile = await merger.saveAsBlob();
@@ -197,7 +202,7 @@ mergeBtn.addEventListener('click', async () => {
         URL.revokeObjectURL(url);
     } catch (error) {
         console.error('Erro ao mesclar PDFs:', error);
-        showError('Erro ao mesclar PDFs');
+        showError(`Erro ao mesclar PDFs: ${error.message}`);
     }
 });
 
