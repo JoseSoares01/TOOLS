@@ -59,6 +59,7 @@ async function handleFiles(files) {
                 const fileItem = document.createElement('div');
                 fileItem.className = 'file-item';
                 fileItem.dataset.fileName = file.name;
+                fileItem.draggable = true;
 
                 // Adicionar visual de seleção
                 fileItem.addEventListener('click', () => toggleFileSelection(fileItem));
@@ -79,6 +80,11 @@ async function handleFiles(files) {
                 
                 const removeBtn = fileItem.querySelector('.remove-btn');
                 removeBtn.addEventListener('click', () => removeFile(file.name, fileItem));
+
+                // Adicionar eventos de drag and drop para reordenação
+                fileItem.addEventListener('dragstart', dragStart);
+                fileItem.addEventListener('dragover', dragOver);
+                fileItem.addEventListener('drop', drop);
             } catch (error) {
                 console.error('Erro ao processar arquivo:', error);
                 showError(`Erro ao processar ${file.name}`);
@@ -196,7 +202,30 @@ splitBtn.addEventListener('click', async () => {
         showError('Selecione apenas 1 arquivo para separar');
         return;
     }
-    // Implementar lógica de separação
+
+    const selectedFile = pdfFiles.find(file => file.name === selectedFiles[0].dataset.fileName);
+
+    try {
+        const pdfBytes = await selectedFile.arrayBuffer();
+        const pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
+        const pageCount = pdfDoc.getPageCount();
+
+        for (let i = 0; i < pageCount; i++) {
+            const newPdf = await PDFLib.PDFDocument.create();
+            const [copiedPage] = await newPdf.copyPages(pdfDoc, [i]);
+            newPdf.addPage(copiedPage);
+
+            const newPdfBytes = await newPdf.save();
+            const blob = new Blob([newPdfBytes], { type: 'application/pdf' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${selectedFile.name.replace('.pdf', '')}_page${i + 1}.pdf`;
+            link.click();
+        }
+    } catch (error) {
+        console.error('Erro ao separar PDF:', error);
+        showError('Erro ao separar PDF');
+    }
 });
 
 // Função para reordenar PDFs
@@ -206,8 +235,39 @@ reorderBtn.addEventListener('click', () => {
         showError('Nenhum arquivo selecionado para reordenar');
         return;
     }
-    // Implementar lógica de reordenação
+    // A reordenação agora é feita através do drag and drop
+    showError('Arraste e solte os arquivos para reordená-los');
 });
+
+// Funções para drag and drop de reordenação
+function dragStart(e) {
+    e.dataTransfer.setData('text/plain', e.target.dataset.fileName);
+    e.target.classList.add('dragging');
+}
+
+function dragOver(e) {
+    e.preventDefault();
+    const draggingElement = document.querySelector('.dragging');
+    const currentElement = e.target.closest('.file-item');
+    if (draggingElement !== currentElement) {
+        const rect = currentElement.getBoundingClientRect();
+        const nextElement = (e.clientY - rect.top) / (rect.bottom - rect.top) > 0.5 ?
+            currentElement.nextElementSibling :
+            currentElement;
+        filesList.insertBefore(draggingElement, nextElement);
+    }
+}
+
+function drop(e) {
+    e.preventDefault();
+    const draggedFileName = e.dataTransfer.getData('text/plain');
+    const draggedElement = document.querySelector(`[data-file-name="${draggedFileName}"]`);
+    draggedElement.classList.remove('dragging');
+    
+    // Atualizar a ordem dos arquivos no array pdfFiles
+    const newOrder = Array.from(filesList.children).map(item => item.dataset.fileName);
+    pdfFiles = newOrder.map(fileName => pdfFiles.find(file => file.name === fileName));
+}
 
 // Inicializar PDF.js
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js';
