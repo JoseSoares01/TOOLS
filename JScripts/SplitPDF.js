@@ -60,32 +60,25 @@ async function handleFiles(files) {
                 fileItem.className = 'file-item';
                 fileItem.dataset.fileName = file.name;
                 fileItem.draggable = true;
-
                 fileItem.innerHTML = `
                     <div class="loading"></div>
                     <div class="page-preview"></div>
                     <p class="file-name">${file.name}</p>
                     <button class="remove-btn" title="Remover arquivo">&times;</button>
                 `;
-                
                 filesList.appendChild(fileItem);
-                
                 await generatePDFPreview(file, fileItem);
-                
                 const loading = fileItem.querySelector('.loading');
                 if (loading) loading.remove();
-                
                 const removeBtn = fileItem.querySelector('.remove-btn');
                 removeBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     removeFile(file.name, fileItem);
                 });
-
                 // Adicionar eventos de drag and drop para reordenação
                 fileItem.addEventListener('dragstart', dragStart);
                 fileItem.addEventListener('dragover', dragOver);
                 fileItem.addEventListener('drop', drop);
-
                 // Adicionar evento de clique para seleção
                 fileItem.addEventListener('click', () => toggleFileSelection(fileItem));
             } catch (error) {
@@ -96,14 +89,12 @@ async function handleFiles(files) {
             showError(`${file.name} não é um arquivo PDF válido`);
         }
     }
-    
     updateButtonsState();
 }
 
 // Função para gerar preview do PDF com largura fixa e altura proporcional
 async function generatePDFPreview(file, fileItem) {
     const reader = new FileReader();
-    
     reader.onload = async function(e) {
         try {
             const pdfData = new Uint8Array(e.target.result);
@@ -112,17 +103,14 @@ async function generatePDFPreview(file, fileItem) {
             const page = await pdf.getPage(1);
             const scale = 0.5;
             const viewport = page.getViewport({scale});
-            
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
             canvas.width = 200; // Largura fixa
             canvas.height = viewport.height * (200 / viewport.width); // Proporcional
-            
             await page.render({
                 canvasContext: context,
                 viewport: page.getViewport({scale: canvas.width / viewport.width})
             }).promise;
-            
             const previewDiv = fileItem.querySelector('.page-preview');
             previewDiv.innerHTML = '';
             previewDiv.appendChild(canvas);
@@ -132,7 +120,6 @@ async function generatePDFPreview(file, fileItem) {
             previewDiv.innerHTML = '<p>Erro ao gerar preview</p>';
         }
     };
-    
     reader.readAsArrayBuffer(file);
 }
 
@@ -153,7 +140,6 @@ function removeFile(fileName, fileItem) {
 function updateButtonsState() {
     const hasFiles = pdfFiles.length > 0;
     const selectedFiles = document.querySelectorAll('.file-item.selected');
-    
     mergeBtn.disabled = !hasFiles || selectedFiles.length < 2;
     splitBtn.disabled = !hasFiles || selectedFiles.length !== 1;
     reorderBtn.disabled = !hasFiles;
@@ -164,9 +150,7 @@ function showError(message) {
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
     errorDiv.textContent = message;
-    
     document.body.appendChild(errorDiv);
-    
     setTimeout(() => {
         errorDiv.remove();
     }, 3000);
@@ -174,21 +158,28 @@ function showError(message) {
 
 // Função para mesclar PDFs
 mergeBtn.addEventListener('click', async () => {
+    console.log('Starting merge process');
     const selectedFiles = document.querySelectorAll('.file-item.selected');
     if (selectedFiles.length < 2) {
         showError('Selecione pelo menos 2 arquivos para mesclar');
         return;
     }
-
     try {
         const merger = new PDFMerger();
-
         for (const fileItem of selectedFiles) {
+            console.log(`Processing file: ${fileItem.dataset.fileName}`);
             const pdfFile = pdfFiles.find(file => file.name === fileItem.dataset.fileName);
-            await merger.add(pdfFile);
+            console.log('Found PDF file:', pdfFile);
+            if (pdfFile && pdfFile.type === 'application/pdf') {
+                await merger.add(pdfFile);
+                console.log('File added to merger');
+            } else {
+                throw new Error(`Invalid PDF file: ${fileItem.dataset.fileName}`);
+            }
         }
-
+        console.log('All files added, saving blob');
         const mergedPdfFile = await merger.saveAsBlob();
+        console.log('Blob saved, creating URL');
         const url = URL.createObjectURL(mergedPdfFile);
         const link = document.createElement('a');
         link.href = url;
@@ -197,7 +188,7 @@ mergeBtn.addEventListener('click', async () => {
         URL.revokeObjectURL(url);
     } catch (error) {
         console.error('Erro ao mesclar PDFs:', error);
-        showError('Erro ao mesclar PDFs');
+        showError(`Erro ao mesclar PDFs: ${error.message}`);
     }
 });
 
@@ -208,18 +199,14 @@ splitBtn.addEventListener('click', async () => {
         showError('Selecione apenas 1 arquivo para separar');
         return;
     }
-
     const selectedFile = pdfFiles.find(file => file.name === selectedFiles[0].dataset.fileName);
-
     try {
         const pdfDoc = await PDFLib.PDFDocument.load(await selectedFile.arrayBuffer());
         const pageCount = pdfDoc.getPageCount();
-
         for (let i = 0; i < pageCount; i++) {
             const newPdf = await PDFLib.PDFDocument.create();
             const [copiedPage] = await newPdf.copyPages(pdfDoc, [i]);
             newPdf.addPage(copiedPage);
-
             const pdfBytes = await newPdf.save();
             const blob = new Blob([pdfBytes], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
@@ -257,9 +244,7 @@ function dragOver(e) {
     const currentElement = e.target.closest('.file-item');
     if (draggingElement !== currentElement) {
         const rect = currentElement.getBoundingClientRect();
-        const nextElement = (e.clientY - rect.top) / (rect.bottom - rect.top) > 0.5 ?
-            currentElement.nextElementSibling :
-            currentElement;
+        const nextElement = (e.clientY - rect.top) / (rect.bottom - rect.top) > 0.5 ? currentElement.nextElementSibling : currentElement;
         filesList.insertBefore(draggingElement, nextElement);
     }
 }
@@ -269,7 +254,6 @@ function drop(e) {
     const draggedFileName = e.dataTransfer.getData('text/plain');
     const draggedElement = document.querySelector(`[data-file-name="${draggedFileName}"]`);
     draggedElement.classList.remove('dragging');
-    
     // Atualizar a ordem dos arquivos no array pdfFiles
     const newOrder = Array.from(filesList.children).map(item => item.dataset.fileName);
     pdfFiles = newOrder.map(fileName => pdfFiles.find(file => file.name === fileName));
