@@ -166,7 +166,27 @@ mergeBtn.addEventListener('click', async () => {
         showError('Selecione pelo menos 2 arquivos para mesclar');
         return;
     }
-    // Implementar lógica de mesclagem
+
+    try {
+        const mergedPdf = await PDFLib.PDFDocument.create();
+
+        for (const pdfFile of pdfFiles) {
+            const pdfBytes = await pdfFile.arrayBuffer();
+            const pdf = await PDFLib.PDFDocument.load(pdfBytes);
+            const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+            copiedPages.forEach((page) => mergedPdf.addPage(page));
+        }
+
+        const pdfBytes = await mergedPdf.save();
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'merged.pdf';
+        link.click();
+    } catch (error) {
+        console.error('Erro ao mesclar PDFs:', error);
+        showError('Erro ao mesclar PDFs');
+    }
 });
 
 // Função para separar PDF
