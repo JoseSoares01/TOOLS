@@ -1,3 +1,5 @@
+import { PDFDocument } from 'pdf-lib';
+
 // Array para armazenar os arquivos PDF
 let pdfFiles = [];
 
@@ -165,22 +167,26 @@ mergeBtn.addEventListener('click', async () => {
         return;
     }
     try {
-        const merger = new PDFMerger();
+        const mergedPdf = await PDFDocument.create();
         for (const fileItem of selectedFiles) {
             console.log(`Processing file: ${fileItem.dataset.fileName}`);
             const pdfFile = pdfFiles.find(file => file.name === fileItem.dataset.fileName);
             console.log('Found PDF file:', pdfFile);
             if (pdfFile && pdfFile.type === 'application/pdf') {
-                await merger.add(pdfFile);
+                const pdfBytes = await pdfFile.arrayBuffer();
+                const pdf = await PDFDocument.load(pdfBytes);
+                const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+                copiedPages.forEach((page) => mergedPdf.addPage(page));
                 console.log('File added to merger');
             } else {
                 throw new Error(`Invalid PDF file: ${fileItem.dataset.fileName}`);
             }
         }
         console.log('All files added, saving blob');
-        const mergedPdfFile = await merger.saveAsBlob();
+        const pdfBytes = await mergedPdf.save();
+        const mergedPdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
         console.log('Blob saved, creating URL');
-        const url = URL.createObjectURL(mergedPdfFile);
+        const url = URL.createObjectURL(mergedPdfBlob);
         const link = document.createElement('a');
         link.href = url;
         link.download = 'merged.pdf';
@@ -201,10 +207,10 @@ splitBtn.addEventListener('click', async () => {
     }
     const selectedFile = pdfFiles.find(file => file.name === selectedFiles[0].dataset.fileName);
     try {
-        const pdfDoc = await PDFLib.PDFDocument.load(await selectedFile.arrayBuffer());
+        const pdfDoc = await PDFDocument.load(await selectedFile.arrayBuffer());
         const pageCount = pdfDoc.getPageCount();
         for (let i = 0; i < pageCount; i++) {
-            const newPdf = await PDFLib.PDFDocument.create();
+            const newPdf = await PDFDocument.create();
             const [copiedPage] = await newPdf.copyPages(pdfDoc, [i]);
             newPdf.addPage(copiedPage);
             const pdfBytes = await newPdf.save();
