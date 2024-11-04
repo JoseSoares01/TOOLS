@@ -1,186 +1,250 @@
-body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    background: radial-gradient(circle at center center, black, #1162ac);
-    color: white;
-    text-align: center;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.imagem-item {
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: #fff;
+    background-image: url("/images/BG-Toolss.jpg");
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.header {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
-    justify-content: space-between;
+    margin-bottom: 3rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
 }
 
-.imagem-item span {
-    margin-left: 10px;
+.home-btn {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.home-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+h1 {
+    font-size: 2rem;
+    text-align: center;
     flex-grow: 1;
 }
 
-.lista-imagens {
-    margin-top: 30px;
+.drop-area {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
 }
 
-button {
-    margin-top: 30px;
-    margin-left: 10px;
-    padding: 15px;
-    font-size: 16px;
-    background-color: #1162ac;
+.drop-area.drag-over {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.02);
+}
+
+.file-input {
+    display: none;
+}
+
+.select-files-btn {
+    background: #ff6b6b;
     color: white;
-    border: 2px solid transparent;
-    border-radius: 8px;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 10px;
     cursor: pointer;
-    display: inline-block;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    margin: 1rem 0;
 }
 
-button:hover {
-    background-color: #0e4f87;
+.select-files-btn:hover {
+    background: #ff5252;
+    transform: translateY(-2px);
 }
 
-input[type="file"] {
-    border: 2px solid transparent;
-    border-radius: 8px;
-    padding: 10px;
-    cursor: pointer;
-    margin-bottom: 30px;
+.files-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.imagem-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-bottom: 10px;
 }
 
 .imagem-item button {
-    padding: 5px 10px;
-    margin-left: 5px;
-    border-radius: 8px;
+    background: rgba(255, 0, 0, 0.5);
+    border: none;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .imagem-item button:hover {
-    background-color: #0e4f87;
+    background: rgba(255, 0, 0, 0.8);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.action-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.action-btn.primary {
+    background: #4CAF50;
+}
+
+.action-btn.primary:hover {
+    background: #45a049;
 }
 
 .footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: auto;
-    /* Empurra o footer para o final */
+    text-align: center;
+    margin-top: 3rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
 }
 
-.footer img {
-    height: 100px;
-    max-width: 100%;
-    /* Garante que a imagem não exceda a largura do container */
-    margin-top: 30px;
-}
-
-
-/* Estilo para o botão Home */
-
-.home-button {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.3s;
-}
-
-.home-button img {
-    width: 40px;
-    height: 40px;
-    transition: transform 0.3s, background-color 0.3s;
-}
-
-.home-button:hover img {
-    transform: scale(1.05);
-}
-
-.home-button:active img {
-    transform: scale(0.95);
-}
-
-/* SIDEBAR START */
-/* The side navigation menu */
+/* Sidebar Styles */
 .sidenav {
-    height: 100%; /* 100% Full-height */
-    width: 0; /* 0 width - change this with JavaScript */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
     left: 0;
-    background-color: #012e42; /* Black*/
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
-    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
-  }
-  
-  /* The navigation menu links */
-  .sidenav a {
+    background-color: rgba(1, 46, 66, 0.95);
+    overflow-x: hidden;
+    padding-top: 60px;
+    transition: 0.5s;
+    backdrop-filter: blur(10px);
+}
+
+.sidenav a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
     color: #818181;
     display: block;
     transition: 0.3s;
-  }
-  
-  /* When you mouse over the navigation links, change their color */
-  .sidenav a:hover {
+}
+
+.sidenav a:hover {
     color: #f1f1f1;
-  }
-  
-  /* Position and style the close button (top right corner) */
-  .sidenav .closebtn {
+}
+
+.sidenav .closebtn {
     position: absolute;
     top: 0;
     right: 25px;
     font-size: 36px;
     margin-left: 50px;
-  }
-  
-  /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
-  #main {
-    transition: margin-left .5s;
-    padding: 20px;
-  }
-  
-  /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-  @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
-  }
-  /* SIDEBAR END */
-  /* SIDEBAR DROP DOWN*/
-    /* Add an active class to the active dropdown button */
-    .active {
-        background-color: rgb(0, 0, 0);
-        color: white;
-      }
+}
+
+.dropdown-navbar {
+    background-color: transparent;
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+    width: 100%;
+    text-align: left;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown-navbar:hover {
+    color: #f1f1f1;
+}
+
+.dropdown-container {
+    display: none;
+    background-color: rgba(1, 46, 66, 0.8);
+    padding-left: 8px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
     
-      /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
-      .dropdown-container {
-        display: none;
-        background-color: #012e42; 
-        padding-left: 8px;
-      }
-      
-      /* Optional: Style the caret down icon */
-      .fa-caret-down {
-        float: right;
-        padding-right: 8px;
-      }
-      .dropdown-navbar{
-        background-color:#012e42;
-        padding: 8px 8px 8px 32px;
-        text-decoration: none;
-        font-size: 25px;
-        color: #818181;
-        display: block;
-        transition: 0.3s; 
-        width: 200px;
-        height: 50px;
-        box-shadow: none ;
-      }
-      .dropdown-navbar a:hover {
-        color: #f1f1f1;
-      }
+    .files-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .sidenav {
+        padding-top: 15px;
+    }
+    
+    .sidenav a {
+        font-size: 18px;
+    }
+}
