@@ -162,11 +162,16 @@ h1 {
     text-align: center;
     margin-top: 3rem;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0);
     border-radius: 15px;
     backdrop-filter: blur(10px);
+    
 }
 
+.footer img {
+    height: 50px;
+    transition: margin-top 0.3s ease;
+  }
 /* Sidebar Styles */
 .sidenav {
     height: 100%;
