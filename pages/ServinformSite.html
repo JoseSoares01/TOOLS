@@ -1,79 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GridGum com Lavalamp</title>
-    <link rel="stylesheet" href="/css/ServinformSite.css">
-    <script>
-        // Verifica se o usuário está logado
-        const usuarioLogado = localStorage.getItem('usuarioLogado');
-
-        // Se não houver token de login, redireciona para a página de login
-        if (!usuarioLogado) {
-            alert('Você precisa fazer login para acessar esta página.');
-            window.location.href = 'https://suportesvf.pt/login.html'; // URL da página de login
-        }
-    </script>
-
+    <title>ServinForm</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.16/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-
-<body>
-    <!-- Cabeçalho da página -->
-    <header>
-        <!-- Logo e Navegação com Lavalamp CSS Menu -->
-        <div class="home-button">
-            <a href="/index.html" class="home-button"><img src="/Site_Servinform/home-button.png" alt="Home"></a>
-            <span></span>
+<body class="font-sans bg-gray-100">
+    <header class="bg-blue-900 text-white py-4">
+        <div class="container mx-auto flex items-center justify-between">
+            <a href="#" class="text-xl font-bold">ServinForm</a>
+            <nav>
+                <ul class="flex space-x-4">
+                    <li><a href="#" class="hover:text-gray-300">Início</a></li>
+                    <li><a href="#" class="hover:text-gray-300">Sobre</a></li>
+                    <li><a href="#" class="hover:text-gray-300">Serviços</a></li>
+                    <li><a href="#" class="hover:text-gray-300">Contato</a></li>
+                </ul>
+            </nav>
         </div>
-        <nav>
-            <a href="#" class="menu-link" data-translate="HOME">Home</a>
-            <a href="#" class="menu-link" data-translate="ABOUT_US">Sobre Nós</a>
-            <a href="#" class="menu-link" data-translate="SERVICES">Serviços</a>
-            <a href="#" class="menu-link" data-translate="BLOG">Blog</a>
-            <a href="#" class="menu-link" data-translate="CONTACT">Contatos</a>
-            <div class="animation start-home"></div>
-        </nav>
     </header>
 
-    <!-- Conteúdo principal da página -->
     <main>
-        <!-- Seção hero com a imagem centralizada -->
-        <section class="hero">
-            <div class="text-content">
-                <p>Página Principal</p>
-                <h1>Servinform PT</h1>
-                <p>Em breve teremos um Web Site com todo o Conteúdo. Suporte Servinform</p>
-            </div>
-            <div class="image-content">
-                <img src="/images/Logo-Lateral.png" alt="logo-lateral">
+        <section class="bg-cover bg-center py-32" style="background-image: url('/images/bg-hero.jpg');">
+            <div class="container mx-auto text-center text-white">
+                <h1 class="text-4xl font-bold mb-4">Bem-vindo à ServinForm</h1>
+                <p class="text-lg mb-8">Soluções inovadoras em formação e tecnologia</p>
+                <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded">Saiba Mais</a>
             </div>
         </section>
 
-        <!-- Navegação secundária com os botões Voltar e Próximo -->
-        <div class="navigation">
-            <span>28/07/2024</span>
-            <div class="nav-buttons">
-                <button id="colorToggle">Voltar</button>
-                <button>Próximo</button>
+        <section class="py-16">
+            <div class="container mx-auto">
+                <h2 class="text-3xl font-bold mb-8 text-blue-900">Sobre a ServinForm</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <p class="mb-4">A ServinForm é uma empresa de consultoria e formação que se dedica a oferecer soluções inovadoras em tecnologia e desenvolvimento de recursos humanos.</p>
+                        <p class="mb-4">Com uma equipe altamente qualificada, a ServinForm trabalha em parceria com seus clientes para identificar suas necessidades e desenvolver soluções personalizadas que impulsionem o crescimento e a eficiência de seus negócios.</p>
+                    </div>
+                    <div>
+                        <p class="mb-4">Nosso compromisso é fornecer serviços de excelência, capacitando as empresas a se destacarem em um mercado cada vez mais competitivo.</p>
+                        <p class="mb-4">Acreditamos na importância do desenvolvimento contínuo e buscamos constantemente inovação e melhoria em nossos processos, para melhor atender às necessidades de nossos clientes.</p>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <section class="bg-blue-900 text-white py-16">
+            <div class="container mx-auto">
+                <h2 class="text-3xl font-bold mb-8">Nossos Serviços</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white text-blue-900 p-6 rounded shadow">
+                        <i class="fas fa-graduation-cap text-4xl mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Formação e Capacitação</h3>
+                        <p class="mb-4">Oferecemos programas de formação e capacitação personalizados para atender às necessidades específicas de sua empresa.</p>
+                        <a href="#" class="text-blue-500 hover:text-blue-600 font-bold">Saiba Mais</a>
+                    </div>
+                    <div class="bg-white text-blue-900 p-6 rounded shadow">
+                        <i class="fas fa-code text-4xl mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Desenvolvimento de Soluções</h3>
+                        <p class="mb-4">Desenvolvemos soluções tecnológicas sob medida para impulsionar a eficiência e a produtividade de sua empresa.</p>
+                        <a href="#" class="text-blue-500 hover:text-blue-600 font-bold">Saiba Mais</a>
+                    </div>
+                    <div class="bg-white text-blue-900 p-6 rounded shadow">
+                        <i class="fas fa-chart-line text-4xl mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Consultoria Estratégica</h3>
+                        <p class="mb-4">Nossos especialistas em consultoria estratégica ajudam sua empresa a alcançar seus objetivos de negócios.</p>
+                        <a href="#" class="text-blue-500 hover:text-blue-600 font-bold">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16">
+            <div class="container mx-auto">
+                <h2 class="text-3xl font-bold mb-8 text-blue-900">Contate-nos</h2>
+                <form class="max-w-md mx-auto">
+                    <div class="mb-4">
+                        <label for="name" class="block font-bold mb-2">Nome</label>
+                        <input type="text" id="name" name="name" class="border border-gray-300 rounded px-4 py-2 w-full" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block font-bold mb-2">E-mail</label>
+                        <input type="email" id="email" name="email" class="border border-gray-300 rounded px-4 py-2 w-full" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="message" class="block font-bold mb-2">Mensagem</label>
+                        <textarea id="message" name="message" rows="5" class="border border-gray-300 rounded px-4 py-2 w-full" required></textarea>
+                    </div>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded">Enviar</button>
+                </form>
+            </div>
+        </section>
     </main>
 
-    <!-- Rodapé da página -->
-    <footer>
-        <div class="social-links">
-            <a href="#">FB</a>
-            <a href="#">TW</a>
-            <a href="#">G+</a>
-            <a href="#">P</a>
+    <footer class="bg-blue-900 text-white py-8">
+        <div class="container mx-auto flex items-center justify-between">
+            <p>&copy; 2023 ServinForm. Todos os direitos reservados.</p>
+            <div class="flex space-x-4">
+                <a href="#" class="hover:text-gray-300"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="hover:text-gray-300"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="hover:text-gray-300"><i class="fab fa-linkedin-in"></i></a>
+            </div>
         </div>
-        <p>&copy; 2024 Servinform PT</p>
     </footer>
-
-    <!-- Script para alternar cor e idioma -->
-    <script src="/JScripts/ServinformSite.js"></script>
 </body>
-
 </html>
