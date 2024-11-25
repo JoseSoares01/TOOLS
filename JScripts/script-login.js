@@ -4,7 +4,8 @@ const usuariosValidos = {
     HenriqueSVF: "SVF_020304",
     TABSVF: "SVF_030405",
     AndreSVF: "SVF_040506",
-    EsterMBCP: "SVF_050607"
+    EsterMBCP: "SVF_050607",
+    SRITA: "SVF_060708",
 };
 
 // Capturando o formulário de login
