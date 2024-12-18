@@ -65,7 +65,6 @@ function generateQRCode() {
     const base_normal = parseFloat(document.getElementById("base_normal").value) || 0;
     const irs = parseFloat(document.getElementById("irs").value) || 0;
 
-
     if (!validateAlphabetic(pais) || !validateAlphabetic(espaco_fiscal.replace("-", ""))) {
         alert("Os campos devem ser preenchidos corretamente.");
         return;
@@ -112,12 +111,12 @@ function generateQRCode() {
         document.getElementById('qrcode').innerHTML = '';
         document.getElementById('qrcode').appendChild(qrCodeImage);
         document.getElementById('qr_data').value = dados_qr_code;
+
+        // Limpa os campos após gerar o QR Code
+        clearInputs();
     });
 }
 
-//apaga os inputs depois de clickar em gerar//
-clearInputs();
-}
 
 function clearInputs() {
     document.getElementById("nif_vendedor").value = "";
