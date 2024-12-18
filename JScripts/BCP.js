@@ -114,6 +114,27 @@ function generateQRCode() {
         document.getElementById('qr_data').value = dados_qr_code;
     });
 }
+
+//apaga os inputs depois de clickar em gerar//
+clearInputs();
+}
+
+function clearInputs() {
+    document.getElementById("nif_vendedor").value = "";
+    document.getElementById("nif_empresa").value = "";
+    document.getElementById("pais").value = "";
+    document.getElementById("tipologia").value = "";
+    document.getElementById("data").value = "";
+    document.getElementById("numero_fatura").value = "";
+    document.getElementById("espaco_fiscal").value = "";
+    document.getElementById("base_isenta").value = "";
+    document.getElementById("base_reduzida").value = "";
+    document.getElementById("base_intermedia").value = "";
+    document.getElementById("base_normal").value = "";
+    document.getElementById("imposto_selo").value = "";
+}
+
+
 //SIDEBAR START//
 /* Set the width of the side navigation to 250px */
 function openNav() {
