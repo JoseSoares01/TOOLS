@@ -1,4 +1,4 @@
-// Lista de vendors
+// Lista de empresas
 const empresas = [
     { value: "", label: "Selecione uma empresa" },
     { value: "500734305", label: "ACTIVOBANK, SA" },
@@ -13,32 +13,31 @@ const empresas = [
     { value: "511112971", label: "MBCP PARTIÇÕES, SGPS, LDA" },
     { value: "507552881", label: "INTERFUNDOS-GEST.FUND.INV.IMOB, SA" },
     { value: "503705373", label: "MBCP PRESTAÇÃO SERVIÇOS, ACE" },
-  
-    // Adicione mais vendors aqui conforme necessário
+    // Adicione mais empresas aqui conforme necessário
 ];
 
 // Função para abrir o modal
 function openModal() {
-    const modal = document.getElementById("ModalEmpresas");
+    const modal = document.getElementById("ModalVendor");
     modal.style.display = "block";
-    populateEmpresaList(); // Corrigido nome da função
+    populateEmpresaList();
 }
 
 // Função para fechar o modal
 function closeModal() {
-    const modal = document.getElementById("ModalEmpresa");
+    const modal = document.getElementById("ModalVendor");
     modal.style.display = "none";
 }
 
-// Função para preencher o select com os vendors
-function populateEmpresaList() { // Corrigido nome da função
-    const empresaSelect = document.getElementById("empresa_select");
+// Função para preencher o select com a lista de empresas
+function populateEmpresaList() {
+    const empresaSelect = document.getElementById("vendor_select");
 
     // Limpa o select antes de adicionar os novos vendors
     empresaSelect.innerHTML = "";
 
     // Adiciona todos os vendors da lista
-    empresas.forEach(function(empresa) { // Usando a lista correta de vendors
+    empresas.forEach(function (empresa) {
         const option = document.createElement("option");
         option.value = empresa.value;
         option.text = empresa.label;
@@ -46,21 +45,21 @@ function populateEmpresaList() { // Corrigido nome da função
     });
 }
 
-// Função para preencher o campo de NIF com base na seleção do vendor
-function fillEmpresaData() { // Corrigido nome da função para match com o HTML
-    const selectedValue = document.getElementById('empresa_select').value;
+// Função para preencher o campo de NIF ou exibir os dados da empresa selecionada
+function fillVendorData() {
+    const selectedValue = document.getElementById("vendor_select").value;
 
     if (selectedValue) {
-        document.getElementById('nif_empresa').value = selectedValue;
+        document.getElementById("qr_data").value = `Empresa selecionada: ${selectedValue}`;
     } else {
         // Limpa o campo se nenhum vendor for selecionado
-        document.getElementById('nif_empresa').value = '';
+        document.getElementById("qr_data").value = "";
     }
 }
 
 // Event listeners para o modal
-window.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById("ModalEmpresa");
+window.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("ModalVendor");
     const btn = document.getElementById("openModalBtn");
     const span = document.getElementsByClassName("close")[0];
 
@@ -71,9 +70,23 @@ window.addEventListener('DOMContentLoaded', function() {
     span.onclick = closeModal;
 
     // Fechar modal ao clicar fora dele
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target == modal) {
             closeModal();
         }
     };
+});
+
+// Função para copiar os dados do textarea
+document.querySelector(".copy").addEventListener("click", function () {
+    const copyText = document.querySelector("#qr_data");
+    copyText.select();
+    document.execCommand("copy");
+
+    // Altera o rótulo do botão para confirmar a cópia
+    const label = document.querySelector(".copy-label");
+    label.textContent = "Copiado!";
+    setTimeout(() => {
+        label.textContent = ""; // Remove a mensagem após 2 segundos
+    }, 2000);
 });
