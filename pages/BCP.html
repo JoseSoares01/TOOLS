@@ -96,14 +96,19 @@
         <span class="copy-label"></span>
     </button>
 
-    <!-- Modal -->
-    <div id="hospitalModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h3>Selecione a Empresa</h3>
-            <select id="hospital_select" onchange="fillHospitalData()"></select>
-        </div>
+    <!-- Botão para abrir o modal -->
+<button id="openModalBtn" onclick="openModal()">Selecione a Empresa</button>
+
+<!-- MODAL MENU START -->
+<div id="ModalEmpresa" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h3>Selecione a Empresa</h3>
+        <select id="empresa_select" onchange="fillEmpresaData()">
+            <!-- Options serão preenchidas via JavaScript -->
+        </select>
     </div>
+</div>
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
