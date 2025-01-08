@@ -82,6 +82,7 @@
 
             <!-- VENDOR LIST START -->
             <select id="vendor_select" onchange="fillVendorData()">
+                <button type="button" id="openModalBtn" onclick="openModal()">Selecionar Empresas </button>
             <!-- Options serão preenchidas via JavaScript -->
         </select>
         </div>
@@ -94,6 +95,15 @@
         <ion-icon name="copy-outline" class="copy-icon"></ion-icon>
         <span class="copy-label"></span>
     </button>
+
+    <!-- Modal -->
+    <div id="hospitalModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3>Selecione a Empresa</h3>
+            <select id="hospital_select" onchange="fillHospitalData()"></select>
+        </div>
+    </div>
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
