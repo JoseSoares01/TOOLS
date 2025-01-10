@@ -18,20 +18,20 @@ const empresas = [
 
 // Função para abrir o modal
 function openModal2() {
-    const modal = document.getElementById("ModalVendor");
+    const modal = document.getElementById("ModalEmpresas");
     modal.style.display = "block";
     populateEmpresaList();
 }
 
 // Função para fechar o modal
 function closeModal2() {
-    const modal = document.getElementById("ModalVendor");
+    const modal = document.getElementById("ModalEmpresas");
     modal.style.display = "none";
 }
 
 // Função para preencher o select com a lista de empresas
 function populateEmpresaList() {
-    const empresaSelect = document.getElementById("vendor_select");
+    const empresaSelect = document.getElementById("empresa_select");
 
     // Limpa o select antes de adicionar os novos vendors
     empresaSelect.innerHTML = "";
@@ -46,8 +46,8 @@ function populateEmpresaList() {
 }
 
 // Função para preencher o campo de NIF ou exibir os dados da empresa selecionada
-function fillVendorData() {
-    const selectedValue = document.getElementById("vendor_select").value;
+function fillEmpresaData() {
+    const selectedValue = document.getElementById("empresa_select").value;
 
     if (selectedValue) {
         document.getElementById("qr_data").value = `Empresa selecionada: ${selectedValue}`;
@@ -59,7 +59,7 @@ function fillVendorData() {
 
 // Event listeners para o modal
 window.addEventListener("DOMContentLoaded", function () {
-    const modal = document.getElementById("ModalVendor");
+    const modal = document.getElementById("ModalEmpresas");
     const btn = document.getElementById("openModalBtn");
     const span = document.getElementsByClassName("close")[0];
 
