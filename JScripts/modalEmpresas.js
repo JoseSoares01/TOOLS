@@ -17,14 +17,14 @@ const empresas = [
 ];
 
 // Função para abrir o modal
-function openModal() {
+function openModal2() {
     const modal = document.getElementById("ModalEmpresas");
     modal.style.display = "block";
     populateEmpresaList();
 }
 
 // Função para fechar o modal
-function closeModal() {
+function closeModal2() {
     const modal = document.getElementById("ModalEmpresas");
     modal.style.display = "none";
 }
@@ -50,10 +50,10 @@ function fillEmpresaData() {
     const selectedValue = document.getElementById("empresa_select").value;
 
     if (selectedValue) {
-        document.getElementById("qr_data").value = `Empresa selecionada: ${selectedValue}`;
+        document.getElementById("nif_empresa").value = `${selectedValue}`;
     } else {
         // Limpa o campo se nenhum vendor for selecionado
-        document.getElementById("qr_data").value = "";
+        document.getElementById("nif_empresa").value = "";
     }
 }
 
