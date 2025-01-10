@@ -96,12 +96,12 @@
     </button>
 
     <!-- Botão para abrir o modal -->
-<button id="openModalBtn2" onclick="openModal2()">Selecione a Empresa</button>
+<button id="openModalBtn2" onclick="openModal()">Selecione a Empresa</button>
 
 <!-- MODAL MENU START -->
 <div id="ModalEmpresas" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="closeModal2()">&times;</span>
+        <span class="close" onclick="closeModal()">&times;</span>
         <h3>Selecione a Empresa</h3>
         <select id="empresa_select" onchange="fillEmpresaData()">
             <!-- Options serão preenchidas via JavaScript -->
@@ -117,7 +117,7 @@
         <img src="/images/imagen.png" alt="Logo">
     </div>
     <script src="/JScripts/ModalVendor.js"></script>
-    <script src="/JScripts/ModalEmpresas.js"></script>
+    <script src="/JScripts/modalEmpresas.js"></script>
     <script src="/JScripts/BCP.js"></script>
 </body>
 

@@ -17,14 +17,14 @@ const empresas = [
 ];
 
 // Função para abrir o modal
-function openModal2() {
+function openModal() {
     const modal = document.getElementById("ModalEmpresas");
     modal.style.display = "block";
     populateEmpresaList();
 }
 
 // Função para fechar o modal
-function closeModal2() {
+function closeModal() {
     const modal = document.getElementById("ModalEmpresas");
     modal.style.display = "none";
 }
@@ -64,10 +64,10 @@ window.addEventListener("DOMContentLoaded", function () {
     const span = document.getElementsByClassName("close")[0];
 
     // Abrir modal ao clicar no botão
-    btn.onclick = openModal2;
+    btn.onclick = openModal;
 
     // Fechar modal ao clicar no "X"
-    span.onclick = closeModal2;
+    span.onclick = closeModal;
 
     // Fechar modal ao clicar fora dele
     window.onclick = function (event) {
