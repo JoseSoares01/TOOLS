@@ -64,10 +64,10 @@ window.addEventListener("DOMContentLoaded", function () {
     const span = document.getElementsByClassName("close")[0];
 
     // Abrir modal ao clicar no botão
-    btn.onclick = openModal;
+    btn.onclick = openModal2;
 
     // Fechar modal ao clicar no "X"
-    span.onclick = closeModal;
+    span.onclick = closeModal2;
 
     // Fechar modal ao clicar fora dele
     window.onclick = function (event) {
