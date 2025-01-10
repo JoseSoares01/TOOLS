@@ -82,7 +82,6 @@
 
             <!-- VENDOR LIST START -->
             <select id="vendor_select" onchange="fillVendorData()">
-                <button type="button" id="openModalBtn" onclick="openModal()">Selecionar Empresas </button>
             <!-- Options serão preenchidas via JavaScript -->
         </select>
         </div>
@@ -97,12 +96,12 @@
     </button>
 
     <!-- Botão para abrir o modal -->
-<button id="openModalBtn" onclick="openModal()">Selecione a Empresa</button>
+<button id="openModalBtn" onclick="openModal2()">Selecione a Empresa</button>
 
 <!-- MODAL MENU START -->
-<div id="ModalEmpresa" class="modal">
+<div id="ModalEmpresas" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
+        <span class="close" onclick="closeModal2()">&times;</span>
         <h3>Selecione a Empresa</h3>
         <select id="empresa_select" onchange="fillEmpresaData()">
             <!-- Options serão preenchidas via JavaScript -->

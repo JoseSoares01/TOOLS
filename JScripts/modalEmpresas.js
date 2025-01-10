@@ -17,14 +17,14 @@ const empresas = [
 ];
 
 // Função para abrir o modal
-function openModal() {
+function openModal2() {
     const modal = document.getElementById("ModalVendor");
     modal.style.display = "block";
     populateEmpresaList();
 }
 
 // Função para fechar o modal
-function closeModal() {
+function closeModal2() {
     const modal = document.getElementById("ModalVendor");
     modal.style.display = "none";
 }
