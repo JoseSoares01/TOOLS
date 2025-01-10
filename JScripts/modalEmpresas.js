@@ -60,7 +60,7 @@ function fillEmpresaData() {
 // Event listeners para o modal
 window.addEventListener("DOMContentLoaded", function () {
     const modal = document.getElementById("ModalEmpresas");
-    const btn = document.getElementById("openModalBtn");
+    const btn = document.getElementById("openModalBtn2");
     const span = document.getElementsByClassName("close")[0];
 
     // Abrir modal ao clicar no botão
