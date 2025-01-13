@@ -16,17 +16,19 @@ const empresas = [
     // Adicione mais empresas aqui conforme necessário
 ];
 
-// Função para abrir o modal
-function openModal2() {
+// Função para abrir o modal Empresas
+function openModalEmpresas() {
     const modal = document.getElementById("ModalEmpresas");
     modal.style.display = "block";
     populateEmpresaList();
-}
+    }
 
-// Função para fechar o modal
-function closeModal2() {
+// Função para fechar o modal Empresas
+function closeModalEmpresas() {
     const modal = document.getElementById("ModalEmpresas");
-    modal.style.display = "none";
+    if (modal) {
+        modal.style.display = "none";
+    }
 }
 
 // Função para preencher o select com a lista de empresas

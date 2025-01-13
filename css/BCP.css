@@ -79,24 +79,29 @@ select {
 }
 
 button {
-    background-color: #017AB1;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    width: 200px;
-    height: 50px;
-    font-size: 1rem;
-    padding: 10px;
-    border-radius: 50px;
-    border: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-    text-align: center;
-    grid-column: span 3;
-    /* Botão ocupa 3 colunas */
-    margin-top: 20px;
-    cursor: pointer;
+  background-color: #017AB1;
+  color: rgb(250, 250, 250);
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 200px;
+  height: 50px;
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 50px;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  text-align: center;
+  margin: 10px; /* Espaçamento ao redor de cada botão */
 }
+
+.button-container {
+  display: flex; /* Alinha os botões horizontalmente */
+  justify-content: center; /* Centraliza os botões */
+  gap: 10px; /* Espaçamento entre os botões */
+}
+
+
 
 button:hover {
     background-color: #015f86;

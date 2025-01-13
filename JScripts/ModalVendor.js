@@ -7,17 +7,19 @@ const vendors = [
     // Adicione mais vendors aqui conforme necessário
 ];
 
-// Função para abrir o modal
-function openModal() {
+// Função para abrir o modal Vendor
+function openModalVendor() {
     const modal = document.getElementById("ModalVendor");
     modal.style.display = "block";
-    populateVendorList(); // Corrigido nome da função
-}
+    populateVendorList();
+    }
 
-// Função para fechar o modal
-function closeModal() {
+// Função para fechar o modal Vendor
+function closeModalVendor() {
     const modal = document.getElementById("ModalVendor");
-    modal.style.display = "none";
+    if (modal) {
+        modal.style.display = "none";
+    }
 }
 
 // Função para preencher o select com os vendors

@@ -69,29 +69,27 @@
         <input type="number" step="0.01" id="base_normal" placeholder="Base normal">
         <input type="number" step="0.01" id="irs" placeholder="IRS">
     </div>
+    <div class="button-container">
+        <button id="openModalVendorBtn" onclick="openModalVendor()">Selecione o Vendor</button>
+        <button id="openModalEmpresaBtn" onclick="openModalEmpresas()">Selecione a Empresa</button>
+        <button onclick="generateQRCode()">GERAR CÓDIGO</button>
+      </div>
 
-    <button onclick="generateQRCode()">GERAR CÓDIGO</button>
-    <!-- Botão para abrir o modal -->
-    <button id="openModalBtn" onclick="openModal()">Selecione o Vendor</button>
-        <!-- Botão para abrir o modal -->
-    <button id="openModalBtn2" onclick="openModal2()">Selecione a Empresa</button>
-
-    <!-- MODAL MENU START -->
-    <div id="ModalVendor" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h3>Selecione Vendor</h3>
-
-            <!-- VENDOR LIST START -->
-            <select id="vendor_select" onchange="fillVendorData()">
+<!-- MODAL VENDOR -->
+<div id="ModalVendor" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeModalVendor()">&times;</span>
+        <h3>Selecione Vendor</h3>
+        <select id="vendor_select" onchange="fillVendorData()">
             <!-- Options serão preenchidas via JavaScript -->
         </select>
-        </div>
     </div>
-    <!-- MODAL EMPRESAS MENU START -->
-<div id="ModalEmpresas" class="modal">
+</div>
+
+<!-- MODAL EMPRESAS -->
+<div id="ModalEmpresas" class="modal" style="display: none;">
     <div class="modal-content">
-        <span class="close" onclick="closeModal2()">&times;</span>
+        <span class="close" onclick="closeModalEmpresas()">&times;</span>
         <h3>Selecione a Empresa</h3>
         <select id="empresa_select" onchange="fillEmpresaData()">
             <!-- Options serão preenchidas via JavaScript -->
@@ -99,13 +97,14 @@
     </div>
 </div>
 
-    <div class="qr-code" id="qrcode"></div>
-    <textarea id="qr_data" readonly></textarea>
-    <!-- Botão para copiar o conteúdo do textarea -->
-    <button type="button" class="copy" data-copy="#qr_data">
-        <ion-icon name="copy-outline" class="copy-icon"></ion-icon>
-        <span class="copy-label"></span>
-    </button>
+<div class="qr-code" id="qrcode"></div>
+<textarea id="qr_data" readonly></textarea>
+<!-- Botão para copiar o conteúdo do textarea -->
+<button type="button" class="copy" data-copy="#qr_data">
+    <ion-icon name="copy-outline" class="copy-icon"></ion-icon>
+    <span class="copy-label"></span>
+</button>
+
 
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
