@@ -71,7 +71,7 @@ function generateQRCode() {
     }
 
     if (!validateAlphabetic(pais) || !validateAlphabetic(espaco_fiscal.replace("-", ""))) {
-        alert("Os campos devem ser preenchidos corretamente.");
+        alert("Todos campos devem ser preenchidos corretamente.");
         return;
     }
 
