@@ -45,10 +45,10 @@ function updateIVARates() {
     }
 }
 
-// Certifique-se de adicionar o event listener após o DOM estar completamente carregado
+//event listener
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("espaco_fiscal").addEventListener("change", updateIVARates);
-    updateIVARates(); // Chame para definir os placeholders corretos inicialmente
+    updateIVARates(); // Chame isto caso seja necessario= para definir os placeholders corretos inicialmente
 });
 
 function generateQRCode() {
