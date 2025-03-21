@@ -44,6 +44,11 @@ nav {
     display: flex;
     gap: 1rem;
     background-color: #072745;
+    
+}
+.nav-left button
+{
+    border-radius: 16px;
 }
 
 button {
@@ -74,10 +79,13 @@ button:hover {
 .page-title::after {
     content: '';
     display: block;
-    width: 100px;
+    width: 230px;
     height: 3px;
     background: #4CAF50;
     margin: 0.5rem auto;
+    border-radius: 16px;
+    box-shadow: #ffffff 10px;
+    border: solid #01e1ff 0.1px;
 }
 
 .cards-container {
@@ -106,13 +114,14 @@ button:hover {
     left: 20px;
     right: 20px;
     bottom: 20px;
-    background: rgba(7, 39, 69, 0.9);
+    background: rgba(3, 69, 131, 0.9);
     border-radius: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     transition: 0.5s;
+    border: solid #01ff34 1px;
 }
 
 .card .box:hover {
