@@ -56,15 +56,16 @@
                     <input type="number" step="0.01" id="base_normal" placeholder="Base normal">
                     <input type="number" step="0.01" id="imposto_selo" placeholder="Imposto selo">
                 </div>
-
-                <button type="button" onclick="generateQRCode()">GERAR CÓDIGO</button>
-                <button type="button" id="openModalBtn" onclick="openModal()">Selecionar Hospital</button>
+                <div>
+                <button type="button" onclick="generateQRCode()"><strong>GERAR CÓDIGO QR</strong></button>
+                <button type="button" id="openModalBtn" onclick="openModal()"><strong>Lista de Hospitais</strong></button>
+            </div>
             </form>
 
             <div class="qr-output">
                 <div class="qr-code" id="qrcode"></div>
                 <textarea id="qr_data" readonly></textarea>
-                <button type="button" class="copy" data-copy="#qr_data">
+                <button type="button" class="copy" data-copy="#qr_data"><strong>Copy</strong>
                     <ion-icon name="copy-outline" class="copy-icon"></ion-icon>
                     <span class="copy-label"></span>
                 </button>

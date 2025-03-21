@@ -23,6 +23,9 @@ body {
 
 .home-button:hover {
     transform: scale(1.1);
+    background-color: aqua;
+    color: aqua;
+    border-radius: 16px;
 }
 
 /* Main container */
@@ -39,15 +42,16 @@ body {
     background-repeat: no-repeat;
     padding: 20px;
 }
-
+/* todo o bloco do menu*/
 .child1 {
     width: 90%;
     max-width: 800px;
-    background-color: rgba(228, 231, 234, 0.13);
+    background-color: rgba(58, 129, 201, 0.13);
     border-radius: 15px;
     padding: 20px;
     margin-bottom: 20px;
     backdrop-filter: blur(5px);
+    border-radius: 16px;
 }
 
 /* Form elements */
@@ -60,10 +64,11 @@ form {
 
 h2 {
     color: #ddd;
-    font-size: 1.75rem;
-    font-family: 'Courier New', Courier, monospace;
+    font-size: 2rem;
+    font-family: "Poppins", sans-serif;
     margin-bottom: 20px;
     text-align: center;
+    padding: 30px;
 }
 
 .input-group {
@@ -77,13 +82,15 @@ h2 {
 /* Form controls */
 input, 
 select {
-    background-color: rgb(61, 61, 61);
+    background-color: rgba(15, 71, 110, 0.637);
     padding: 15px;
     border-radius: 12px;
     border: none;
-    color: #ddd;
+    color: #fffefe;
     width: 100%;
     transition: background-color 0.3s ease;
+    border: solid #fffefe 0.5px;
+    
 }
 
 input::placeholder {
@@ -94,19 +101,30 @@ input::placeholder {
 input:focus,
 select:focus {
     outline: none;
-    background-color: rgb(71, 71, 71);
+    background-color: rgba(99, 89, 89, 0.547);
 }
 
 /* Buttons */
 button {
-    background-color: silver;
+    background-color: rgba(92, 128, 185, 0.8);
+    color: aliceblue;
     padding: 15px 30px;
     border: none;
-    border-radius: 5px;
+    border-radius: 15px;
     cursor: pointer;
     margin: 10px 0;
     width: 200px;
     transition: all 0.3s ease;
+    font-family: "Poppins", sans-serif;
+    margin: 5px 5px;
+    
+}
+
+/* Container para os botões */
+.button-container {
+    display: flex; /* Alinha os botões em linha */
+    justify-content: center; /* Centraliza os botões */
+    
 }
 
 button:hover {
@@ -132,11 +150,11 @@ button:hover {
 
 textarea {
     width: 100%;
-    background-color: rgb(61, 61, 61);
-    color: #ddd;
+    background-color: rgba(255, 255, 255, 0.386);
+    color: #ffffff;
     padding: 15px;
-    border: none;
-    border-radius: 5px;
+    border: solid #0ba2c8 2px;
+    border-radius: 16px;
     margin: 10px 0;
     resize: none;
     height: 100px;
@@ -152,7 +170,7 @@ textarea {
 }
 
 .copy:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(54, 114, 124, 0.1);
 }
 
 /* Modal styles */
