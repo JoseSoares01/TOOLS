@@ -39,6 +39,7 @@
         flex-direction: column;
         gap: 25px;
         /* Espaçamento entre os itens internos */
+        border: solid #077e9c 3px;
     }
     /* Estiliza o formulário, tornando-o um elemento flex, com espaçamento interno (padding) e bordas arredondadas. */
     
@@ -146,10 +147,12 @@
     
     .image-svf img {
         height: 55px;
+        bottom: 10px;
     }
     
     .image-svf p {
         margin: 10px 0 0;
         font-size: 1.2rem;
         color: white;
+        
     }

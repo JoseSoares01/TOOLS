@@ -3,8 +3,7 @@ const usuariosValidos = {
     JanyelSVF: "SVF_010203",
     HenriqueSVF: "SVF_020304",
     TABSVF: "SVF_030405",
-    AndreSVF: "SVF_040506",
-    EsterMBCP: "SVF_050607",
+    AnisabelN: "SVF_040506",
     SRITA: "SVF_060708",
 };
 
