@@ -41,79 +41,98 @@
     </div>
     <!-- SIDEBAR END -->
 
-    <h2>Gerador codigo QR Despesas</h2>
-    <div class="input-group">
-        <input type="text" id="nif_vendedor" placeholder="NIF do Fornecedor (números)">
-        <input type="text" id="nif_empresa" placeholder="NIF da empresa (números)">
-        <select id="pais">
-            <option value="">Escolha o País</option>
-            <option value="PT">PT</option>
-            <option value="EU">EU</option>
-        </select>
-        <select id="tipologia">
-            <option value="">Tipologia (FT,NC)</option>
-            <option value="FT">FT</option>
-            <option value="NC">NC</option>
-        </select>
-        <input type="text" id="data" placeholder="Data (AAAAMMDD)">
-        <input type="text" id="numero_fatura" placeholder="Número da fatura">
-        <select id="espaco_fiscal">
-            <option value="">Escolha o Espaço Fisical</option>
-            <option value="PT">PT</option>
-            <option value="PT-AC">PT-AC</option>
-            <option value="PT-MA">PT-MA</option>
-        </select>
-        <input type="number" step="0.01" id="base_isenta" placeholder="Base isenta">
-        <input type="number" step="0.01" id="base_reduzida" placeholder="Base reduzida">
-        <input type="number" step="0.01" id="base_intermedia" placeholder="Base intermédia">
-        <input type="number" step="0.01" id="base_normal" placeholder="Base normal">
-        <input type="number" step="0.01" id="irs" placeholder="IRS">
+    <div class="main-container">
+        <div class="qr-container">
+            <h2>Gerador codigo QR Despesas</h2>
+            <div class="input-group">
+                <input type="text" id="nif_vendedor" placeholder="NIF do Fornecedor (números)">
+                <input type="text" id="nif_empresa" placeholder="NIF da empresa (números)">
+                <select id="pais">
+                    <option value="">Escolha o País</option>
+                    <option value="PT">PT</option>
+                    <option value="EU">EU</option>
+                </select>
+                <select id="tipologia">
+                    <option value="">Tipologia (FT,NC)</option>
+                    <option value="FT">FT</option>
+                    <option value="NC">NC</option>
+                </select>
+                <input type="text" id="data" placeholder="Data (AAAAMMDD)">
+                <input type="text" id="numero_fatura" placeholder="Número da fatura">
+                <select id="espaco_fiscal">
+                    <option value="">Escolha o Espaço Fisical</option>
+                    <option value="PT">PT</option>
+                    <option value="PT-AC">PT-AC</option>
+                    <option value="PT-MA">PT-MA</option>
+                </select>
+                <input type="number" step="0.01" id="base_isenta" placeholder="Base isenta">
+                <input type="number" step="0.01" id="base_reduzida" placeholder="Base reduzida">
+                <input type="number" step="0.01" id="base_intermedia" placeholder="Base intermédia">
+                <input type="number" step="0.01" id="base_normal" placeholder="Base normal">
+                <input type="number" step="0.01" id="irs" placeholder="IRS">
+            </div>
+            <div class="button-container">
+                <button id="openModalVendorBtn" onclick="openModalVendor()">Selecione o Vendor</button>
+                <button id="openModalEmpresaBtn" onclick="openModalEmpresas()">Selecione a Empresa</button>
+                <button onclick="generateQRCode()">GERAR CÓDIGO</button>
+            </div>
+
+            <div class="qr-code" id="qrcode"></div>
+            <textarea id="qr_data" readonly></textarea>
+            <button type="button" class="copy" data-copy="#qr_data">
+                <ion-icon name="copy-outline" class="copy-icon"></ion-icon>
+                <span class="copy-label"></span>
+            </button>
+        </div>
+
+        <div class="calculator-container">
+            <h2>Calculadora de IVA</h2>
+            <div class="calculator-inputs">
+                <label for="valor">Valor com IVA (€):</label>
+                <input type="number" id="valor" placeholder="Ex: 5.50" step="0.01">
+
+                <label for="iva">Taxa de IVA (%):</label>
+                <input type="number" id="iva" value="23" step="0.01">
+
+                <button onclick="calcularIVA()">Calcular</button>
+
+                <div class="resultado" id="resultado" style="display: none;">
+                    <p><strong>Valor sem IVA:</strong> <span id="semIVA"></span> €</p>
+                    <p><strong>Valor do IVA:</strong> <span id="valorIVA"></span> €</p>
+                    <p><strong>Valor com IVA:</strong> <span id="comIVA"></span> €</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="button-container">
-        <button id="openModalVendorBtn" onclick="openModalVendor()">Selecione o Vendor</button>
-        <button id="openModalEmpresaBtn" onclick="openModalEmpresas()">Selecione a Empresa</button>
-        <button onclick="generateQRCode()">GERAR CÓDIGO</button>
-      </div>
 
-<!-- MODAL VENDOR -->
-<div id="ModalVendor" class="modal" style="display: none;">
-    <div class="modal-content">
-        <span class="close" onclick="closeModalVendor()">&times;</span>
-        <h3>Selecione Vendor</h3>
-        <select id="vendor_select" onchange="fillVendorData()">
-            <!-- Options serão preenchidas via JavaScript -->
-        </select>
+    <!-- MODAL VENDOR -->
+    <div id="ModalVendor" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModalVendor()">&times;</span>
+            <h3>Selecione Vendor</h3>
+            <select id="vendor_select" onchange="fillVendorData()">
+                <!-- Options serão preenchidas via JavaScript -->
+            </select>
+        </div>
     </div>
-</div>
 
-<!-- MODAL EMPRESAS -->
-<div id="ModalEmpresas" class="modal" style="display: none;">
-    <div class="modal-content">
-        <span class="close" onclick="closeModalEmpresas()">&times;</span>
-        <h3>Selecione a Empresa</h3>
-        <select id="empresa_select" onchange="fillEmpresaData()">
-            <!-- Options serão preenchidas via JavaScript -->
-        </select>
-    </div>
-</div>
-
-<div class="qr-code" id="qrcode"></div>
-<textarea id="qr_data" readonly></textarea>
-<!-- Botão para copiar o conteúdo do textarea -->
-<button type="button" class="copy" data-copy="#qr_data">
-    <ion-icon name="copy-outline" class="copy-icon"></ion-icon>
-    <span class="copy-label"></span>
-</button>
-
-
-
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <!-- MODAL EMPRESAS -->
+    <div id="ModalEmpresas" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModalEmpresas()">&times;</span>
+            <h3>Selecione a Empresa</h3>
+            <select id="empresa_select" onchange="fillEmpresaData()">
+                <!-- Options serão preenchidas via JavaScript -->
+            </select>
+        </div>
     </div>
 
     <div class="footer">
         <img src="/images/imagen.png" alt="Logo">
     </div>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="/JScripts/ModalVendor.js"></script>
     <script src="/JScripts/modalEmpresas.js"></script>
     <script src="/JScripts/BCP.js"></script>
