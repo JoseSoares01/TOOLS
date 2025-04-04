@@ -1,24 +1,17 @@
-// Seleciona o formulário
-const form = document.getElementById('my-form');
+function calcularIVA() {
+  const valorComIVA = parseFloat(document.getElementById('valor').value);
+  const taxaIVA = parseFloat(document.getElementById('iva').value);
 
-// Adiciona um event listener ao envio do formulário
-form.addEventListener('submit', (event) => {
-  event.preventDefault(); // Previne o envio padrão do formulário
+  if (isNaN(valorComIVA) || isNaN(taxaIVA) || valorComIVA <= 0 || taxaIVA < 0) {
+      alert("Por favor, insira valores válidos.");
+      return;
+  }
 
-  // Coleta os dados do formulário
-  const formData = new FormData(form);
+  const valorSemIVA = valorComIVA / (1 + taxaIVA / 100);
+  const valorIVA = valorComIVA - valorSemIVA;
 
-  // Envia os dados do formulário para o servidor
-  fetch('/submit-form', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => {
-    // Trata a resposta do servidor
-    console.log('Formulário enviado com sucesso!');
-  })
-  .catch(error => {
-    // Trata erros no envio do formulário
-    console.error('Erro ao enviar o formulário:', error);
-  });
-});
+  document.getElementById('semIVA').textContent = valorSemIVA.toFixed(2);
+  document.getElementById('valorIVA').textContent = valorIVA.toFixed(2);
+  document.getElementById('comIVA').textContent = valorComIVA.toFixed(2);
+  document.getElementById('resultado').style.display = 'block';
+}
