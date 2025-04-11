@@ -302,3 +302,37 @@ textarea {
     margin: 5px 0;
     color: white;
 }
+
+.date-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#data_calendario {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid white;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+}
+
+#data_calendario::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+#data_calendario::-webkit-datetime-edit {
+    color: white;
+}
+
+#data_calendario::-webkit-datetime-edit-fields-wrapper {
+    color: white;
+}
+
+#data {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: default;
+}

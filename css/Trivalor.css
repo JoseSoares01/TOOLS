@@ -228,3 +228,39 @@ textarea {
         left: 10px;
     }
 }
+
+.date-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#data_calendario {
+    padding: 15px;
+    border-radius: 12px;
+    border: solid #fffefe 0.5px;
+    background-color: rgba(15, 71, 110, 0.637);
+    color: #fffefe;
+    cursor: pointer;
+    width: 100%;
+}
+
+#data_calendario::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+#data_calendario::-webkit-datetime-edit {
+    color: #fffefe;
+}
+
+#data_calendario::-webkit-datetime-edit-fields-wrapper {
+    color: #fffefe;
+}
+
+#data {
+    background-color: rgba(15, 71, 110, 0.637);
+    color: #fffefe;
+    cursor: default;
+    border: solid #fffefe 0.5px;
+}

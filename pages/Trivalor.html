@@ -40,7 +40,11 @@
                         <option value="RG">RG</option>
                     </select>
                     
-                    <input type="text" id="data" placeholder="Data (AAAAMMDD)">
+                    <div class="date-input-container">
+                        <input type="date" id="data_calendario" onchange="formatarData()">
+                        <input type="text" id="data" placeholder="Data (AAAAMMDD)" readonly>
+                    </div>
+                    
                     <input type="text" id="numero_fatura" placeholder="Número da fatura">
                     
                     <select id="espaco_fiscal">

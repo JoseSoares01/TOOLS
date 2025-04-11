@@ -200,3 +200,15 @@ function calcularIVA() {
     document.getElementById('comIVA').textContent = valorComIVA.toFixed(2);
     document.getElementById('resultado').style.display = 'block';
 }
+
+function formatarData() {
+    const dataCalendario = document.getElementById('data_calendario').value;
+    if (dataCalendario) {
+        const data = new Date(dataCalendario);
+        const ano = data.getFullYear();
+        const mes = String(data.getMonth() + 1).padStart(2, '0');
+        const dia = String(data.getDate()).padStart(2, '0');
+        const dataFormatada = `${ano}${mes}${dia}`;
+        document.getElementById('data').value = dataFormatada;
+    }
+}
