@@ -304,35 +304,37 @@ textarea {
 }
 
 .date-input-container {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-#data_calendario {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid white;
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    cursor: pointer;
-}
-
-#data_calendario::-webkit-calendar-picker-indicator {
-    filter: invert(1);
-    cursor: pointer;
-}
-
-#data_calendario::-webkit-datetime-edit {
-    color: white;
-}
-
-#data_calendario::-webkit-datetime-edit-fields-wrapper {
-    color: white;
+    position: relative;
+    width: 100%;
 }
 
 #data {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    cursor: default;
+    padding: 15px;
+    padding-right: 40px;
+    border-radius: 12px;
+    border: solid #fffefe 0.5px;
+    background-color: rgba(15, 71, 110, 0.637);
+    color: #fffefe;
+    width: 100%;
+    cursor: pointer;
+}
+
+#data_calendario {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.calendar-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fffefe;
+    font-size: 20px;
+    pointer-events: none;
 }
