@@ -124,13 +124,14 @@ function clearInputs() {
     document.getElementById("pais").value = "";
     document.getElementById("tipologia").value = "";
     document.getElementById("data").value = "";
+    document.getElementById("data_calendario").value = "";
     document.getElementById("numero_fatura").value = "";
     document.getElementById("espaco_fiscal").value = "";
     document.getElementById("base_isenta").value = "";
     document.getElementById("base_reduzida").value = "";
     document.getElementById("base_intermedia").value = "";
     document.getElementById("base_normal").value = "";
-    document.getElementById("imposto_selo").value = "";
+    document.getElementById("irs").value = "";
 }
 
 
