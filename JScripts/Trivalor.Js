@@ -36,6 +36,12 @@ function updateIVARates() {
             baseIntermedia.placeholder = "Base intermédia (12%)";
             baseNormal.placeholder = "Base normal (22%)";
             break;
+        case "INT":
+            baseIsenta.placeholder = "Base isenta (0%)";
+            baseReduzida.placeholder = "Base reduzida (5%)";
+            baseIntermedia.placeholder = "Base intermédia (12%)";
+            baseNormal.placeholder = "Base normal (22%)";
+            break;
         default:
             baseIsenta.placeholder = "Base isenta (0%)";
             baseReduzida.placeholder = "Base reduzida";
