@@ -92,8 +92,12 @@ function generateQRCode() {
         taxa_iva_reduzida = 0;
         taxa_iva_intermedia = 0;
         taxa_iva_normal = 0;
+} else if (espaco_fiscal === "INT") {
+        taxa_iva_reduzida = 0;
+        taxa_iva_intermedia = 0;
+        taxa_iva_normal = 0;
     } else {
-        alert("Espaço fiscal desconhecido. Por favor, insira um espaço fiscal válido (PT, PT-MA, PT-AC, ou EU).");
+        alert("Espaço fiscal desconhecido. Por favor, insira um espaço fiscal válido (PT, PT-MA, PT-AC, EU, ou INT).");
         return;
     }
 
