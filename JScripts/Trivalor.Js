@@ -2,6 +2,10 @@ function validateNumeric(input) {
     return /^[0-9]*$/.test(input);
 }
 
+function validateAlphanumeric(input) {
+    return /^[a-zA-Z0-9]*$/.test(input);
+}
+
 function validateAlphabetic(input) {
     return /^[a-zA-Z]*$/.test(input);
 }
@@ -52,8 +56,8 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function generateQRCode() {
-    const nif_vendedor = limitCharacters(document.getElementById("nif_vendedor").value || '0', 9);
-    const nif_empresa = limitCharacters(document.getElementById("nif_empresa").value || '0', 9);
+    const nif_vendedor = limitCharacters(document.getElementById("nif_vendedor").value || '0', 15);
+    const nif_empresa = limitCharacters(document.getElementById("nif_empresa").value || '0', 15);
     const pais = document.getElementById("pais").value.toUpperCase() || '0';
     const tipologia = document.getElementById("tipologia").value || '0';
     const data = limitCharacters(document.getElementById("data").value || '0', 8);
@@ -65,8 +69,13 @@ function generateQRCode() {
     const base_normal = parseFloat(document.getElementById("base_normal").value) || 0;
     const imposto_selo = parseFloat(document.getElementById("imposto_selo").value) || 0;
 
-    if (!validateNumeric(nif_vendedor) || !validateNumeric(nif_empresa) || !validateNumeric(data)) {
-        alert("NIF do vendedor, NIF da empresa e data devem conter apenas números.");
+    if (!validateAlphanumeric(nif_vendedor) || !validateAlphanumeric(nif_empresa)) {
+        alert("NIF do vendedor e NIF da empresa devem conter apenas letras e números.");
+        return;
+    }
+
+    if (!validateNumeric(data)) {
+        alert("A data deve conter apenas números.");
         return;
     }
 
