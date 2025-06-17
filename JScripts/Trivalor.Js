@@ -40,6 +40,12 @@ function updateIVARates() {
             baseIntermedia.placeholder = "Base intermédia (12%)";
             baseNormal.placeholder = "Base normal (22%)";
             break;
+        case "INT":
+            baseIsenta.placeholder = "Base isenta (0%)";
+            baseReduzida.placeholder = "Base reduzida (5%)";
+            baseIntermedia.placeholder = "Base intermédia (12%)";
+            baseNormal.placeholder = "Base normal (22%)";
+            break;
         default:
             baseIsenta.placeholder = "Base isenta (0%)";
             baseReduzida.placeholder = "Base reduzida";
@@ -101,8 +107,12 @@ function generateQRCode() {
         taxa_iva_reduzida = 0;
         taxa_iva_intermedia = 0;
         taxa_iva_normal = 0;
+} else if (espaco_fiscal === "INT") {
+        taxa_iva_reduzida = 0;
+        taxa_iva_intermedia = 0;
+        taxa_iva_normal = 0;
     } else {
-        alert("Espaço fiscal desconhecido. Por favor, insira um espaço fiscal válido (PT, PT-MA, PT-AC, ou EU).");
+        alert("Espaço fiscal desconhecido. Por favor, insira um espaço fiscal válido (PT, PT-MA, PT-AC, EU, ou INT).");
         return;
     }
 
