@@ -71,8 +71,13 @@ function generateQRCode() {
     const base_normal = parseFloat(document.getElementById("base_normal").value) || 0;
     const imposto_selo = parseFloat(document.getElementById("imposto_selo").value) || 0;
 
-    if (!validateNumeric(nif_vendedor) || !validateNumeric(nif_empresa) || !validateNumeric(data)) {
-        alert("NIF do vendedor, NIF da empresa e data devem conter apenas números.");
+    if (!validateAlphanumeric(nif_vendedor) || !validateAlphanumeric(nif_empresa)) {
+        alert("NIF do vendedor e NIF da empresa devem conter apenas letras e números.");
+        return;
+    }
+
+    if (!validateNumeric(data)) {
+        alert("A data deve conter apenas números.");
         return;
     }
 
