@@ -322,26 +322,39 @@ textarea {
     color: white;
     border-radius: 8px 8px 0 0;
     cursor: pointer;
+    min-height: 35px;
 }
 
 .pais-check-header span {
     font-weight: bold;
     font-size: 15px;
-    
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: all 0.3s ease;
+    display: inline-block;
+    max-width: calc(100% - 30px);
+}
+
+.pais-check-container.minimized .pais-check-header span {
+    font-size: 13px;
 }
 
 .minimize-btn {
     background: none;
     border: none;
-    color: rgb(255, 255, 255);
-    font-size: 18px;
+    color: #ff0000;
+    font-size: 20px;
     cursor: pointer;
     padding: 0 5px;
     line-height: 1;
+    flex-shrink: 0;
+    transition: color 0.3s ease;
+    margin-left: 8px;
 }
 
 .minimize-btn:hover {
-    color: #f8f9fa;
+    color: #cc0000;
 }
 
 .pais-check-content {
@@ -352,14 +365,16 @@ textarea {
 }
 
 #pais_check {
-    padding: 6px;
+    padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 13px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .pais-check-container button {
-    padding: 6px 12px;
+    padding: 8px;
     background-color: #007bff;
     color: white;
     border: none;
@@ -367,6 +382,8 @@ textarea {
     cursor: pointer;
     font-size: 13px;
     transition: background-color 0.3s;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .pais-check-container button:hover {
@@ -380,6 +397,8 @@ textarea {
     text-align: center;
     display: none;
     font-size: 13px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .pais-resultado.ue {
