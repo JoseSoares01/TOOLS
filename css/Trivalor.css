@@ -347,6 +347,8 @@ textarea {
     line-height: 1;
     flex-shrink: 0;
     transition: color 0.3s ease;
+    padding: 0 5px;
+    margin-left: 10px;
 }
 
 .minimize-btn:hover {
