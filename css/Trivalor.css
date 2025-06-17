@@ -325,12 +325,12 @@ textarea {
 }
 
 .pais-check-header span {
+    flex-grow: 1; /* Permite que o span ocupe o espaço restante */
     font-weight: bold;
     font-size: 15px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition: all 0.3s ease;
 }
 
 .pais-check-container.minimized .pais-check-header span {
@@ -343,12 +343,10 @@ textarea {
     color: #ff0000;
     font-size: 12px;
     cursor: pointer;
-    padding: 0 5px;
-    line-height: 1;
+    padding: 0 5px; /* OK */
+    margin-left: 5px; /* Reduzido de 10px para 5px */
     flex-shrink: 0;
-    transition: color 0.3s ease;
-    padding: 0 5px;
-    margin-left: 10px;
+    line-height: 1;
 }
 
 .minimize-btn:hover {
