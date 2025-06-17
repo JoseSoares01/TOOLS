@@ -322,7 +322,6 @@ textarea {
     color: white;
     border-radius: 8px 8px 0 0;
     cursor: pointer;
-    min-height: 35px;
 }
 
 .pais-check-header span {
@@ -332,8 +331,6 @@ textarea {
     overflow: hidden;
     text-overflow: ellipsis;
     transition: all 0.3s ease;
-    display: inline-block;
-    max-width: calc(100% - 30px);
 }
 
 .pais-check-container.minimized .pais-check-header span {
@@ -350,7 +347,6 @@ textarea {
     line-height: 1;
     flex-shrink: 0;
     transition: color 0.3s ease;
-    margin-left: 8px;
 }
 
 .minimize-btn:hover {
