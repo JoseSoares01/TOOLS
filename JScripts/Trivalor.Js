@@ -107,7 +107,7 @@ function generateQRCode() {
         taxa_iva_reduzida = 0;
         taxa_iva_intermedia = 0;
         taxa_iva_normal = 0;
-} else if (espaco_fiscal === "INT") {
+    } else if (espaco_fiscal === "INT") {
         taxa_iva_reduzida = 0;
         taxa_iva_intermedia = 0;
         taxa_iva_normal = 0;
@@ -213,4 +213,44 @@ function formatarData() {
         const dataFormatada = `${ano}${mes}${dia}`;
         document.getElementById('data').value = dataFormatada;
     }
+}
+
+// Lista de países da União Europeia
+const paisesUE = [
+    "Alemanha", "Áustria", "Bélgica", "Bulgária", "Chipre", "Croácia", 
+    "Dinamarca", "Eslováquia", "Eslovênia", "Espanha", "Estónia", 
+    "Finlândia", "França", "Grécia", "Hungria", "Irlanda", "Itália", 
+    "Letônia", "Lituânia", "Luxemburgo", "Malta", "Países Baixos", 
+    "Polônia", "Portugal", "República Checa", "Romênia", "Suécia"
+];
+
+function verificarPaisUE() {
+    const paisInput = document.getElementById('pais_check').value.trim();
+    const resultadoDiv = document.getElementById('pais_resultado');
+    
+    if (!paisInput) {
+        alert('Por favor, digite o nome do país.');
+        return;
+    }
+
+    // Normaliza o nome do país (remove acentos e converte para minúsculas)
+    const paisNormalizado = paisInput.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    
+    // Verifica se o país está na lista da UE
+    const paisEncontrado = paisesUE.find(pais => 
+        pais.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() === paisNormalizado
+    );
+
+    if (paisEncontrado) {
+        resultadoDiv.textContent = "SIM, FAZ PARTE DA UNIÃO EUROPEIA";
+        resultadoDiv.className = "pais-resultado ue";
+    } else {
+        resultadoDiv.textContent = "ESSE PAÍS É INTERNACIONAL, DEVE-SE USAR A SIGLA 'INT'";
+        resultadoDiv.className = "pais-resultado internacional";
+    }
+}
+
+function togglePaisCheck() {
+    const container = document.querySelector('.pais-check-container');
+    container.classList.toggle('minimized');
 }

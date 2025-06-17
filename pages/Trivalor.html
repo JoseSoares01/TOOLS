@@ -18,6 +18,19 @@
 
 <body>
     <img src="/images/home-button.png" width=40px class="home-button" onclick="location.href = '/pages/Tools.html';">
+    
+    <div class="pais-check-container">
+        <div class="pais-check-header">
+            <span>Verificar País</span>
+            <button type="button" class="minimize-btn" onclick="togglePaisCheck()">×</button>
+        </div>
+        <div class="pais-check-content">
+            <input type="text" id="pais_check" placeholder="Digite o nome do país">
+            <button type="button" onclick="verificarPaisUE()">Verificar País</button>
+            <div id="pais_resultado" class="pais-resultado"></div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="child1">
             <form id="qr-form">
@@ -29,17 +42,15 @@
                     
                     <select id="pais">
                         <option value="">Escolha o País</option>
-                        <option value="PT">PT(Portugal)</option>
-                        <option value="EU">EU(União Europeia)</option>
-                        <option value="INT">INT(Internacional)</option>
+                        <option value="PT">PT</option>
+                        <option value="EU">EU</option>
                     </select>
                     
                     <select id="tipologia">
                         <option value="">Tipologia (FT,NC,RG)</option>
-                        <option value="FT">FT(Fatura)</option>
-                        <option value="NC">NC(Nota de Credito</option>
-                        <option value="RG">RG(Recibo)</option>
-                        <option value="RG">PF(Proforma)</option>
+                        <option value="FT">FT</option>
+                        <option value="NC">NC</option>
+                        <option value="RG">RG</option>
                     </select>
                     
                     <div class="date-input-container">
@@ -56,7 +67,6 @@
                         <option value="PT-AC">PT-AC</option>
                         <option value="PT-MA">PT-MA</option>
                         <option value="EU">EU</option>
-                        <option value="INT">INT</option>
                     </select>
                     
                     <input type="number" step="0.01" id="base_isenta" placeholder="Base isenta">
@@ -66,9 +76,9 @@
                     <input type="number" step="0.01" id="imposto_selo" placeholder="Imposto selo">
                 </div>
                 <div>
-                <button type="button" onclick="generateQRCode()"><strong>GERAR CÓDIGO QR</strong></button>
-                <button type="button" id="openModalBtn" onclick="openModal()"><strong>Lista de Hospitais</strong></button>
-            </div>
+                    <button type="button" onclick="generateQRCode()"><strong>GERAR CÓDIGO QR</strong></button>
+                    <button type="button" id="openModalBtn" onclick="openModal()"><strong>Lista de Hospitais</strong></button>
+                </div>
             </form>
 
             <div class="qr-output">
@@ -80,7 +90,6 @@
                 </button>
             </div>
         </div>
-        
     </div>
 
     <!-- Modal -->
