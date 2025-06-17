@@ -303,7 +303,7 @@ textarea {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     z-index: 1000;
-    width: 200px;
+    width: 220px;
     transition: all 0.3s ease;
 }
 
@@ -326,13 +326,14 @@ textarea {
 
 .pais-check-header span {
     font-weight: bold;
-    font-size: 14px;
+    font-size: 15px;
+    
 }
 
 .minimize-btn {
     background: none;
     border: none;
-    color: white;
+    color: rgb(255, 255, 255);
     font-size: 18px;
     cursor: pointer;
     padding: 0 5px;
