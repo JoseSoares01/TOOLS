@@ -319,13 +319,13 @@ textarea {
   align-items: center;
   padding: 8px 12px;
   font-size: 16px;
-  color: white;
+  color: rgb(255, 255, 255);
   font-weight: bold;
 }
 
 .pais-check-header span {
   display: inline;
-  color: white;
+  color: rgb(9, 95, 167);
 }
 
 .pais-check-container.minimized .pais-check-header span {
@@ -350,37 +350,73 @@ textarea {
     color: #cc0000;
 }
 
+.pais-check-container {
+  background: #f9f9f9;
+  border-radius: 10px;
+  width: 300px;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* Cabeçalho com título e botão × */
+.pais-check-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1d8bbe;
+  padding: 10px 15px;
+  color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.titulo-pesquisa {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Botão × (fechar) */
+.minimize-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+/* Área de conteúdo */
 .pais-check-content {
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
+/* Campo de input */
 #pais_check {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 13px;
-    width: 100%;
-    box-sizing: border-box;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
 }
 
-.pais-check-container button {
-    padding: 8px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 13px;
-    transition: background-color 0.3s;
-    width: 100%;
-    box-sizing: border-box;
+/* Botão "Verificar País" */
+.verificar-btn {
+  padding: 10px;
+  font-size: 14px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.pais-check-container button:hover {
-    background-color: #0056b3;
+.verificar-btn:hover {
+  background-color: #0056b3;
 }
 
 .pais-resultado {
