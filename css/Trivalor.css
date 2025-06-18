@@ -363,7 +363,7 @@ textarea {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1d8bbe;
+  background-color: #3691bb;
   padding: 10px 15px;
   color: white;
   border-top-left-radius: 10px;
@@ -373,6 +373,7 @@ textarea {
 .titulo-pesquisa {
   font-size: 16px;
   font-weight: bold;
+  color: #ffffff !important;
 }
 
 /* Botão × (fechar) */
@@ -380,7 +381,7 @@ textarea {
   background: none;
   border: none;
   color: white;
-  font-size: 18px;
+  font-size: 10px;
   cursor: pointer;
   padding: 0;
   line-height: 1;
@@ -398,7 +399,7 @@ textarea {
 #pais_check {
   padding: 10px;
   font-size: 14px;
-  border: 1px solid #ccc;
+  border: 2px solid #2e83a5;
   border-radius: 6px;
   width: 100%;
 }
