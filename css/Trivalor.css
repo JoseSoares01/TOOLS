@@ -308,8 +308,8 @@ textarea {
 }
 
 .pais-check-container.minimized {
-    width: 150px;
-    height: 35px;
+    width: 200px;
+    height: 50px;
     overflow: hidden;
 }
 
