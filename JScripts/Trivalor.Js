@@ -242,10 +242,10 @@ function verificarPaisUE() {
     );
 
     if (paisEncontrado) {
-        resultadoDiv.textContent = "SIM, FAZ PARTE DA UNIÃO EUROPEIA";
+        resultadoDiv.textContent = "FAZ PARTE DA UNIÃO EUROPEIA, USA-SE A SIGLA EU";
         resultadoDiv.className = "pais-resultado ue";
     } else {
-        resultadoDiv.textContent = "ESSE PAÍS É INTERNACIONAL, DEVE-SE USAR A SIGLA 'INT'";
+        resultadoDiv.textContent = "PAÍS É INTERNACIONAL, DEVE-SE USAR A SIGLA 'INT'";
         resultadoDiv.className = "pais-resultado internacional";
     }
 }
