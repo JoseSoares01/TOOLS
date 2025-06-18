@@ -299,7 +299,7 @@ textarea {
     left: 20px;
     display: flex;
     flex-direction: column;
-    background-color: #f8f9fa;
+    background-color: rgba(58, 129, 201, 0.13);
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     z-index: 1000;
@@ -351,11 +351,13 @@ textarea {
 }
 
 .pais-check-container {
-  background: #f9f9f9;
+  background: rgba(58, 129, 201, 0.13);
   border-radius: 10px;
   width: 300px;
   font-family: Arial, sans-serif;
   overflow: hidden;
+  backdrop-filter: blur(5px);
+  border: solid #fffefe 0.5px;
 }
 
 /* Cabeçalho com título e botão × */
@@ -363,11 +365,12 @@ textarea {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #3691bb;
+  background-color: rgba(15, 71, 110, 0.637);
   padding: 10px 15px;
   color: white;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  border: solid #fffefe 0.5px;
 }
 
 .titulo-pesquisa {
@@ -399,16 +402,18 @@ textarea {
 #pais_check {
   padding: 10px;
   font-size: 14px;
-  border: 2px solid #2e83a5;
+  border: solid #fffefe 0.5px;
   border-radius: 6px;
   width: 100%;
+  background-color: rgba(15, 71, 110, 0.637);
+  color: #fffefe;
 }
 
 /* Botão "Verificar País" */
 .verificar-btn {
   padding: 10px;
   font-size: 14px;
-  background-color: #007bff;
+  background-color: rgba(92, 128, 185, 0.8);
   color: white;
   border: none;
   border-radius: 6px;
@@ -417,7 +422,7 @@ textarea {
 }
 
 .verificar-btn:hover {
-  background-color: #0056b3;
+  background-color: #0c71de;
 }
 
 .pais-resultado {
