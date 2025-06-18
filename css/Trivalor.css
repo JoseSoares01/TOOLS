@@ -314,23 +314,18 @@ textarea {
 }
 
 .pais-check-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 8px 8px 0 0;
-    cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  font-size: 16px;
+  color: white;
+  font-weight: bold;
 }
 
 .pais-check-header span {
-    flex-grow: 1; /* Permite que o span ocupe o espaço restante */
-    font-weight: bold;
-    font-size: 15px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  display: inline;
+  color: white;
 }
 
 .pais-check-container.minimized .pais-check-header span {
