@@ -134,9 +134,9 @@ function generateQRCode() {
         document.getElementById('qrcode').innerHTML = '';
         document.getElementById('qrcode').appendChild(qrCodeImage);
         document.getElementById('qr_data').value = dados_qr_code;
+        
+        setTimeout(clearInputs, 1000);
     });
-    
-    clearInputs();
 }
 
 function clearInputs() {
