@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Gastos</title>
+    <link rel="icon" type="image/x-icon" href="/images/QR.png">
+    <link rel="stylesheet" href="/css/styles_gastos.css">
+    <script>
+        const usuarioLogado = localStorage.getItem('usuarioLogado');
+        if (!usuarioLogado) {
+            alert('Você precisa fazer login para acessar esta página.');
+            window.location.href = 'https://suportesvf.pt/login.html';
+        }
+    </script>
+</head>
+<body>
+    <img src="/images/home-button.png" width=40px class="home-button" onclick="location.href = '/pages/Tools.html';">
+    
+    <div class="container">
+        <div>
+            <h2>Calculadora de Gastos</h2>
+            <p class="subtitle">Distribuir Valor com IVA</p>
+
+            <div class="input-group">
+                <label for="valorComIva">Valor total com IVA (€):</label>
+                <input type="number" step="0.01" id="valorComIva" placeholder="Ex: 39.41">
+
+                <label for="taxaIva">Taxa de IVA (%):</label>
+                <input type="number" id="taxaIva" value="23">
+
+                <label for="linhas">Número de linhas a distribuir:</label>
+                <input type="number" id="linhas" placeholder="Ex: 5">
+            </div>
+
+            <button onclick="distribuirValor()">Distribuir</button>
+
+            <div class="resultado" id="resultado"></div>
+        </div>
+    </div>
+
+    <script src="/JScripts/gastos.js"></script>
+</body>
+</html>

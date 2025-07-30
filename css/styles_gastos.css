@@ -1,0 +1,160 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    position: relative;
+    background-image: url("/images/BG-Toolss.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px;
+}
+
+/* Home button styling */
+.home-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.home-button:hover {
+    transform: scale(1.1);
+    background-color: aqua;
+    color: aqua;
+    border-radius: 16px;
+}
+
+.container {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container > div {
+    width: 90%;
+    max-width: 600px;
+    background-color: rgba(58, 129, 201, 0.13);
+    border-radius: 15px;
+    padding: 30px;
+    backdrop-filter: blur(5px);
+    border-radius: 16px;
+    border: solid #01ff34 1px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #ddd;
+    font-size: 2rem;
+    font-family: "Poppins", sans-serif;
+}
+
+.subtitle {
+    text-align: center;
+    margin-bottom: 25px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #ddd;
+}
+
+input {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    background-color: rgba(15, 71, 110, 0.637);
+    color: #fffefe;
+    outline: none;
+    transition: all 0.2s ease;
+    border: solid #fffefe 0.5px;
+}
+
+input::placeholder {
+    color: #ddd;
+    opacity: 0.7;
+}
+
+input:focus {
+    background-color: rgba(99, 89, 89, 0.547);
+}
+
+button {
+    background-color: rgba(92, 128, 185, 0.8);
+    color: aliceblue;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    margin: 10px 0;
+    width: 200px;
+    transition: all 0.3s ease;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #0c71de;
+    color: white;
+}
+
+.resultado {
+    margin-top: 30px;
+    background: rgba(15, 71, 110, 0.637);
+    padding: 20px;
+    border-radius: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap;
+    font-size: 14px;
+    color: #ccf2ff;
+    border: solid #fffefe 0.5px;
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 630px) {
+    .container > div {
+        width: 95%;
+        padding: 20px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    button {
+        width: 100%;
+    }
+    
+    .home-button {
+        top: 10px;
+        left: 10px;
+    }
+}
