@@ -22,7 +22,7 @@ form.addEventListener('submit', function(event) {
     if (usuariosValidos[login] && usuariosValidos[login] === senha) {
         // Se válidos, cria um token de login e armazena no localStorage
         localStorage.setItem('usuarioLogado', login); // Armazenando o login como token de autenticação
-        window.location.href = 'https://suportesvf.pt/pages/Tools.html'; // Redireciona para a página protegida
+        window.location.href = 'https://ferramentasservinform.pt//pages/Tools.html'; // Redireciona para a página protegida
     } else {
         // Se inválidos, exibe uma mensagem de erro
         alert('Login ou senha incorretos. Tente novamente.');

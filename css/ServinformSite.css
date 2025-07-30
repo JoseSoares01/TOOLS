@@ -1,62 +1,30 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f8ff;
-    color: #003366;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.container {
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 51, 102, 0.2);
-    max-width: 400px;
-    width: 100%;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #fdfdfd;
 }
 
 h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #003366;
+  color: #333;
 }
 
-label {
-    display: block;
-    margin-top: 15px;
-    font-weight: bold;
+table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 600px;
+  margin-top: 20px;
 }
 
-input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #007acc;
-    border-radius: 5px;
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: right;
 }
 
-button {
-    background-color: #007acc;
-    color: white;
-    padding: 10px;
-    margin-top: 20px;
-    border: none;
-    border-radius: 5px;
-    width: 100%;
-    cursor: pointer;
-    font-size: 16px;
+th {
+  background-color: #f0f0f0;
 }
 
-button:hover {
-    background-color: #005999;
-}
-
-.resultado {
-    margin-top: 20px;
-    background-color: #e6f2ff;
-    padding: 15px;
-    border-radius: 8px;
-    color: #003366;
+input[type="number"] {
+  width: 100px;
 }

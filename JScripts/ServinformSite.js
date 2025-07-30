@@ -1,17 +1,24 @@
-function calcularIVA() {
-  const valorComIVA = parseFloat(document.getElementById('valor').value);
-  const taxaIVA = parseFloat(document.getElementById('iva').value);
+function calcular() {
+  const valor6 = parseFloat(document.getElementById('valorComIva6').value) || 0;
+  const valor23 = parseFloat(document.getElementById('valorComIva23').value) || 0;
 
-  if (isNaN(valorComIVA) || isNaN(taxaIVA) || valorComIVA <= 0 || taxaIVA < 0) {
-      alert("Por favor, insira valores válidos.");
-      return;
-  }
+  const semIva6 = valor6 / 1.06;
+  const iva6 = valor6 - semIva6;
 
-  const valorSemIVA = valorComIVA / (1 + taxaIVA / 100);
-  const valorIVA = valorComIVA - valorSemIVA;
+  const semIva23 = valor23 / 1.23;
+  const iva23 = valor23 - semIva23;
 
-  document.getElementById('semIVA').textContent = valorSemIVA.toFixed(2);
-  document.getElementById('valorIVA').textContent = valorIVA.toFixed(2);
-  document.getElementById('comIVA').textContent = valorComIVA.toFixed(2);
-  document.getElementById('resultado').style.display = 'block';
+  const totalComIva = valor6 + valor23;
+  const totalSemIva = semIva6 + semIva23;
+  const totalIva = iva6 + iva23;
+
+  document.getElementById('semIva6').textContent = semIva6.toFixed(2) + ' €';
+  document.getElementById('iva6').textContent = iva6.toFixed(2) + ' €';
+
+  document.getElementById('semIva23').textContent = semIva23.toFixed(2) + ' €';
+  document.getElementById('iva23').textContent = iva23.toFixed(2) + ' €';
+
+  document.getElementById('totalComIva').textContent = totalComIva.toFixed(2) + ' €';
+  document.getElementById('totalSemIva').textContent = totalSemIva.toFixed(2) + ' €';
+  document.getElementById('totalIva').textContent = totalIva.toFixed(2) + ' €';
 }

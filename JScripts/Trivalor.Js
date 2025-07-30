@@ -242,7 +242,11 @@ function verificarPaisUE() {
     );
 
     if (paisEncontrado) {
-        resultadoDiv.textContent = "FAZ PARTE DA UNIÃO EUROPEIA, USA-SE A SIGLA 'EU'";
+        if (paisNormalizado === "portugal") {
+            resultadoDiv.textContent = "O PAIS É PORTUGAL, USA-SE A SIGLA 'PT'";
+        } else {
+            resultadoDiv.textContent = "FAZ PARTE DA UNIÃO EUROPEIA, USA-SE A SIGLA 'EU'";
+        }
         resultadoDiv.className = "pais-resultado ue";
     } else {
         resultadoDiv.textContent = "PAÍS É INTERNACIONAL, DEVE-SE USAR A SIGLA 'INT'";
