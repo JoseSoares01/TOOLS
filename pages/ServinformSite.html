@@ -1,46 +1,76 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <title>Calculadora de IVA</title>
-  <link rel="stylesheet" href="/css/ServinformSite.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de IVA</title>
+    <link rel="icon" type="image/x-icon" href="/images/QR.png">
+    <link rel="stylesheet" href="/css/ServinformSite.css">
+    <script>
+        const usuarioLogado = localStorage.getItem('usuarioLogado');
+        if (!usuarioLogado) {
+            alert('Você precisa fazer login para acessar esta página.');
+            window.location.href = 'https://suportesvf.pt/login.html';
+        }
+    </script>
 </head>
 <body>
+    <img src="/images/home-button.png" width=40px class="home-button" onclick="location.href = '/pages/Tools.html';">
+    
+    <div class="container">
+        <div>
+            <h2>Calculadora de IVA</h2>
+            <p class="subtitle">Calcule valores com e sem IVA</p>
 
-<h2>Calculadora de IVA</h2>
+            <div class="table-container">
+                <table id="calculadoraTable">
+                    <thead>
+                        <tr>
+                            <th>Taxa IVA (%)</th>
+                            <th>Valor com IVA (€)</th>
+                            <th>Valor sem IVA (€)</th>
+                            <th>IVA (€)</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr class="data-row">
+                            <td>
+                                <select class="taxa-select" onchange="calcular()">
+                                    <option value="6">6%</option>
+                                    <option value="13" selected>13%</option>
+                                    <option value="23">23%</option>
+                                </select>
+                            </td>
+                            <td><input type="number" class="valor-com-iva" step="0.01" oninput="calcular()" placeholder="0.00"></td>
+                            <td class="valor-sem-iva">0,00 €</td>
+                            <td class="valor-iva">0,00 €</td>
+                            <td>
+                                <button class="remove-btn" onclick="removerLinha(this)" title="Remover linha">🗑️</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <th>Total</th>
+                            <th id="totalComIva">0,00 €</th>
+                            <th id="totalSemIva">0,00 €</th>
+                            <th id="totalIva">0,00 €</th>
+                            <th>
+                                <button class="add-btn" onclick="adicionarLinha()" title="Adicionar linha">➕</button>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Taxa</th>
-      <th>Valor com IVA (€)</th>
-      <th>Valor sem IVA (€)</th>
-      <th>IVA (€)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>6%</td>
-      <td><input type="number" id="valorComIva6" step="0.01" oninput="calcular()"></td>
-      <td id="semIva6">0,00 €</td>
-      <td id="iva6">0,00 €</td>
-    </tr>
-    <tr>
-      <td>23%</td>
-      <td><input type="number" id="valorComIva23" step="0.01" oninput="calcular()"></td>
-      <td id="semIva23">0,00 €</td>
-      <td id="iva23">0,00 €</td>
-    </tr>
-    <tr>
-      <th>Total</th>
-      <th id="totalComIva">0,00 €</th>
-      <th id="totalSemIva">0,00 €</th>
-      <th id="totalIva">0,00 €</th>
-    </tr>
-  </tbody>
-</table>
+            <div class="button-container">
+                <button onclick="limparTabela()" class="clear-btn">Limpar Tabela</button>
+                <button onclick="adicionarLinha()" class="add-btn-large">Adicionar Linha</button>
+            </div>
+        </div>
+    </div>
 
-<script src="/JScripts/ServinformSite.js"></script>
-
+    <script src="/JScripts/ServinformSite.js"></script>
 </body>
 </html>
