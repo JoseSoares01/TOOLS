@@ -14,17 +14,31 @@ function calcular() {
         const valorComIva = parseFloat(input.value) || 0;
         const taxa = parseFloat(select.value) || 0;
 
-        if (valorComIva > 0 && taxa > 0) {
-            const taxaDecimal = taxa / 100;
-            const valorSemIva = valorComIva / (1 + taxaDecimal);
-            const valorIva = valorComIva - valorSemIva;
+        if (valorComIva > 0) {
+            if (taxa === 0) {
+                // IVA 0% - valor sem IVA é igual ao valor com IVA
+                const valorSemIva = valorComIva;
+                const valorIva = 0;
 
-            valorSemIvaCell.textContent = valorSemIva.toFixed(2) + ' €';
-            valorIvaCell.textContent = valorIva.toFixed(2) + ' €';
+                valorSemIvaCell.textContent = valorSemIva.toFixed(2) + ' €';
+                valorIvaCell.textContent = valorIva.toFixed(2) + ' €';
 
-            totalComIva += valorComIva;
-            totalSemIva += valorSemIva;
-            totalIva += valorIva;
+                totalComIva += valorComIva;
+                totalSemIva += valorSemIva;
+                totalIva += valorIva;
+            } else if (taxa > 0) {
+                // Outras taxas de IVA
+                const taxaDecimal = taxa / 100;
+                const valorSemIva = valorComIva / (1 + taxaDecimal);
+                const valorIva = valorComIva - valorSemIva;
+
+                valorSemIvaCell.textContent = valorSemIva.toFixed(2) + ' €';
+                valorIvaCell.textContent = valorIva.toFixed(2) + ' €';
+
+                totalComIva += valorComIva;
+                totalSemIva += valorSemIva;
+                totalIva += valorIva;
+            }
         } else {
             valorSemIvaCell.textContent = '0,00 €';
             valorIvaCell.textContent = '0,00 €';
@@ -46,6 +60,7 @@ function adicionarLinha() {
     novaLinha.innerHTML = `
         <td>
             <select class="taxa-select" onchange="calcular()">
+                <option value="0">0% (Isento)</option>
                 <option value="6">6%</option>
                 <option value="13" selected>13%</option>
                 <option value="23">23%</option>

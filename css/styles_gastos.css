@@ -43,7 +43,7 @@ body {
 
 .container > div {
     width: 90%;
-    max-width: 600px;
+    max-width: 700px;
     background-color: rgba(58, 129, 201, 0.13);
     border-radius: 15px;
     padding: 30px;
@@ -57,6 +57,13 @@ h2 {
     margin-bottom: 10px;
     color: #ddd;
     font-size: 2rem;
+    font-family: "Poppins", sans-serif;
+}
+
+h3 {
+    color: #ddd;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
     font-family: "Poppins", sans-serif;
 }
 
@@ -103,6 +110,68 @@ input:focus {
     background-color: rgba(99, 89, 89, 0.547);
 }
 
+/* Estilos para as opções de IVA */
+.iva-options {
+    background-color: rgba(15, 71, 110, 0.3);
+    padding: 20px;
+    border-radius: 12px;
+    border: solid #fffefe 0.5px;
+}
+
+.iva-option {
+    display: grid;
+    grid-template-columns: auto 60px 120px 150px;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    padding: 15px;
+    background-color: rgba(15, 71, 110, 0.4);
+    border-radius: 8px;
+}
+
+.iva-option:last-child {
+    margin-bottom: 0;
+}
+
+.iva-option input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    transform: scale(1.2);
+}
+
+.iva-option label {
+    margin: 0;
+    min-width: 40px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.iva-option input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.total-linhas, .total-valores {
+    text-align: center;
+    padding: 15px;
+    background-color: rgba(15, 71, 110, 0.4);
+    border-radius: 8px;
+    border: solid #01ff34 1px;
+}
+
+.total-linhas label, .total-valores label {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.total-linhas span, .total-valores span {
+    font-weight: bold;
+    color: #01ff34;
+    font-size: 1.2rem;
+}
+
 button {
     background-color: rgba(92, 128, 185, 0.8);
     color: aliceblue;
@@ -147,6 +216,19 @@ button:hover {
 
     h2 {
         font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1rem;
+    }
+
+    .iva-option {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .iva-option input[type="number"] {
+        width: 100%;
     }
 
     button {
