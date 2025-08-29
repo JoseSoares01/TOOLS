@@ -76,8 +76,22 @@
 .sidebar-nav a i {
     margin-right: 15px;
     font-size: 1.2rem;
-    width: 20px;
+    width: 24px;
     text-align: center;
+}
+
+/* Padroniza tamanho dos ícones (emoji, img, svg) nos links do sidebar */
+.sidebar-nav a i,
+.sidebar-nav a img,
+.sidebar-nav a svg {
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+}
+
+.sidebar-nav a img {
+    object-fit: contain;
+    filter: brightness(0) invert(1);
 }
 
 
