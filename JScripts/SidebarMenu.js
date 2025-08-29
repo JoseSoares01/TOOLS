@@ -2,18 +2,14 @@
 class SidebarMenu {
     constructor() {
         this.sidebar = null;
-        this.toggle = null;
-        this.isCollapsed = false;
         this.currentPage = this.getCurrentPage();
         this.init();
     }
 
     init() {
         this.createSidebar();
-        this.createToggle();
         this.bindEvents();
         this.setActivePage();
-        this.loadSidebarState();
     }
 
     createSidebar() {
@@ -55,36 +51,9 @@ class SidebarMenu {
         this.sidebar = sidebar;
     }
 
-    createToggle() {
-        const toggle = document.createElement('button');
-        toggle.className = 'sidebar-toggle';
-        toggle.innerHTML = '<img src="/images/icone_menu_navegação.png" alt="Menu" class="toggle-icon">';
-        toggle.title = 'Alternar Menu';
-        
-        document.body.appendChild(toggle);
-        this.toggle = toggle;
-    }
+
 
     bindEvents() {
-        // Toggle sidebar
-        this.toggle.addEventListener('click', () => {
-            this.toggleSidebar();
-        });
-
-        // Close sidebar on mobile when clicking outside
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768 && 
-                !this.sidebar.contains(e.target) && 
-                !this.toggle.contains(e.target)) {
-                this.closeSidebar();
-            }
-        });
-
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            this.handleResize();
-        });
-
         // Handle navigation clicks
         this.sidebar.addEventListener('click', (e) => {
             if (e.target.tagName === 'A') {
@@ -93,44 +62,7 @@ class SidebarMenu {
         });
     }
 
-    toggleSidebar() {
-        if (this.isCollapsed) {
-            this.expandSidebar();
-        } else {
-            this.collapseSidebar();
-        }
-    }
 
-    collapseSidebar() {
-        this.sidebar.classList.add('collapsed');
-        document.body.classList.add('with-sidebar');
-        this.isCollapsed = true;
-        this.saveSidebarState();
-    }
-
-    expandSidebar() {
-        this.sidebar.classList.remove('collapsed');
-        document.body.classList.add('with-sidebar');
-        this.isCollapsed = false;
-        this.saveSidebarState();
-    }
-
-    closeSidebar() {
-        if (window.innerWidth <= 768) {
-            this.sidebar.classList.remove('open');
-        }
-    }
-
-    handleResize() {
-        if (window.innerWidth <= 768) {
-            this.sidebar.classList.remove('collapsed');
-            document.body.classList.remove('with-sidebar');
-        } else {
-            if (this.isCollapsed) {
-                document.body.classList.add('with-sidebar');
-            }
-        }
-    }
 
     setActivePage() {
         const links = this.sidebar.querySelectorAll('a');
@@ -158,18 +90,7 @@ class SidebarMenu {
         return page || 'Tools';
     }
 
-    saveSidebarState() {
-        localStorage.setItem('sidebarCollapsed', this.isCollapsed);
-    }
 
-    loadSidebarState() {
-        const savedState = localStorage.getItem('sidebarCollapsed');
-        if (savedState === 'true' && window.innerWidth > 768) {
-            this.collapseSidebar();
-        } else {
-            document.body.classList.add('with-sidebar');
-        }
-    }
 }
 
 // Initialize sidebar when DOM is loaded

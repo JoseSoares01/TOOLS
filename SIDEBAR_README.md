@@ -16,26 +16,22 @@ Foi implementado um menu de navegação lateral esquerdo em todas as páginas do
 - **Calculadora Gastos**: Calculadora de gastos com múltiplas taxas
 
 ### 🔧 Recursos do Menu
-- **Menu Colapsável**: Pode ser minimizado para economizar espaço
+- **Menu Fixo**: Sempre visível e acessível
 - **Indicador de Página Atual**: Mostra qual página está ativa
 - **Responsivo**: Adapta-se a dispositivos móveis
-- **Persistente**: Lembra o estado do menu entre sessões
-- **Tooltips**: Mostra descrições ao passar o mouse (quando colapsado)
+- **Navegação Direta**: Acesso instantâneo a todas as ferramentas
 
 ## Como Usar
 
-### 1. **Abrir/Fechar Menu**
-- Clique no botão ☰ no canto superior esquerdo
-- O menu pode ser colapsado para economizar espaço
-
-### 2. **Navegação**
+### 1. **Navegação**
+- O menu está sempre visível no lado esquerdo da tela
 - Clique em qualquer item do menu para navegar
 - A página atual é destacada com cor verde
 - Navegação instantânea entre ferramentas
 
-### 3. **Responsividade**
+### 2. **Responsividade**
 - Em dispositivos móveis, o menu se adapta automaticamente
-- Toque fora do menu para fechá-lo em dispositivos touch
+- Sempre acessível em todas as resoluções
 
 ## Arquivos Implementados
 
@@ -64,7 +60,7 @@ Foi implementado um menu de navegação lateral esquerdo em todas as páginas do
 
 ### Funcionalidade
 - **Auto-detecção**: Identifica automaticamente a página atual
-- **Estado Persistente**: Salva preferências no localStorage
+- **Menu Fixo**: Sempre visível e acessível
 - **Eventos**: Gerenciamento completo de cliques e navegação
 - **Responsivo**: Adaptação automática para diferentes tamanhos de tela
 

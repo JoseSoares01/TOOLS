@@ -12,9 +12,7 @@
     overflow-y: auto;
 }
 
-.sidebar.collapsed {
-    transform: translateX(-250px);
-}
+
 
 .sidebar-header {
     padding: 20px;
@@ -82,69 +80,21 @@
     text-align: center;
 }
 
-.sidebar-toggle {
-    position: fixed;
-    left: 20px;
-    top: 20px;
-    background: #1e3c72;
-    color: #fff;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    z-index: 1002;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 44px;
-    min-height: 44px;
-}
 
-.sidebar-toggle:hover {
-    background: #2a5298;
-    transform: scale(1.05);
-}
-
-.sidebar-toggle .toggle-icon {
-    width: 20px;
-    height: 20px;
-    transition: transform 0.3s ease;
-    filter: brightness(0) invert(1); /* Torna a imagem branca */
-}
-
-.sidebar.collapsed + .sidebar-toggle .toggle-icon {
-    transform: rotate(180deg);
-}
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .sidebar {
         width: 100%;
-        transform: translateX(-100%);
-    }
-    
-    .sidebar.open {
-        transform: translateX(0);
-    }
-    
-    .sidebar.collapsed {
-        transform: translateX(-100%);
-    }
-    
-    .sidebar-toggle {
-        left: 10px;
-        top: 10px;
     }
 }
 
 /* Adjust main content when sidebar is present */
-body.with-sidebar {
+body {
     padding-left: 300px;
 }
 
-body.with-sidebar .home-button {
+.home-button {
     left: 300px;
 }
 
@@ -155,11 +105,11 @@ body.with-sidebar .home-button {
 }
 
 @media (max-width: 768px) {
-    body.with-sidebar {
+    body {
         padding-left: 20px;
     }
     
-    body.with-sidebar .home-button {
+    .home-button {
         left: 20px;
     }
 }
@@ -171,23 +121,4 @@ body.with-sidebar .home-button {
     color: #01ff34 !important;
 }
 
-/* Tooltip for collapsed sidebar */
-.sidebar.collapsed .sidebar-nav a {
-    position: relative;
-}
 
-.sidebar.collapsed .sidebar-nav a:hover::after {
-    content: attr(data-title);
-    position: absolute;
-    left: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    white-space: nowrap;
-    z-index: 1003;
-    margin-left: 10px;
-}
