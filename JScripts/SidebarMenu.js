@@ -23,25 +23,25 @@ class SidebarMenu {
             <nav class="sidebar-nav">
                 <ul>
                     <li><a href="/pages/Tools.html" data-title="Dashboard Principal">
-                        <i>🏠</i>Dashboard
+                        <img src="/images/colunas.png" alt="Dashboard Icone"> Dashboard
                     </a></li>
                     <li><a href="/pages/Trivalor.html" data-title="Gerador QR Trivalor">
-                        <i>📱</i>Trivalor
+                        <img src="/images/smartphone.png" alt="Trivalor Icone"> Trivalor
                     </a></li>
                     <li><a href="/pages/BCP.html" data-title="Gerador QR Despesas">
-                        <i>💳</i>BCP Despesas
+                        <img src="/images/despesas.png" alt="Despesas Icone"> Despesas
                     </a></li>
                     <li><a href="/pages/SplitPDF.html" data-title="Editor de PDFs">
-                        <i>📄</i>Split PDF
+                        <img src="/images/pdf02.png" alt="Editor de PDFs Icone"> Editor de PDFs
                     </a></li>
                     <li><a href="/pages/Convert.html" data-title="Conversor de Imagens">
-                        <i>🖼️</i>Conversor
+                        <img src="/images/intercambio.png" alt="Conversor de Imagens Icone"> Conversor de Imagens
                     </a></li>
                     <li><a href="/pages/ServinformSite.html" data-title="Calculadora IVA">
-                        <i>🧮</i>Calculadora IVA
+                        <img src="/images/calculadora.png" alt="Calculadora IVA Icone"> Calculadora IVA
                     </a></li>
                     <li><a href="/pages/Calculadora_gastos.html" data-title="Calculadora de Gastos">
-                        <i>💰</i>Calculadora Gastos
+                        <img src="/images/orcamentacao.png" alt="Calculadora de Gastos Icone"> Calculadora de Gastos
                     </a></li>
                 </ul>
             </nav>

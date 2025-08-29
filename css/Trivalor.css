@@ -296,7 +296,7 @@ textarea {
 .pais-check-container {
     position: fixed;
     top: 80px;
-    left: 20px;
+    left: 320px;
     display: flex;
     flex-direction: column;
     background-color: rgba(58, 129, 201, 0.13);
