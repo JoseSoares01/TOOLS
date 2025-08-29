@@ -13,6 +13,16 @@ body {
     margin: 0;
 }
 
+/* Fade-out da página ao deslogar */
+body.fade-out {
+    animation: pageFadeOut 0.35s ease forwards;
+}
+
+@keyframes pageFadeOut {
+    from { opacity: 1; filter: blur(0); }
+    to { opacity: 0; filter: blur(2px); }
+}
+
 .background-image {
     background-image: url(/images/1175.jpg);
     background-size: cover;
@@ -38,6 +48,14 @@ nav {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estado visual ao deslogar */
+.logout-btn.logging-out {
+    pointer-events: none;
+    opacity: 0.7;
+    transform: scale(0.96);
+    transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .nav-left {

@@ -9,7 +9,28 @@ function navigate(page) {
 }
 
 function logout() {
-    alert('Logging out...');
+    // Se existir botão com classe, aplica efeito e usa fluxo animado
+    const logoutBtn = document.querySelector('.logout-btn');
+    if (logoutBtn) {
+        if (!logoutBtn.classList.contains('logging-out')) {
+            logoutBtn.classList.add('logging-out');
+        }
+    }
+
+    // Remove credencial de sessão
+    try {
+        localStorage.removeItem('usuarioLogado');
+    } catch (e) {
+        // ignora
+    }
+
+    // Efeito de fade-out na página
+    document.body.classList.add('fade-out');
+
+    // Redireciona para login após a animação
+    setTimeout(() => {
+        window.location.href = 'https://ferramentasservinform.pt/login.html';
+    }, 400);
 }
 
 // Novo sistema de expansão e redirecionamento dos cards
