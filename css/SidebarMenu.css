@@ -91,6 +91,10 @@
 
 .sidebar-nav a img {
     object-fit: contain;
+}
+
+/* Caso precise forçar um ícone claro em fundo escuro, aplique esta classe manualmente */
+.icon-white {
     filter: brightness(0) invert(1);
 }
 
