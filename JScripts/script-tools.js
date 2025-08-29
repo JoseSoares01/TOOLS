@@ -2,10 +2,10 @@ function navigate(page) {
     // Verifica se ainda está logado antes de navegar
     if (!localStorage.getItem('usuarioLogado')) {
         alert('Sua sessão expirou. Por favor, faça login novamente.');
-        window.location.href = 'https://ferramentasservinform.pt/login.html';
+        window.location.href = '/index.html';
         return;
     }
-    window.location.href = `https://ferramentasservinform.pt/pages/${page}.html`;
+    window.location.href = `/pages/${page}.html`;
 }
 
 function logout() {
@@ -29,7 +29,7 @@ function logout() {
 
     // Redireciona para login após a animação
     setTimeout(() => {
-        window.location.href = 'https://ferramentasservinform.pt/login.html';
+        window.location.href = '/index.html';
     }, 400);
 }
 
@@ -53,7 +53,7 @@ document.querySelectorAll('.card').forEach(card => {
             overlay.style.display = 'none';
             this.classList.remove('expanding');
             // Redirecionamento real
-            window.location.href = `https://ferramentasservinform.pt/pages/${url}.html`;
+            window.location.href = `/pages/${url}.html`;
         }, 500);
     });
 });
