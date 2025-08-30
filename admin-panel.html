@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo - SVF</title>
+    <link rel="stylesheet" href="/css/style-login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 2px solid #077e9c;
+        }
+
+        .admin-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #077e9c;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #077e9c;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #0894b8;
+        }
+
+        .stat-label {
+            color: #077e9c;
+            margin-top: 5px;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .admin-btn {
+            padding: 10px 20px;
+            background: #077e9c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .admin-btn:hover {
+            background: #0894b8;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .users-table th,
+        .users-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(119, 126, 156, 0.3);
+        }
+
+        .users-table th {
+            background: #077e9c;
+            color: white;
+            font-weight: 600;
+        }
+
+        .users-table tr:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .status-active {
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        .status-inactive {
+            color: #f44336;
+            font-weight: bold;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .edit-btn {
+            background: #ff9800;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #f44336;
+            color: white;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: #077e9c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            z-index: 100;
+        }
+
+        .back-btn:hover {
+            background: #0894b8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="imagem_fundo"></div>
+    
+    <a href="/index.html" class="back-btn">← Voltar ao Login</a>
+    
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>Painel Administrativo SVF</h1>
+            <p>Gerenciamento de Usuários e Sistema</p>
+        </div>
+
+        <div class="admin-stats" id="stats-container">
+            <!-- Estatísticas serão carregadas aqui -->
+        </div>
+
+        <div class="admin-actions">
+            <button class="admin-btn" onclick="exportarUsuarios()">📊 Exportar Usuários</button>
+            <button class="admin-btn" onclick="verEstatisticas()">📈 Ver Estatísticas</button>
+            <button class="admin-btn" onclick="refreshUsers()">🔄 Atualizar Lista</button>
+            <button class="admin-btn" onclick="addSampleUser()">➕ Adicionar Usuário Teste</button>
+        </div>
+
+        <div class="users-container">
+            <h3>Lista de Usuários</h3>
+            <table class="users-table" id="users-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuário</th>
+                        <th>Email</th>
+                        <th>Tipo</th>
+                        <th>Data Criação</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="users-tbody">
+                    <!-- Usuários serão carregados aqui -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="/JScripts/database-manager.js"></script>
+    <script>
+        // Função para carregar estatísticas
+        function loadStats() {
+            if (typeof dbManager !== 'undefined') {
+                const stats = dbManager.getStats();
+                const statsContainer = document.getElementById('stats-container');
+                
+                statsContainer.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.total}</div>
+                        <div class="stat-label">Total de Usuários</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.ativos}</div>
+                        <div class="stat-label">Usuários Ativos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.admins}</div>
+                        <div class="stat-label">Administradores</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.usuarios}</div>
+                        <div class="stat-label">Usuários Comuns</div>
+                    </div>
+                `;
+            }
+        }
+
+        // Função para carregar lista de usuários
+        function loadUsers() {
+            if (typeof dbManager !== 'undefined') {
+                const users = dbManager.users;
+                const tbody = document.getElementById('users-tbody');
+                
+                tbody.innerHTML = users.map(user => `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.usuario}</td>
+                        <td>${user.email}</td>
+                        <td>${user.tipo}</td>
+                        <td>${user.dataCriacao}</td>
+                        <td class="status-${user.status.toLowerCase()}">${user.status}</td>
+                        <td class="user-actions">
+                            <button class="action-btn edit-btn" onclick="editUser(${user.id})">Editar</button>
+                            <button class="action-btn delete-btn" onclick="toggleUserStatus(${user.id})">
+                                ${user.status === 'Ativo' ? 'Desativar' : 'Ativar'}
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        // Função para editar usuário
+        function editUser(userId) {
+            const user = dbManager.users.find(u => u.id === userId);
+            if (user) {
+                const newEmail = prompt('Novo email:', user.email);
+                if (newEmail && newEmail !== user.email) {
+                    const result = dbManager.updateUser(userId, { email: newEmail });
+                    if (result.success) {
+                        alert('Usuário atualizado com sucesso!');
+                        loadUsers();
+                        loadStats();
+                    } else {
+                        alert('Erro ao atualizar usuário: ' + result.message);
+                    }
+                }
+            }
+        }
+
+        // Função para alternar status do usuário
+        function toggleUserStatus(userId) {
+            const user = dbManager.users.find(u => u.id === userId);
+            if (user) {
+                const newStatus = user.status === 'Ativo' ? 'Inativo' : 'Ativo';
+                const result = dbManager.updateUser(userId, { status: newStatus });
+                if (result.success) {
+                    alert(`Usuário ${newStatus.toLowerCase()} com sucesso!`);
+                    loadUsers();
+                    loadStats();
+                } else {
+                    alert('Erro ao alterar status: ' + result.message);
+                }
+            }
+        }
+
+        // Função para adicionar usuário de teste
+        function addSampleUser() {
+            const username = prompt('Nome de usuário:');
+            const email = prompt('Email:');
+            const password = prompt('Senha:');
+            
+            if (username && email && password) {
+                const result = dbManager.registerUser({
+                    usuario: username,
+                    email: email,
+                    senha: password
+                });
+                
+                if (result.success) {
+                    alert('Usuário adicionado com sucesso!');
+                    loadUsers();
+                    loadStats();
+                } else {
+                    alert('Erro ao adicionar usuário: ' + result.message);
+                }
+            }
+        }
+
+        // Função para atualizar lista
+        function refreshUsers() {
+            loadUsers();
+            loadStats();
+        }
+
+        // Carrega dados quando a página carrega
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStats();
+            loadUsers();
+        });
+    </script>
+</body>
+</html>

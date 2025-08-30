@@ -1,74 +1,110 @@
 <!DOCTYPE html>
 <html lang="pt">
-
 <head>
-    <!-- Definindo o tipo de documento como HTML5 -->
-    <meta charset="UTF-8" />
-    <!-- Configurações para uma boa experiência em dispositivos móveis -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Título da página que aparece na aba do navegador -->
-    <title>Página de Login</title>
-    <!-- Vinculação ao arquivo CSS externo para o estilo da página -->
-    <link rel="stylesheet" href="/css/style-login.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login SVF - Sistema de Autenticação</title>
+    <link rel="stylesheet" href="/css/style-login.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 </head>
 
 <body>
     <div class="imagem_fundo"></div>
-    <!-- Início do formulário de login -->
-    <form id="login-form">
-        <!-- Seção do título do formulário -->
-        <div class="titulo">
-            <!-- Título principal do formulário -->
-            <h1>Login SVF</h1>
-            <!-- Barra horizontal logo abaixo do título para estilização -->
-            <div class="barra-horizontal"></div>
+    
+    <div class="container">
+        <div class="curved-shape"></div>
+        <div class="curved-shape2"></div>
+        
+        <!-- Formulário de Login -->
+        <div class="form-box Login">
+            <h2 class="animation" style="--D:0; --S:21">Login SVF</h2>
+            <form id="login-form">
+                <div class="input-box animation" style="--D:1; --S:22">
+                    <input type="text" id="login" required>
+                    <label for="login">Usuário</label>
+                    <box-icon type='solid' name='user' color="gray"></box-icon>
+                </div>
+
+                <div class="input-box animation" style="--D:2; --S:23">
+                    <input type="password" id="password" required>
+                    <label for="password">Senha</label>
+                    <box-icon name='lock-alt' type='solid' color="gray"></box-icon>
+                </div>
+
+                <div class="lembrar-me animation" style="--D:3; --S:24">
+                    <input type="checkbox" id="lembrar">
+                    <label for="lembrar">Lembrar-me</label>
+                </div>
+
+                <div class="input-box animation" style="--D:4; --S:25">
+                    <button class="btn" type="submit">Entrar</button>
+                </div>
+
+                <div class="esqueceu-senha animation" style="--D:5; --S:26">
+                    <p>Esqueceu sua senha? 
+                        <a href="mailto:josejanyel.rodrigues@servinformgroup.com,henriquedaniel.marins@servinformgroup.com?subject=Pedido%20de%20Altera%C3%A7%C3%A3o%20de%20Senha&body=Nome%20Completo:%0AUsu%C3%A1rio%20(Login):%0AMotivo%20da%20Solicita%C3%A7%C3%A3o:%0A%0AAssinatura:%0AData:">Clique aqui!</a>
+                    </p>
+                </div>
+
+                <div class="regi-link animation" style="--D:6; --S:27">
+                    <p>Ainda não tem uma conta? <br> <a href="#" class="SignUpLink">Registar</a></p>
+                </div>
+            </form>
         </div>
 
-        <!-- Campo de entrada para o e-mail -->
-        <div class="campo-input">
-            <!-- Rótulo para o campo de e-mail -->
-            <label for="email">Login*</label>
-            <!-- Campo de entrada onde o usuário insere o e-mail -->
-            <input type="text" id="login" required />
+        <!-- Conteúdo Informativo do Login -->
+        <div class="info-content Login">
+            <h2 class="animation" style="--D:0; --S:20">BEM-VINDO DE VOLTA!</h2>
+            <p class="animation" style="--D:1; --S:21">Estamos felizes em tê-lo conosco novamente.</p>
         </div>
 
-        <!-- Campo de entrada para a senha -->
-        <div class="campo-input">
-            <!-- Rótulo para o campo de senha -->
-            <label for="password">Sua senha*</label>
-            <!-- Campo de entrada onde o usuário insere a senha -->
-            <input type="password" id="password" />
+        <!-- Formulário de Registro -->
+        <div class="form-box Register">
+            <h2 class="animation" style="--li:17; --S:0">Registar</h2>
+            <form id="register-form">
+                <div class="input-box animation" style="--li:18; --S:1">
+                    <input type="text" id="reg-username" required>
+                    <label for="reg-username">Usuário</label>
+                    <box-icon type='solid' name='user' color="gray"></box-icon>
+                </div>
+
+                <div class="input-box animation" style="--li:19; --S:2">
+                    <input type="email" id="reg-email" required>
+                    <label for="reg-email">Email</label>
+                    <box-icon name='envelope' type='solid' color="gray"></box-icon>
+                </div>
+
+                <div class="input-box animation" style="--li:20; --S:3">
+                    <input type="password" id="reg-password" required>
+                    <label for="reg-password">Senha</label>
+                    <box-icon name='lock-alt' type='solid' color="gray"></box-icon>
+                </div>
+
+                <div class="input-box animation" style="--li:21; --S:4">
+                    <button class="btn" type="submit">Registrar</button>
+                </div>
+
+                <div class="regi-link animation" style="--li:22; --S:5">
+                    <p>Já tem uma conta? <br> <a href="#" class="SignInLink">Entrar</a></p>
+                </div>
+            </form>
         </div>
 
-        <!-- Seção da opção "Lembrar-me" -->
-        <div class="lembrar-me">
-            <!-- Checkbox para o usuário optar por ser lembrado -->
-            <input type="checkbox" />
-            <!-- Texto ao lado do checkbox -->
-            <p>Lembrar-me</p>
+        <!-- Conteúdo Informativo do Registro -->
+        <div class="info-content Register">
+            <h2 class="animation" style="--li:17; --S:0">BEM-VINDO!</h2>
+            <p class="animation" style="--li:18; --S:1">Ficamos felizes em tê-lo aqui. Se precisar de assistência, não hesite em nos contatar.</p>
         </div>
+    </div>
 
-        <!-- Botão de envio do formulário (botão de login) -->
-        <button type="submit">Entrar</button>
-
-        <!-- Texto de "Esqueceu sua senha?" com link para recuperação de senha -->
-        <p class="esqueceu-senha">
-            Esqueceu sua senha?
-            <!-- Link para a página de recuperação de senha -->
-            <a href="mailto:josejanyel.rodrigues@servinformgroup.com,henriquedaniel.marins@servinformgroup.com?subject=Pedido%20de%20Altera%C3%A7%C3%A3o%20de%20Senha&body=Nome%20Completo:%0AUsu%C3%A1rio%20(Login):%0AMotivo%20da%20Solicita%C3%A7%C3%A3o:%0A%0AAssinatura:%0AData:">Clique aqui!</a>
-            <script defer src="/JScripts/script-login.js"></script>
-        </p>
-
-    </form>
-    <!-- Fim do formulário de login -->
     <footer class="image-svf">
-        <img src="/images/imagen.png" alt="Logo">
+        <img src="/images/imagen.png" alt="Logo SVF">
     </footer>
-    </div>
-    </div>
-</body>
 
+    <script src="/JScripts/database-manager.js"></script>
+    <script src="/JScripts/script-login.js"></script>
+</body>
 </html>

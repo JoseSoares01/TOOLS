@@ -59,7 +59,7 @@ Licença
 Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para detalhes.
 
 Contato
-Para qualquer dúvida ou sugestão, entre em contato:
+Para qualquer dúvida ou sugestão, entre em contato: 925922508
 
 Seu Nome -José Soares
 Email: janyelrodrigues@hotmail.com
