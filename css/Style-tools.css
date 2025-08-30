@@ -72,7 +72,7 @@ nav {
 button {
     padding: 0.5rem 1rem;
     border: none;
-    border-radius: 4px;
+    border-radius: 16px;
     cursor: pointer;
     background: #086da4;
     color: rgb(255, 255, 255);
@@ -104,6 +104,7 @@ button:hover {
     border-radius: 16px;
     box-shadow: #ffffff 10px;
     border: solid #01e1ff 0.1px;
+    border-radius: 16px;
 }
 
 .cards-container {
