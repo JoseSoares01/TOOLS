@@ -122,7 +122,7 @@ button:hover {
     min-width: 320px;
     height: 440px;
     box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.2), inset -5px -5px 15px rgba(255, 255, 255, 0.1), 5px 5px 15px rgba(0, 0, 0, 0.3), -5px -5px 15px rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
+    border-radius: 24px;
     margin: 30px;
     transition: 0.5s;
 }
@@ -134,13 +134,13 @@ button:hover {
     right: 20px;
     bottom: 20px;
     background: rgba(3, 69, 131, 0.9);
-    border-radius: 15px;
+    border-radius: 16px;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     transition: 0.5s;
-    border: solid #01ff34 1px;
+    border: solid #01ffff 1px;
 }
 
 .card .box:hover {
@@ -167,15 +167,15 @@ button:hover {
     top: -10px;
     right: 30px;
     font-size: 8rem;
-    color: rgba(255, 255, 255, 0.1);
+    color: rgba(3, 255, 213, 0.188);
 }
 
 .card .box .content h3 {
     font-size: 1.8rem;
-    color: #fff;
+    color: #ffffff;
     z-index: 1;
     transition: 0.5s;
-    margin-bottom: 15px;
+    margin-bottom: 50px;
 }
 
 .card .box .content p {
