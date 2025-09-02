@@ -45,7 +45,7 @@ body {
 .child1 {
     width: 90%;
     max-width: 800px;
-    background-color: rgba(58, 129, 201, 0.13);
+    background-color: rgba(58, 130, 201, 0.047);
     border-radius: 15px;
     padding: 20px;
     margin-bottom: 20px;
@@ -384,7 +384,7 @@ textarea {
   background: none;
   border: none;
   color: white;
-  font-size: 12px;
+  font-size: 25px;
   cursor: pointer;
   padding: 0;
   line-height: 1;
