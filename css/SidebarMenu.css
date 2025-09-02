@@ -5,7 +5,7 @@
     top: 0;
     height: 100vh;
     width: 280px;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    background: linear-gradient(135deg, #1e3b723e 0%, #2a5298 100%);
     box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
     z-index: 1001;
     transition: transform 0.3s ease;
@@ -56,21 +56,21 @@
     color: #fff;
     text-decoration: none;
     transition: all 0.3s ease;
-    border-left: 4px solid transparent;
+    border-left: 2px solid transparent;
     font-family: 'Poppins', sans-serif;
     font-size: 0.95rem;
 }
 
 .sidebar-nav a:hover {
     background: rgba(255, 255, 255, 0.1);
-    border-left-color: #01ff34;
+    border-left-color: #01ffc4;
     transform: translateX(5px);
 }
 
 .sidebar-nav a.active {
-    background: rgba(1, 255, 52, 0.2);
-    border-left-color: #01ff34;
-    color: #01ff34;
+    background: rgba(1, 255, 187, 0.2);
+    border-left-color: #01ff344b;
+    color: #01ffd0;
 }
 
 .sidebar-nav a i {
@@ -84,8 +84,8 @@
 .sidebar-nav a i,
 .sidebar-nav a img,
 .sidebar-nav a svg {
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
     flex: 0 0 24px;
 }
 
@@ -134,9 +134,10 @@ body {
 
 /* Current page indicator */
 .current-page {
-    background: rgba(1, 255, 52, 0.3) !important;
+    background: rgba(12, 167, 169, 0.3) !important;
     border-left-color: #01ff34 !important;
     color: #01ff34 !important;
+    border-radius: 12px;
 }
 
 
