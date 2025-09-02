@@ -11,6 +11,7 @@ body {
     padding-bottom: 100px;
     /* Espaço para o footer */
     margin: 0;
+    background-color: #1065dd;
 }
 
 /* Fade-out da página ao deslogar */
@@ -23,8 +24,8 @@ body.fade-out {
     to { opacity: 0; filter: blur(2px); }
 }
 
-.background-image {
-    background-image: url(/images/1175.jpg);
+/*.background-image {
+    background-color: #0000;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -34,7 +35,7 @@ body.fade-out {
     width: 100vw;
     height: 100vh;
     z-index: -1;
-}
+}*/
 
 .content {
     position: relative;
@@ -209,16 +210,19 @@ button:hover {
 /* Ajuste o footer */
 
 footer {
-    text-align: center;
-    padding: 15px 0;
-    position: absolute;
-    /* ou fixed, dependendo do seu caso de uso */
+    position: fixed;
+    bottom: 0;
     width: 100%;
+    background: #00000052;
+    padding: 12px 0;
+    text-align: center;
+    box-shadow: 0 -2px 8px rgba(8,109,164,0.07);
 }
 
 .footer img {
     height: 50px;
     transition: margin-top 0.3s ease;
+    margin-left: -250px;
 }
 
 .tamanho_logo {
@@ -226,7 +230,7 @@ footer {
     color: rgba(255, 255, 255, 0.527);
     text-align: center;
     padding: 10px 0;
-    margin: 0;
+    margin-left: -250px;
 }
 
 
