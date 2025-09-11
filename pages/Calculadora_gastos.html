@@ -1,80 +1,171 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-PT">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Gastos</title>
-    <link rel="icon" type="image/x-icon" href="/images/QR.png">
-    <link rel="stylesheet" href="/css/styles_gastos.css">
-    <link rel="stylesheet" href="/css/SidebarMenu.css">
-    <script>
-        const usuarioLogado = localStorage.getItem('usuarioLogado');
-        if (!usuarioLogado) {
-            alert('Você precisa fazer login para acessar esta página.');
-            window.location.href = 'https://suportesvf.pt/login.html';
-        }
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora IVA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #111;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #8b5cf6;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #8b5cf6;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #7c3aed;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #333;
+      text-align: center;
+    }
+
+    th {
+      background: #222;
+    }
+  </style>
 </head>
 <body>
-    <img src="/images/home-button.png" width=40px class="home-button" onclick="location.href = '/pages/Tools.html';">
-    
-    <div class="container">
-        <div>
-            <h2>Calculadora de Gastos</h2>
-            <p class="subtitle">Distribuir Valor com Múltiplas Taxas de IVA</p>
+  <div class="container">
+    <h2>Calculadora de IVA</h2>
 
-            <div class="input-group">
-                <label for="valorComIva">Valor total com IVA (€):</label>
-                <input type="number" step="0.01" id="valorComIva" placeholder="Ex: 39.41">
+    <label>Total da Fatura (com IVA)</label>
+    <input type="number" id="total" step="0.01" placeholder="Ex: 99.25">
 
-                <div class="iva-options">
-                    <h3>Selecionar Taxas de IVA:</h3>
-                    
-                    <div class="iva-option">
-                        <input type="checkbox" id="iva0" value="0">
-                        <label for="iva0">0%</label>
-                        <input type="number" id="linhas0" placeholder="Nº linhas" min="0" value="0">
-                        <input type="number" step="0.01" id="valor0" placeholder="Valor (€)" min="0" value="0">
-                    </div>
-                    
-                    <div class="iva-option">
-                        <input type="checkbox" id="iva6" value="6">
-                        <label for="iva6">6%</label>
-                        <input type="number" id="linhas6" placeholder="Nº linhas" min="0" value="0">
-                        <input type="number" step="0.01" id="valor6" placeholder="Valor (€)" min="0" value="0">
-                    </div>
-                    
-                    <div class="iva-option">
-                        <input type="checkbox" id="iva13" value="13">
-                        <label for="iva13">13%</label>
-                        <input type="number" id="linhas13" placeholder="Nº linhas" min="0" value="0">
-                        <input type="number" step="0.01" id="valor13" placeholder="Valor (€)" min="0" value="0">
-                    </div>
-                    
-                    <div class="iva-option">
-                        <input type="checkbox" id="iva23" value="23" checked>
-                        <label for="iva23">23%</label>
-                        <input type="number" id="linhas23" placeholder="Nº linhas" min="0" value="1">
-                        <input type="number" step="0.01" id="valor23" placeholder="Valor (€)" min="0" value="0">
-                    </div>
-                </div>
+    <label>IVA 0%</label>
+    <input type="number" id="iva0" step="0.01" placeholder="Ex: 0.00">
 
-                <div class="total-linhas">
-                    <label>Total de linhas: <span id="totalLinhas">1</span></label>
-                </div>
-                
-                <div class="total-valores">
-                    <label>Total dos valores: <span id="totalValores">€0.00</span></label>
-                </div>
-            </div>
+    <label>IVA 6%</label>
+    <input type="number" id="iva6" step="0.01" placeholder="Ex: 0.37">
 
-            <button onclick="distribuirValor()">Distribuir</button>
+    <label>IVA 13%</label>
+    <input type="number" id="iva13" step="0.01" placeholder="Ex: 0.00">
 
-            <div class="resultado" id="resultado"></div>
-        </div>
-    </div>
+    <label>IVA 23%</label>
+    <input type="number" id="iva23" step="0.01" placeholder="Ex: 17.32">
 
-    <script src="/JScripts/SidebarMenu.js"></script>
-    <script src="/JScripts/gastos.js"></script>
+    <button onclick="calcular()">Calcular</button>
+
+    <table id="resultado" style="display:none;">
+      <thead>
+        <tr>
+          <th>Taxa</th>
+          <th>Base sem IVA</th>
+          <th>IVA</th>
+          <th>Total com IVA</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+      <tfoot>
+        <tr>
+          <th>Total</th>
+          <th id="baseTotal"></th>
+          <th id="ivaTotal"></th>
+          <th id="totalComIva"></th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <script>
+    function calcular() {
+      const total = parseFloat(document.getElementById("total").value) || 0;
+      const iva0 = parseFloat(document.getElementById("iva0").value) || 0;
+      const iva6 = parseFloat(document.getElementById("iva6").value) || 0;
+      const iva13 = parseFloat(document.getElementById("iva13").value) || 0;
+      const iva23 = parseFloat(document.getElementById("iva23").value) || 0;
+
+      const taxas = [
+        {nome: "0%", taxa: 0, iva: iva0},
+        {nome: "6%", taxa: 0.06, iva: iva6},
+        {nome: "13%", taxa: 0.13, iva: iva13},
+        {nome: "23%", taxa: 0.23, iva: iva23},
+      ];
+
+      let baseTotal = 0, ivaTotal = 0, totalCalculado = 0;
+      let tbody = "";
+
+      taxas.forEach(t => {
+        let base = t.taxa > 0 ? (t.iva / t.taxa) : (t.iva); 
+        let linhaTotal = base + t.iva;
+
+        baseTotal += base;
+        ivaTotal += t.iva;
+        totalCalculado += linhaTotal;
+
+        tbody += `
+          <tr>
+            <td>${t.nome}</td>
+            <td>${base.toFixed(2)} €</td>
+            <td>${t.iva.toFixed(2)} €</td>
+            <td>${linhaTotal.toFixed(2)} €</td>
+          </tr>
+        `;
+      });
+
+      document.querySelector("#resultado tbody").innerHTML = tbody;
+      document.getElementById("baseTotal").textContent = baseTotal.toFixed(2) + " €";
+      document.getElementById("ivaTotal").textContent = ivaTotal.toFixed(2) + " €";
+      document.getElementById("totalComIva").textContent = total.toFixed(2) + " €";
+
+      document.getElementById("resultado").style.display = "table";
+    }
+  </script>
 </body>
 </html>
