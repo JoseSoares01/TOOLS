@@ -449,3 +449,94 @@ textarea {
     border: 1px solid #f5c6cb;
     display: block;
 }
+
+/* Estilos para a Calculadora de IVA */
+.calculator-container {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+    margin-top: 20px;
+}
+
+.calculator-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.calculator-inputs label {
+    color: #ddd;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.calculator-inputs input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #fffefe;
+    background: rgba(15, 71, 110, 0.637);
+    color: #fffefe;
+    font-size: 16px;
+}
+
+.calculator-inputs input::placeholder {
+    color: #ddd;
+    opacity: 0.7;
+}
+
+.calculator-inputs input:focus {
+    outline: none;
+    background: rgba(99, 89, 89, 0.547);
+}
+
+.calculator-inputs button {
+    background-color: rgba(92, 128, 185, 0.8);
+    color: aliceblue;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    margin: 10px 0;
+    width: 100%;
+    transition: all 0.3s ease;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.calculator-inputs button:hover {
+    background-color: #0c71de;
+    color: white;
+}
+
+.calculator-inputs .resultado {
+    background: rgba(15, 71, 110, 0.637);
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    border: solid #fffefe 0.5px;
+}
+
+.calculator-inputs .resultado p {
+    margin: 5px 0;
+    color: #ddd;
+    font-size: 1rem;
+}
+
+.calculator-inputs .resultado strong {
+    color: #01ff34;
+}
+
+/* Responsive styles para calculadora */
+@media screen and (max-width: 630px) {
+    .calculator-container {
+        width: 95%;
+        padding: 15px;
+        max-width: none;
+    }
+}
