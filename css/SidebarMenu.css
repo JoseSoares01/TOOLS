@@ -5,7 +5,7 @@
     top: 0;
     height: 100vh;
     width: 280px;
-    background: linear-gradient(135deg, #1e3b723e 0%, #2a5298 100%);
+    background: rgba(12, 167, 169, 0.3);
     box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
     z-index: 1001;
     transition: transform 0.3s ease;
@@ -134,10 +134,10 @@ body {
 
 /* Current page indicator */
 .current-page {
-    background: rgba(12, 167, 169, 0.3) !important;
     border-left-color: #01ff34 !important;
     color: #01ff34 !important;
     border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05) !important;
 }
 
 

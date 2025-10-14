@@ -9,13 +9,14 @@ body {
     font-family: Arial, sans-serif;
     min-height: 100vh;
     position: relative;
+    padding-left: 300px;
 }
 
 /* Home button styling */
 .home-button {
     position: fixed;
     top: 20px;
-    left: 20px;
+    left: 320px;
     cursor: pointer;
     z-index: 1000;
 }
@@ -225,6 +226,10 @@ textarea {
     .home-button {
         top: 10px;
         left: 10px;
+    }
+    
+    body {
+        padding-left: 20px;
     }
 }
 
