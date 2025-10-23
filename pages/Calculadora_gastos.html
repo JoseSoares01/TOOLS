@@ -4,123 +4,72 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora IVA</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0a0a0a;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
+  <link rel="stylesheet" href="/css/styles_gastos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <script>
+    const usuarioLogado = localStorage.getItem('usuarioLogado');
+    if (!usuarioLogado) {
+      alert('Você precisa fazer login para acessar esta página.');
+      window.location.href = 'https://ferramentasservinform/login.html';
     }
-
-    .container {
-      background: #111;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
-      max-width: 500px;
-      width: 100%;
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #8b5cf6;
-    }
-
-    label {
-      display: block;
-      margin-top: 10px;
-      font-size: 14px;
-    }
-
-    input {
-      width: 100%;
-      padding: 8px;
-      margin-top: 4px;
-      border-radius: 8px;
-      border: none;
-      outline: none;
-      font-size: 14px;
-    }
-
-    button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      background: #8b5cf6;
-      color: #fff;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #7c3aed;
-    }
-
-    table {
-      width: 100%;
-      margin-top: 20px;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-
-    th, td {
-      padding: 10px;
-      border: 1px solid #333;
-      text-align: center;
-    }
-
-    th {
-      background: #222;
-    }
-  </style>
+  </script>
 </head>
 <body>
+  <img src="/images/home-button.png" width=40px class="home-button" onclick="location.href = '/pages/Tools.html';">
+  
   <div class="container">
-    <h2>Calculadora de IVA</h2>
+    <div>
+      <h2>Calculadora de IVA</h2>
+      <p class="subtitle">Calcule o IVA das suas despesas de forma rápida e precisa</p>
 
-    <label>Total da Fatura (com IVA)</label>
-    <input type="number" id="total" step="0.01" placeholder="Ex: 99.25">
+      <div class="input-group">
+        <label>Total da Fatura (com IVA)</label>
+        <input type="number" id="total" step="0.01" placeholder="Ex: 99.25">
 
-    <label>IVA 0%</label>
-    <input type="number" id="iva0" step="0.01" placeholder="Ex: 0.00">
+        <div class="iva-options">
+          <h3>Valores de IVA por Taxa</h3>
+          
+          <div class="iva-option">
+            <input type="checkbox" id="check0" checked>
+            <label for="check0">0%</label>
+            <input type="number" id="iva0" step="0.01" placeholder="0.00">
+            <span>€</span>
+          </div>
 
-    <label>IVA 6%</label>
-    <input type="number" id="iva6" step="0.01" placeholder="Ex: 0.37">
+          <div class="iva-option">
+            <input type="checkbox" id="check6" checked>
+            <label for="check6">6%</label>
+            <input type="number" id="iva6" step="0.01" placeholder="0.37">
+            <span>€</span>
+          </div>
 
-    <label>IVA 13%</label>
-    <input type="number" id="iva13" step="0.01" placeholder="Ex: 0.00">
+          <div class="iva-option">
+            <input type="checkbox" id="check13" checked>
+            <label for="check13">13%</label>
+            <input type="number" id="iva13" step="0.01" placeholder="0.00">
+            <span>€</span>
+          </div>
 
-    <label>IVA 23%</label>
-    <input type="number" id="iva23" step="0.01" placeholder="Ex: 17.32">
+          <div class="iva-option">
+            <input type="checkbox" id="check23" checked>
+            <label for="check23">23%</label>
+            <input type="number" id="iva23" step="0.01" placeholder="17.32">
+            <span>€</span>
+          </div>
+        </div>
 
-    <button onclick="calcular()">Calcular</button>
+        <button onclick="calcular()">Calcular</button>
 
-    <table id="resultado" style="display:none;">
-      <thead>
-        <tr>
-          <th>Taxa</th>
-          <th>Base sem IVA</th>
-          <th>IVA</th>
-          <th>Total com IVA</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-      <tfoot>
-        <tr>
-          <th>Total</th>
-          <th id="baseTotal"></th>
-          <th id="ivaTotal"></th>
-          <th id="totalComIva"></th>
-        </tr>
-      </tfoot>
-    </table>
+        <div class="resultado" id="resultado" style="display:none;">
+          <div class="total-linhas">
+            <label>Total de Linhas: <span id="totalLinhas">0</span></label>
+          </div>
+          <div class="total-valores">
+            <label>Total de Valores: <span id="totalValores">0.00 €</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -131,41 +80,57 @@
       const iva13 = parseFloat(document.getElementById("iva13").value) || 0;
       const iva23 = parseFloat(document.getElementById("iva23").value) || 0;
 
+      const checkboxes = [
+        {id: "check0", checked: document.getElementById("check0").checked},
+        {id: "check6", checked: document.getElementById("check6").checked},
+        {id: "check13", checked: document.getElementById("check13").checked},
+        {id: "check23", checked: document.getElementById("check23").checked}
+      ];
+
       const taxas = [
-        {nome: "0%", taxa: 0, iva: iva0},
-        {nome: "6%", taxa: 0.06, iva: iva6},
-        {nome: "13%", taxa: 0.13, iva: iva13},
-        {nome: "23%", taxa: 0.23, iva: iva23},
+        {nome: "0%", taxa: 0, iva: iva0, ativo: checkboxes[0].checked},
+        {nome: "6%", taxa: 0.06, iva: iva6, ativo: checkboxes[1].checked},
+        {nome: "13%", taxa: 0.13, iva: iva13, ativo: checkboxes[2].checked},
+        {nome: "23%", taxa: 0.23, iva: iva23, ativo: checkboxes[3].checked},
       ];
 
       let baseTotal = 0, ivaTotal = 0, totalCalculado = 0;
-      let tbody = "";
+      let linhasAtivas = 0;
 
       taxas.forEach(t => {
-        let base = t.taxa > 0 ? (t.iva / t.taxa) : (t.iva); 
-        let linhaTotal = base + t.iva;
+        if (t.ativo && t.iva > 0) {
+          let base = t.taxa > 0 ? (t.iva / t.taxa) : (t.iva); 
+          let linhaTotal = base + t.iva;
 
-        baseTotal += base;
-        ivaTotal += t.iva;
-        totalCalculado += linhaTotal;
-
-        tbody += `
-          <tr>
-            <td>${t.nome}</td>
-            <td>${base.toFixed(2)} €</td>
-            <td>${t.iva.toFixed(2)} €</td>
-            <td>${linhaTotal.toFixed(2)} €</td>
-          </tr>
-        `;
+          baseTotal += base;
+          ivaTotal += t.iva;
+          totalCalculado += linhaTotal;
+          linhasAtivas++;
+        }
       });
 
-      document.querySelector("#resultado tbody").innerHTML = tbody;
-      document.getElementById("baseTotal").textContent = baseTotal.toFixed(2) + " €";
-      document.getElementById("ivaTotal").textContent = ivaTotal.toFixed(2) + " €";
-      document.getElementById("totalComIva").textContent = total.toFixed(2) + " €";
+      // Atualizar os totais
+      document.getElementById("totalLinhas").textContent = linhasAtivas;
+      document.getElementById("totalValores").textContent = totalCalculado.toFixed(2) + " €";
 
-      document.getElementById("resultado").style.display = "table";
+      // Mostrar resultado
+      document.getElementById("resultado").style.display = "block";
     }
+
+    // Adicionar funcionalidade aos checkboxes
+    document.addEventListener('DOMContentLoaded', function() {
+      const checkboxes = ['check0', 'check6', 'check13', 'check23'];
+      checkboxes.forEach(id => {
+        document.getElementById(id).addEventListener('change', function() {
+          const inputId = id.replace('check', 'iva');
+          const input = document.getElementById(inputId);
+          input.disabled = !this.checked;
+          if (!this.checked) {
+            input.value = '';
+          }
+        });
+      });
+    });
   </script>
 </body>
 </html>
