@@ -61,7 +61,10 @@
         <button onclick="calcular()">Calcular</button>
 
         <div class="resultado" id="resultado" style="display:none;">
-          <div class="total-linhas">
+          <p><strong>Valor sem IVA:</strong> <span id="semIVA">0.00</span> €</p>
+          <p><strong>Valor do IVA:</strong> <span id="valorIVA">0.00</span> €</p>
+          <p><strong>Valor com IVA:</strong> <span id="comIVA">0.00</span> €</p>
+          <div class="total-linhas" style="margin-top: 10px;">
             <label>Total de Linhas: <span id="totalLinhas">0</span></label>
           </div>
           <div class="total-valores">
@@ -110,6 +113,9 @@
       });
 
       // Atualizar os totais
+      document.getElementById("semIVA").textContent = baseTotal.toFixed(2);
+      document.getElementById("valorIVA").textContent = ivaTotal.toFixed(2);
+      document.getElementById("comIVA").textContent = total.toFixed(2);
       document.getElementById("totalLinhas").textContent = linhasAtivas;
       document.getElementById("totalValores").textContent = totalCalculado.toFixed(2) + " €";
 
