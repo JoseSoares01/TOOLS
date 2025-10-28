@@ -61,14 +61,31 @@
         <button onclick="calcular()">Calcular</button>
 
         <div class="resultado" id="resultado" style="display:none;">
-          <p><strong>Valor sem IVA:</strong> <span id="semIVA">0.00</span> €</p>
-          <p><strong>Valor do IVA:</strong> <span id="valorIVA">0.00</span> €</p>
           <p><strong>Valor com IVA:</strong> <span id="comIVA">0.00</span> €</p>
+          <p><strong>Valor sem IVA:</strong> <span id="semIVA">0.00</span> €</p>
+          <p><strong>IVA aplicado:</strong> <span id="taxasAplicadas">—</span></p>
+          <p><strong>Resultado do IVA:</strong> <span id="valorIVA">0.00</span> €</p>
+          <p><strong>Total (com IVA + sem IVA):</strong> <span id="totalCombinado">0.00</span> €</p>
+
           <div class="total-linhas" style="margin-top: 10px;">
             <label>Total de Linhas: <span id="totalLinhas">0</span></label>
           </div>
           <div class="total-valores">
             <label>Total de Valores: <span id="totalValores">0.00 €</span></label>
+          </div>
+
+          <div style="margin-top: 12px;">
+            <table id="tabelaDetalhes" style="width: 100%; border-collapse: collapse; display: none;">
+              <thead>
+                <tr>
+                  <th style="text-align:left; padding: 6px;">Taxa</th>
+                  <th style="text-align:right; padding: 6px;">Base sem IVA</th>
+                  <th style="text-align:right; padding: 6px;">IVA</th>
+                  <th style="text-align:right; padding: 6px;">Total com IVA</th>
+                </tr>
+              </thead>
+              <tbody id="detalhesBody"></tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -99,16 +116,28 @@
 
       let baseTotal = 0, ivaTotal = 0, totalCalculado = 0;
       let linhasAtivas = 0;
+      let linhasDetalhes = "";
 
+      const taxasAtivas = [];
       taxas.forEach(t => {
         if (t.ativo && t.iva > 0) {
-          let base = t.taxa > 0 ? (t.iva / t.taxa) : (t.iva); 
-          let linhaTotal = base + t.iva;
+          const base = t.taxa > 0 ? (t.iva / t.taxa) : t.iva;
+          const linhaTotal = base + t.iva;
 
           baseTotal += base;
           ivaTotal += t.iva;
           totalCalculado += linhaTotal;
           linhasAtivas++;
+          taxasAtivas.push(t.nome);
+
+          linhasDetalhes += `
+            <tr>
+              <td style="text-align:left; padding: 6px;">${t.nome}</td>
+              <td style="text-align:right; padding: 6px;">${base.toFixed(2)} €</td>
+              <td style="text-align:right; padding: 6px;">${t.iva.toFixed(2)} €</td>
+              <td style="text-align:right; padding: 6px;">${linhaTotal.toFixed(2)} €</td>
+            </tr>
+          `;
         }
       });
 
@@ -116,8 +145,14 @@
       document.getElementById("semIVA").textContent = baseTotal.toFixed(2);
       document.getElementById("valorIVA").textContent = ivaTotal.toFixed(2);
       document.getElementById("comIVA").textContent = total.toFixed(2);
+      document.getElementById("taxasAplicadas").textContent = taxasAtivas.length ? taxasAtivas.join(", ") : "—";
+      document.getElementById("totalCombinado").textContent = (baseTotal + ivaTotal).toFixed(2);
       document.getElementById("totalLinhas").textContent = linhasAtivas;
       document.getElementById("totalValores").textContent = totalCalculado.toFixed(2) + " €";
+
+      // Tabela de detalhes
+      document.getElementById("detalhesBody").innerHTML = linhasDetalhes;
+      document.getElementById("tabelaDetalhes").style.display = linhasAtivas > 0 ? "table" : "none";
 
       // Mostrar resultado
       document.getElementById("resultado").style.display = "block";
