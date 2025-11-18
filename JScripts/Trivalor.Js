@@ -32,11 +32,11 @@ function updateIVARates() {
             baseIsenta.placeholder = "Base isenta (0%)";
             baseReduzida.placeholder = "Base reduzida (4%)";
             baseIntermedia.placeholder = "Base intermédia (9%)";
-            baseNormal.placeholder = "Base normal (18%)";
+            baseNormal.placeholder = "Base normal (16%)";
             break;
         case "PT-MA":
             baseIsenta.placeholder = "Base isenta (0%)";
-            baseReduzida.placeholder = "Base reduzida (5%)";
+            baseReduzida.placeholder = "Base reduzida (4%)";
             baseIntermedia.placeholder = "Base intermédia (12%)";
             baseNormal.placeholder = "Base normal (22%)";
             break;
@@ -96,7 +96,7 @@ function generateQRCode() {
         taxa_iva_intermedia = 0.13;
         taxa_iva_normal = 0.23;
     } else if (espaco_fiscal === "PT-MA") {
-        taxa_iva_reduzida = 0.05;
+        taxa_iva_reduzida = 0.04;
         taxa_iva_intermedia = 0.12;
         taxa_iva_normal = 0.22;
     } else if (espaco_fiscal === "PT-AC") {
