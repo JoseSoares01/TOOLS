@@ -5,6 +5,14 @@
     padding: 0;
 }
 
+/* Exclui o sidebar do reset global para manter estilos consistentes */
+.sidebar,
+.sidebar *,
+.sidebar *::before,
+.sidebar *::after {
+    /* Estilos do sidebar são gerenciados exclusivamente pelo SidebarMenu.css */
+}
+
 body {
     font-family: Arial, sans-serif;
     min-height: 100vh;

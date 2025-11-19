@@ -5,7 +5,7 @@
     top: 0 !important;
     height: 100vh !important;
     width: 280px !important;
-    background: rgba(12, 167, 169, 0.3) !important;
+    background: #053F64 !important;
     box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3) !important;
     z-index: 1001 !important;
     transition: transform 0.3s ease !important;
@@ -188,6 +188,67 @@ body {
 .sidebar li {
     margin: 0 !important;
     padding: 0 !important;
+}
+
+/* Regras de alta especificidade para sobrescrever qualquer estilo do Trivalor.css */
+/* Essas regras têm maior especificidade que o reset global * {} do Trivalor.css */
+body .sidebar {
+    background: #053F64 !important;
+    color: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 280px !important;
+    height: 100vh !important;
+    z-index: 1001 !important;
+}
+
+body .sidebar .sidebar-header {
+    background: rgba(255, 255, 255, 0.05) !important;
+    margin: 0 !important;
+    padding: 20px !important;
+}
+
+body .sidebar .sidebar-header h3 {
+    color: #fff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+body .sidebar .sidebar-nav {
+    margin: 0 !important;
+    padding: 20px 0 !important;
+}
+
+body .sidebar .sidebar-nav ul {
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+}
+
+body .sidebar .sidebar-nav li {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+body .sidebar .sidebar-nav a {
+    color: #fff !important;
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 15px 25px !important;
+}
+
+body .sidebar .sidebar-nav a:hover {
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+body .sidebar .sidebar-nav a.current-page {
+    color: #01ff34 !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-left-color: #01ff34 !important;
 }
 
 
