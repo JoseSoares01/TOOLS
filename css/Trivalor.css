@@ -463,6 +463,46 @@ textarea {
     display: block;
 }
 
+/* Ícone de Scroll Indicator */
+.scroll-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px 0;
+    margin: 5px 0;
+    opacity: 0.6;
+    cursor: pointer;
+    animation: scrollBounce 2s infinite ease-in-out;
+    pointer-events: auto;
+}
+
+.scroll-indicator svg {
+    width: 48px;
+    height: 60px;
+    transform: rotate(180deg);
+}
+
+@keyframes scrollBounce {
+    0% {
+        transform: translateY(0);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translateY(10px);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 0.6;
+    }
+}
+
+.scroll-indicator:hover {
+    opacity: 1;
+    animation-play-state: paused;
+}
+
 /* Estilos para a Calculadora de IVA */
 .calculator-container {
     background: rgba(255, 255, 255, 0.1);
