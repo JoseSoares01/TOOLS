@@ -1,31 +1,34 @@
-/* Sidebar Menu Styles */
+/* Sidebar Menu Styles - Protegido contra estilos globais */
 .sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100vh;
-    width: 280px;
-    background: rgba(12, 167, 169, 0.3);
-    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
-    z-index: 1001;
-    transition: transform 0.3s ease;
-    overflow-y: auto;
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    height: 100vh !important;
+    width: 280px !important;
+    background: rgba(12, 167, 169, 0.3) !important;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3) !important;
+    z-index: 1001 !important;
+    transition: transform 0.3s ease !important;
+    overflow-y: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 
 
 .sidebar-header {
-    padding: 20px;
-    text-align: center;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.05);
+    padding: 20px !important;
+    text-align: center !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    margin: 0 !important;
 }
 
 .sidebar-header h3 {
-    color: #fff;
-    font-size: 1.2rem;
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
+    color: #fff !important;
+    font-size: 1.2rem !important;
+    margin: 0 !important;
+    font-family: 'Poppins', sans-serif !important;
 }
 
 .sidebar-header img {
@@ -36,41 +39,46 @@
 }
 
 .sidebar-nav {
-    padding: 20px 0;
+    padding: 20px 0 !important;
+    margin: 0 !important;
 }
 
 .sidebar-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 .sidebar-nav li {
-    margin: 0;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .sidebar-nav a {
-    display: flex;
-    align-items: center;
-    padding: 15px 25px;
-    color: #fff;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border-left: 2px solid transparent;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.95rem;
+    display: flex !important;
+    align-items: center !important;
+    padding: 15px 25px !important;
+    color: #fff !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+    border-left: 2px solid transparent !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 0.95rem !important;
+    margin: 0 !important;
+    background: transparent !important;
 }
 
 .sidebar-nav a:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-left-color: #01ffc4;
-    transform: translateX(5px);
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-left-color: #01ffc4 !important;
+    transform: translateX(5px) !important;
+    color: #fff !important;
 }
 
 .sidebar-nav a.active {
-    background: rgba(1, 255, 187, 0.2);
-    border-left-color: #01ff344b;
-    color: #01ffd0;
+    background: rgba(1, 255, 187, 0.2) !important;
+    border-left-color: #01ff344b !important;
+    color: #01ffd0 !important;
 }
 
 .sidebar-nav a i {
@@ -138,6 +146,48 @@ body {
     color: #01ff34 !important;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Garante que o sidebar mantenha o mesmo estilo em todas as páginas */
+.sidebar-nav a.current-page {
+    color: #01ff34 !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-left-color: #01ff34 !important;
+}
+
+/* Protege o sidebar contra estilos globais que possam afetá-lo */
+.sidebar * {
+    box-sizing: border-box;
+}
+
+.sidebar-header h3 {
+    color: #fff !important;
+}
+
+/* Garante que os links do sidebar mantenham o estilo padrão */
+.sidebar-nav a:not(.current-page) {
+    color: #fff !important;
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 15px 25px !important;
+}
+
+/* Proteção adicional contra reset global do Trivalor.css */
+.sidebar *,
+.sidebar *::before,
+.sidebar *::after {
+    box-sizing: border-box !important;
+}
+
+.sidebar ul {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.sidebar li {
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 
