@@ -61,6 +61,8 @@ document.addEventListener("DOMContentLoaded", function() {
     updateIVARates(); // isto é  caso seja necessario= para definir os placeholders corretos inicialmente
 });
 
+let qrPopupTimeout;
+
 function generateQRCode() {
     const nif_vendedor = limitCharacters(document.getElementById("nif_vendedor").value || '0', 15);
     const nif_empresa = limitCharacters(document.getElementById("nif_empresa").value || '0', 15);
@@ -134,9 +136,26 @@ function generateQRCode() {
         document.getElementById('qrcode').innerHTML = '';
         document.getElementById('qrcode').appendChild(qrCodeImage);
         document.getElementById('qr_data').value = dados_qr_code;
+        showQrCodePopup();
         
         setTimeout(clearInputs, 1000);
     });
+}
+
+function showQrCodePopup(message = "QR CODE GERADO!") {
+    const popup = document.getElementById("qr-popup");
+    if (!popup) {
+        return;
+    }
+    popup.textContent = message;
+    popup.setAttribute("aria-hidden", "false");
+    popup.classList.add("visible");
+
+    clearTimeout(qrPopupTimeout);
+    qrPopupTimeout = setTimeout(() => {
+        popup.classList.remove("visible");
+        popup.setAttribute("aria-hidden", "true");
+    }, 2000);
 }
 
 function clearInputs() {

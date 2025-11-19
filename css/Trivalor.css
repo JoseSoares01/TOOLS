@@ -593,3 +593,26 @@ textarea {
         max-width: none;
     }
 }
+
+.qr-popup {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #053F64;
+    font-weight: bold;
+    letter-spacing: 1px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    z-index: 1200;
+}
+
+.qr-popup.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
