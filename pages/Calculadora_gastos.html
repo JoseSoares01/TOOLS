@@ -154,14 +154,34 @@ const optHtml = document.getElementById('optHtml');
 btnBrowse.addEventListener('click', ()=> fileInput.click());
 fileInput.addEventListener('change', (e)=> handleFiles(e.target.files));
 
+// prevenção global para não abrir o .eml em nova aba ao soltar fora da área
+['dragover','drop'].forEach(ev => {
+  window.addEventListener(ev, e => {
+    e.preventDefault();
+  });
+});
+
+// drag & drop apenas na área destacada
 ['dragenter','dragover'].forEach(ev => {
-  drop.addEventListener(ev, (e)=> { e.preventDefault(); drop.classList.add('hover'); });
+  drop.addEventListener(ev, (e)=> {
+    e.preventDefault();
+    e.stopPropagation();
+    if(e.dataTransfer){ e.dataTransfer.dropEffect = 'copy'; }
+    drop.classList.add('hover');
+  });
 });
 ['dragleave','drop'].forEach(ev => {
-  drop.addEventListener(ev, (e)=> { e.preventDefault(); drop.classList.remove('hover'); });
+  drop.addEventListener(ev, (e)=> {
+    e.preventDefault();
+    e.stopPropagation();
+    drop.classList.remove('hover');
+  });
 });
 drop.addEventListener('drop', (e)=> {
-  e.preventDefault(); const files = e.dataTransfer.files; handleFiles(files);
+  e.preventDefault();
+  e.stopPropagation();
+  const files = e.dataTransfer.files;
+  handleFiles(files);
 });
 drop.addEventListener('click', ()=> fileInput.click());
 
