@@ -1,11 +1,14 @@
 // Script para lidar com os NIFs da Avigilon e preencher os campos automaticamente.
 
-// Lista de NIFs da Avigilon
+// Lista de NIFs da Avigilon / empresas relacionadas
 const avigilonNifs = [
     { value: "", label: "Selecione uma opção" },
+    { value: "", label: "=== AVIGILON ===", isGroup: true },
     { value: "CA501011001_503257567", country: "INT", label: "CANADA - CA501011001" },
     { value: "NL823582851_503257567", country: "INT", label: "HOLANDA - NL823582851" },
     { value: "DE453247169_503257567", country: "EU", label: "ALEMANHA - DE453247169" },
+    { value: "", label: "=== VISIOTECH ===", isGroup: true },
+    { value: "ESB80645518_503257567", country: "EU", label: "VISIOTECH - ESB80645518" },
 ];
 
 function openModal() {
@@ -27,6 +30,13 @@ function populateAvigilonList() {
         const option = document.createElement("option");
         option.value = item.value;
         option.text = item.label;
+        // Cabeçalhos de grupo ficam desativados e com estilo diferente
+        if (item.isGroup) {
+            option.disabled = true;
+            option.style.fontWeight = "bold";
+            option.style.backgroundColor = "#f0f0f0";
+            option.style.color = "#333";
+        }
         avigilonSelect.appendChild(option);
     });
 }
