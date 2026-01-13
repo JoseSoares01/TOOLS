@@ -13,7 +13,7 @@ Foi implementado um menu de navegação lateral esquerdo em todas as páginas do
 - **Split PDF**: Editor e separador de arquivos PDF
 - **Conversor**: Conversor de imagens para PDF
 - **Calculadora IVA**: Calculadora de IVA para despesas
-- **Calculadora Gastos**: Calculadora de gastos com múltiplas taxas
+- **Winzink Emails**: Organizador de emails (.eml) offline
 
 ### 🔧 Recursos do Menu
 - **Menu Fixo**: Sempre visível e acessível
@@ -48,7 +48,7 @@ Foi implementado um menu de navegação lateral esquerdo em todas as páginas do
 - ✅ `SplitPDF.html` - Editor PDF
 - ✅ `Convert.html` - Conversor de Imagens
 - ✅ `Trivalor.html` - Gerador QR Trivalor
-- ✅ `Calculadora_gastos.html` - Calculadora de Gastos
+- ✅ `winzinkemails.html` - Organizador de Emails
 
 ## Características Técnicas
 

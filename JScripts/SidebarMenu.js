@@ -40,8 +40,8 @@ class SidebarMenu {
                     <li><a href="/pages/ServinformSite.html" data-title="Calculadora IVA">
                         <img src="/images/calculadora.png" alt="Calculadora IVA Icone"> Calculadora IVA
                     </a></li>
-                    <li><a href="/pages/Calculadora_gastos.html" data-title="Calculadora de Gastos">
-                        <img src="/images/orcamentacao.png" alt="Calculadora de Gastos Icone"> Winzink Emails
+                    <li><a href="/pages/winzinkemails.html" data-title="Organizador de Emails">
+                        <img src="/images/orcamentacao.png" alt="Organizador de Emails Icone"> Winzink Emails
                     </a></li>
                 </ul>
             </nav>
