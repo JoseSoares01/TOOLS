@@ -1,8 +1,17 @@
-/* Reset and base styles */
+/* Reset e Variáveis de Cores Neon */
+:root {
+    --neon-blue: #00d2ff;
+    --neon-green: #00ff88;
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --dark-bg: #050a14;
+    --text-white: #e6f1ff;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Exclui o sidebar do reset global para manter estilos consistentes */
@@ -14,10 +23,11 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
     min-height: 100vh;
     position: relative;
     padding-left: 300px;
+    background-color: var(--dark-bg);
+    color: var(--text-white);
 }
 
 /* Home button styling */
@@ -44,22 +54,39 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-image: url("/images/BG-Toolss.jpg");
+    background-image:
+        radial-gradient(circle at center, #0a192f 0%, #050a14 100%),
+        url("/images/hex-textures-networking.jpg");
     background-size: cover;
-    background-position:  center;
+    background-position: center;
     background-repeat: no-repeat;
+    background-blend-mode: overlay;
     padding: 20px;
 }
 /* todo o bloco do menu*/
 .child1 {
-    width: 90%;
-    max-width: 800px;
-    background-color: rgba(58, 130, 201, 0.047);
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 20px;
-    backdrop-filter: blur(5px);
-    border-radius: 16px;
+    width: 100%;
+}
+
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 210, 255, 0.4);
+    border-radius: 30px;
+    padding: 35px 40px 30px;
+    width: 80%;
+    max-width: 1050px;
+    margin: 40px auto;
+    box-shadow:
+        /* brilho centro topo */
+        0 -25px 55px rgba(0, 210, 255, 0.5),
+        /* brilho centro base */
+        0 25px 55px rgba(0, 210, 255, 0.5),
+        /* brilho meio laterais */
+        25px 0 55px rgba(0, 210, 255, 0.4),
+        -25px 0 55px rgba(0, 210, 255, 0.4),
+        /* leve brilho interno, sumindo nas pontas */
+        inset 0 0 22px rgba(0, 210, 255, 0.25);
 }
 
 /* Form elements */
@@ -70,35 +97,65 @@ form {
     width: 100%;
 }
 
-h2 {
-    color: #ddd;
-    font-size: 2rem;
-    font-family: "Poppins", sans-serif;
-    margin-bottom: 20px;
-    text-align: center;
-    padding: 30px;
+/* Cabeçalho estilo Sci-Fi */
+.hero-header { 
+    text-align: center; 
+    margin-bottom: 30px; 
+}
+.main-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 5px;
+    color: var(--text-white);
+    opacity: 0.8;
+}
+.brand-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.6rem;
+    color: var(--neon-blue);
+    text-shadow: 0 0 20px rgba(0, 210, 255, 0.6);
+    margin-top: 5px;
 }
 
-.input-group {
+/* Grid principal de layout */
+.dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
+    grid-template-columns: 1.2fr 1.2fr 1fr;
+    gap: 20px;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+.main-card,
+.qr-card {
+    background: rgba(10, 18, 40, 0.85);
+    border-radius: 20px;
+    padding: 20px 20px 25px;
+    border: 1px solid rgba(0, 210, 255, 0.55);
+    box-shadow:
+        0 0 16px rgba(0, 210, 255, 0.4),
+        inset 0 0 6px rgba(0, 210, 255, 0.35);
+}
+
+.card-title {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--neon-blue);
+    margin-bottom: 15px;
 }
 
 /* Form controls */
 input, 
 select {
-    background-color: rgba(15, 71, 110, 0.637);
-    padding: 15px;
+    background: rgba(15, 25, 45, 0.7);
+    border: 1px solid rgba(0, 210, 255, 0.3);
     border-radius: 12px;
-    border: none;
-    color: #fffefe;
+    padding: 12px 15px;
+    color: #ffffff;
     width: 100%;
-    transition: background-color 0.3s ease;
-    border: solid #fffefe 0.5px;
-    
+    transition: 0.3s;
+    margin-bottom: 12px;
 }
 
 input::placeholder {
@@ -109,35 +166,81 @@ input::placeholder {
 input:focus,
 select:focus {
     outline: none;
-    background-color: rgba(99, 89, 89, 0.547);
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
 }
 
 /* Buttons */
 button {
-    background-color: rgba(92, 128, 185, 0.8);
-    color: aliceblue;
-    padding: 15px 30px;
     border: none;
-    border-radius: 15px;
     cursor: pointer;
-    margin: 10px 0;
-    width: 200px;
     transition: all 0.3s ease;
     font-family: "Poppins", sans-serif;
-    margin: 5px 5px;
-    
 }
 
 /* Container para os botões */
 .button-container {
     display: flex; /* Alinha os botões em linha */
     justify-content: center; /* Centraliza os botões */
-    
 }
 
-button:hover {
-    background-color: #0c71de;
+.btn-row { 
+    display: flex; 
+    gap: 15px; 
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn-generate {
+    background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+    padding: 12px 26px;
+    border-radius: 20px;
     color: white;
+    font-weight: bold;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid rgba(0, 210, 255, 0.9);
+    box-shadow: 0 0 18px rgba(0, 210, 255, 0.7);
+}
+
+.btn-foreign {
+    background: linear-gradient(90deg, #00ff88, #00a86b);
+    padding: 12px 26px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid rgba(0, 255, 136, 0.9);
+    box-shadow: 0 0 18px rgba(0, 255, 136, 0.7);
+}
+
+.btn-generate:hover,
+.btn-foreign:hover {
+    transform: translateY(-1px) scale(1.01);
+    box-shadow: 0 0 26px rgba(0, 210, 255, 0.9);
+}
+
+/* Botões encaixados nos cards */
+.card-button {
+    margin-top: auto;
+    width: 190px;
+    align-self: flex-start;
+}
+
+.btn-icon {
+    font-size: 1.1rem;
+}
+
+.main-card {
+    display: flex;
+    flex-direction: column;
 }
 
 /* QR Output section */
@@ -145,25 +248,26 @@ button:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 10px;
+    gap: 12px;
 }
 
 .qr-code {
     background-color: white;
     padding: 15px;
-    border-radius: 8px;
-    margin: 15px 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    margin: 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 }
 
 textarea {
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.386);
-    color: #ffffff;
+    background-color: #f0f4f8;
+    color: #333333;
     padding: 15px;
-    border: solid #0ba2c8 2px;
+    border: none;
     border-radius: 16px;
-    margin: 10px 0;
+    margin: 5px 0;
     resize: none;
     height: 100px;
 }
@@ -218,17 +322,16 @@ textarea {
 
 /* Responsive styles */
 @media screen and (max-width: 630px) {
-    .child1 {
-        width: 95%;
-        padding: 15px;
+    .glass-panel {
+        padding: 25px 20px;
     }
 
-    .input-group {
+    .dashboard-grid {
         grid-template-columns: 1fr;
     }
 
-    button {
-        width: 100%;
+    .btn-row {
+        flex-direction: column;
     }
     
     .home-button {
@@ -312,17 +415,19 @@ textarea {
     left: 320px;
     display: flex;
     flex-direction: column;
-    background-color: rgba(58, 129, 201, 0.13);
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: rgba(10, 18, 40, 0.85);
+    border-radius: 14px;
+    box-shadow:
+        0 0 16px rgba(0, 210, 255, 0.4),
+        inset 0 0 6px rgba(0, 210, 255, 0.25);
     z-index: 1000;
-    width: 220px;
+    width: 260px;
     transition: all 0.3s ease;
 }
 
 .pais-check-container.minimized {
-    width: 200px;
-    height: 50px;
+    width: 230px;
+    height: 52px;
     overflow: hidden;
 }
 
@@ -505,31 +610,33 @@ textarea {
 
 /* Estilos para a Calculadora de IVA */
 .calculator-container {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    flex: 1;
-    min-width: 300px;
-    max-width: 400px;
-    margin-top: 20px;
+    background: rgba(10, 18, 40, 0.9);
+    padding: 18px 20px 20px;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(0, 210, 255, 0.55);
+    box-shadow:
+        0 0 16px rgba(0, 210, 255, 0.4),
+        inset 0 0 6px rgba(0, 210, 255, 0.35);
+    width: 100%;
+    max-width: none;
+    margin-top: 12px;
 }
 
 .calculator-inputs {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
 }
 
 .calculator-inputs label {
     color: #ddd;
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 0.95rem;
 }
 
 .calculator-inputs input {
-    padding: 10px;
+    padding: 8px 10px;
     border-radius: 5px;
     border: 1px solid #fffefe;
     background: rgba(15, 71, 110, 0.637);
@@ -548,18 +655,7 @@ textarea {
 }
 
 .calculator-inputs button {
-    background-color: rgba(92, 128, 185, 0.8);
-    color: aliceblue;
-    padding: 15px 30px;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    margin: 10px 0;
     width: 100%;
-    transition: all 0.3s ease;
-    font-family: "Poppins", sans-serif;
-    font-size: 16px;
-    font-weight: bold;
 }
 
 .calculator-inputs button:hover {
@@ -569,9 +665,9 @@ textarea {
 
 .calculator-inputs .resultado {
     background: rgba(15, 71, 110, 0.637);
-    padding: 15px;
+    padding: 10px 12px;
     border-radius: 8px;
-    margin-top: 15px;
+    margin-top: 8px;
     border: solid #fffefe 0.5px;
 }
 
@@ -585,12 +681,62 @@ textarea {
     color: #01ff34;
 }
 
+/* Calculadora em estilo painel neon */
+.calculator-panel {
+    margin-top: 25px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 25px;
+}
+
+.calc-form {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 15px;
+    row-gap: 8px;
+    align-items: end;
+}
+
+.calc-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.btn-calc {
+    background: var(--neon-green);
+    color: #000;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-weight: bold;
+    margin-top: 0;
+    justify-self: flex-start;
+}
+
+.btn-calc:hover {
+    filter: brightness(1.1);
+}
+
+.calc-form .resultado {
+    grid-column: 1 / -1;
+}
+
+@media screen and (max-width: 630px) {
+    .calc-form {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+    }
+
+    .btn-calc {
+        width: 100%;
+        justify-self: stretch;
+    }
+}
+
 /* Responsive styles para calculadora */
 @media screen and (max-width: 630px) {
     .calculator-container {
-        width: 95%;
+        width: 100%;
         padding: 15px;
-        max-width: none;
     }
 }
 
