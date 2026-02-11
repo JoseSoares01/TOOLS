@@ -2,8 +2,8 @@
 :root {
     --neon-blue: #00d2ff;
     --neon-green: #00ff88;
-    --glass-bg: rgba(255, 255, 255, 0.08);
-    --dark-bg: #050a14;
+    --glass-bg: rgba(255, 255, 255, 0.04);
+    --dark-bg: #0510145a;
     --text-white: #e6f1ff;
 }
 
