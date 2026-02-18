@@ -55,10 +55,57 @@ function updateIVARates() {
     }
 }
 
-//event listener
-document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("espaco_fiscal").addEventListener("change", updateIVARates);
-    updateIVARates(); // isto é  caso seja necessario= para definir os placeholders corretos inicialmente
+function updateTaxBaseFieldsVisibility() {
+    const paisEl = document.getElementById("pais");
+    const espacoFiscalEl = document.getElementById("espaco_fiscal");
+
+    const pais = (paisEl?.value || "").toUpperCase();
+    const espacoFiscal = (espacoFiscalEl?.value || "").toUpperCase();
+
+    const showOnlyIsenta = pais === "EU" && espacoFiscal === "EU";
+
+    const baseIsenta = document.getElementById("base_isenta");
+    const baseReduzida = document.getElementById("base_reduzida");
+    const baseIntermedia = document.getElementById("base_intermedia");
+    const baseNormal = document.getElementById("base_normal");
+    const impostoSelo = document.getElementById("imposto_selo");
+
+    const fieldsToHide = [baseReduzida, baseIntermedia, baseNormal, impostoSelo].filter(Boolean);
+
+    if (showOnlyIsenta) {
+        if (baseIsenta) baseIsenta.style.display = "";
+        fieldsToHide.forEach((el) => {
+            el.style.display = "none";
+            el.value = "";
+        });
+        return;
+    }
+
+    // Default: show all fields
+    [baseIsenta, ...fieldsToHide].filter(Boolean).forEach((el) => {
+        el.style.display = "";
+    });
+}
+
+// event listeners
+document.addEventListener("DOMContentLoaded", function () {
+    const espacoFiscalEl = document.getElementById("espaco_fiscal");
+    const paisEl = document.getElementById("pais");
+
+    if (espacoFiscalEl) {
+        espacoFiscalEl.addEventListener("change", function () {
+            updateIVARates();
+            updateTaxBaseFieldsVisibility();
+        });
+    }
+
+    if (paisEl) {
+        paisEl.addEventListener("change", updateTaxBaseFieldsVisibility);
+    }
+
+    // Inicializa placeholders e visibilidade
+    updateIVARates();
+    updateTaxBaseFieldsVisibility();
 });
 
 let qrPopupTimeout;
