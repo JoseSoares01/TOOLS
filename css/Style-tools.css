@@ -11,7 +11,7 @@ body {
     padding-bottom: 100px;
     /* Espaço para o footer */
     margin: 0;
-    background-color: #0b1f5d;
+    background-color: #090b17fd;
 }
 
 /* Fade-out da página ao deslogar */
@@ -49,6 +49,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 16PX;
 }
 
 /* Estado visual ao deslogar */
@@ -134,7 +135,7 @@ button:hover {
     left: 20px;
     right: 20px;
     bottom: 20px;
-    background: rgba(3, 69, 131, 0.9);
+    background: rgba(5, 55, 102, 0.659);
     border-radius: 16px;
     display: flex;
     justify-content: center;
@@ -213,16 +214,17 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
-    background: #00000052;
+    background: #00000010;
     padding: 12px 0;
     text-align: center;
     box-shadow: 0 -2px 8px rgba(8,109,164,0.07);
+    border-radius: 16px;
 }
 
 .footer img {
     height: 50px;
     transition: margin-top 0.3s ease;
-    margin-left: -250px;
+    margin-left: -400px;
 }
 
 .tamanho_logo {
@@ -230,7 +232,7 @@ footer {
     color: rgba(255, 255, 255, 0.527);
     text-align: center;
     padding: 10px 0;
-    margin-left: -250px;
+    margin-left: -400px;
 }
 
 
@@ -275,4 +277,13 @@ footer {
         font-size: 1.8rem;
         padding: 1.5rem;
     }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code&display=swap');
+#hero-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1; /* Garante que fique atrás do conteúdo */
+    pointer-events: none; /* Não interfere nos cliques do site */
 }
