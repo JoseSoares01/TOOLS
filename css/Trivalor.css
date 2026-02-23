@@ -345,12 +345,49 @@ textarea {
     display: none;
     position: fixed;
     inset: 0;
-    display: flex;
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.45);
     z-index: 1000;
     padding: 20px;
+}
+
+/* Dropdown específico para lista de NIFs (posicionado perto do botão) */
+.dropdown-hospital {
+    position: absolute;
+    background: rgba(10, 18, 40, 0.98);
+    border: 1px solid rgba(0,210,255,0.12);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.6), 0 0 18px rgba(0,210,255,0.06);
+    border-radius: 10px;
+    padding: 6px;
+    z-index: 2000;
+    max-height: 260px;
+    overflow: auto;
+}
+
+.dropdown-hospital .dropdown-group {
+    padding: 6px 10px;
+    font-weight: 700;
+    color: #cfeaff;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+/* Grupo VISIOTECH em vermelho */
+.dropdown-hospital .dropdown-group.visiotech {
+    color: #ff4d4f;
+}
+
+.dropdown-hospital .dropdown-option {
+    padding: 8px 10px;
+    cursor: pointer;
+    color: #e6f1ff;
+    border-radius: 6px;
+}
+
+.dropdown-hospital .dropdown-option:hover,
+.dropdown-hospital .dropdown-option:focus {
+    background: rgba(0,210,255,0.06);
+    outline: none;
 }
 
 .modal-content {
