@@ -9,6 +9,8 @@ const avigilonNifs = [
     { value: "DE453247169_503257567", country: "EU", label: "ALEMANHA - DE453247169" },
     { value: "", label: "=== VISIOTECH ===", isGroup: true },
     { value: "ESB80645518_503257567", country: "EU", label: "VISIOTECH - ESB80645518" },
+    { value: "", label: "=== ADEMCO ADI ===", isGroup: true },
+    { value: "ESB28668358_503257567", country: "EU", label: "ADEMCO ADI - ESB28668358" },
 ];
 
 function openModal() {
@@ -68,6 +70,10 @@ function populateDropdownList() {
             label.textContent = groupName;
             if (/visiotech/i.test(groupName)) {
                 label.classList.add('visiotech');
+            } else if (/avigilon/i.test(groupName)) {
+                label.classList.add('avigilon');
+            } else if (/ademco/i.test(groupName) || /adi/i.test(groupName)) {
+                label.classList.add('ademco');
             }
             dropdown.appendChild(label);
             return;

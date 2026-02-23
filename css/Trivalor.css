@@ -377,6 +377,18 @@ textarea {
     color: #ff4d4f;
 }
 
+/* Grupo AVIGILON em vermelho */
+
+.dropdown-hospital .dropdown-group.avigilon {
+    color: #5353ec;
+}
+
+/* Grupo ADEMCO em verde */
+
+.dropdown-hospital .dropdown-group.ademco {
+    color: #0ab234;
+}
+
 .dropdown-hospital .dropdown-option {
     padding: 8px 10px;
     cursor: pointer;
