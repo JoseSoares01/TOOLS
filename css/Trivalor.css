@@ -344,35 +344,56 @@ textarea {
 .modal {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.45);
     z-index: 1000;
+    padding: 20px;
 }
 
 .modal-content {
-    background-color: rgb(22, 22, 22);
-    margin: 15% auto;
-    padding: 20px;
-    border-radius: 15px;
-    width: 80%;
-    max-width: 500px;
+    background: rgba(10, 18, 40, 0.95);
+    position: relative;
+    padding: 18px;
+    border-radius: 20px;
+    width: 260px;
+    max-width: 90%;
     color: #ddd;
+    border: 1px solid rgba(0, 210, 255, 0.55);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 18px rgba(0, 210, 255, 0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
 }
 
 .close {
     color: #ddd;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 24px;
+    font-weight: 700;
     cursor: pointer;
-    transition: color 0.3s ease;
+    transition: color 0.2s ease, transform 0.12s ease;
 }
 
 .close:hover {
     color: #999;
+}
+
+/* QR inside modal: tamanho uniforme e parecido com botões */
+.modal .qr-code {
+    width: 220px;
+    padding: 12px;
+    border-radius: 14px;
+    background-color: #fff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Responsive styles */
@@ -752,7 +773,7 @@ textarea {
 
 .calc-form {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: 1fr 1fr auto;
     column-gap: 15px;
     row-gap: 8px;
     align-items: end;
@@ -768,15 +789,15 @@ textarea {
     background: linear-gradient(90deg, #00ff88, #00a86b);
     color: #ffffff;
     border-radius: 20px;
-    padding: 14px 30px;
-    min-height: 52px;
-    width: 100%;
-    font-size: 1.1rem;
+    padding: 12px 18px;
+    min-height: 48px;
+    width: auto;
+    font-size: 1rem;
     text-transform: uppercase;
     font-weight: bold;
     margin-top: 0;
-    justify-self: stretch;
-    grid-column: 1 / -1;
+    justify-self: center;
+    align-self: end;
     border: 1px solid rgba(0, 255, 136, 0.9);
     box-shadow: 0 0 18px rgba(0, 255, 136, 0.7);
 }
