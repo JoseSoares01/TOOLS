@@ -118,7 +118,7 @@ class Particle {
         if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
     }
     draw() {
-        ctx.fillStyle = 'rgba(34, 197, 94, 0.4)'; // Verde Excel
+        ctx.fillStyle = 'rgb(255, 255, 255)'; // Verde Excel
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();

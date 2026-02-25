@@ -11,7 +11,7 @@ body {
     padding-bottom: 100px;
     /* Espaço para o footer */
     margin: 0;
-    background-color: #090b17fd;
+    background-color: #01538e;
 }
 
 /* Fade-out da página ao deslogar */
@@ -68,7 +68,7 @@ nav {
 }
 .nav-left button
 {
-    border-radius: 16px;
+    border-radius: 20px;
 }
 
 button {
@@ -135,7 +135,7 @@ button:hover {
     left: 20px;
     right: 20px;
     bottom: 20px;
-    background: rgba(5, 55, 102, 0.659);
+    background: rgba(9, 82, 151, 0.659);
     border-radius: 16px;
     display: flex;
     justify-content: center;
