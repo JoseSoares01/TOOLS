@@ -26,7 +26,7 @@ class SidebarMenu {
                         <img src="/images/colunas.png" alt="Dashboard Icone"> Dashboard
                     </a></li>
                     <li><a href="/pages/Trivalor.html" data-title="Gerador QR Trivalor">
-                        <img src="/images/smartphone.png" alt="Trivalor Icone"> Trivalor
+                        <img src="/images/QR.png" alt="Trivalor Icone"> Trivalor
                     </a></li>
                     <li><a href="/pages/BCP.html" data-title="Gerador QR Despesas">
                         <img src="/images/despesas.png" alt="Despesas Icone"> Despesas

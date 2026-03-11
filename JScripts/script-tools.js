@@ -32,7 +32,7 @@ class Particle {
     reset() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 1;
+        this.size = Math.random() * 5 + 1;
         this.speedX = Math.random() * 0.4 - 0.2;
         this.speedY = Math.random() * 0.4 - 0.2;
     }
@@ -43,7 +43,7 @@ class Particle {
         if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
     }
     draw() {
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.fillStyle = 'rgba(16, 69, 97, 0.98)';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -52,7 +52,7 @@ class Particle {
 
 function createParticles() {
     particles = [];
-    for (let i = 0; i < 70; i++) particles.push(new Particle());
+    for (let i = 0; i < 150; i++) particles.push(new Particle());
 }
 
 function animateParticles() {
@@ -62,8 +62,8 @@ function animateParticles() {
         p.draw();
         for (let j = index + 1; j < particles.length; j++) {
             const dist = Math.hypot(p.x - particles[j].x, p.y - particles[j].y);
-            if (dist < 130) {
-                ctx.strokeStyle = `rgba(1, 255, 255, ${0.15 - dist/800})`;
+            if (dist < 150) {
+                ctx.strokeStyle = `rgba(18, 10,, ${0.15 - dist/800})`;
                 ctx.lineWidth = 0.4;
                 ctx.beginPath(); ctx.moveTo(p.x, p.y);
                 ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
