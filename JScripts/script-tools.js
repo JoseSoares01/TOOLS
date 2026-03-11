@@ -2,7 +2,73 @@
  * SISTEMA DE FERRAMENTAS SERVINFORM
  * Versão: 2.0 (Modern Layout)
  */
+// --- SISTEMA DE SEGURANÇA E LOGIN ---
 
+// 1. Verificação de Proteção (Colocar no topo do arquivo)
+(function checkAuth() {
+    const session = localStorage.getItem('usuarioLogado');
+    const isLoginPage = window.location.pathname.includes('login.html') || window.location.pathname === '/';
+
+    if (!session && !isLoginPage) {
+        // Se não houver sessão e não estiver na login, manda para o login
+        window.location.href = '/login.html';
+    } else if (session && isLoginPage) {
+        // Se já estiver logado e tentar ver o login, manda para o dashboard
+        window.location.href = '/pages/dashboard.html';
+    }
+})();
+
+// 2. Função de Login (Para usar na sua página de login)
+function realizarLogin(usuario, senha) {
+    try {
+        // Aqui você validaria com seu backend, este é o mock:
+        if (usuario === "admin" && senha === "123") {
+            const userData = {
+                name: "Administrador",
+                loginTime: new Date().getTime(),
+                token: "token_" + Math.random().toString(36).substr(2)
+            };
+            
+            localStorage.setItem('usuarioLogado', JSON.stringify(userData));
+            
+            document.body.classList.add('fade-out');
+            setTimeout(() => {
+                window.location.href = '/pages/dashboard.html';
+            }, 500);
+        } else {
+            throw new Error("Credenciais inválidas");
+        }
+    } catch (error) {
+        console.error("Erro no login:", error.message);
+        alert("Falha no acesso: " + error.message);
+    }
+}
+
+// 3. Função de Logout Refatorada
+function logout() {
+    const logoutBtn = document.querySelector('.logout-btn');
+    
+    // Feedback visual imediato
+    if (logoutBtn) {
+        logoutBtn.disabled = true;
+        logoutBtn.innerText = "Saindo...";
+        logoutBtn.classList.add('logging-out');
+    }
+
+    // Limpa o armazenamento com segurança
+    try {
+        localStorage.clear(); // Limpa tudo para evitar resíduos de sessão
+        document.body.classList.add('fade-out');
+        
+        // Pequeno delay para a animação de fade-out
+        setTimeout(() => {
+            window.location.replace('/login.html'); // replace evita que o user volte com o botão 'voltar'
+        }, 600);
+    } catch (e) {
+        // Fallback caso o localStorage falhe (ex: navegação privada)
+        window.location.href = '/login.html';
+    }
+}
 // --- 1. CONFIGURAÇÃO DO CANVAS (PARTÍCULAS) ---
 const canvas = document.getElementById('hero-canvas');
 const ctx = canvas.getContext('2d');

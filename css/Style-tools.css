@@ -303,3 +303,21 @@ body {
 .content {
     flex: 1 0 auto; /* Empurra o footer para o fim da página */
 }
+
+.logout-btn.logging-out {
+    background: #ff4b2b !important;
+    cursor: wait;
+    transform: scale(0.95);
+    opacity: 0.8;
+}
+
+/* Estilo para mensagens de erro caso decida criar um span de erro */
+.error-message {
+    color: #ff4b2b;
+    background: rgba(255, 75, 43, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-top: 10px;
+    display: none; /* Ativar via JS se necessário */
+}
