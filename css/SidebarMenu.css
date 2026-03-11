@@ -62,6 +62,7 @@
     text-decoration: none !important;
     transition: all 0.3s ease !important;
     border-left: 2px solid transparent !important;
+    border-radius: 16px;;
     font-family: 'Poppins', sans-serif !important;
     font-size: 0.95rem !important;
     margin: 0 !important;
