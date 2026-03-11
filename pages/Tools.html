@@ -2,14 +2,20 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Servinform</title>
     <link rel="stylesheet" href="/css/Style-tools.css">
     <link rel="stylesheet" href="/css/SidebarMenu.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<canvas id="hero-canvas"></canvas>
-<body>
-    <div class="background-image"></div>
+<body class="fade-in">
+
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
+
+    <canvas id="hero-canvas"></canvas>
+    
     <div class="content">
         <nav>
             <div class="nav-left">
@@ -21,95 +27,107 @@
         <h1 class="page-title">Ferramentas Servinform</h1>
 
         <div class="cards-container">
-            <div class="card" data-url="Trivalor">
-                <div class="box">
-                    <div class="content">
-                        <h2>01</h2>
-                        <h3>Gerador QR code Trivalor</h3>
-                        <p>Gere códigos QR para o sistema Trivalor</p>
-                        <a href="#" onclick="expandAndRedirect(this.parentElement.parentElement.parentElement)">Acessar</a>
+            <div class="modern-card" data-url="Trivalor">
+                <div class="card-header bg-grad-1">QR</div>
+                <div class="card-body">
+                    <span class="card-number">#01</span>
+                    <h3>Gerador QR Trivalor</h3>
+                    <p>Gere códigos QR para o sistema Trivalor de forma rápida e segura.</p>
+                    <div class="card-footer">
+                        <div class="stats"><span>📊 527</span><span>✅ 92</span></div>
+                        <button class="btn-access">Acessar +</button>
                     </div>
                 </div>
             </div>
 
-            <div class="card" data-url="BCP">
-                <div class="box">
-                    <div class="content">
-                        <h2>02</h2>
-                        <h3>Gerador QR Despesas</h3>
-                        <p>Gere códigos QR para Despesas</p>
-                        <a href="#" onclick="expandAndRedirect(this.parentElement.parentElement.parentElement)">Acessar</a>
+            <div class="modern-card" data-url="BCP">
+                <div class="card-header bg-grad-2">€</div>
+                <div class="card-body">
+                    <span class="card-number">#02</span>
+                    <h3>Gerador QR Despesas</h3>
+                    <p>Gere códigos QR para controle de despesas e faturas BCP.</p>
+                    <div class="card-footer">
+                        <div class="stats"><span>📊 413</span><span>✅ 76</span></div>
+                        <button class="btn-access">Acessar +</button>
                     </div>
                 </div>
             </div>
 
-            <div class="card" data-url="SplitPDF">
-                <div class="box">
-                    <div class="content">
-                        <h2>03</h2>
-                        <h3>Editar PDF's</h3>
-                        <p>Ferramentas para edição de arquivos PDF</p>
-                        <a href="#" onclick="expandAndRedirect(this.parentElement.parentElement.parentElement)">Acessar</a>
+            <div class="modern-card" data-url="SplitPDF">
+                <div class="card-header bg-grad-3">PDF</div>
+                <div class="card-body">
+                    <span class="card-number">#03</span>
+                    <h3>Editar PDF's</h3>
+                    <p>Ferramentas avançadas para edição e separação de arquivos PDF.</p>
+                    <div class="card-footer">
+                        <div class="stats"><span>📊 612</span><span>✅ 88</span></div>
+                        <button class="btn-access">Acessar +</button>
                     </div>
                 </div>
             </div>
 
-            <div class="card" data-url="Convert">
-                <div class="box">
-                    <div class="content">
-                        <h2>04</h2>
-                        <h3>Conversor de Imagens</h3>
-                        <p>Converta imagens entre diferentes formatos</p>
-                        <a href="#" onclick="expandAndRedirect(this.parentElement.parentElement.parentElement)">Acessar</a>
+            <div class="modern-card" data-url="Convert">
+                <div class="card-header bg-grad-4">IMG</div>
+                <div class="card-body">
+                    <span class="card-number">#04</span>
+                    <h3>Conversor de Imagens</h3>
+                    <p>Converta imagens entre diferentes formatos instantaneamente.</p>
+                    <div class="card-footer">
+                        <div class="stats"><span>📊 489</span><span>✅ 95</span></div>
+                        <button class="btn-access">Acessar +</button>
                     </div>
                 </div>
             </div>
 
-            <div class="card" data-url="ServinformSite">
-                <div class="box">
-                    <div class="content">
-                        <h2>05</h2>
-                        <h3>CALCULADORA IVA</h3>
-                        <p>Calculo de iva Despesas</p>
-                        <a href="#" onclick="expandAndRedirect(this.parentElement.parentElement.parentElement)">Acessar</a>
+            <div class="modern-card" data-url="ServinformSite">
+                <div class="card-header bg-grad-5">%</div>
+                <div class="card-body">
+                    <span class="card-number">#05</span>
+                    <h3>Calculadora IVA</h3>
+                    <p>Cálculo preciso de IVA para faturas e despesas de Portugal.</p>
+                    <div class="card-footer">
+                        <div class="stats"><span>📊 523</span><span>✅ 80</span></div>
+                        <button class="btn-access">Acessar +</button>
                     </div>
                 </div>
             </div>
 
-            <div class="card" data-url="winzinkemails">
-                <div class="box">
-                    <div class="content">
-                        <h2>06</h2>
-                        <h3>EMAILS WINZINK</h3>
-                        <p>Organizador de emails</p>
-                        <a href="#" onclick="expandAndRedirect(this.parentElement.parentElement.parentElement)">Acessar</a>
+            <div class="modern-card" data-url="winzinkemails">
+                <div class="card-header bg-grad-1">@</div>
+                <div class="card-body">
+                    <span class="card-number">#06</span>
+                    <h3>Emails Wizink</h3>
+                    <p>Organizador inteligente para o processamento de emails Wizink.</p>
+                    <div class="card-footer">
+                        <div class="stats"><span>📊 455</span><span>✅ 90</span></div>
+                        <button class="btn-access">Acessar +</button>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="card" data-url="buscarcidades">
-            <div class="box">
-                <div class="content">
-                    <h2>06</h2>
+
+            <div class="modern-card" data-url="buscarcidades">
+                <div class="card-header bg-grad-2">📍</div>
+                <div class="card-body">
+                    <span class="card-number">#07</span>
                     <h3>Encontrar Cidades</h3>
-                    <p>Encontre a cidade mais próxima de uma localidade em Portugal</p>
-                    <a href="#" onclick="expandAndRedirect(this.parentElement.parentElement.parentElement)">Acessar</a>
+                    <p>Localize cidades próximas em qualquer região de Portugal.</p>
+                    <div class="card-footer">
+                        <div class="stats"><span>📊 320</span><span>✅ 85</span></div>
+                        <button class="btn-access">Acessar +</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-        <footer>
-            <div class="footer">
-                <img src="/images/imagen.png" alt="Logo">
-            </div>
-            <div class="tamanho_logo">
-                <p1>&copy; 2024 Servinform PT</p1>
+        <footer class="main-footer">
+            <div class="footer-container">
+                <img src="/images/imagen.png" alt="Servinform Logo" class="footer-logo">
+                <div class="footer-info">
+                    <p>&copy; 2026 Servinform PT</p>
+                    <span class="footer-tag">Portal de Ferramentas Internas</span>
+                </div>
             </div>
         </footer>
-
-        <div class="overlay" onclick="closeExpandedCard()"></div>
-    </div>
     
     <script src="/JScripts/SidebarMenu.js"></script>
     <script src="/JScripts/script-tools.js"></script>
