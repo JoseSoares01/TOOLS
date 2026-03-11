@@ -167,7 +167,7 @@ function logout() {
     localStorage.removeItem('usuarioLogado');
 
     setTimeout(() => {
-        window.location.href = 'https://ferramentasservinform.pt/login.html';
+        window.location.href = 'https://ferramentasservinform.pt/index.html';
     }, 500);
 }
 
