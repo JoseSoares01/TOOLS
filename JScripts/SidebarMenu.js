@@ -45,6 +45,7 @@ class SidebarMenu {
                     </a></li>
                 </ul>
             </nav>
+            <button class="logout-btn" onclick="logout()">Logout</button>
         `;
 
         document.body.appendChild(sidebar);

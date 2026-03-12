@@ -12,7 +12,7 @@ html {
 
 body {
     min-height: 100vh;
-    background-color: #e7e5e5;
+    background-color: #ffffff;
     overflow-x: hidden;
     padding-bottom: 120px;
     transition: opacity 0.5s ease;
@@ -59,24 +59,25 @@ body {
 /* Navegação */
 nav {
     background-color: #072745;
-    padding: 1rem 2rem;
+    padding: 3rem 2rem;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    margin: 15px;
+    margin: -15px;
     border-radius: 20px;
 }
 
 button {
     padding: 0.6rem 1.5rem;
     border: none;
-    border-radius: 50px;
+    border-radius: 16px;
     cursor: pointer;
-    background: #086da4;
+    background: #086da42a;
     color: white;
     font-weight: 600;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
 }
 
 button:hover {
@@ -86,26 +87,48 @@ button:hover {
     box-shadow: 0 5px 15px rgba(1, 255, 255, 0.4);
 }
 
-/* Título */
-.page-title {
-    text-align: center;
-    padding: 3rem 1rem;
-    color: #ffffff;
-    font-size: 2.5rem;
-    font-weight: 800;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+.logout-btn {
+    margin-top: 450px; /* Ou o valor que você desejar para este botão específico */
+    margin-left: 10px;
 }
 
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Distribui os botões nas pontas */
+    align-items: center;
+    position: relative; /* Necessário para o alinhamento absoluto do título */
+    padding: 75px 20px;
+    height: 80px;
+}
+
+.page-title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* Centralização matemática perfeita */
+    margin: 0;
+    pointer-events: none; /* Garante que o clique passe para o que estiver atrás se necessário */
+}
+
+.page-title h1 {
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin: 0;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    white-space: nowrap;
+}
+
+/* Linha decorativa abaixo do título */
 .page-title::after {
     content: '';
     display: block;
-    width: 300px;
-    height: 5px;
+    width: 100px; /* Reduzi para não quebrar o layout mobile */
+    height: 4px;
     background: #08507d;
-    margin: 15px auto;
+    margin: 5px auto 0;
     border-radius: 10px;
 }
-
 /* Grid de Cards */
 .cards-container {
     display: grid;
@@ -143,7 +166,7 @@ button:hover {
     box-shadow: 0 25px 50px rgba(0,0,0,0.4);
 }
 
-//* Cabeçalhos dos Cards */
+/* Cabeçalhos dos Cards */
 .card-header {
     height: 150px;
     display: flex; /* Mude de block para flex */
@@ -254,9 +277,10 @@ button:hover {
 /* Footer da Página */
 .main-footer {
     position: relative; /* Mudamos de fixed para relative para não cobrir os cards */
-    margin-top: 100px;
-    width: 100%;
-    padding: 40px 20px;
+    margin-top: 300px;
+    width: 99%;
+    padding: 20px 20px;
+    box-sizing: border-box; /* Adicione esta linha */
     background: rgba(7, 39, 69, 0.4); /* Azul profundo semi-transparente */
     backdrop-filter: blur(10px); /* Efeito de vidro */
     border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -270,8 +294,8 @@ button:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
-    max-width: 1200px;
+    gap: 5px;
+    max-width: 1000px;
 }
 
 .footer-logo {

@@ -5,7 +5,7 @@
     top: 0 !important;
     height: 100vh !important;
     width: 280px !important;
-    background: #053F64 !important;
+    background: #072745 !important;
     box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3) !important;
     z-index: 1001 !important;
     transition: transform 0.3s ease !important;
@@ -19,8 +19,8 @@
 .sidebar-header {
     padding: 20px !important;
     text-align: center !important;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1) !important;
-    background: rgba(255, 255, 255, 0.05) !important;
+    border-bottom: 5px solid #072745 !important;
+    background: #072745 !important;
     margin: 0 !important;
 }
 
@@ -194,7 +194,7 @@ body {
 /* Regras de alta especificidade para sobrescrever qualquer estilo do Trivalor.css */
 /* Essas regras têm maior especificidade que o reset global * {} do Trivalor.css */
 body .sidebar {
-    background: #053F64 !important;
+    background: #072745 !important;
     color: inherit !important;
     margin: 0 !important;
     padding: 0 !important;
