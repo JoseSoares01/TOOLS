@@ -87,10 +87,6 @@ button:hover {
     box-shadow: 0 5px 15px rgba(1, 255, 255, 0.4);
 }
 
-.logout-btn {
-    margin-top: 450px; /* Ou o valor que você desejar para este botão específico */
-    margin-left: 10px;
-}
 
 .navbar {
     display: flex;
@@ -340,12 +336,6 @@ body {
     flex: 1 0 auto; /* Empurra o footer para o fim da página */
 }
 
-.logout-btn.logging-out {
-    background: #ff4b2b !important;
-    cursor: wait;
-    transform: scale(0.95);
-    opacity: 0.8;
-}
 
 /* Estilo para mensagens de erro caso decida criar um span de erro */
 .error-message {

@@ -9,7 +9,9 @@
     box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3) !important;
     z-index: 1001 !important;
     transition: transform 0.3s ease !important;
-    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
     margin: 0 !important;
     padding: 0 !important;
 }
@@ -41,6 +43,8 @@
 .sidebar-nav {
     padding: 20px 0 !important;
     margin: 0 !important;
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
 }
 
 .sidebar-nav ul {
@@ -114,6 +118,35 @@
     .sidebar {
         width: 100%;
     }
+}
+
+/* Botão Logout padronizado (global) */
+body .sidebar .logout-btn {
+    width: calc(100% - 32px) !important;
+    margin: 16px !important;
+    padding: 12px 14px !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-radius: 14px !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+body .sidebar .logout-btn:hover {
+    background: rgba(1, 255, 255, 0.18) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+body .sidebar .logout-btn.logging-out {
+    background: rgba(255, 75, 43, 0.9) !important;
+    border-color: rgba(255, 75, 43, 0.9) !important;
+    cursor: wait !important;
+    transform: scale(0.98) !important;
+    opacity: 0.9 !important;
 }
 
 /* Adjust main content when sidebar is present */

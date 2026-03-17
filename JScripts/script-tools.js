@@ -63,7 +63,7 @@ function animateParticles() {
         for (let j = index + 1; j < particles.length; j++) {
             const dist = Math.hypot(p.x - particles[j].x, p.y - particles[j].y);
             if (dist < 150) {
-                ctx.strokeStyle = `rgba(18, 10,, ${0.15 - dist/800})`;
+                ctx.strokeStyle = `rgba(16, 69, 97, ${Math.max(0, 0.15 - dist / 800)})`;
                 ctx.lineWidth = 0.4;
                 ctx.beginPath(); ctx.moveTo(p.x, p.y);
                 ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();

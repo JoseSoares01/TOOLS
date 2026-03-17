@@ -43,6 +43,9 @@ class SidebarMenu {
                     <li><a href="/pages/winzinkemails.html" data-title="Organizador de Emails">
                         <img src="/images/orcamentacao.png" alt="Organizador de Emails Icone"> Winzink Emails
                     </a></li>
+                    <li><a href="/pages/buscarcidades.html" data-title="Encontrar Cidades">
+                        <img src="/images/image.png" alt="Encontrar Cidades Icone"> Encontrar Cidades
+                    </a></li>
                 </ul>
             </nav>
             <button class="logout-btn" onclick="logout()">Logout</button>
@@ -98,6 +101,17 @@ class SidebarMenu {
 document.addEventListener('DOMContentLoaded', () => {
     new SidebarMenu();
 });
+
+// Logout global (para funcionar em todas as páginas que usam o SidebarMenu)
+if (typeof window !== 'undefined' && typeof window.logout !== 'function') {
+    window.logout = function logout() {
+        const btn = document.querySelector('.sidebar .logout-btn') || document.querySelector('.logout-btn');
+        if (btn) btn.classList.add('logging-out');
+        localStorage.removeItem('usuarioLogado');
+        document.body.classList.add('fade-out');
+        setTimeout(() => { window.location.replace('/login.html'); }, 600);
+    };
+}
 
 // Export for use in other scripts if needed
 if (typeof module !== 'undefined' && module.exports) {
