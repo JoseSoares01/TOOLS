@@ -11,7 +11,6 @@
       --bg-2: #eaf0f8;
       --surface: #ffffff;
       --surface-2: #f8fbff;
-      --surface-3: #f2f7fd;
       --border: #d7e3f1;
       --border-strong: #bfd3ea;
       --text: #17324d;
@@ -24,17 +23,14 @@
       --danger: #dc3545;
       --danger-soft: #fdecee;
       --warning: #f59f00;
-      --warning-soft: #fff4d6;
       --shadow-sm: 0 2px 8px rgba(14, 30, 52, 0.06);
       --shadow-md: 0 10px 30px rgba(20, 42, 69, 0.08);
-      --radius-sm: 10px;
       --radius-md: 16px;
       --radius-lg: 22px;
       --font: Inter, Segoe UI, Arial, sans-serif;
     }
 
     * { box-sizing: border-box; }
-
     html, body { height: 100%; }
 
     body {
@@ -233,6 +229,7 @@
       font-weight: 800;
       color: #163150;
       line-height: 1.1;
+      word-break: break-word;
     }
 
     .metric .sub {
@@ -499,6 +496,8 @@
           <input id="fileInput" type="file" accept=".xlsx,.xls,.xml,.csv,text/xml,application/xml" />
           <button class="btn soft" id="addRowBtn" type="button">Adicionar linha</button>
           <button class="btn warn" id="removeRowBtn" type="button">Remover linha</button>
+          <button class="btn ghost" id="undoBtn" type="button">Desfazer última ação</button>
+          <button class="btn ghost" id="resetAllBtn" type="button">Desfazer tudo</button>
           <button class="btn primary" id="downloadBtn" type="button">Exportar Excel</button>
         </div>
       </section>
@@ -571,15 +570,67 @@
     const changesCountEl = document.getElementById('changesCount');
     const grandTotalDisplay = document.getElementById('grandTotalDisplay');
     const resetSheetBtn = document.getElementById('resetSheetBtn');
+    const undoBtn = document.getElementById('undoBtn');
+    const resetAllBtn = document.getElementById('resetAllBtn');
 
     let workbookName = 'ficheiro_editado.xlsx';
     let sheetsData = {};
     let originalSheetsData = {};
     let currentSheet = '';
     let lastFocusedCell = null;
+    let historyStack = [];
+    let isCommittingEdit = false;
 
     function deepClone(value) {
       return JSON.parse(JSON.stringify(value));
+    }
+
+    function pushHistory(actionLabel = 'alteração') {
+      if (!Object.keys(sheetsData).length) return;
+      historyStack.push({
+        label: actionLabel,
+        sheet: currentSheet,
+        sheetsData: deepClone(sheetsData)
+      });
+      if (historyStack.length > 100) historyStack.shift();
+    }
+
+    function undoLastAction() {
+      if (!historyStack.length) {
+        statusEl.textContent = 'Não há ações para desfazer.';
+        return;
+      }
+      const previousState = historyStack.pop();
+      sheetsData = deepClone(previousState.sheetsData);
+      const availableSheets = Object.keys(sheetsData);
+      currentSheet = availableSheets.includes(previousState.sheet) ? previousState.sheet : availableSheets[0] || '';
+      if (currentSheet) {
+        sheetSelect.value = currentSheet;
+        renderSheet(currentSheet);
+      }
+      statusEl.textContent = 'Última ação desfeita com sucesso.';
+    }
+
+    function resetAllChanges() {
+      if (!Object.keys(originalSheetsData).length) return;
+      pushHistory('desfazer tudo');
+      sheetsData = deepClone(originalSheetsData);
+      const availableSheets = Object.keys(sheetsData);
+      currentSheet = availableSheets.includes(currentSheet) ? currentSheet : availableSheets[0] || '';
+      if (currentSheet) {
+        sheetSelect.value = currentSheet;
+        renderSheet(currentSheet);
+      }
+      statusEl.textContent = 'Todas as alterações foram limpas. O ficheiro voltou ao estado original.';
+    }
+
+    function initializeLoadedSheets(loadedSheets) {
+      sheetsData = deepClone(loadedSheets);
+      Object.keys(sheetsData).forEach(sheetName => {
+        recalcTotals(sheetName);
+      });
+      originalSheetsData = deepClone(sheetsData);
+      historyStack = [];
     }
 
     function normalizeText(text) {
@@ -611,7 +662,9 @@
 
     function formatDecimal(value, digits = 2) {
       if (!Number.isFinite(value)) return '';
-      if (numberMode.value === 'raw') return String((Math.round(value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits));
+      if (numberMode.value === 'raw') {
+        return String((Math.round(value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits));
+      }
       return new Intl.NumberFormat('pt-PT', {
         minimumFractionDigits: digits,
         maximumFractionDigits: digits
@@ -685,17 +738,62 @@
       return map;
     }
 
-    function getReferenceTotalWithoutVat(data, columnMap) {
-      const totalRowIndex = getTotalRowIndex(data);
-      const totalWithoutVat = columnMap.withoutVat >= 0 ? parseNumeric(data[totalRowIndex][columnMap.withoutVat]) : NaN;
-      if (Number.isFinite(totalWithoutVat) && totalWithoutVat !== 0) return totalWithoutVat;
+    function getOriginalBaseWithoutVat(sheetName) {
+      const original = originalSheetsData[sheetName];
+      const current = sheetsData[sheetName];
+      const source = original || current;
+      if (!source || !source.length) return NaN;
+      const cols = detectColumnMap(source[0]);
+      if (cols.withoutVat === -1) return NaN;
+
+      const totalRowIndex = getTotalRowIndex(source);
+      const totalCell = parseNumeric(source[totalRowIndex][cols.withoutVat]);
+      if (Number.isFinite(totalCell) && totalCell > 0) return round2(totalCell);
 
       let sum = 0;
+      for (let r = 1; r < totalRowIndex; r++) {
+        const value = parseNumeric(source[r][cols.withoutVat]);
+        if (Number.isFinite(value)) sum += value;
+      }
+      return sum > 0 ? round2(sum) : NaN;
+    }
+
+    function getReferenceTotalWithoutVat(data, columnMap, sheetName = currentSheet) {
+      const originalBase = getOriginalBaseWithoutVat(sheetName);
+      if (Number.isFinite(originalBase) && originalBase > 0) return originalBase;
+
+      let sum = 0;
+      const totalRowIndex = getTotalRowIndex(data);
       for (let r = 1; r < totalRowIndex; r++) {
         const value = parseNumeric(data[r][columnMap.withoutVat]);
         if (Number.isFinite(value)) sum += value;
       }
-      return round2(sum) || NaN;
+      if (sum > 0) return round2(sum);
+
+      const totalWithoutVat = columnMap.withoutVat >= 0 ? parseNumeric(data[totalRowIndex][columnMap.withoutVat]) : NaN;
+      return Number.isFinite(totalWithoutVat) ? totalWithoutVat : NaN;
+    }
+
+    function getSumWithoutVat(data, columnMap) {
+      if (columnMap.withoutVat === -1) return NaN;
+      let sum = 0;
+      const totalRowIndex = getTotalRowIndex(data);
+      for (let r = 1; r < totalRowIndex; r++) {
+        const value = parseNumeric(data[r][columnMap.withoutVat]);
+        if (Number.isFinite(value)) sum += value;
+      }
+      return round2(sum);
+    }
+
+    function getSumTotal(data, columnMap) {
+      if (columnMap.total === -1) return NaN;
+      let sum = 0;
+      const totalRowIndex = getTotalRowIndex(data);
+      for (let r = 1; r < totalRowIndex; r++) {
+        const value = parseNumeric(data[r][columnMap.total]);
+        if (Number.isFinite(value)) sum += value;
+      }
+      return round2(sum);
     }
 
     function getVatRateForRow(data, rowIndex, columnMap) {
@@ -704,9 +802,10 @@
       return Number.isFinite(vat) ? vat : 0;
     }
 
-    function updatePercentFromWithoutVat(data, rowIndex, columnMap) {
-      const baseTotalWithoutVat = getReferenceTotalWithoutVat(data, columnMap);
+    function updatePercentFromWithoutVat(data, rowIndex, columnMap, sheetName = currentSheet) {
+      const baseTotalWithoutVat = getReferenceTotalWithoutVat(data, columnMap, sheetName);
       const withoutVatVal = parseNumeric(data[rowIndex][columnMap.withoutVat]);
+      if (columnMap.percent === -1) return;
       if (Number.isFinite(baseTotalWithoutVat) && baseTotalWithoutVat !== 0 && Number.isFinite(withoutVatVal)) {
         data[rowIndex][columnMap.percent] = formatPercent(round2((withoutVatVal / baseTotalWithoutVat) * 100));
       }
@@ -715,7 +814,7 @@
     function updateTotalFromWithoutVat(data, rowIndex, columnMap) {
       const withoutVatVal = parseNumeric(data[rowIndex][columnMap.withoutVat]);
       const vatRate = getVatRateForRow(data, rowIndex, columnMap);
-      if (Number.isFinite(withoutVatVal)) {
+      if (Number.isFinite(withoutVatVal) && columnMap.total !== -1) {
         data[rowIndex][columnMap.total] = formatCurrency(round2(withoutVatVal * (1 + vatRate / 100)));
       }
     }
@@ -723,7 +822,7 @@
     function updateWithoutVatFromTotal(data, rowIndex, columnMap) {
       const totalVal = parseNumeric(data[rowIndex][columnMap.total]);
       const vatRate = getVatRateForRow(data, rowIndex, columnMap);
-      if (Number.isFinite(totalVal)) {
+      if (Number.isFinite(totalVal) && columnMap.withoutVat !== -1) {
         const divisor = 1 + vatRate / 100;
         data[rowIndex][columnMap.withoutVat] = formatCurrency(divisor !== 0 ? round2(totalVal / divisor) : round2(totalVal));
       }
@@ -737,17 +836,18 @@
 
       if (editedCol === cols.percent) {
         const percentVal = parseNumeric(data[rowIndex][cols.percent]);
-        const baseTotalWithoutVat = getReferenceTotalWithoutVat(data, cols);
+        const baseTotalWithoutVat = getReferenceTotalWithoutVat(data, cols, sheetName);
         if (Number.isFinite(percentVal) && Number.isFinite(baseTotalWithoutVat)) {
           data[rowIndex][cols.withoutVat] = formatCurrency(round2((baseTotalWithoutVat * percentVal) / 100));
           updateTotalFromWithoutVat(data, rowIndex, cols);
         }
       } else if (editedCol === cols.withoutVat) {
-        updatePercentFromWithoutVat(data, rowIndex, cols);
+        updatePercentFromWithoutVat(data, rowIndex, cols, sheetName);
         updateTotalFromWithoutVat(data, rowIndex, cols);
       } else if (editedCol === cols.total) {
         updateWithoutVatFromTotal(data, rowIndex, cols);
-        updatePercentFromWithoutVat(data, rowIndex, cols);
+        updatePercentFromWithoutVat(data, rowIndex, cols, sheetName);
+        updateTotalFromWithoutVat(data, rowIndex, cols);
       } else if (editedCol === cols.vat) {
         updateTotalFromWithoutVat(data, rowIndex, cols);
       }
@@ -759,44 +859,44 @@
       const totalRowIndex = getTotalRowIndex(data);
       const headers = data[0];
       const cols = detectColumnMap(headers);
+      let percentSum = 0;
 
       for (let r = 1; r < totalRowIndex; r++) {
-        const withoutVatVal = parseNumeric(data[r][cols.withoutVat]);
-        const totalVal = parseNumeric(data[r][cols.total]);
-        const percentVal = parseNumeric(data[r][cols.percent]);
+        const withoutVatVal = cols.withoutVat !== -1 ? parseNumeric(data[r][cols.withoutVat]) : NaN;
+        const totalVal = cols.total !== -1 ? parseNumeric(data[r][cols.total]) : NaN;
+        const percentVal = cols.percent !== -1 ? parseNumeric(data[r][cols.percent]) : NaN;
 
-        if (Number.isFinite(withoutVatVal)) {
-          updateDependentValues(sheetName, r, cols.withoutVat);
-        } else if (Number.isFinite(totalVal)) {
-          updateDependentValues(sheetName, r, cols.total);
-        } else if (Number.isFinite(percentVal)) {
+        if (Number.isFinite(withoutVatVal) && cols.withoutVat !== -1) {
+          updatePercentFromWithoutVat(data, r, cols, sheetName);
+          updateTotalFromWithoutVat(data, r, cols);
+        } else if (Number.isFinite(totalVal) && cols.total !== -1) {
+          updateWithoutVatFromTotal(data, r, cols);
+          updatePercentFromWithoutVat(data, r, cols, sheetName);
+          updateTotalFromWithoutVat(data, r, cols);
+        } else if (Number.isFinite(percentVal) && cols.percent !== -1) {
           updateDependentValues(sheetName, r, cols.percent);
         }
+
+        const normalizedPercent = cols.percent !== -1 ? parseNumeric(data[r][cols.percent]) : NaN;
+        if (Number.isFinite(normalizedPercent)) percentSum += normalizedPercent;
       }
+
+      const sumWithoutVat = getSumWithoutVat(data, cols);
+      const sumTotal = getSumTotal(data, cols);
 
       for (let c = 0; c < headers.length; c++) {
         const headerName = normalizeText(headers[c]);
-        let sum = 0;
-        let numericFound = false;
-
-        for (let r = 1; r < totalRowIndex; r++) {
-          const parsed = parseNumeric(data[r][c]);
-          if (!Number.isNaN(parsed)) {
-            sum += parsed;
-            numericFound = true;
-          }
-        }
 
         if (c === 0 || c === cols.percent || headerName === '%') {
-          data[totalRowIndex][c] = '100,00%';
+          data[totalRowIndex][c] = Number.isFinite(percentSum) ? formatPercent(round2(percentSum)) : '';
           continue;
         }
-        if (c === cols.withoutVat && numericFound) {
-          data[totalRowIndex][c] = formatCurrency(round2(sum));
+        if (c === cols.withoutVat) {
+          data[totalRowIndex][c] = Number.isFinite(sumWithoutVat) ? formatCurrency(sumWithoutVat) : '';
           continue;
         }
-        if (c === cols.total && numericFound) {
-          data[totalRowIndex][c] = formatCurrency(round2(sum));
+        if (c === cols.total) {
+          data[totalRowIndex][c] = Number.isFinite(sumTotal) ? formatCurrency(sumTotal) : '';
           continue;
         }
         if (c === cols.vat) {
@@ -809,7 +909,9 @@
     function getDeltaMeta(sheetName, rowIndex, colIndex, currentValue) {
       const originalSheet = originalSheetsData[sheetName];
       const originalValue = originalSheet?.[rowIndex]?.[colIndex] ?? '';
-      if (String(originalValue) === String(currentValue)) return { changed: false, text: '', tdClass: '', deltaClass: '' };
+      if (String(originalValue) === String(currentValue)) {
+        return { changed: false, text: '', tdClass: '', deltaClass: '' };
+      }
 
       const oldNum = parseNumeric(originalValue);
       const newNum = parseNumeric(currentValue);
@@ -818,6 +920,7 @@
         if (diff > 0) return { changed: true, text: `+${formatDecimal(diff, 2)}`, tdClass: 'changed-up', deltaClass: 'up' };
         if (diff < 0) return { changed: true, text: `${formatDecimal(diff, 2)}`, tdClass: 'changed-down', deltaClass: 'down' };
       }
+
       return { changed: true, text: 'editado', tdClass: 'changed-neutral', deltaClass: '' };
     }
 
@@ -861,15 +964,18 @@
       currentSheet = sheetName;
       const data = sheetsData[sheetName];
       if (!data) return;
+
       recalcTotals(sheetName);
       updateSummary(sheetName);
 
       const totalRowIndex = getTotalRowIndex(data);
       const headers = data[0];
       let html = '<thead><tr><th class="row-index">#</th>';
+
       headers.forEach((header, c) => {
         html += `<th>${header || excelColumnName(c)}</th>`;
       });
+
       html += '</tr></thead><tbody>';
 
       for (let r = 1; r < data.length; r++) {
@@ -880,8 +986,11 @@
         for (let c = 0; c < headers.length; c++) {
           const value = data[r][c] ?? '';
           const readOnly = r === totalRowIndex ? 'readonly' : '';
-          const delta = r === totalRowIndex ? { changed: false, text: '', tdClass: '', deltaClass: '' } : getDeltaMeta(sheetName, r, c, value);
+          const delta = r === totalRowIndex
+            ? { changed: false, text: '', tdClass: '', deltaClass: '' }
+            : getDeltaMeta(sheetName, r, c, value);
           const numClass = isNumericColumn(headers[c]) ? 'num' : '';
+
           html += `
             <td class="${delta.tdClass} ${numClass}">
               <div class="cell">
@@ -902,25 +1011,46 @@
 
       html += '</tbody>';
       sheetTable.innerHTML = html;
-      statusEl.textContent = 'Edição ativa. Pode alterar % / Total S/IVA / IVA / Total. A grelha recalcula automaticamente a linha e a última linha de totais.';
+      statusEl.textContent = 'Edição ativa. Pode alterar % / Total S/IVA / IVA / Total. A percentagem e os totais são recalculados ao confirmar a célula (Enter, sair do campo ou blur).';
 
       sheetTable.querySelectorAll('.cell-input:not([readonly])').forEach(input => {
         input.addEventListener('focus', () => {
-          lastFocusedCell = { row: Number(input.dataset.row), col: Number(input.dataset.col) };
+          lastFocusedCell = {
+            row: Number(input.dataset.row),
+            col: Number(input.dataset.col)
+          };
         });
         input.addEventListener('change', handleCellEdit);
+        input.addEventListener('blur', handleCellEdit);
+        input.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            commitCellEdit(input);
+          }
+        });
       });
     }
 
-    function handleCellEdit(event) {
-      const input = event.target;
+    function commitCellEdit(input) {
+      if (isCommittingEdit || !currentSheet) return;
       const row = Number(input.dataset.row);
       const col = Number(input.dataset.col);
-      sheetsData[currentSheet][row][col] = input.value;
+      const newValue = input.value;
+      const currentValue = sheetsData[currentSheet]?.[row]?.[col] ?? '';
+      if (String(newValue) === String(currentValue)) return;
+
+      isCommittingEdit = true;
+      pushHistory('edição de célula');
+      sheetsData[currentSheet][row][col] = newValue;
       updateDependentValues(currentSheet, row, col);
       recalcTotals(currentSheet);
       renderSheet(currentSheet);
       restoreFocus();
+      isCommittingEdit = false;
+    }
+
+    function handleCellEdit(event) {
+      commitCellEdit(event.target);
     }
 
     function populateSheetSelector(names) {
@@ -960,9 +1090,7 @@
           const cells = Array.from(row.getElementsByTagNameNS('*', 'Cell'));
           for (const cell of cells) {
             const explicitIndex = cell.getAttribute('ss:Index') || cell.getAttribute('Index');
-            if (explicitIndex) {
-              currentIndex = Number(explicitIndex) - 1;
-            }
+            if (explicitIndex) currentIndex = Number(explicitIndex) - 1;
             const dataNode = cell.getElementsByTagNameNS('*', 'Data')[0];
             const text = dataNode ? dataNode.textContent ?? '' : '';
             rowArr[currentIndex] = text;
@@ -985,7 +1113,9 @@
         const wb = XLSX.read(arrayBuffer, { type: 'array', cellText: true, cellNF: true, cellDates: false });
         const sheets = workbookToSheetsData(wb);
         if (Object.keys(sheets).length) return sheets;
-      } catch (err) {}
+      } catch (err) {
+        // fallback below
+      }
 
       if (ext === 'xml') {
         const text = new TextDecoder('utf-8').decode(arrayBuffer);
@@ -993,6 +1123,42 @@
       }
 
       throw new Error('Não foi possível ler este ficheiro.');
+    }
+
+    function runSelfTests() {
+      console.assert(parseNumeric('6.715,87 €') === 6715.87, 'Teste falhou: parseNumeric moeda PT');
+      console.assert(parseNumeric('23%') === 23, 'Teste falhou: parseNumeric percentagem');
+      console.assert(formatPercent(100) === '100,00%' || formatPercent(100) === '100.00%', 'Teste falhou: formatPercent');
+      console.assert(detectColumnMap(['%', 'Total S/IVA', 'IVA', 'Total']).total === 3, 'Teste falhou: detectColumnMap total');
+      console.assert(detectColumnMap(['%', 'Total S/IVA', 'IVA', 'Total']).withoutVat === 1, 'Teste falhou: detectColumnMap total s/iva');
+
+      const testSheet = [
+        ['%', 'Total S/IVA', 'IVA', 'Total'],
+        ['50,00%', '100,00 €', '23', '123,00 €'],
+        ['50,00%', '100,00 €', '23', '123,00 €'],
+        ['100,00%', '200,00 €', '', '246,00 €']
+      ];
+      sheetsData.__test__ = deepClone(testSheet);
+      recalcTotals('__test__');
+      sheetsData.__test__[1][1] = '150,00 €';
+      recalcTotals('__test__');
+      console.assert(sheetsData.__test__[1][0] === '75,00%' || sheetsData.__test__[1][0] === '75.00%', 'Teste falhou: percentagem deve atualizar ao alterar S/IVA pela base original');
+      console.assert(sheetsData.__test__[2][0] === '50,00%' || sheetsData.__test__[2][0] === '50.00%', 'Teste falhou: percentagem da outra linha deve manter-se');
+      console.assert(sheetsData.__test__[3][0] === '125,00%' || sheetsData.__test__[3][0] === '125.00%', 'Teste falhou: percentagem total deve refletir nova soma');
+      console.assert(sheetsData.__test__[3][1] === '250,00 €' || sheetsData.__test__[3][1] === '250.00 €', 'Teste falhou: total S/IVA final deve atualizar');
+      console.assert(sheetsData.__test__[3][3] === '307,50 €' || sheetsData.__test__[3][3] === '307.50 €', 'Teste falhou: total final deve atualizar');
+
+      sheetsData.__test__ = deepClone(testSheet);
+      updateDependentValues('__test__', 1, 0);
+      sheetsData.__test__[1][0] = '80,00%';
+      updateDependentValues('__test__', 1, 0);
+      recalcTotals('__test__');
+      console.assert(sheetsData.__test__[1][1] === '160,00 €' || sheetsData.__test__[1][1] === '160.00 €', 'Teste falhou: editar % deve atualizar S/IVA');
+      console.assert(sheetsData.__test__[1][3] === '196,80 €' || sheetsData.__test__[1][3] === '196.80 €', 'Teste falhou: editar % deve atualizar total da linha');
+      console.assert(sheetsData.__test__[3][0] === '130,00%' || sheetsData.__test__[3][0] === '130.00%', 'Teste falhou: editar % deve alterar o total global de percentagem');
+      console.assert(sheetsData.__test__[3][1] === '260,00 €' || sheetsData.__test__[3][1] === '260.00 €', 'Teste falhou: editar % deve alterar o total global S/IVA');
+      console.assert(sheetsData.__test__[3][3] === '319,80 €' || sheetsData.__test__[3][3] === '319.80 €', 'Teste falhou: editar % deve alterar o total global Total');
+      delete sheetsData.__test__;
     }
 
     fileInput.addEventListener('change', async (event) => {
@@ -1003,8 +1169,8 @@
       statusEl.textContent = 'A importar ficheiro...';
 
       try {
-        sheetsData = await readWorkbookFromFile(file);
-        originalSheetsData = deepClone(sheetsData);
+        const loadedSheets = await readWorkbookFromFile(file);
+        initializeLoadedSheets(loadedSheets);
         const names = Object.keys(sheetsData);
         populateSheetSelector(names);
         if (!names.length) throw new Error('Sem folhas válidas');
@@ -1024,6 +1190,7 @@
 
     addRowBtn.addEventListener('click', () => {
       if (!currentSheet) return;
+      pushHistory('adicionar linha');
       const data = sheetsData[currentSheet];
       const totalRowIndex = getTotalRowIndex(data);
       const newRow = new Array(data[0].length).fill('');
@@ -1034,6 +1201,7 @@
 
     removeRowBtn.addEventListener('click', () => {
       if (!currentSheet) return;
+      pushHistory('remover linha');
       const data = sheetsData[currentSheet];
       if (data.length <= 2) return;
       const totalRowIndex = getTotalRowIndex(data);
@@ -1044,8 +1212,25 @@
 
     resetSheetBtn.addEventListener('click', () => {
       if (!currentSheet) return;
+      pushHistory('repor folha');
       sheetsData[currentSheet] = deepClone(originalSheetsData[currentSheet]);
       renderSheet(currentSheet);
+    });
+
+    undoBtn.addEventListener('click', () => {
+      undoLastAction();
+    });
+
+    resetAllBtn.addEventListener('click', () => {
+      resetAllChanges();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      const isUndo = (event.ctrlKey || event.metaKey) && !event.shiftKey && event.key.toLowerCase() === 'z';
+      if (isUndo) {
+        event.preventDefault();
+        undoLastAction();
+      }
     });
 
     downloadBtn.addEventListener('click', () => {
@@ -1070,6 +1255,8 @@
       XLSX.writeFile(newWorkbook, workbookName);
       statusEl.textContent = 'Exportação concluída com sucesso.';
     });
+
+    runSelfTests();
   </script>
 </body>
 </html>
