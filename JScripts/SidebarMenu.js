@@ -4,6 +4,8 @@ class SidebarMenu {
         this.sidebar = null;
         this.currentPage = this.getCurrentPage();
         this.storageKey = 'sidebarExpanded';
+        this.autoCollapseMs = 5000;
+        this._collapseTimer = null;
         this.init();
     }
 
@@ -44,13 +46,10 @@ class SidebarMenu {
         sidebar.innerHTML = `
             <div class="sidebar-shell" role="navigation" aria-label="Menu lateral">
                 <div class="sidebar-top">
-                    <button class="sidebar-toggle" type="button" aria-label="Expandir/Recolher menu" aria-expanded="false">
-                        <span class="sidebar-toggle-icon" aria-hidden="true"></span>
-                    </button>
-                    <div class="sidebar-brand" aria-hidden="true">
-                        <img class="sidebar-brand-logo" src="/images/Logo-Lateral.png" alt="">
+                    <button class="sidebar-brand" type="button" aria-label="Expandir/Recolher menu" aria-expanded="false">
+                        <img class="sidebar-brand-logo" src="/images/Logo-Lateral.png" alt="Servinform">
                         <span class="sidebar-brand-text">Ferramentas</span>
-                    </div>
+                    </button>
                 </div>
 
                 <nav class="sidebar-nav" aria-label="Páginas">
@@ -74,8 +73,8 @@ class SidebarMenu {
 
     bindEvents() {
         this.sidebar.addEventListener('click', (e) => {
-            const toggleBtn = e.target.closest?.('.sidebar-toggle');
-            if (toggleBtn) {
+            const brandToggle = e.target.closest?.('.sidebar-brand');
+            if (brandToggle) {
                 this.toggleSidebar();
                 return;
             }
@@ -85,6 +84,16 @@ class SidebarMenu {
                 this.handleNavigation(link);
             }
         });
+
+        // Se estiver expandido, qualquer interação mantém aberto por mais 5s
+        const resetIfExpanded = () => {
+            if (this.sidebar?.classList.contains('sidebar--expanded')) {
+                this.scheduleAutoCollapse();
+            }
+        };
+        this.sidebar.addEventListener('mousemove', resetIfExpanded);
+        this.sidebar.addEventListener('focusin', resetIfExpanded);
+        this.sidebar.addEventListener('keydown', resetIfExpanded);
     }
 
     setActivePage() {
@@ -132,10 +141,27 @@ class SidebarMenu {
         document.body.classList.toggle('sidebar-expanded', expanded);
         document.body.classList.toggle('sidebar-collapsed', !expanded);
 
-        const toggle = this.sidebar.querySelector('.sidebar-toggle');
+        const toggle = this.sidebar.querySelector('.sidebar-brand');
         if (toggle) toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
 
         localStorage.setItem(this.storageKey, expanded ? '1' : '0');
+
+        if (expanded) this.scheduleAutoCollapse();
+        else this.clearAutoCollapse();
+    }
+
+    clearAutoCollapse() {
+        if (this._collapseTimer) {
+            clearTimeout(this._collapseTimer);
+            this._collapseTimer = null;
+        }
+    }
+
+    scheduleAutoCollapse() {
+        this.clearAutoCollapse();
+        this._collapseTimer = setTimeout(() => {
+            this.setExpanded(false);
+        }, this.autoCollapseMs);
     }
 
 }
