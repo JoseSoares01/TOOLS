@@ -27,7 +27,7 @@ class SidebarMenu {
             { key: 'SplitPDF', label: "Editor de PDFs", href: '/pages/SplitPDF.html', icon: '/pages/icons/pdf.svg' },
             { key: 'Convert', label: 'Conversor de Imagens', href: '/pages/Convert.html', icon: '/pages/icons/convert.svg' },
             { key: 'ServinformSite', label: 'Calculadora IVA', href: '/pages/ServinformSite.html', icon: '/pages/icons/calculadora.svg' },
-            { key: 'winzinkemails', label: 'WinzinkEmails', href: '/pages/winzinkemails.html', icon: '/pages/icons/email.svg' },
+            { key: 'winzinkemails', label: 'Distribuição de Custos', href: '/pages/winzinkemails.html', icon: '/pages/icons/custos.svg' },
             { key: 'buscarcidades', label: 'Encontrar Cidades', href: '/pages/buscarcidades.html', icon: '/pages/icons/cidades.svg' },
         ];
 
