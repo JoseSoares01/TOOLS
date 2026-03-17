@@ -3,151 +3,90 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Distribuição de Custos — Editor Profissional</title>
+  <title>Distribuição de Custos — Editor</title>
   <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
   <style>
     :root {
-      --bg: #f3f6fb;
-      --bg-2: #eaf0f8;
-      --surface: #ffffff;
-      --surface-2: #f8fbff;
-      --border: #d7e3f1;
-      --border-strong: #bfd3ea;
-      --text: #17324d;
-      --muted: #60758d;
-      --primary: #2d6db6;
-      --primary-2: #4e8fd7;
-      --primary-soft: #e8f2ff;
-      --success: #198754;
-      --success-soft: #e7f7ef;
-      --danger: #dc3545;
-      --danger-soft: #fdecee;
-      --warning: #f59f00;
-      --shadow-sm: 0 2px 8px rgba(14, 30, 52, 0.06);
-      --shadow-md: 0 10px 30px rgba(20, 42, 69, 0.08);
-      --radius-md: 16px;
-      --radius-lg: 22px;
+      --bg-1: #dff2e6;
+      --bg-2: #edf8f1;
+      --glass: rgba(255, 255, 255, 0.44);
+      --glass-strong: rgba(255, 255, 255, 0.58);
+      --stroke: rgba(255, 255, 255, 0.45);
+      --stroke-soft: rgba(22, 101, 52, 0.10);
+      --text: #143322;
+      --muted: #5d7768;
+      --primary: #177245;
+      --primary-2: #28a164;
+      --primary-soft: rgba(40, 161, 100, 0.12);
+      --success: #16924f;
+      --success-soft: rgba(22, 146, 79, 0.14);
+      --danger: #d34c57;
+      --danger-soft: rgba(211, 76, 87, 0.14);
+      --warning: #d69a1d;
+      --warning-soft: rgba(214, 154, 29, 0.14);
+      --shadow-sm: 0 10px 30px rgba(16, 57, 34, 0.08);
+      --shadow-md: 0 24px 70px rgba(16, 57, 34, 0.14);
+      --radius-md: 18px;
+      --radius-lg: 28px;
       --font: Inter, Segoe UI, Arial, sans-serif;
     }
 
     * { box-sizing: border-box; }
-    html, body { height: 100%; }
+    html, body { min-height: 100%; }
 
     body {
       margin: 0;
       font-family: var(--font);
       color: var(--text);
       background:
-        radial-gradient(circle at top right, rgba(78,143,215,0.10), transparent 20%),
-        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+        radial-gradient(circle at 0% 0%, rgba(40, 161, 100, 0.26), transparent 28%),
+        radial-gradient(circle at 100% 0%, rgba(147, 225, 182, 0.32), transparent 24%),
+        linear-gradient(180deg, var(--bg-1), var(--bg-2));
     }
 
     .app-shell {
-      display: grid;
-      grid-template-columns: 300px minmax(0, 1fr);
       min-height: 100vh;
-    }
-
-    .sidebar {
-      background: linear-gradient(180deg, #204f87 0%, #173b63 100%);
-      color: #f2f7ff;
-      padding: 22px 18px;
-      display: grid;
-      grid-template-rows: auto auto 1fr auto;
-      gap: 18px;
-      box-shadow: 4px 0 24px rgba(0,0,0,0.08);
-    }
-
-    .brand {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .brand-mark {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #ffffff, #d9e9ff);
-      color: #173b63;
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-      font-size: 18px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
-    }
-
-    .brand h1 {
-      margin: 0;
-      font-size: 18px;
-      line-height: 1.1;
-      font-weight: 800;
-    }
-
-    .brand p {
-      margin: 4px 0 0;
-      color: rgba(255,255,255,0.78);
-      font-size: 12px;
-    }
-
-    .side-card {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 16px;
-      padding: 14px;
-      backdrop-filter: blur(8px);
-    }
-
-    .side-card h2 {
-      margin: 0 0 10px;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: rgba(255,255,255,0.72);
-    }
-
-    .side-list {
-      display: grid;
-      gap: 10px;
-      font-size: 13px;
-      color: rgba(255,255,255,0.92);
-    }
-
-    .side-pill {
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.09);
-      border: 1px solid rgba(255,255,255,0.08);
+      padding: 20px;
     }
 
     .main {
-      padding: 24px;
+      max-width: 1580px;
+      margin: 0 auto;
       display: grid;
-      gap: 18px;
-      align-content: start;
+      gap: 16px;
+    }
+
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--stroke);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: var(--shadow-md);
+      border-radius: var(--radius-lg);
     }
 
     .topbar {
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
-      gap: 16px;
       align-items: center;
+      gap: 18px;
+      padding: 22px;
+      flex-wrap: wrap;
     }
 
     .title-block h2 {
       margin: 0;
-      font-size: clamp(26px, 3vw, 34px);
-      line-height: 1.08;
+      font-size: clamp(28px, 3vw, 38px);
+      line-height: 1.04;
+      letter-spacing: -0.03em;
       font-weight: 800;
-      color: #18314c;
+      color: #102b1d;
     }
 
     .title-block p {
       margin: 8px 0 0;
       color: var(--muted);
-      max-width: 900px;
-      line-height: 1.5;
+      font-size: 14px;
     }
 
     .actions {
@@ -159,43 +98,46 @@
 
     .btn, .file-trigger, .select {
       appearance: none;
-      border: 1px solid var(--border);
-      background: var(--surface);
+      min-height: 46px;
+      padding: 0 15px;
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,0.42);
+      background: var(--glass-strong);
       color: var(--text);
-      border-radius: 12px;
-      min-height: 44px;
-      padding: 0 14px;
       font: inherit;
       font-weight: 700;
       box-shadow: var(--shadow-sm);
-      transition: .18s ease;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
     }
 
     .btn:hover, .file-trigger:hover, .select:hover {
       transform: translateY(-1px);
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 16px 30px rgba(16, 57, 34, 0.10);
+      filter: brightness(1.01);
     }
 
     .btn.primary, .file-trigger {
-      background: linear-gradient(180deg, var(--primary-2), var(--primary));
-      border-color: rgba(45,109,182,0.4);
-      color: #fff;
+      background: linear-gradient(180deg, rgba(40,161,100,0.95), rgba(23,114,69,0.95));
+      color: white;
+      border-color: rgba(255,255,255,0.20);
     }
 
     .btn.soft {
       background: var(--primary-soft);
       color: var(--primary);
-      border-color: #c8dcf6;
+      border-color: rgba(40,161,100,0.16);
     }
 
     .btn.warn {
-      background: #fff9ea;
-      color: #8a5a00;
-      border-color: #f0dc9d;
+      background: var(--warning-soft);
+      color: #8c640d;
+      border-color: rgba(214,154,29,0.18);
     }
 
     .btn.ghost {
-      background: var(--surface);
+      background: rgba(255,255,255,0.50);
       color: var(--text);
     }
 
@@ -208,77 +150,71 @@
     }
 
     .metric {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
       padding: 16px;
+      border-radius: var(--radius-md);
+      background: var(--glass-strong);
+      border: 1px solid var(--stroke);
       box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
     }
 
     .metric .label {
-      font-size: 12px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
       margin-bottom: 8px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
       font-weight: 700;
     }
 
     .metric .value {
       font-size: 24px;
-      font-weight: 800;
-      color: #163150;
       line-height: 1.1;
+      font-weight: 800;
+      color: #103021;
       word-break: break-word;
     }
 
     .metric .sub {
       margin-top: 6px;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 12px;
     }
 
     .panel {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
       overflow: hidden;
     }
 
     .panel-head {
-      padding: 16px 18px;
       display: flex;
       justify-content: space-between;
-      gap: 16px;
       align-items: center;
-      background: linear-gradient(180deg, #fcfdff, #f5f9ff);
-      border-bottom: 1px solid var(--border);
+      gap: 16px;
       flex-wrap: wrap;
+      padding: 18px 18px 12px;
     }
 
     .panel-head .left,
     .panel-head .right {
       display: flex;
       gap: 10px;
-      flex-wrap: wrap;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     .status-line {
       padding: 0 18px 14px;
       color: var(--muted);
       font-size: 13px;
-      background: linear-gradient(180deg, #fcfdff, #f5f9ff);
     }
 
     .legend {
       display: flex;
-      flex-wrap: wrap;
       gap: 14px;
-      align-items: center;
-      font-size: 12px;
+      flex-wrap: wrap;
       color: var(--muted);
+      font-size: 12px;
     }
 
     .legend-item {
@@ -288,9 +224,10 @@
     }
 
     .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      box-shadow: 0 0 0 5px rgba(255,255,255,0.28);
     }
 
     .dot.green { background: var(--success); }
@@ -300,12 +237,16 @@
     .table-wrap {
       overflow: auto;
       max-height: 72vh;
-      background: #fff;
+      border-top: 1px solid rgba(255,255,255,0.38);
+      border-bottom: 1px solid rgba(255,255,255,0.38);
+      background: rgba(255,255,255,0.38);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
 
     table {
       width: 100%;
-      min-width: 1540px;
+      min-width: 1500px;
       border-collapse: separate;
       border-spacing: 0;
       color: var(--text);
@@ -315,27 +256,29 @@
       position: sticky;
       top: 0;
       z-index: 6;
-      background: linear-gradient(180deg, #edf5ff, #e4effd);
-      color: #214564;
+      padding: 13px 10px;
+      text-align: left;
       font-size: 13px;
       font-weight: 800;
-      text-align: left;
-      padding: 12px 10px;
-      border-bottom: 1px solid var(--border-strong);
-      border-right: 1px solid var(--border);
+      color: #174831;
       white-space: nowrap;
+      background: linear-gradient(180deg, rgba(237,251,243,0.94), rgba(225,245,233,0.94));
+      border-bottom: 1px solid rgba(22,101,52,0.12);
+      border-right: 1px solid rgba(22,101,52,0.08);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
 
     tbody td {
-      border-right: 1px solid #e4edf7;
-      border-bottom: 1px solid #e8eff8;
-      background: #fff;
       min-width: 140px;
       padding: 0;
+      background: rgba(255,255,255,0.52);
+      border-right: 1px solid rgba(22,101,52,0.07);
+      border-bottom: 1px solid rgba(22,101,52,0.06);
     }
 
     tbody tr:hover td {
-      background: #fbfdff;
+      background: rgba(255,255,255,0.62);
     }
 
     .row-index {
@@ -346,39 +289,41 @@
       min-width: 64px;
       max-width: 64px;
       text-align: center;
-      background: linear-gradient(180deg, #f7fbff, #eef5fe);
       font-weight: 800;
-      color: #49647e;
-      border-right: 1px solid var(--border-strong);
+      color: #456656;
+      background: linear-gradient(180deg, rgba(245,255,249,0.95), rgba(233,248,239,0.95));
+      border-right: 1px solid rgba(22,101,52,0.10);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
 
     thead .row-index {
       z-index: 7;
-      background: linear-gradient(180deg, #dfeefe, #d5e7fb);
+      background: linear-gradient(180deg, rgba(220,246,228,0.98), rgba(207,239,218,0.98));
     }
 
     .cell {
       position: relative;
-      min-height: 52px;
       display: flex;
       align-items: center;
+      min-height: 52px;
       background: inherit;
     }
 
     .cell input {
       width: 100%;
       min-height: 52px;
+      padding: 12px 64px 12px 12px;
       border: 0;
       outline: none;
       background: transparent;
       color: var(--text);
       font: inherit;
-      padding: 12px 64px 12px 12px;
     }
 
     .cell input:focus {
-      background: #eef6ff;
-      box-shadow: inset 0 0 0 2px #9fc3ef;
+      background: rgba(231, 251, 239, 0.72);
+      box-shadow: inset 0 0 0 2px rgba(40,161,100,0.26);
     }
 
     .num input {
@@ -391,104 +336,64 @@
       right: 10px;
       top: 50%;
       transform: translateY(-50%);
+      padding: 4px 7px;
       border-radius: 999px;
       font-size: 11px;
       font-weight: 800;
-      padding: 4px 7px;
       display: none;
       pointer-events: none;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     .delta.up {
       display: inline-flex;
       background: var(--success-soft);
-      color: #0f6d42;
+      color: #10653c;
     }
 
     .delta.down {
       display: inline-flex;
       background: var(--danger-soft);
-      color: #b42332;
+      color: #b33440;
     }
 
-    .changed-up { background: linear-gradient(180deg, #fff, #effaf4) !important; }
-    .changed-down { background: linear-gradient(180deg, #fff, #fff1f3) !important; }
-    .changed-neutral { background: linear-gradient(180deg, #fff, #fff9ea) !important; }
+    .changed-up { background: linear-gradient(180deg, rgba(255,255,255,0.60), rgba(230,248,237,0.96)) !important; }
+    .changed-down { background: linear-gradient(180deg, rgba(255,255,255,0.60), rgba(255,236,239,0.96)) !important; }
+    .changed-neutral { background: linear-gradient(180deg, rgba(255,255,255,0.60), rgba(255,248,229,0.96)) !important; }
 
     .total-row td,
     .total-row .row-index {
-      background: linear-gradient(180deg, #edf5ff, #e3effd) !important;
+      background: linear-gradient(180deg, rgba(230,248,237,0.97), rgba(216,241,225,0.97)) !important;
       font-weight: 800;
     }
 
     .footer-note {
-      padding: 16px 18px 18px;
+      padding: 12px 18px 18px;
       color: var(--muted);
-      font-size: 13px;
-      line-height: 1.55;
-      border-top: 1px solid var(--border);
-      background: var(--surface-2);
+      font-size: 12px;
+      line-height: 1.5;
     }
 
-    @media (max-width: 1200px) {
-      .app-shell { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
+    @media (max-width: 1100px) {
       .grid-top { grid-template-columns: repeat(2, minmax(180px, 1fr)); }
     }
 
     @media (max-width: 720px) {
-      .main { padding: 14px; }
+      .app-shell { padding: 12px; }
       .grid-top { grid-template-columns: 1fr; }
-      .panel-head { padding: 14px; }
-      .status-line, .footer-note { padding-left: 14px; padding-right: 14px; }
+      .topbar, .panel-head { padding: 16px; }
+      .status-line, .footer-note { padding-left: 16px; padding-right: 16px; }
     }
   </style>
 </head>
 <body>
   <div class="app-shell">
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="brand-mark">DC</div>
-        <div>
-          <h1>Distribuição de Custos</h1>
-          <p>Editor operacional</p>
-        </div>
-      </div>
-
-      <div class="side-card">
-        <h2>Importação robusta</h2>
-        <div class="side-list">
-          <div class="side-pill">Excel .xlsx / .xls</div>
-          <div class="side-pill">XML Spreadsheet 2003</div>
-          <div class="side-pill">CSV UTF-8</div>
-        </div>
-      </div>
-
-      <div class="side-card">
-        <h2>Regras automáticas</h2>
-        <div class="side-list">
-          <div class="side-pill">Busca colunas por nome</div>
-          <div class="side-pill">Sincroniza % / S/IVA / IVA / Total</div>
-          <div class="side-pill">Última linha sempre recalculada</div>
-          <div class="side-pill">Deltas visuais por célula</div>
-        </div>
-      </div>
-
-      <div class="side-card">
-        <h2>Leitura esperada</h2>
-        <div class="side-list">
-          <div class="side-pill">Total final original: 6.715,87 €</div>
-          <div class="side-pill">Total S/IVA original: 5.460,07 €</div>
-          <div class="side-pill">Percentagem final: 100,00%</div>
-        </div>
-      </div>
-    </aside>
-
     <main class="main">
-      <section class="topbar">
+      <section class="topbar glass">
         <div class="title-block">
-          <h2>Editor profissional de ficheiros de distribuição de custos</h2>
-          <p>Carregue o ficheiro, edite linhas, ajuste percentagens, IVA, total sem IVA e total final. A interface foi refinada para ficar mais próxima do aspeto de uma folha operacional pronta para produção.</p>
+          <h2>Distribuição de Custos</h2>
+          <p>Edite percentagens, IVA, total sem IVA e total.</p>
         </div>
 
         <div class="actions">
@@ -496,7 +401,7 @@
           <input id="fileInput" type="file" accept=".xlsx,.xls,.xml,.csv,text/xml,application/xml" />
           <button class="btn soft" id="addRowBtn" type="button">Adicionar linha</button>
           <button class="btn warn" id="removeRowBtn" type="button">Remover linha</button>
-          <button class="btn ghost" id="undoBtn" type="button">Desfazer última ação</button>
+          <button class="btn ghost" id="undoBtn" type="button">Desfazer</button>
           <button class="btn ghost" id="resetAllBtn" type="button">Desfazer tudo</button>
           <button class="btn primary" id="downloadBtn" type="button">Exportar Excel</button>
         </div>
@@ -506,26 +411,26 @@
         <div class="metric">
           <div class="label">Ficheiro</div>
           <div class="value" id="fileName">Nenhum</div>
-          <div class="sub">Nome do ficheiro carregado</div>
+          <div class="sub">Ficheiro carregado</div>
         </div>
         <div class="metric">
-          <div class="label">Folha ativa</div>
+          <div class="label">Folha</div>
           <div class="value" id="sheetInfo">—</div>
-          <div class="sub">A folha atualmente em edição</div>
+          <div class="sub">Folha ativa</div>
         </div>
         <div class="metric">
           <div class="label">Alterações</div>
           <div class="value" id="changesCount">0</div>
-          <div class="sub">Células modificadas face ao original</div>
+          <div class="sub">Células alteradas</div>
         </div>
         <div class="metric">
           <div class="label">Total global</div>
           <div class="value" id="grandTotalDisplay">—</div>
-          <div class="sub">Última linha da coluna Total</div>
+          <div class="sub">Última linha</div>
         </div>
       </section>
 
-      <section class="panel">
+      <section class="panel glass">
         <div class="panel-head">
           <div class="left">
             <select class="select" id="sheetSelect"></select>
@@ -550,7 +455,7 @@
         </div>
 
         <div class="footer-note">
-          O importador tenta ler primeiro no modo nativo do SheetJS. Quando o ficheiro for XML Spreadsheet 2003, o sistema também faz fallback por parsing XML para preservar melhor as células, folhas e estrutura tabular. Os cálculos usam os nomes das colunas: <strong>%</strong>, <strong>Total S/IVA</strong>, <strong>IVA</strong> e <strong>Total</strong>.
+          Lê Excel, XML Spreadsheet 2003 e CSV. Recalcula automaticamente %, Total S/IVA, IVA e Total.
         </div>
       </section>
     </main>
@@ -621,7 +526,7 @@
         sheetSelect.value = currentSheet;
         renderSheet(currentSheet);
       }
-      statusEl.textContent = 'Todas as alterações foram limpas. O ficheiro voltou ao estado original.';
+      statusEl.textContent = 'Todas as alterações foram limpas.';
     }
 
     function initializeLoadedSheets(loadedSheets) {
@@ -1011,7 +916,7 @@
 
       html += '</tbody>';
       sheetTable.innerHTML = html;
-      statusEl.textContent = 'Edição ativa. Pode alterar % / Total S/IVA / IVA / Total. A percentagem e os totais são recalculados ao confirmar a célula (Enter, sair do campo ou blur).';
+      statusEl.textContent = 'Edição ativa. Pode alterar % / Total S/IVA / IVA / Total.';
 
       sheetTable.querySelectorAll('.cell-input:not([readonly])').forEach(input => {
         input.addEventListener('focus', () => {
@@ -1114,7 +1019,6 @@
         const sheets = workbookToSheetsData(wb);
         if (Object.keys(sheets).length) return sheets;
       } catch (err) {
-        // fallback below
       }
 
       if (ext === 'xml') {
