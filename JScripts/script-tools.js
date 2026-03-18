@@ -154,3 +154,77 @@ initCanvas();
 createParticles();
 animateParticles();
 window.addEventListener('resize', () => { initCanvas(); createParticles(); });
+
+// --- 6. RELÓGIO ANALÓGICO E DIGITAL ---
+(function () {
+  const months = [
+    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+  ];
+
+  const days = [
+    "Domingo", "Segunda", "Terça", "Quarta",
+    "Quinta", "Sexta", "Sábado"
+  ];
+
+  const secondEl = document.querySelector('.second');
+  const minuteEl = document.querySelector('.minute');
+  const hourEl = document.querySelector('.hour');
+  const timeEl = document.querySelector('.time');
+  const dayEl = document.querySelector('.day');
+  const dateEl = document.querySelector('.date');
+  const dailEl = document.querySelector('.dail');
+
+  function getTime() {
+    const now = new Date();
+
+    const second = now.getSeconds();
+    const minute = now.getMinutes();
+    const hour = now.getHours();
+    const time = now.toLocaleString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    });
+
+    const day = now.getDay();
+    const month = now.getMonth();
+    const dayOfMonth = now.getDate() + ' . ' + months[month];
+
+    const ds = second * -6;
+    const dm = minute * -6;
+    const dh = hour * -30;
+
+    secondEl.style.transform = `rotate(${ds}deg)`;
+    minuteEl.style.transform = `rotate(${dm}deg)`;
+    hourEl.style.transform = `rotate(${dh}deg)`;
+
+    timeEl.textContent = time;
+    dayEl.textContent = days[day];
+    dateEl.textContent = dayOfMonth;
+  }
+
+  function dailer(selector, size) {
+    const element = document.querySelector(selector);
+    for (let s = 0; s < 60; s++) {
+      const span = document.createElement('span');
+      span.style.transform = `rotate(${6 * s}deg) translateX(${size}px)`;
+      span.textContent = s;
+      element.appendChild(span);
+    }
+  }
+
+  dailer('.second', 195);
+  dailer('.minute', 145);
+  dailer('.dail', 230);
+
+  for (let s = 1; s < 13; s++) {
+    const span = document.createElement('span');
+    span.style.transform = `rotate(${30 * s}deg) translateX(100px)`;
+    span.textContent = s;
+    hourEl.appendChild(span);
+  }
+
+  setInterval(getTime, 1000);
+  getTime();
+})();
