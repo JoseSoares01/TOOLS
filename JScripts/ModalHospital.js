@@ -1,6 +1,3 @@
-// Script para lidar com os NIFs da Avigilon e preencher os campos automaticamente.
-
-// Lista de NIFs da Avigilon / empresas relacionadas
 const avigilonNifs = [
     { value: "", label: "Selecione uma opção" },
     { value: "", label: "=== AVIGILON ===", isGroup: true },
@@ -13,41 +10,9 @@ const avigilonNifs = [
     { value: "ESB28668358_503257567", country: "EU", label: "ADEMCO ADI - ESB28668358" },
 ];
 
-function openModal() {
-    // Mostrar a lista como dropdown anexada ao botão
-    populateDropdownList();
-    openDropdown();
-}
-
-function closeModal() {
-    // fecha tanto modal antigo quanto dropdown (fallback)
-    const modal = document.getElementById("hospitalModal");
-    if (modal) modal.style.display = "none";
-    closeDropdown();
-}
-
-function populateAvigilonList() {
-    const avigilonSelect = document.getElementById("hospital_select");
-    if (!avigilonSelect) return;
-    avigilonSelect.innerHTML = "";
-
-    avigilonNifs.forEach(function(item) {
-        const option = document.createElement("option");
-        option.value = item.value;
-        option.text = item.label;
-        if (item.isGroup) {
-            option.disabled = true;
-            option.style.fontWeight = "bold";
-            option.style.backgroundColor = "#f0f0f0";
-            option.style.color = "#333";
-        }
-        avigilonSelect.appendChild(option);
-    });
-}
-
-// --- Dropdown implementation (posicionado junto ao botão) ---
 function createDropdownIfNeeded() {
     let dropdown = document.getElementById('hospitalDropdown');
+
     if (!dropdown) {
         dropdown = document.createElement('div');
         dropdown.id = 'hospitalDropdown';
@@ -55,6 +20,7 @@ function createDropdownIfNeeded() {
         dropdown.style.display = 'none';
         document.body.appendChild(dropdown);
     }
+
     return dropdown;
 }
 
@@ -62,12 +28,14 @@ function populateDropdownList() {
     const dropdown = createDropdownIfNeeded();
     dropdown.innerHTML = '';
 
-    avigilonNifs.forEach(function(item) {
+    avigilonNifs.forEach((item) => {
         if (item.isGroup) {
             const label = document.createElement('div');
             label.className = 'dropdown-group';
+
             const groupName = item.label.replace(/^===\s*|\s*===$/g, '').trim();
             label.textContent = groupName;
+
             if (/visiotech/i.test(groupName)) {
                 label.classList.add('visiotech');
             } else if (/avigilon/i.test(groupName)) {
@@ -75,25 +43,30 @@ function populateDropdownList() {
             } else if (/ademco/i.test(groupName) || /adi/i.test(groupName)) {
                 label.classList.add('ademco');
             }
+
             dropdown.appendChild(label);
             return;
         }
 
+        if (!item.value) return;
+
         const opt = document.createElement('div');
         opt.className = 'dropdown-option';
         opt.tabIndex = 0;
-        opt.dataset.value = item.value || '';
-        opt.dataset.country = item.country || '';
+        opt.dataset.value = item.value;
         opt.textContent = item.label;
-        opt.addEventListener('click', function(e) {
-            applySelection(opt.dataset.value);
+
+        opt.addEventListener('click', () => {
+            applySelection(item.value);
         });
-        opt.addEventListener('keydown', function(e) {
+
+        opt.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                applySelection(opt.dataset.value);
+                applySelection(item.value);
             }
         });
+
         dropdown.appendChild(opt);
     });
 }
@@ -107,115 +80,86 @@ function applySelection(selectedValue) {
     if (!selectedValue) return;
 
     const [nifVendedor, nifEmpresa] = selectedValue.split('_');
-    const foundAvigilon = avigilonNifs.find(h => h.value === selectedValue);
+    const foundAvigilon = avigilonNifs.find(item => item.value === selectedValue);
 
-    if (foundAvigilon) {
-        if (nifVendedorInput) nifVendedorInput.value = nifVendedor || '';
-        if (nifEmpresaInput) nifEmpresaInput.value = nifEmpresa || '';
-        if (paisSelect) paisSelect.value = foundAvigilon.country || '';
-        if (espacoFiscalSelect) espacoFiscalSelect.value = foundAvigilon.country || '';
-    }
+    if (!foundAvigilon) return;
+
+    if (nifVendedorInput) nifVendedorInput.value = nifVendedor || '';
+    if (nifEmpresaInput) nifEmpresaInput.value = nifEmpresa || '';
+    if (paisSelect) paisSelect.value = foundAvigilon.country || '';
+    if (espacoFiscalSelect) espacoFiscalSelect.value = foundAvigilon.country || '';
 
     closeDropdown();
 }
 
-let _dropdownOutsideClickHandler = null;
+let dropdownOutsideHandler = null;
 
-function openDropdown() {
-    const dropdown = createDropdownIfNeeded();
+function openModal() {
     const btn = document.getElementById('openModalBtn');
+    const dropdown = createDropdownIfNeeded();
+
     if (!btn) {
-        // fallback: show modal
-        const modal = document.getElementById('hospitalModal');
-        if (modal) modal.style.display = 'flex';
+        console.error('Botão openModalBtn não encontrado.');
         return;
     }
 
-    // populate and position
     populateDropdownList();
-    const rect = btn.getBoundingClientRect();
-    dropdown.style.minWidth = rect.width + 'px';
-    dropdown.style.left = (rect.left + window.scrollX) + 'px';
-    dropdown.style.top = (rect.bottom + window.scrollY) + 'px';
-    dropdown.style.display = 'block';
 
-    // handler to close when clicking outside
-    _dropdownOutsideClickHandler = function(e) {
+    const rect = btn.getBoundingClientRect();
+
+    dropdown.style.minWidth = rect.width + 'px';
+    dropdown.style.left = `${rect.left + window.scrollX}px`;
+    dropdown.style.top = `${rect.bottom + window.scrollY + 8}px`;
+    dropdown.style.display = 'block';
+    dropdown.style.zIndex = '9999';
+
+    if (dropdownOutsideHandler) {
+        document.removeEventListener('click', dropdownOutsideHandler);
+    }
+
+    dropdownOutsideHandler = function (e) {
         if (!dropdown.contains(e.target) && e.target !== btn) {
             closeDropdown();
         }
     };
-    setTimeout(() => { // attach after tick to avoid immediate close
-        document.addEventListener('click', _dropdownOutsideClickHandler);
+
+    setTimeout(() => {
+        document.addEventListener('click', dropdownOutsideHandler);
     }, 0);
 }
 
 function closeDropdown() {
     const dropdown = document.getElementById('hospitalDropdown');
-    if (dropdown) dropdown.style.display = 'none';
-    if (_dropdownOutsideClickHandler) {
-        document.removeEventListener('click', _dropdownOutsideClickHandler);
-        _dropdownOutsideClickHandler = null;
+
+    if (dropdown) {
+        dropdown.style.display = 'none';
+    }
+
+    if (dropdownOutsideHandler) {
+        document.removeEventListener('click', dropdownOutsideHandler);
+        dropdownOutsideHandler = null;
     }
 }
 
-function fillAvigilonData() {
-    const selectedValue = document.getElementById('hospital_select').value;
-    const nifVendedorInput = document.getElementById('nif_vendedor');
-    const nifEmpresaInput = document.getElementById('nif_empresa');
-    const paisSelect = document.getElementById('pais');
-    const espacoFiscalSelect = document.getElementById('espaco_fiscal');
-
-    // Limpa os campos primeiro
-    nifVendedorInput.value = '';
-    nifEmpresaInput.value = '';
-    paisSelect.value = '';
-    espacoFiscalSelect.value = '';
-
-    if (selectedValue) {
-        const [nifVendedor, nifEmpresa] = selectedValue.split('_');
-        const foundAvigilon = avigilonNifs.find(h => h.value === selectedValue);
-        
-        if (foundAvigilon) {
-            nifVendedorInput.value = nifVendedor;
-            nifEmpresaInput.value = nifEmpresa;
-            paisSelect.value = foundAvigilon.country;
-            espacoFiscalSelect.value = foundAvigilon.country;
-        }
-    }
-}
-
-// Event listeners para o modal
-// Inicializa listeners do modal com checagens de existência
 function initModalHospital() {
-    const modal = document.getElementById("hospitalModal");
-    const btn = document.getElementById("openModalBtn");
-    const span = document.getElementsByClassName("close")[0];
-    const select = document.getElementById("hospital_select");
+    const btn = document.getElementById('openModalBtn');
 
     if (btn) {
-        btn.addEventListener('click', openModal);
-    }
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
 
-    if (span) {
-        span.addEventListener('click', closeModal);
-    }
+            const dropdown = document.getElementById('hospitalDropdown');
 
-    if (select) {
-        select.addEventListener('change', fillAvigilonData);
-        // pre-popula a lista para garantir que opções existam independentemente do momento
-        populateAvigilonList();
+            if (dropdown && dropdown.style.display === 'block') {
+                closeDropdown();
+            } else {
+                openModal();
+            }
+        });
     }
-
-    // Fechar modal ao clicar fora dele
-    window.addEventListener('click', function(event) {
-        if (modal && event.target === modal) {
-            closeModal();
-        }
-    });
 }
 
-// Executa init imediatamente se o DOM já estiver pronto, ou no DOMContentLoaded caso contrário
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initModalHospital);
 } else {

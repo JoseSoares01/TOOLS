@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Generator</title>
+    <title>Gerador de QR Code | Trivalor</title>
     <link rel="icon" type="image/x-icon" href="/images/QR.png">
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <link rel="stylesheet" href="/css/Trivalor.css">
-    <!-- SidebarMenu.css deve ser o último para garantir prioridade sobre estilos globais -->
     <link rel="stylesheet" href="/css/SidebarMenu.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <script>
         const usuarioLogado = localStorage.getItem('usuarioLogado');
         if (!usuarioLogado) {
@@ -17,161 +16,252 @@
         }
     </script>
 </head>
+<body>
 
-<body>  
-    <div class="pais-check-container minimized">
-  <div class="pais-check-header">
-    <span class="titulo-pesquisa">🌎 Pesquisar País</span>
-    <button type="button" class="minimize-btn" onclick="togglePaisCheck()">×</button>
-  </div>
+    <div class="animated-bg">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-scan"></div>
+</div>
 
-  <div class="pais-check-content">
-    <input type="text" id="pais_check" placeholder="Digite o nome do país">
-    <button type="button" class="verificar-btn" onclick="verificarPaisUE()">Verificar País</button>
-    <div id="pais_resultado" class="pais-resultado"></div>
-  </div>
-    </div>
+    <!-- Painel auxiliar: País UE -->
+    <aside class="pais-check-container minimized">
+        <div class="pais-check-header">
+            <span class="titulo-pesquisa">Pesquisar País</span>
+            <button type="button" class="minimize-btn" onclick="togglePaisCheck()">+</button>
+        </div>
 
-    <div class="container tech-bg">
-        <div class="child1 glass-panel">
-            <form id="qr-form">
-                <div class="hero-header">
-                    <p class="main-title">GERADOR DE CÓDIGO QR</p>
-                    <h2 class="brand-title">TRIVALOR</h2>
-                </div>
-                
-                <div class="dashboard-grid">
-                    <!-- CARD PRINCIPAL ESQUERDO -->
-                    <div class="main-card card-left">
-                        <h3 class="card-title">Dados do Documento</h3>
-                        <input type="text" id="nif_vendedor" placeholder="NIF do vendedor (números)">
-                        <input type="text" id="nif_empresa" placeholder="NIF da empresa (números)">
-                        <select id="tipologia">
-                            <option value="">Tipologia (FT,NC,RG)</option>
-                            <option value="FT">FT (Fatura)</option>
-                            <option value="NC">NC (Nota de Credito)</option>
-                            <option value="RG">RG (Recibo)</option>
-                            <option value="PF">PF (Pro Forma)</option>
-                            <option value="OR">OR (Orçamento)</option>
-                            <option value="OR">RV (Recibo Verde)</option>
-                        </select>
-                        <input type="text" id="numero_fatura" placeholder="Número da fatura">
-                        <select id="espaco_fiscal">
-                            <option value="">Escolha o Espaço Fiscal</option>
-                            <option value="PT">PT (Portugal)</option>
-                            <option value="PT-AC">PT-AC(Açores)</option>
-                            <option value="PT-MA">PT-MA (Madeira)</option>
-                            <option value="EU">EU (União Europeia)</option>
-                            <option value="INT">INT (Internacional)</option>
-                        </select>
+        <div class="pais-check-content">
+            <div class="field-group compact">
+                <label for="pais_check">Nome do país</label>
+                <input type="text" id="pais_check" placeholder="Ex: França">
+            </div>
 
-                        <button type="button" class="btn-generate card-button" onclick="generateQRCode()">
-                            <strong>GERAR QR</strong>
+            <button type="button" class="btn btn-secondary btn-full" onclick="verificarPaisUE()">
+                Verificar País
+            </button>
+
+            <div id="pais_resultado" class="pais-resultado"></div>
+        </div>
+    </aside>
+
+    <main class="page-shell">
+        <section class="app-panel">
+            <header class="hero-header">
+                <p class="eyebrow">Ferramenta fiscal</p>
+                <h1 class="brand-title">Gerador de Código QR</h1>
+                <p class="hero-subtitle">TRIVALOR</p>
+            </header>
+
+            <section class="dashboard-grid">
+                <!-- Coluna esquerda -->
+                <article class="panel-card main-card">
+                    <div class="section-heading">
+                        <h2>Dados do Documento</h2>
+                        <p>Preencha os dados essenciais do documento fiscal.</p>
+                    </div>
+
+                    <div class="form-stack">
+                        <div class="field-group">
+                            <label for="nif_vendedor">NIF do vendedor</label>
+                            <input type="text" id="nif_vendedor" placeholder="Ex: 501234567">
+                        </div>
+
+                        <div class="field-group">
+                            <label for="nif_empresa">NIF da empresa</label>
+                            <input type="text" id="nif_empresa" placeholder="Ex: 502145820">
+                        </div>
+
+                        <div class="field-group">
+                            <label for="tipologia">Tipologia</label>
+                            <select id="tipologia">
+                                <option value="">Selecione</option>
+                                <option value="FT">FT (Fatura)</option>
+                                <option value="NC">NC (Nota de Crédito)</option>
+                                <option value="RG">RG (Recibo)</option>
+                                <option value="PF">PF (Pro Forma)</option>
+                                <option value="OR">OR (Orçamento)</option>
+                                <option value="RV">RV (Recibo Verde)</option>
+                            </select>
+                        </div>
+
+                        <div class="field-group">
+                            <label for="numero_fatura">Número da fatura</label>
+                            <input type="text" id="numero_fatura" placeholder="Ex: FT 2026A1/268">
+                        </div>
+
+                        <div class="field-group">
+                            <label for="espaco_fiscal">Espaço fiscal</label>
+                            <select id="espaco_fiscal">
+                                <option value="">Selecione</option>
+                                <option value="PT">PT (Portugal)</option>
+                                <option value="PT-AC">PT-AC (Açores)</option>
+                                <option value="PT-MA">PT-MA (Madeira)</option>
+                                <option value="EU">EU (União Europeia)</option>
+                                <option value="INT">INT (Internacional)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <button type="button" class="btn btn-primary" onclick="generateQRCode()">
+                            <strong>Gerar QR</strong>
                             <ion-icon name="qr-code-outline" class="btn-icon"></ion-icon>
                         </button>
                     </div>
+                </article>
 
-                    <!-- CARD PRINCIPAL DIREITO -->
-                    <div class="main-card card-right">
-                        <h3 class="card-title">Dados Fiscais</h3>
-                        <select id="pais">
-                            <option value="">Escolha o País</option>
-                            <option value="PT">PT (Portugal)</option>
-                            <option value="EU">EU (Unão Europeia)</option>
-                            <option value="INT">INT (Internacional)</option>
-                        </select>
+                <!-- Coluna centro -->
+                <article class="panel-card main-card">
+                    <div class="section-heading">
+                        <h2>Dados Fiscais</h2>
+                        <p>Defina país, data e bases tributáveis.</p>
+                    </div>
 
-                        <div class="date-input-container">
-                            <input type="text" id="data" placeholder="Data (AAAAMMDD)" readonly>
-                            <input type="date" id="data_calendario" onchange="formatarData()">
-                            <ion-icon name="calendar-outline" class="calendar-icon"></ion-icon>
+                    <div class="form-stack">
+                        <div class="field-group">
+                            <label for="pais">País / Regime</label>
+                            <select id="pais">
+                                <option value="">Selecione</option>
+                                <option value="PT">PT (Portugal)</option>
+                                <option value="EU">EU (União Europeia)</option>
+                                <option value="INT">INT (Internacional)</option>
+                            </select>
                         </div>
-                        
-                        <input type="number" step="0.01" id="base_isenta" placeholder="Base isenta">
-                        <input type="number" step="0.01" id="base_reduzida" placeholder="Base reduzida">
-                        <input type="number" step="0.01" id="base_intermedia" placeholder="Base intermédia">
-                        <input type="number" step="0.01" id="base_normal" placeholder="Base normal">
-                        <input type="number" step="0.01" id="imposto_selo" placeholder="Imposto selo">
 
-                        <button type="button" id="openModalBtn" class="btn-foreign card-button" onclick="openModal()">
-                            <strong>ESTRANGEIRAS</strong>
+                        <div class="field-group">
+                            <label for="data">Data do documento</label>
+                            <div class="date-input-container">
+                                <input type="text" id="data" placeholder="AAAAMMDD" readonly>
+                                <input type="date" id="data_calendario" onchange="formatarData()">
+                                <ion-icon name="calendar-outline" class="calendar-icon"></ion-icon>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label for="base_isenta">Base isenta</label>
+                            <input type="number" step="0.01" id="base_isenta" placeholder="0.00">
+                        </div>
+
+                        <div class="field-group">
+                            <label for="base_reduzida">Base reduzida</label>
+                            <input type="number" step="0.01" id="base_reduzida" placeholder="0.00">
+                        </div>
+
+                        <div class="field-group">
+                            <label for="base_intermedia">Base intermédia</label>
+                            <input type="number" step="0.01" id="base_intermedia" placeholder="0.00">
+                        </div>
+
+                        <div class="field-group">
+                            <label for="base_normal">Base normal</label>
+                            <input type="number" step="0.01" id="base_normal" placeholder="0.00">
+                        </div>
+
+                        <div class="field-group">
+                            <label for="imposto_selo">Imposto de selo</label>
+                            <input type="number" step="0.01" id="imposto_selo" placeholder="0.00">
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <button type="button" id="openModalBtn" class="btn btn-secondary">
+                            <strong>Estrangeiras</strong>
                         </button>
                     </div>
+                </article>
 
-                    <!-- CARD DO QR CODE -->
-                    <div class="qr-card">
-                        <h3 class="card-title">Pré-visualização</h3>
-                        <div class="qr-output">
-                            <div class="qr-inner-box">
-                                <div class="qr-code" id="qrcode"></div>
-                            </div>
-                            <textarea id="qr_data" readonly></textarea>
-                            <button type="button" class="copy" data-copy="#qr_data">
-                            <strong class="copy-text">Copy</strong>
-                            <ion-icon name="copy-outline" class="copy-icon"></ion-icon>
-                            <span class="copy-label">Copied</span>
-                            </button>
-                            <div id="qr-popup" class="qr-popup" role="status" aria-live="polite" aria-hidden="true">
-                                QR CODE GERADO!
-                            </div>
+                <!-- Coluna direita -->
+                <article class="panel-card qr-card">
+                    <div class="section-heading">
+                        <h2>Pré-visualização</h2>
+                        <p>Veja o QR gerado e copie a string fiscal.</p>
+                    </div>
+
+                    <div class="qr-preview-shell">
+                        <div class="qr-inner-box">
+                            <div class="qr-code" id="qrcode"></div>
+                        </div>
+
+                        <div id="qr-popup" class="qr-popup" role="status" aria-live="polite" aria-hidden="true">
+                            QR code gerado com sucesso
                         </div>
                     </div>
-                </div>
-            </form>
 
-            <!-- Ícone de Scroll -->
-            <div class="scroll-indicator">
-                <svg width="48" height="60" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Mouse -->
-                    <rect x="8" y="4" width="8" height="12" rx="4" stroke="white" stroke-width="1.5" fill="none"/>
-                    <!-- Scroll wheel -->
-                    <ellipse cx="12" cy="8" rx="1.5" ry="2" fill="white"/>
-                    <!-- Setas para baixo (chevrons) -->
-                    <path d="M9 22 L12 19 L15 22" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                    <path d="M9 27 L12 24 L15 27" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                </svg>
-            </div>
-
-            <!-- Calculadora de IVA (card separado dentro do grande card) -->
-            <div class="calculator-container calculator-panel">
-                <h2>Calculadora de IVA</h2>
-                <div class="calculator-inputs calc-form">
-                    <div class="calc-field">
-                        <label for="valor">Valor com IVA (€):</label>
-                        <input type="number" id="valor" placeholder="Ex: 5.50" step="0.01">
+                    <div class="field-group qr-data-group">
+                        <label for="qr_data">Dados do QR</label>
+                        <textarea id="qr_data" readonly placeholder="Os dados gerados aparecerão aqui..."></textarea>
                     </div>
 
-                    <div class="calc-field">
-                        <label for="iva">Taxa de IVA (%):</label>
+                    <div class="qr-actions">
+                        <button type="button" class="copy" data-copy="#qr_data">
+                            <strong class="copy-text">Copiar</strong>
+                            <ion-icon name="copy-outline" class="copy-icon"></ion-icon>
+                            <span class="copy-label">Copiado</span>
+                        </button>
+                    </div>
+                </article>
+            </section>
+
+            <!-- Calculadora IVA -->
+            <section class="calculator-container">
+                <div class="section-heading">
+                    <h2>Calculadora de IVA</h2>
+                    <p>Calcule rapidamente o valor sem IVA, IVA e total.</p>
+                </div>
+
+                <div class="calc-form">
+                    <div class="field-group">
+                        <label for="valor">Valor com IVA (€)</label>
+                        <input type="number" id="valor" placeholder="Ex: 2033.10" step="0.01">
+                    </div>
+
+                    <div class="field-group">
+                        <label for="iva">Taxa de IVA (%)</label>
                         <input type="number" id="iva" value="23" step="0.01">
                     </div>
 
-                    <button type="button" class="btn-calc" onclick="calcularIVA()">Calcular</button>
+                    <div class="calc-button-wrap">
+                        <button type="button" class="btn btn-secondary" onclick="calcularIVA()">
+                            Calcular
+                        </button>
+                    </div>
 
                     <div class="resultado" id="resultado" style="display: none;">
-                        <p><strong>Valor sem IVA:</strong> <span id="semIVA"></span> €</p>
-                        <p><strong>Valor do IVA:</strong> <span id="valorIVA"></span> €</p>
-                        <p><strong>Valor com IVA:</strong> <span id="comIVA"></span> €</p>
+                        <div class="result-card">
+                            <span class="result-label">Valor sem IVA</span>
+                            <strong id="semIVA">0.00</strong>
+                        </div>
+                        <div class="result-card">
+                            <span class="result-label">Valor do IVA</span>
+                            <strong id="valorIVA">0.00</strong>
+                        </div>
+                        <div class="result-card">
+                            <span class="result-label">Valor com IVA</span>
+                            <strong id="comIVA">0.00</strong>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div><!-- /.child1 -->
-
-    </div>
+            </section>
+        </section>
+    </main>
 
     <!-- Modal -->
     <div id="hospitalModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h3>Selecione o NIF Avigilon</h3>
-        <select id="hospital_select" onchange="fillAvigilonData()"></select>
+        <div class="modal-content">
+            <button class="close" onclick="closeModal()" aria-label="Fechar modal">&times;</button>
+            <h3>Selecione o NIF Avigilon</h3>
+            <select id="hospital_select" onchange="fillAvigilonData()"></select>
+        </div>
     </div>
-</div>
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
     <script src="/JScripts/SidebarMenu.js"></script>
-    <script src="/JScripts/Trivalor.Js"></script>
     <script src="/JScripts/ModalHospital.js"></script>
+    <script src="/JScripts/Trivalor.js"></script>
 </body>
 </html>
