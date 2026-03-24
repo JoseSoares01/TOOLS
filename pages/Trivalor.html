@@ -18,9 +18,7 @@
     </script>
 </head>
 
-<body>
-    <img src="/images/home-button.png" width="40" class="home-button" onclick="location.href = '/pages/Tools.html';">
-    
+<body>  
     <div class="pais-check-container minimized">
   <div class="pais-check-header">
     <span class="titulo-pesquisa">🌎 Pesquisar País</span>
@@ -109,9 +107,9 @@
                             </div>
                             <textarea id="qr_data" readonly></textarea>
                             <button type="button" class="copy" data-copy="#qr_data">
-                                <strong>Copy</strong>
-                                <ion-icon name="copy-outline" class="copy-icon"></ion-icon>
-                                <span class="copy-label"></span>
+                            <strong class="copy-text">Copy</strong>
+                            <ion-icon name="copy-outline" class="copy-icon"></ion-icon>
+                            <span class="copy-label">Copied</span>
                             </button>
                             <div id="qr-popup" class="qr-popup" role="status" aria-live="polite" aria-hidden="true">
                                 QR CODE GERADO!

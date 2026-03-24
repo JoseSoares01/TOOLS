@@ -326,27 +326,83 @@ textarea {
 }
 
 .copy {
-    background-color: transparent;
-    color: #ddd;
-    display: flex;
+    position: relative;
+    background: rgba(255, 255, 255, 0.08);
+    color: #e8e8e8;
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
+    gap: 12px;
     width: auto;
-    }
-    
+    padding: 12px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+}
+
 .copy strong {
     font-size: 18px;
     font-weight: 600;
+    letter-spacing: 0.3px;
 }
+
 .copy-icon {
-    font-size: 22px;
+    font-size: 24px;
+    transition: transform 0.35s ease, opacity 0.25s ease;
+}
+
+.copy-label {
+    position: absolute;
+    top: -38px;
+    left: 50%;
+    transform: translateX(-50%) translateY(6px);
+    background: rgba(20, 30, 25, 0.95);
+    color: #8cffb5;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
 }
 
 .copy:hover {
-    background-color: rgba(54, 113, 124, 0.042);
-    border-radius: 50px;
-    font-size: 20px;
-    color: #01e6ff;
+    background: rgba(54, 114, 124, 0.14);
+    transform: translateY(-1px) scale(1.02);
+    border-color: rgba(120, 220, 200, 0.2);
+}
+
+.copy:hover .copy-icon {
+    transform: scale(1.12);
+}
+
+.copy:active {
+    transform: scale(0.98);
+}
+
+.copy.copied {
+    background: rgba(48, 190, 120, 0.14);
+    border-color: rgba(120, 255, 180, 0.35);
+    box-shadow:
+        0 0 0 1px rgba(120, 255, 180, 0.08),
+        0 0 22px rgba(80, 255, 160, 0.18),
+        0 8px 22px rgba(0, 0, 0, 0.18);
+}
+
+.copy.copied .copy-icon {
+    transform: scale(1.18) rotate(12deg);
+}
+
+.copy.copied .copy-label {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
 }
 
 /* Modal styles */

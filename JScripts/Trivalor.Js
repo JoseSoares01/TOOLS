@@ -249,26 +249,54 @@ for (i = 0; i < dropdown.length; i++) {
   });
 }
 //SIDEBAR DROP DOWN END//
-// TEXTO do botão de copiar
-document.querySelectorAll(".copy").forEach(copyButton => {
-    copyButton.addEventListener("click", () => {
-        const targetElement = document.querySelector(copyButton.dataset.copy);
-        const textToCopy = targetElement.value.trim(); // Usa .value para textarea
 
-        navigator.clipboard.writeText(textToCopy).then(() => {
-            const label = copyButton.querySelector(".copy-label");
-            const originalText = label.textContent;
 
-            copyButton.disabled = true;
-            label.textContent = "Copied!";
-            setTimeout(() => {
-                copyButton.disabled = false;
-                label.textContent = originalText;
-            }, 1000);
-        });
+
+document.querySelectorAll('.copy').forEach(button => {
+    button.addEventListener('click', async () => {
+        const targetSelector = button.getAttribute('data-copy');
+        const target = document.querySelector(targetSelector);
+
+        if (!target) return;
+
+        let textToCopy = '';
+
+        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+            textToCopy = target.value.trim();
+        } else {
+            textToCopy = target.textContent.trim();
+        }
+
+        if (!textToCopy) return;
+
+        const textElement = button.querySelector('.copy-text');
+        const iconElement = button.querySelector('.copy-icon');
+
+        const originalText = textElement.textContent;
+        const originalIcon = iconElement.getAttribute('name');
+
+        try {
+            await navigator.clipboard.writeText(textToCopy);
+
+            button.classList.add('copied');
+            textElement.textContent = 'Copied';
+            iconElement.setAttribute('name', 'checkmark-outline');
+
+            clearTimeout(button._copyTimeout);
+
+            button._copyTimeout = setTimeout(() => {
+                button.classList.remove('copied');
+                textElement.textContent = originalText;
+                iconElement.setAttribute('name', originalIcon);
+            }, 1800);
+
+        } catch (error) {
+            console.error('Erro ao copiar:', error);
+        }
     });
 });
 
+// Função para formatar a data do calendário para o formato YYYYMMDD
 function formatarData() {
     const dataCalendario = document.getElementById('data_calendario').value;
     if (dataCalendario) {
