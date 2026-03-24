@@ -315,14 +315,14 @@ button {
 
 textarea {
     width: 100%;
-    background-color: #f0f4f8;
+    background-color: #d4d8dc;
     color: #333333;
     padding: 15px;
-    border: none;
+    border: 3px solid rgba(17, 130, 155, 0.762);
     border-radius: 16px;
     margin: 5px 0;
     resize: none;
-    height: 100px;
+    height: 250px;
 }
 
 .copy {
@@ -330,12 +330,23 @@ textarea {
     color: #ddd;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     width: auto;
+    }
+    
+.copy strong {
+    font-size: 18px;
+    font-weight: 600;
+}
+.copy-icon {
+    font-size: 22px;
 }
 
 .copy:hover {
-    background-color: rgba(54, 114, 124, 0.1);
+    background-color: rgba(54, 113, 124, 0.042);
+    border-radius: 50px;
+    font-size: 20px;
+    color: #01e6ff;
 }
 
 /* Modal styles */
