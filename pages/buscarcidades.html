@@ -4,203 +4,263 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Norte ou Sul · PT</title>
+
   <link rel="stylesheet" href="/css/stylecidades.css" />
   <link rel="stylesheet" href="/css/SidebarMenu.css" />
-  <!-- Google Fonts: Poppins -->
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
 </head>
 <body>
+  <!-- =========================================================
+       BACKGROUND DECORATIVO
+       ========================================================= -->
+  <div class="app-bg" aria-hidden="true">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-noise"></div>
+  </div>
 
-  <!-- Fundo decorativo com bolhas animadas -->
-  <div class="bg-blob blob1" aria-hidden="true"></div>
-  <div class="bg-blob blob2" aria-hidden="true"></div>
-  <div class="bg-blob blob3" aria-hidden="true"></div>
-  <div class="grain" aria-hidden="true"></div>
+  <main class="page-shell" role="main">
+    <section class="app-panel">
 
-  <main class="layout" role="main">
-
-    <!-- ===== COLUNA ESQUERDA: Intro card ===== -->
-    <section class="card intro-card" aria-label="Introdução">
-      <!-- Ícone mapa Portugal -->
-      <div class="intro-icon" aria-hidden="true">
-        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="32" cy="32" r="30" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
-          <path d="M32 14 C32 14 22 22 22 34 C22 43 32 52 32 52 C32 52 42 43 42 34 C42 22 32 14 32 14Z" fill="rgba(255,255,255,0.35)" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
-          <circle cx="32" cy="33" r="5" fill="rgba(255,255,255,0.7)"/>
-          <!-- Linha de corte Coimbra -->
-          <line x1="20" y1="33" x2="44" y2="33" stroke="rgba(255,220,100,0.85)" stroke-width="1.5" stroke-dasharray="3 2"/>
-        </svg>
-      </div>
-
-      <h1 class="intro-title">Norte<br/>ou Sul?</h1>
-      <p class="intro-sub">Descubra se uma localidade de Portugal fica a <strong>norte ou sul</strong> de Coimbra — a linha divisória.</p>
-
-      <!-- Badge regra -->
-      <div class="rule-badge" role="note" aria-label="Regra de divisão">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/>
-          <line x1="4" y1="7" x2="10" y2="7" stroke="rgba(255,220,100,0.9)" stroke-width="1.5" stroke-dasharray="2 1.5"/>
-          <text x="7" y="4.5" text-anchor="middle" fill="currentColor" font-size="3.5" font-family="Poppins">N</text>
-          <text x="7" y="11.5" text-anchor="middle" fill="currentColor" font-size="3.5" font-family="Poppins">S</text>
-        </svg>
-        Regra: Coimbra divide Norte / Sul
-      </div>
-
-      <div class="intro-divider" aria-hidden="true"></div>
-
-      <!-- Toggle modo offline -->
-      <div class="toggle-row">
-        <label class="toggle-label" for="offlineToggle">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path d="M8 2v2M8 12v2M2 8h2m8 0h2M4.22 4.22l1.42 1.42m4.72 4.72 1.42 1.42M4.22 11.78l1.42-1.42m4.72-4.72 1.42-1.42" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-          </svg>
-          Modo offline
-        </label>
-        <button
-          id="offlineToggle"
-          class="toggle-btn"
-          role="switch"
-          aria-checked="false"
-          aria-label="Activar modo offline (não usa API)"
-        >
-          <span class="toggle-knob"></span>
-        </button>
-      </div>
-
-      <p class="intro-caption">Powered by OpenStreetMap Nominatim</p>
-    </section>
-
-    <!-- ===== COLUNA DIREITA: Card principal ===== -->
-    <section class="card main-card" aria-label="Verificador de localização">
-
-      <!-- Cabeçalho do card -->
-      <div class="card-header">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" class="pin-icon">
-          <path d="M9 1C6.24 1 4 3.24 4 6c0 4 5 11 5 11s5-7 5-11c0-2.76-2.24-5-5-5z" fill="currentColor" fill-opacity="0.7"/>
-          <circle cx="9" cy="6" r="2" fill="white"/>
-        </svg>
-        <h2 class="card-title">Localização</h2>
-      </div>
-
-      <!-- Campo de busca com autocomplete -->
-      <div class="search-wrapper" role="search">
-        <label for="cityInput" class="sr-only">Nome da cidade ou região em Portugal</label>
-        <div class="input-group">
-          <input
-            id="cityInput"
-            type="text"
-            class="city-input"
-            placeholder="Ex: Braga, Faro, Évora…"
-            autocomplete="off"
-            aria-autocomplete="list"
-            aria-controls="suggestionsList"
-            aria-haspopup="listbox"
-            aria-expanded="false"
-            maxlength="80"
-            spellcheck="false"
-          />
-          <button id="verifyBtn" class="verify-btn" aria-label="Verificar localização">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-              <circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="2"/>
-              <path d="M12.5 12.5L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Verificar
-          </button>
-        </div>
-
-        <!-- Dropdown de sugestões -->
-        <ul
-          id="suggestionsList"
-          class="suggestions-list"
-          role="listbox"
-          aria-label="Sugestões de localização"
-          hidden
-        ></ul>
-      </div>
-
-      <!-- Área de estado: loading / erro / vazio / resultado -->
-      <div id="stateArea" class="state-area" aria-live="polite" aria-atomic="true">
-        <!-- Estado vazio inicial -->
-        <div id="stateEmpty" class="state empty-state">
-          <div class="empty-icon" aria-hidden="true">
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-              <circle cx="24" cy="24" r="22" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
-              <path d="M24 12C19.58 12 16 15.58 16 20c0 6.67 8 16 8 16s8-9.33 8-16c0-4.42-3.58-8-8-8z" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-              <circle cx="24" cy="20" r="3" fill="rgba(255,255,255,0.4)"/>
+      <!-- =====================================================
+           COLUNA ESQUERDA / ASIDE
+           ===================================================== -->
+      <aside class="side-panel card" aria-label="Informação da aplicação">
+        <div class="brand-block">
+          <div class="brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="brandGrad" x1="0" y1="0" x2="64" y2="64">
+                  <stop offset="0%" stop-color="#00d2ff"/>
+                  <stop offset="100%" stop-color="#00ff88"/>
+                </linearGradient>
+              </defs>
+              <rect x="6" y="6" width="52" height="52" rx="16" fill="rgba(255,255,255,0.06)" />
+              <path d="M32 14C32 14 23 22 23 34C23 43 32 51 32 51C32 51 41 43 41 34C41 22 32 14 32 14Z"
+                fill="url(#brandGrad)" fill-opacity="0.18" stroke="url(#brandGrad)" stroke-width="1.8"/>
+              <circle cx="32" cy="33" r="5" fill="url(#brandGrad)" fill-opacity="0.85"/>
+              <line x1="18" y1="33" x2="46" y2="33" stroke="#FFD66B" stroke-width="1.6" stroke-dasharray="4 3"/>
             </svg>
           </div>
-          <p class="empty-text">Introduza o nome de uma localidade portuguesa para começar.</p>
+
+          <div class="brand-copy">
+            <span class="eyebrow">Portugal · Geolocalização</span>
+            <h1 class="app-title">Norte ou Sul?</h1>
+            <p class="app-subtitle">
+              Descubra rapidamente se uma localidade portuguesa fica a
+              <strong>norte</strong> ou <strong>sul</strong> da linha de Coimbra.
+            </p>
+          </div>
         </div>
 
-        <!-- Estado loading -->
-        <div id="stateLoading" class="state loading-state" hidden>
-          <div class="spinner" aria-hidden="true">
-            <div class="spinner-ring"></div>
+        <div class="info-stack">
+          <div class="info-card">
+            <span class="info-label">Regra base</span>
+            <strong class="info-value">Coimbra divide Norte / Sul</strong>
+            <p class="info-text">
+              A classificação é feita usando a latitude da localidade comparada com a latitude de Coimbra.
+            </p>
           </div>
-          <p class="loading-text">A procurar…</p>
+
+          <div class="info-card">
+            <span class="info-label">Linha de corte</span>
+            <strong class="info-value">40.2056°</strong>
+            <p class="info-text">
+              Valor de referência usado pelo verificador.
+            </p>
+          </div>
         </div>
 
-        <!-- Estado erro -->
-        <div id="stateError" class="state error-state" hidden role="alert">
-          <div class="error-icon" aria-hidden="true">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-              <circle cx="16" cy="16" r="14" stroke="rgba(255,120,120,0.7)" stroke-width="2"/>
-              <path d="M16 9v8M16 21v2" stroke="rgba(255,120,120,0.9)" stroke-width="2.5" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <p id="errorMsg" class="error-text"></p>
-        </div>
-
-        <!-- Estado resultado -->
-        <div id="stateResult" class="state result-state" hidden>
-          <!-- Resultado principal -->
-          <div class="result-main">
-            <span class="result-label">Este local é</span>
-            <div id="resultBadge" class="result-badge" aria-live="assertive"></div>
-          </div>
-
-          <!-- Pills com detalhes -->
-          <div class="result-pills" role="list" aria-label="Detalhes do resultado">
-            <div class="pill" role="listitem">
-              <span class="pill-icon" aria-hidden="true">📍</span>
-              <span class="pill-label">Latitude</span>
-              <span id="pillLat" class="pill-value">—</span>
+        <div class="settings-card">
+          <div class="settings-row">
+            <div class="settings-copy">
+              <label class="toggle-label" for="offlineToggle">Modo offline</label>
+              <p class="toggle-help">Usa apenas a regra/local fallback, sem depender da API.</p>
             </div>
-            <div class="pill" role="listitem">
-              <span class="pill-icon" aria-hidden="true">📏</span>
-              <span class="pill-label">Linha de corte</span>
-              <span class="pill-value">40.2056° (Coimbra)</span>
-            </div>
-            <div class="pill" role="listitem">
-              <span class="pill-icon" aria-hidden="true">🔌</span>
-              <span class="pill-label">Fonte</span>
-              <span id="pillSource" class="pill-value">—</span>
-            </div>
+
+            <button
+              id="offlineToggle"
+              class="toggle-btn"
+              type="button"
+              role="switch"
+              aria-checked="false"
+              aria-label="Activar modo offline"
+            >
+              <span class="toggle-knob"></span>
+            </button>
           </div>
         </div>
-      </div>
 
-      <!-- Histórico -->
-      <div class="history-section" aria-label="Histórico de pesquisas">
-        <div class="history-header">
-          <h3 class="history-title">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M7 4v3.5L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-            Recentes
-          </h3>
-          <button id="clearHistory" class="clear-btn" aria-label="Limpar histórico" hidden>Limpar</button>
+        <div class="footer-note">
+          <span class="footer-badge">Powered by OpenStreetMap Nominatim</span>
         </div>
-        <ul id="historyList" class="history-list" role="list" aria-label="Últimas pesquisas">
-          <li class="history-empty" id="historyEmpty">Sem pesquisas recentes.</li>
-        </ul>
-      </div>
+      </aside>
 
+      <!-- =====================================================
+           COLUNA DIREITA / CONTEÚDO PRINCIPAL
+           ===================================================== -->
+      <section class="main-panel">
+
+        <!-- HERO / SEARCH -->
+        <div class="card hero-card" aria-label="Verificador de localização">
+          <div class="section-head">
+            <div class="section-title-wrap">
+              <span class="section-kicker">Verificação</span>
+              <h2 class="section-title">Pesquisar localidade</h2>
+            </div>
+            <div class="section-chip" aria-hidden="true">PT</div>
+          </div>
+
+          <div class="search-wrapper" role="search">
+            <label for="cityInput" class="sr-only">Nome da cidade ou região em Portugal</label>
+
+            <div class="input-shell">
+              <div class="input-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M11 19a8 8 0 1 1 0-16a8 8 0 0 1 0 16Z" stroke="currentColor" stroke-width="2"/>
+                  <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+
+              <input
+                id="cityInput"
+                type="text"
+                class="city-input"
+                placeholder="Ex: Braga, Faro, Évora, Vila Real..."
+                autocomplete="off"
+                aria-autocomplete="list"
+                aria-controls="suggestionsList"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+                maxlength="80"
+                spellcheck="false"
+              />
+
+              <button id="verifyBtn" class="verify-btn" type="button" aria-label="Verificar localização">
+                <span class="verify-btn-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M13 6l6 6l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span>Verificar</span>
+              </button>
+            </div>
+
+            <!-- Sugestões -->
+            <ul
+              id="suggestionsList"
+              class="suggestions-list"
+              role="listbox"
+              aria-label="Sugestões de localização"
+              hidden
+            ></ul>
+          </div>
+
+          <!-- Estados -->
+          <div id="stateArea" class="state-area" aria-live="polite" aria-atomic="true">
+  <!-- Estado inicial discreto, sem card -->
+  <div id="stateEmpty" class="empty-inline-state">
+    <p class="empty-inline-title">Introduza uma localidade</p>
+    <p class="empty-inline-text">
+      Pesquise por uma cidade, vila ou região de Portugal para obter o resultado imediato.
+    </p>
+  </div>
+
+  <!-- Mantido apenas para compatibilidade com o JS -->
+  <div id="stateLoading" hidden></div>
+
+  <!-- Mantido apenas para compatibilidade com o JS -->
+  <div id="stateError" hidden>
+    <p id="errorMsg"></p>
+  </div>
+
+  <!-- Resultado -->
+  <div id="stateResult" class="result-state" hidden>
+    <div class="result-top">
+      <span class="result-caption">Classificação</span>
+      <div id="resultBadge" class="result-badge"></div>
+    </div>
+
+    <div class="result-grid" role="list" aria-label="Detalhes do resultado">
+      <article class="result-card" role="listitem">
+        <span class="result-card-label">Latitude</span>
+        <strong id="pillLat" class="result-card-value">—</strong>
+      </article>
+
+      <article class="result-card" role="listitem">
+        <span class="result-card-label">Linha de corte</span>
+        <strong class="result-card-value">40.2056°</strong>
+      </article>
+
+      <article class="result-card" role="listitem">
+        <span class="result-card-label">Fonte</span>
+        <strong id="pillSource" class="result-card-value">—</strong>
+      </article>
+    </div>
+  </div>
+</div>
+
+        <!-- HISTÓRICO -->
+        <div class="card history-card" aria-label="Histórico de pesquisas">
+          <div class="history-header">
+            <div>
+              <span class="section-kicker">Atividade</span>
+              <h3 class="history-title">Pesquisas recentes</h3>
+            </div>
+
+            <button id="clearHistory" class="clear-btn" type="button" aria-label="Limpar histórico" hidden>
+              Limpar
+            </button>
+          </div>
+
+          <ul id="historyList" class="history-list" role="list" aria-label="Últimas pesquisas">
+            <li class="history-empty" id="historyEmpty">Sem pesquisas recentes.</li>
+          </ul>
+        </div>
+      </section>
     </section>
   </main>
+
+  <!-- Popup de erro -->
+<div id="errorPopup" class="error-popup" hidden>
+  <div class="error-popup-backdrop"></div>
+
+  <div
+    class="error-popup-card"
+    role="alertdialog"
+    aria-modal="true"
+    aria-labelledby="errorPopupTitle"
+    aria-describedby="errorPopupMessage"
+  >
+    <div class="error-popup-icon" aria-hidden="true">!</div>
+
+    <div class="error-popup-content">
+      <h3 id="errorPopupTitle" class="error-popup-title">Ocorreu um erro</h3>
+      <p id="errorPopupMessage" class="error-popup-text">
+        Não foi possível concluir a operação.
+      </p>
+    </div>
+
+    <button
+      id="closeErrorPopup"
+      class="error-popup-close"
+      type="button"
+      aria-label="Fechar aviso"
+    >
+      Fechar
+    </button>
+  </div>
+</div>
 
   <script src="/JScripts/SidebarMenu.js"></script>
   <script src="/JScripts/scriptcidades.js"></script>

@@ -486,7 +486,11 @@ const debouncedSuggest = debounce(async (value) => {
 cityInput.addEventListener('input', e => {
   debouncedSuggest(e.target.value);
   // Se campo ficou vazio, mostra estado vazio
-  if (!e.target.value.trim()) showEmpty();
+  if (!event.target.value.trim()) {
+  hideSuggestions();
+  closePopupError();
+  showEmpty();
+}
 });
 
 // Fechar sugestões ao clicar fora
