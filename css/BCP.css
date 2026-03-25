@@ -1,340 +1,75 @@
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to top, #017AB1, #02202B);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 0;
-    color: white;
-    padding: 10px;
-    box-sizing: border-box;
-    background-image: url("/images/BG-Toolss.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    padding: 20px;
-}
-/*Botão de copiar*/
-.copy {
-    background-color: #ffffff00;
-    color: #fff;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    padding: 8px 12px;
-    gap: 8px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    justify-content: center;
-    margin-top: 20px;
-    box-shadow: none;
-    
-    /* Espaçamento entre o botão "copy" e o output */
+  margin: 0;
+  overflow: hidden;
+
+  /* 🔥 Background estilo teus projetos */
+  background: radial-gradient(circle at 20% 20%, rgba(0, 210, 255, 0.15), transparent 40%),
+              radial-gradient(circle at 80% 80%, rgba(0, 255, 136, 0.12), transparent 40%),
+              #0a0f1c;
+
+  font-family: 'Inter', 'Poppins', sans-serif;
 }
 
-.copy:active {
-    background: #ffffff00;
+/* 🔲 Grid subtil estilo tech */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
 }
 
-.copy:disabled {
-    background: #ffffff00;
-    color: #ffffff;
-    cursor: not-allowed;
-}
-/*Fim botão de copiar*/
-
-select {
-    border: 1px solid white; /* Borda branca fina */
-    padding: 5px; /* Espaçamento interno */
-}
-
-
-.input-group {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    /* 3 colunas */
-    grid-gap: 20px;
-    /* Espaçamento entre os inputs */
-    margin-bottom: 25px;
-    width: 100%;
-    max-width: 800px;
+/* Canvas central */
+#notFound {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%) scale(1.2);
+  width: 80%;
+  height: auto;
+  z-index: 1;
 }
 
-input,
-button,
-select {
-    padding: 10px;
-    font-size: 1rem;
-    border: solid;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 300px;
-    cursor: pointer;
-    
+/* (se tiver h1, mantém consistente com teu estilo) */
+body h1 {
+  position: fixed;
+  bottom: 20px;
+  left: 30px;
+  color: rgba(255,255,255,0.85);
+  font-size: 16px;
+  font-weight: 400;
+  z-index: 2;
 }
 
-button {
-  background-color: #017AB1;
-  color: rgb(250, 250, 250);
-  cursor: pointer;
-  transition: background-color 0.3s;
-  width: 200px;
-  height: 50px;
-  font-size: 1rem;
-  padding: 10px;
-  border-radius: 50px;
-  border: none;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-  text-align: center;
-  margin: 10px; /* Espaçamento ao redor de cada botão */
+body h1 span {
+  font-size: 14px;
+  opacity: 0.6;
 }
 
-.button-container {
-  display: flex; /* Alinha os botões horizontalmente */
-  justify-content: center; /* Centraliza os botões */
-  gap: 10px; /* Espaçamento entre os botões */
+body h1 a {
+  color: #00d2ff;
+  text-decoration: none;
+  padding: 0 20px;
+  transition: 0.3s;
 }
 
-
-
-button:hover {
-    background-color: #015f86;
+body h1 a:hover {
+  color: #00ff88;
+  text-shadow: 0 0 10px rgba(0,255,136,0.5);
 }
 
-.qr-code {
-    margin-top: 20px;
-}
-
-textarea {
-    width: 100%;
-    max-width: 800px;
-    height: 50px;
-    margin-top: 20px;
-    resize: none;
-    border-radius: 13px;
-    border: none;
-    padding: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-}
-
-.footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.footer img {
-  height: 50px;
-  transition: margin-top 0.3s ease;
-}
-
-.footer p {
-    margin: 10px 0 0;
-    font-size: 1.2rem;
-    color: white;
-    text-align: center;
-}
-
-@media (max-width: 600px) {
-    .input-group {
-        grid-template-columns: 1fr;
-        /* Coluna única em telas menores */
-    }
-    input,
-    button {
-        width: 100%;
-    }
-}
-
-.home-button {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    cursor: pointer;
-    transition: transform 0.3s;
-}
-
-/* SIDEBAR START */
-/* The side navigation menu */
-.sidenav {
-    height: 100%; /* 100% Full-height */
-    width: 0; /* 0 width - change this with JavaScript */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
-    left: 0;
-    background-color: #012e42; /* Black*/
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
-    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
-  }
-  
-  /* The navigation menu links */
-  .sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-  }
-  
-  /* When you mouse over the navigation links, change their color */
-  .sidenav a:hover {
-    color: #f1f1f1;
-  }
-  
-  /* Position and style the close button (top right corner) */
-  .sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-  }
-  
-  /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
-  #main {
-    transition: margin-left .5s;
-    padding: 20px;
-  }
-  
-  /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-  @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
-  }
-  /* SIDEBAR END */
-  /* SIDEBAR DROP DOWN*/
-    /* Add an active class to the active dropdown button */
-    .active {
-        background-color: rgb(0, 0, 0);
-        color: white;
-      }
-    
-      /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
-      .dropdown-container {
-        display: none;
-        background-color: #012e42; 
-        padding-left: 8px;
-      }
-      
-      /* Optional: Style the caret down icon */
-      .fa-caret-down {
-        float: right;
-        padding-right: 8px;
-      }
-      .dropdown-navbar{
-        background-color:#012e42;
-        padding: 8px 8px 8px 32px;
-        text-decoration: none;
-        font-size: 25px;
-        color: #818181;
-        display: block;
-        transition: 0.3s; 
-        width: 200px;
-        height: 50px;
-        box-shadow: none ;
-      }
-      .dropdown-navbar a:hover {
-        color: #f1f1f1;
-      }
-
-.main-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    max-width: 1600px;
-    width: 100%;
-}
-
-.qr-container, .calculator-container {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    flex: 1;
-    min-width: 300px;
-    max-width: 800px;
-}
-
-.calculator-container {
-    max-width: 400px;
-}
-
-.calculator-inputs {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.calculator-inputs label {
-    color: white;
-    font-weight: bold;
-}
-
-.calculator-inputs input {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid white;
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.calculator-inputs .resultado {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 15px;
-}
-
-.calculator-inputs .resultado p {
-    margin: 5px 0;
-    color: white;
-}
-
-.date-input-container {
-    position: relative;
-    width: 100%;
-}
-
-#data {
-    padding: 15px;
-    padding-right: 40px;
-    border-radius: 12px;
-    border: solid #fffefe 0.5px;
-    background-color: rgba(15, 71, 110, 0.637);
-    color: #fffefe;
-    width: 100%;
-    cursor: pointer;
-}
-
-#data_calendario {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-}
-
-.calendar-icon {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #fffefe;
-    font-size: 20px;
-    pointer-events: none;
+/* Estilo para a mensagem de manutenção */
+.manutencao {
+  position: fixed;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  color: rgba(255,255,255,0.9);
+  font-size: 24px;
+  font-weight: 600;
+  z-index: 2;
+  text-shadow: 0 0 10px rgba(255,255,255,0.5);
 }

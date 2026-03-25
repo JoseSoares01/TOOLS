@@ -1,215 +1,213 @@
-function validateNumeric(input) {
-    return /^[0-9]*$/.test(input);
-}
-
-function validateAlphabetic(input) {
-    return /^[a-zA-Z]*$/.test(input);
-}
-
-function limitCharacters(input, maxLength) {
-    return input.slice(0, maxLength);
-}
-
-function updateIVARates() {
-    const espacoFiscal = document.getElementById("espaco_fiscal").value;
-    let baseIsenta = document.getElementById("base_isenta");
-    let baseReduzida = document.getElementById("base_reduzida");
-    let baseIntermedia = document.getElementById("base_intermedia");
-    let baseNormal = document.getElementById("base_normal");
-
-    switch (espacoFiscal) {
-        case "PT":
-            baseIsenta.placeholder = "Base isenta (0%)";
-            baseReduzida.placeholder = "Base reduzida (6%)";
-            baseIntermedia.placeholder = "Base intermédia (13%)";
-            baseNormal.placeholder = "Base normal (23%)";
-            baseIsenta.value = baseIsenta.value || "";
-            break;
-        case "PT-AC":
-            baseIsenta.placeholder = "Base isenta (0%)";
-            baseReduzida.placeholder = "Base reduzida (4%)";
-            baseIntermedia.placeholder = "Base intermédia (9%)";
-            baseNormal.placeholder = "Base normal (16%)";
-            baseIsenta.value = baseIsenta.value || "";
-            break;
-        case "PT-MA":
-            baseIsenta.placeholder = "Base isenta (0%)";
-            baseReduzida.placeholder = "Base reduzida (5%)";
-            baseIntermedia.placeholder = "Base intermédia (12%)";
-            baseNormal.placeholder = "Base normal (22%)";
-            baseIsenta.value = baseIsenta.value || "";
-            break;
-        default:
-            baseIsenta.placeholder = "Base isenta (0%)";
-            baseReduzida.placeholder = "Base reduzida";
-            baseIntermedia.placeholder = "Base intermédia";
-            baseNormal.placeholder = "Base normal";
-            baseIsenta.value = baseIsenta.value || "";
-            break;
-    }
-}
-
-document.getElementById("espaco_fiscal").addEventListener("change", updateIVARates);
-
-function generateQRCode() {
-    const nif_vendedor = limitCharacters(document.getElementById("nif_vendedor").value || '0', 9);
-    const nif_empresa = limitCharacters(document.getElementById("nif_empresa").value || '0', 9);
-    const pais = document.getElementById("pais").value.toUpperCase() || '0';
-    const tipologia = document.getElementById("tipologia").value || '0';
-    const data = limitCharacters(document.getElementById("data").value || '0', 8);
-    const numero_fatura = document.getElementById("numero_fatura").value || '0';
-    const espaco_fiscal = document.getElementById("espaco_fiscal").value.toUpperCase() || '0';
-    const base_isenta = document.getElementById("base_isenta").value === '' ? '*' : parseFloat(document.getElementById("base_isenta").value).toFixed(2);
-    const base_reduzida = parseFloat(document.getElementById("base_reduzida").value) || 0;
-    const base_intermedia = parseFloat(document.getElementById("base_intermedia").value) || 0;
-    const base_normal = parseFloat(document.getElementById("base_normal").value) || 0;
-    const irs = parseFloat(document.getElementById("irs").value) || 0;
-
-    if (!validateAlphabetic(pais) || !validateAlphabetic(espaco_fiscal.replace("-", ""))) {
-        alert("Os campos devem ser preenchidos corretamente.");
-        return;
-    }
-
-    let taxa_iva_reduzida, taxa_iva_intermedia, taxa_iva_normal;
-    switch (espaco_fiscal) {
-        case "PT":
-            taxa_iva_reduzida = 0.06;
-            taxa_iva_intermedia = 0.13;
-            taxa_iva_normal = 0.23;
-            break;
-        case "PT-MA":
-            taxa_iva_reduzida = 0.05;
-            taxa_iva_intermedia = 0.12;
-            taxa_iva_normal = 0.22;
-            break;
-        case "PT-AC":
-            taxa_iva_reduzida = 0.04;
-            taxa_iva_intermedia = 0.09;
-            taxa_iva_normal = 0.16;
-            break;
-        default:
-            alert("Espaço fiscal desconhecido. Por favor, insira um espaço fiscal válido (PT, PT-MA, PT-AC, ou EU).");
-            return;
-    }
-
-    const iva_reduzida = base_reduzida * taxa_iva_reduzida;
-    const iva_intermedia = base_intermedia * taxa_iva_intermedia;
-    const iva_normal = base_normal * taxa_iva_normal;
-    const total_impostos = iva_reduzida + iva_intermedia + iva_normal;
-    const total_fatura = parseFloat(base_isenta === '*' ? 0 : base_isenta) + base_reduzida + base_intermedia + base_normal + total_impostos - irs;
-
-    const dados_qr_code = `A:${nif_vendedor}*B:${nif_empresa}*C:${pais}*D:${tipologia}*E:N*F:${data}*G:${numero_fatura}*H:*I1:${espaco_fiscal}*I2:${base_isenta}*I3:${base_reduzida.toFixed(2)}*I4:${iva_reduzida.toFixed(4)}*I5:${base_intermedia.toFixed(2)}*I6:${iva_intermedia.toFixed(4)}*I7:${base_normal.toFixed(2)}*I8:${iva_normal.toFixed(4)}*N:${total_impostos.toFixed(4)}*O:${total_fatura.toFixed(4)}*P:${irs.toFixed(2)}*Q:*R:*S:SEM_QR_CODE*`
-        .replace(/\s+/g, ' ').trim();
-
-    QRCode.toDataURL(dados_qr_code, { errorCorrectionLevel: 'M' }, function(err, url) {
-        if (err) {
-            console.error(err);
-            return;
-        }
-        const qrCodeImage = new Image();
-        qrCodeImage.src = url;
-        document.getElementById('qrcode').innerHTML = '';
-        document.getElementById('qrcode').appendChild(qrCodeImage);
-        document.getElementById('qr_data').value = dados_qr_code;
-
-        // Limpa os campos após gerar o QR Code
-        clearInputs();
-    });
-}
-
-
-function clearInputs() {
-    document.getElementById("nif_vendedor").value = "";
-    document.getElementById("nif_empresa").value = "";
-    document.getElementById("pais").value = "";
-    document.getElementById("tipologia").value = "";
-    document.getElementById("data").value = "";
-    document.getElementById("data_calendario").value = "";
-    document.getElementById("numero_fatura").value = "";
-    document.getElementById("espaco_fiscal").value = "";
-    document.getElementById("base_isenta").value = "";
-    document.getElementById("base_reduzida").value = "";
-    document.getElementById("base_intermedia").value = "";
-    document.getElementById("base_normal").value = "";
-    document.getElementById("irs").value = "";
-}
-
-
-//SIDEBAR START//
-/* Set the width of the side navigation to 250px */
-function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
+(function () {
+  var lastTime = 0;
+  var vendors = ["ms", "moz", "webkit", "o"];
+  for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+    window.requestAnimationFrame = window[vendors[x] + "RequestAnimationFrame"];
+    window.cancelAnimationFrame =
+      window[vendors[x] + "CancelAnimationFrame"] ||
+      window[vendors[x] + "CancelRequestAnimationFrame"];
   }
-  
-  /* Set the width of the side navigation to 0 */
-  function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
+
+  if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = function (callback) {
+      var currTime = new Date().getTime();
+      var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+      var id = window.setTimeout(function () {
+        callback(currTime + timeToCall);
+      }, timeToCall);
+      lastTime = currTime + timeToCall;
+      return id;
+    };
   }
-//SIDEBAR END//
-//SIDEBAR DROP DOWN START//
-//* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-var dropdown = document.getElementsByClassName("dropdown-navbar");
-var i;
 
-for (i = 0; i < dropdown.length; i++) {
-  dropdown[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var dropdownContent = this.nextElementSibling;
-    if (dropdownContent.style.display === "block") {
-      dropdownContent.style.display = "none";
-    } else {
-      dropdownContent.style.display = "block";
-    }
-  });
-}
-//SIDEBAR DROP DOWN END//
-// TEXTO do botão de copiar
-document.querySelectorAll(".copy").forEach(copyButton => {
-    copyButton.addEventListener("click", () => {
-        const targetElement = document.querySelector(copyButton.dataset.copy);
-        const textToCopy = targetElement.value.trim(); // Usa `.value` para `textarea`
+  if (!window.cancelAnimationFrame) {
+    window.cancelAnimationFrame = function (id) {
+      clearTimeout(id);
+    };
+  }
+})();
 
-        navigator.clipboard.writeText(textToCopy).then(() => {
-            const label = copyButton.querySelector(".copy-label");
-            const originalText = label.textContent;
+var Math2 = {};
+Math2.random = function (t, n) { return Math.random() * (n - t) + t; };
+Math2.map = function (t, n, r, a, o) { return (o - a) * ((t - n) / (r - n)) + a; };
+Math2.randomPlusMinus = function (t) { t = t ? t : 0.5; return Math.random() > t ? -1 : 1; };
+Math2.randomInt = function (t, n) { n += 1; return Math.floor(Math.random() * (n - t) + t); };
+Math2.randomBool = function (t) { t = t ? t : 0.5; return Math.random() < t; };
+Math2.degToRad = function (t) { return t * Math.PI / 180; };
+Math2.radToDeg = function (t) { return 180 / (Math.PI * t); };
+Math2.distance = function (t, n, r, a) {
+  return Math.sqrt((r - t) * (r - t) + (a - n) * (a - n));
+};
 
-            copyButton.disabled = true;
-            label.textContent = "Copied!";
+var mousePos = { x: 0, y: 0 };
 
-            setTimeout(() => {
-                copyButton.disabled = false;
-                label.textContent = originalText;
-            }, 1000);
-        });
-    });
+window.onmousemove = function (e) {
+  e = e || window.event;
+
+  var pageX = e.pageX;
+  var pageY = e.pageY;
+
+  if (pageX === undefined) {
+    pageX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+    pageY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+  }
+
+  mousePos = {
+    x: pageX,
+    y: pageY
+  };
+};
+
+var options = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+  keyword: "404",
+  density: 10,
+  densityText: 3,
+  minDist: 20
+};
+
+var renderer = new PIXI.autoDetectRenderer(options.width, options.height, {
+  transparent: true
 });
+var stage = new PIXI.Stage(0x000000, true);
 
-function calcularIVA() {
-    const valorComIVA = parseFloat(document.getElementById('valor').value);
-    const taxaIVA = parseFloat(document.getElementById('iva').value);
+document.body.appendChild(renderer.view);
+renderer.view.id = "notFound";
+renderer.view.id = "pagina-em-manutencao";
 
-    if (isNaN(valorComIVA) || isNaN(taxaIVA) || valorComIVA <= 0 || taxaIVA < 0) {
-        alert("Por favor, insira valores válidos.");
-        return;
-    }
+var particles = [];
 
-    const valorSemIVA = valorComIVA / (1 + taxaIVA / 100);
-    const valorIVA = valorComIVA - valorSemIVA;
-
-    document.getElementById('semIVA').textContent = valorSemIVA.toFixed(2);
-    document.getElementById('valorIVA').textContent = valorIVA.toFixed(2);
-    document.getElementById('comIVA').textContent = valorComIVA.toFixed(2);
-    document.getElementById('resultado').style.display = 'block';
+function init() {
+  positionParticles();
+  positionText();
 }
 
-function formatarData() {
-    const dataCalendario = document.getElementById('data_calendario').value;
-    if (dataCalendario) {
-        const data = new Date(dataCalendario);
-        const ano = data.getFullYear();
-        const mes = String(data.getMonth() + 1).padStart(2, '0');
-        const dia = String(data.getDate()).padStart(2, '0');
-        const dataFormatada = `${ano}${mes}${dia}`;
-        document.getElementById('data').value = dataFormatada;
+function positionParticles() {
+  var canvas = document.createElement("canvas");
+  canvas.width = 500;
+  canvas.height = 350;
+  var context = canvas.getContext("2d");
+
+  context.fillStyle = "#000000";
+  context.font = "300px Arial, sans-serif";
+  context.fillText(options.keyword, 0, 250);
+
+  var imageData = context.getImageData(0, 0, 350, 500);
+  var data = imageData.data;
+
+  for (var i = 0; i < imageData.height; i += options.density) {
+    for (var j = 0; j < imageData.width; j += options.density) {
+      var color = data[((j * (imageData.width * 4)) + (i * 4)) - 1];
+
+      if (color === 255) {
+        var newPar = particle();
+        newPar.setPosition(i, j);
+        particles.push(newPar);
+        stage.addChild(newPar);
+      }
     }
+  }
 }
+
+function positionText() {
+  var canvas = document.createElement("canvas");
+  canvas.width = 400;
+  canvas.height = 120;
+  var context = canvas.getContext("2d");
+
+  context.fillStyle = "#000000";
+  context.font = "80px Arial, sans-serif";
+  context.fillText("Not Found", 0, 80);
+  
+
+  var imageData = context.getImageData(0, 0, 400, 400);
+  var data = imageData.data;
+
+  for (var i = 0; i < imageData.height; i += options.densityText) {
+    for (var j = 0; j < imageData.width; j += options.densityText) {
+      var color = data[((j * (imageData.width * 4)) + (i * 4)) - 1];
+
+      if (color === 255) {
+        var newPar = particle(true);
+        newPar.setPosition(i, j);
+        particles.push(newPar);
+        stage.addChild(newPar);
+      }
+    }
+  }
+}
+
+function particle(text) {
+  var $this = new PIXI.Graphics();
+
+  if (text === true) {
+    $this.text = true;
+  }
+
+  $this.beginFill(0xFFFFFF);
+
+  var radius = $this.text ? Math.random() * 3.5 : Math.random() * 10.5;
+  $this.radius = radius;
+
+  $this.drawCircle(0, 0, radius);
+
+  $this.size = $this.radius;
+  $this.x = -$this.width;
+  $this.y = -$this.height;
+  $this.free = false;
+
+  $this.timer = Math2.randomInt(0, 100);
+  $this.v = Math2.randomPlusMinus() * Math2.random(0.5, 1);
+  $this.hovered = false;
+  $this.alpha = Math2.randomInt(10, 100) / 100;
+
+  $this.vy = -5 + parseInt(Math.random() * 10) / 2;
+  $this.vx = -4 + parseInt(Math.random() * 8);
+
+  $this.setPosition = function (x, y) {
+    if ($this.text) {
+      $this.x = x + (options.width / 2 - 180);
+      $this.y = y + (options.height / 2 + 100);
+    } else {
+      $this.x = x + (options.width / 2 - 250);
+      $this.y = y + (options.height / 2 - 175);
+    }
+  };
+
+  return $this;
+}
+
+function update() {
+  renderer.render(stage);
+
+  for (var i = 0; i < particles.length; i++) {
+    var p = particles[i];
+
+    if (
+      mousePos.x > p.x &&
+      mousePos.x < p.x + p.size &&
+      mousePos.y > p.y &&
+      mousePos.y < p.y + p.size
+    ) {
+      p.hovered = true;
+    }
+
+    var scale = Math.max(
+      Math.min(2.5 - (Math2.distance(p.x, p.y, mousePos.x, mousePos.y) / 160), 160),
+      1
+    );
+
+    p.scale.x = scale;
+    p.scale.y = scale;
+
+    p.x = p.x + 0.2 * Math.sin(p.timer * 0.15);
+    p.y = p.y + 0.2 * Math.cos(p.timer * 0.15);
+    p.timer = p.timer + p.v;
+  }
+
+  window.requestAnimationFrame(update);
+}
+
+init();
+update();
