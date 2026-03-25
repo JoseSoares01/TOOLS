@@ -1,141 +1,209 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Servinform</title>
-    <link rel="stylesheet" href="/css/Style-tools.css">
-    <link rel="stylesheet" href="/css/SidebarMenu.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css?family=BenchNine:300,400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ferramentas Servinform</title>
+
+    <link rel="stylesheet" href="/css/Style-tools.css" />
+    <link rel="stylesheet" href="/css/SidebarMenu.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 </head>
 <body class="fade-in">
 
-    <div id="preloader">
+    <!-- PRELOADER -->
+    <div id="preloader" aria-hidden="true">
         <div class="spinner"></div>
     </div>
 
-    <canvas id="hero-canvas"></canvas>
-    
-    <nav class="navbar">
-    
-    <div class="page-title">
-        <h1>Ferramentas Servinform</h1>
+    <!-- OVERLAY DE TRANSIÇÃO -->
+    <div class="overlay"></div>
+
+    <!-- FUNDO ANIMADO -->
+    <div class="animated-bg" aria-hidden="true">
+        <canvas id="hero-canvas"></canvas>
+        <div class="bg-orb orb-1"></div>
+        <div class="bg-orb orb-2"></div>
+        <div class="bg-orb orb-3"></div>
+        <div class="bg-grid"></div>
+        <div class="bg-scan"></div>
     </div>
 
-    <div class="clock-container">
-    <div class="clock-digital">
-      <div class="date"></div>
-      <div class="time"></div>
-      <div class="day"></div>
-    </div>
+    <main class="dashboard-shell">
+        <!-- HERO / TOPBAR -->
+        <header class="hero-panel">
+            <div class="hero-copy">
+                <p class="eyebrow">Portal interno</p>
+                <h1>Ferramentas Servinform</h1>
+                <p class="hero-subtitle">
+                    Aceda rapidamente às ferramentas operacionais, fiscais e documentais da plataforma.
+                </p>
 
-    <div class="clock-analog">
-      <div class="spear"></div>
-      <div class="hour"></div>
-      <div class="minute"></div>
-      <div class="second"></div>
-      <div class="dail"></div>
-    </div>
-  </div>
-    
-    
-</nav>
-        <div class="cards-container">
-            <div class="modern-card" data-url="Trivalor">
-                <div class="card-header bg-grad-1"><img src="/images/QR.png" alt="QR Code"></div>
+                <div class="hero-badges">
+                    <span class="hero-badge">QR & Fiscal</span>
+                    <span class="hero-badge">PDF & Imagens</span>
+                    <span class="hero-badge">Automação & Utilitários</span>
+                </div>
+            </div>
+
+            <div class="hero-side">
+                <div class="mini-status-card">
+                    <span class="status-dot"></span>
+                    <div>
+                        <strong>Ambiente ativo</strong>
+                        <p>Portal operacional carregado</p>
+                    </div>
+                </div>
+
+                <div class="clock-card">
+                    <div class="clock-top">
+                        <span class="clock-label">Hora atual</span>
+                    </div>
+
+                    <div class="clock-digital">
+                        <div class="date"></div>
+                        <div class="time"></div>
+                        <div class="day"></div>
+                    </div>
+
+                    <div class="clock-analog">
+                        <div class="clock-face"></div>
+                        <div class="hour-hand"></div>
+                        <div class="minute-hand"></div>
+                        <div class="second-hand"></div>
+                        <div class="clock-center"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- TOOLBAR -->
+        <section class="toolbar-panel">
+            <div class="toolbar-left">
+                <h2>Ferramentas disponíveis</h2>
+                <p>Selecione uma ferramenta para abrir o respetivo módulo.</p>
+            </div>
+
+            <div class="toolbar-right">
+                <div class="tool-count">
+                    <span class="tool-count-number">7</span>
+                    <span class="tool-count-label">módulos</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- GRID -->
+        <section class="cards-container">
+            <article class="modern-card" data-url="Trivalor">
+                <div class="card-header bg-grad-1">
+                    <img src="/images/QR.png" alt="Gerador QR Trivalor">
+                </div>
                 <div class="card-body">
                     <span class="card-number">#01</span>
                     <h3>Gerador QR Trivalor</h3>
-                    <p>Gere códigos QR para o sistema Trivalor de forma rápida e segura.</p>
+                    <p>Gere códigos QR para o sistema Trivalor de forma rápida, padronizada e segura.</p>
                     <div class="card-footer">
-                        <div class="stats"><span>📊 527</span><span>✅ 92</span></div>
-                        <button class="btn-access">Acessar +</button>
+                        <div class="card-tag">Fiscal</div>
+                        <button class="btn-access">Abrir</button>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <div class="modern-card" data-url="BCP">
-                <div class="card-header bg-grad-2"><img src="/images/orcamentacao.png" alt="BCP"></div>
+            <article class="modern-card" data-url="BCP">
+                <div class="card-header bg-grad-2">
+                    <img src="/images/orcamentacao.png" alt="Gerador QR Despesas">
+                </div>
                 <div class="card-body">
                     <span class="card-number">#02</span>
                     <h3>Gerador QR Despesas</h3>
-                    <p>Gere códigos QR para controle de despesas e faturas BCP.</p>
+                    <p>Crie códigos QR para apoio ao controlo de despesas, faturação e fluxos internos.</p>
                     <div class="card-footer">
-                        <div class="stats"><span>📊 413</span><span>✅ 76</span></div>
-                        <button class="btn-access">Acessar +</button>
+                        <div class="card-tag">Despesas</div>
+                        <button class="btn-access">Abrir</button>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <div class="modern-card" data-url="SplitPDF">
-                <div class="card-header bg-grad-3"><img src="/images/pdf.png" alt="Split PDF"></div>
+            <article class="modern-card" data-url="SplitPDF">
+                <div class="card-header bg-grad-3">
+                    <img src="/images/pdf.png" alt="Editar PDFs">
+                </div>
                 <div class="card-body">
                     <span class="card-number">#03</span>
-                    <h3>Editar PDF's</h3>
-                    <p>Ferramentas avançadas para edição e separação de arquivos PDF.</p>
+                    <h3>Editar PDFs</h3>
+                    <p>Mescle, separe e organize documentos PDF com uma interface mais eficiente.</p>
                     <div class="card-footer">
-                        <div class="stats"><span>📊 612</span><span>✅ 88</span></div>
-                        <button class="btn-access">Acessar +</button>
+                        <div class="card-tag">Documentos</div>
+                        <button class="btn-access">Abrir</button>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <div class="modern-card" data-url="Convert">
-                <div class="card-header bg-grad-4"><img src="/images/IMAGE-PDF.png" alt="Conversor de Imagens"></div>
+            <article class="modern-card" data-url="Convert">
+                <div class="card-header bg-grad-4">
+                    <img src="/images/IMAGE-PDF.png" alt="Conversor de Imagens">
+                </div>
                 <div class="card-body">
                     <span class="card-number">#04</span>
                     <h3>Conversor de Imagens</h3>
-                    <p>Converta imagens entre diferentes formatos instantaneamente.</p>
+                    <p>Converta imagens em PDF com organização visual, pré-visualização e ordem personalizada.</p>
                     <div class="card-footer">
-                        <div class="stats"><span>📊 489</span><span>✅ 95</span></div>
-                        <button class="btn-access">Acessar +</button>
+                        <div class="card-tag">Conversão</div>
+                        <button class="btn-access">Abrir</button>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <div class="modern-card" data-url="ServinformSite">
-                <div class="card-header bg-grad-5"><img src="/images/calculadora.png" alt="Calculadora IVA"></div>
+            <article class="modern-card" data-url="ServinformSite">
+                <div class="card-header bg-grad-5">
+                    <img src="/images/calculadora.png" alt="Calculadora IVA">
+                </div>
                 <div class="card-body">
                     <span class="card-number">#05</span>
                     <h3>Calculadora IVA</h3>
-                    <p>Cálculo preciso de IVA para faturas e despesas de Portugal.</p>
+                    <p>Calcule IVA de forma precisa para faturação, despesas e conferência de valores.</p>
                     <div class="card-footer">
-                        <div class="stats"><span>📊 523</span><span>✅ 80</span></div>
-                        <button class="btn-access">Acessar +</button>
+                        <div class="card-tag">Financeiro</div>
+                        <button class="btn-access">Abrir</button>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <div class="modern-card" data-url="winzinkemails">
-                <div class="card-header bg-grad-1"><img src="/images/images.png" alt="Emails Wizink"></div>
+            <article class="modern-card" data-url="winzinkemails">
+                <div class="card-header bg-grad-1">
+                    <img src="/images/images.png" alt="Emails Wizink">
+                </div>
                 <div class="card-body">
                     <span class="card-number">#06</span>
                     <h3>Emails Wizink</h3>
-                    <p>Organizador inteligente para o processamento de emails Wizink.</p>
+                    <p>Organize, processe e acompanhe emails com maior rapidez e controlo operacional.</p>
                     <div class="card-footer">
-                        <div class="stats"><span>📊 455</span><span>✅ 90</span></div>
-                        <button class="btn-access">Acessar +</button>
+                        <div class="card-tag">Emails</div>
+                        <button class="btn-access">Abrir</button>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <div class="modern-card" data-url="buscarcidades">
-                <div class="card-header bg-grad-2"><img src="/images/image.png" alt="Encontrar Cidades"></div>
+            <article class="modern-card" data-url="buscarcidades">
+                <div class="card-header bg-grad-2">
+                    <img src="/images/image.png" alt="Encontrar Cidades">
+                </div>
                 <div class="card-body">
                     <span class="card-number">#07</span>
                     <h3>Encontrar Cidades</h3>
-                    <p>Localize cidades próximas em qualquer região de Portugal.</p>
+                    <p>Localize cidades e regiões em Portugal com uma experiência rápida e intuitiva.</p>
                     <div class="card-footer">
-                        <div class="stats"><span>📊 320</span><span>✅ 85</span></div>
-                        <button class="btn-access">Acessar +</button>
+                        <div class="card-tag">Utilitário</div>
+                        <button class="btn-access">Abrir</button>
                     </div>
                 </div>
-            </div>
-        </div>
+            </article>
+        </section>
 
+        <!-- FOOTER -->
         <footer class="main-footer">
             <div class="footer-container">
                 <img src="/images/imagen.png" alt="Servinform Logo" class="footer-logo">
@@ -145,7 +213,8 @@
                 </div>
             </div>
         </footer>
-    
+    </main>
+
     <script src="/JScripts/SidebarMenu.js"></script>
     <script src="/JScripts/script-tools.js"></script>
 </body>
