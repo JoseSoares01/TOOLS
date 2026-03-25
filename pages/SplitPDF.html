@@ -1,54 +1,129 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Tools - Mesclar e Separar PDFs</title>
-    <link rel="icon" type="image/x-icon" href="/images/pdf.png">
-    <link rel="stylesheet" href="/css/SplitPDF.css">
-    <link rel="stylesheet" href="/css/SidebarMenu.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF Tools | Mesclar e Separar PDFs</title>
+    <link rel="icon" type="image/x-icon" href="/images/pdf.png" />
+    <link rel="stylesheet" href="/css/SplitPDF.css" />
+    <link rel="stylesheet" href="/css/SidebarMenu.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- PDF.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- PDF-LIB -->
     <script src="https://unpkg.com/pdf-lib@1.4.0"></script>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <div class="home-btn" onclick="location.href = '/pages/Tools.html';">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-            </div>
-            <h1>Mesclar e Separar PDFs</h1>
-        </header>
-
-        <main>
-            <div class="drop-area" id="dropArea">
-                <input type="file" multiple accept=".pdf" class="file-input" id="fileInput">
-                <h3>Arraste seus arquivos PDF aqui</h3>
-                <p>ou</p>
-                <button class="select-files-btn" onclick="document.getElementById('fileInput').click()">
-                    Selecionar Arquivos
-                </button>
-                <div class="files-list" id="filesList">
-                    <!-- Files will be listed here -->
-                </div>
-            </div>
-
-            <div class="action-buttons">
-                <button class="action-btn primary" id="mergeBtn">Mesclar PDFs</button>
-                <button class="action-btn" id="splitBtn">Separar PDF</button>
-            </div>
-        </main>
-
-        <footer class="footer">
-            <img src="/images/imagen.png" alt="Servinform.PT" />
-        </footer>
+    <!-- Fundo animado -->
+    <div class="animated-bg" aria-hidden="true">
+        <div class="bg-orb orb-1"></div>
+        <div class="bg-orb orb-2"></div>
+        <div class="bg-orb orb-3"></div>
+        <div class="bg-grid"></div>
+        <div class="bg-pages">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="bg-scan"></div>
     </div>
+
+    <main class="page-shell">
+        <section class="tool-panel">
+            <header class="header-card">
+                <button class="home-btn" type="button" onclick="location.href='/pages/Tools.html';" aria-label="Voltar">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                </button>
+
+                <div class="header-copy">
+                    <p class="eyebrow">Ferramenta de documentos</p>
+                    <h1>Mesclar e Separar PDFs</h1>
+                    <p class="subtitle">
+                        Faça upload dos ficheiros, selecione os PDFs desejados e escolha a ação.
+                    </p>
+                </div>
+            </header>
+
+            <section class="upload-card">
+                <div class="drop-area" id="dropArea">
+                    <input type="file" id="fileInput" class="file-input" accept=".pdf,application/pdf" multiple />
+
+                    <div class="drop-icon">
+                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                    </div>
+
+                    <h2>Arraste os seus PDFs para aqui</h2>
+                    <p>ou escolha manualmente os ficheiros no seu dispositivo</p>
+
+                    <button type="button" class="select-files-btn" id="selectFilesBtn">
+                        Selecionar Arquivos
+                    </button>
+
+                    <div class="helper-row">
+                        <span class="helper-pill">Clique para selecionar</span>
+                        <span class="helper-pill">Arraste para reordenar</span>
+                        <span class="helper-pill">Clique no card para marcar</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="toolbar-card">
+                <div class="toolbar-info">
+                    <h3>Ações</h3>
+                    <p id="selectionInfo">Nenhum ficheiro carregado.</p>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn primary" id="mergeBtn" disabled>
+                        Mesclar PDFs
+                    </button>
+
+                    <button class="action-btn" id="splitBtn" disabled>
+                        Separar PDF
+                    </button>
+
+                    <button class="action-btn ghost" id="clearBtn" disabled>
+                        Limpar Lista
+                    </button>
+                </div>
+            </section>
+
+            <section class="files-card">
+                <div class="section-heading">
+                    <h3>Ficheiros carregados</h3>
+                    <p>Selecione 2 ou mais PDFs para mesclar, ou apenas 1 para separar.</p>
+                </div>
+
+                <div class="files-list" id="filesList"></div>
+
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-icon">PDF</div>
+                    <h4>Nenhum PDF adicionado</h4>
+                    <p>Os ficheiros aparecerão aqui com pré-visualização da primeira página.</p>
+                </div>
+            </section>
+
+            <footer class="footer">
+                <img src="/images/imagen.png" alt="Servinform.PT" />
+            </footer>
+        </section>
+    </main>
+
+    <div id="toastContainer" class="toast-container"></div>
 
     <script src="/JScripts/SidebarMenu.js"></script>
     <script src="/JScripts/SplitPDF.js"></script>
-    
 </body>
 </html>
