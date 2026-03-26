@@ -43,6 +43,10 @@ const footer = document.querySelector(".main-footer");
 
 let particles = [];
 
+let currentScene = "night";
+let particleColor = "rgba(57, 198, 255, 0.75)";
+let connectionColorBase = "57, 198, 255";
+
 /* =========================
    3. CANVAS ANIMADO
 ========================= */
@@ -82,10 +86,10 @@ class Particle {
     }
 
     draw() {
-        ctx.fillStyle = "rgba(57, 198, 255, 0.75)";
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
+    ctx.fillStyle = particleColor;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
     }
 }
 
@@ -123,7 +127,7 @@ function animateParticles() {
             );
 
             if (distance < 120) {
-                ctx.strokeStyle = `rgba(57, 198, 255, ${Math.max(0, 0.12 - distance / 1000)})`;
+                ctx.strokeStyle = `rgba(${connectionColorBase}, ${Math.max(0, 0.12 - distance / 1000)})`;
                 ctx.lineWidth = 0.5;
                 ctx.beginPath();
                 ctx.moveTo(particle.x, particle.y);
@@ -229,6 +233,139 @@ function initCardsNavigation() {
     });
 }
 
+
+/* =========================
+   7. CENÁRIO DINÂMICO POR HORA
+========================= */
+function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+}
+function getRangeProgress(current, start, end) {
+    if (current <= start) return 0;
+    if (current >= end) return 1;
+    return (current - start) / (end - start);
+}
+
+function setRootVar(name, value) {
+    document.documentElement.style.setProperty(name, value);
+}
+
+function getDayProgress(hours, minutes) {
+    return hours + minutes / 60;
+}
+
+function setSceneTheme(now = new Date()) {
+    const h = now.getHours();
+    const m = now.getMinutes();
+    const total = getDayProgress(h, m);
+
+    const body = document.body;
+    if (!body) return;
+
+    let theme = "night";
+
+    if (total >= 7 && total < 13) {
+        theme = "morning";
+    } else if (total >= 13 && total < 17) {
+        theme = "afternoon";
+    } else {
+        theme = "night";
+    }
+
+    currentScene = theme;
+    body.setAttribute("data-theme", theme);
+
+    const sunriseProgress = getRangeProgress(total, 7, 8);
+    const sunsetProgress = getRangeProgress(total, 16, 17);
+
+    let nightProgress = 1;
+
+    if (total >= 17 && total <= 20) {
+        nightProgress = getRangeProgress(total, 17, 20);
+    } else if (total > 20 || total < 7) {
+        nightProgress = 1;
+    } else {
+        nightProgress = 0;
+    }
+
+    const starsDensity = 0.08 + nightProgress * 0.92;
+    const starsOpacity = nightProgress * 0.95;
+
+    setRootVar("--sunrise-progress", sunriseProgress.toFixed(3));
+    setRootVar("--sunset-progress", sunsetProgress.toFixed(3));
+    setRootVar("--night-progress", nightProgress.toFixed(3));
+    setRootVar("--stars-density", starsDensity.toFixed(3));
+
+    if (theme === "night") {
+        setRootVar("--stars-opacity", starsOpacity.toFixed(3));
+    } else if (theme === "afternoon" && total >= 16 && total < 17) {
+        setRootVar("--stars-opacity", (sunsetProgress * 0.18).toFixed(3));
+    } else {
+        setRootVar("--stars-opacity", "0");
+    }
+
+    updateSunPosition(total, sunriseProgress, sunsetProgress, nightProgress);
+    updateSceneParticles(theme, sunriseProgress, sunsetProgress, nightProgress);
+}
+
+function updateSunPosition(total, sunriseProgress = 0, sunsetProgress = 0, nightProgress = 1) {
+    const root = document.documentElement;
+
+    const sunVisible = total >= 7 && total < 17;
+    const progress = clamp((total - 7) / 10, 0, 1);
+
+    const x = 8 + progress * 78;
+    const y = 22 - Math.sin(progress * Math.PI) * 14;
+
+    root.style.setProperty("--sun-x", `${x}%`);
+    root.style.setProperty("--sun-y", `${y}%`);
+
+    if (currentScene === "morning") {
+        const dawnWarm = 0.22 + sunriseProgress * 0.28;
+        const dawnCool = 0.10 + sunriseProgress * 0.10;
+
+        root.style.setProperty("--glow-left", `rgba(255, 210, 115, ${dawnWarm.toFixed(2)})`);
+        root.style.setProperty("--glow-right", `rgba(135, 204, 255, ${dawnCool.toFixed(2)})`);
+    }
+
+    if (currentScene === "afternoon") {
+        const afternoonWarm = 0.24 + sunsetProgress * 0.18;
+        const sunsetCool = 0.14 + sunsetProgress * 0.10;
+
+        root.style.setProperty("--glow-left", `rgba(255, 168, 86, ${afternoonWarm.toFixed(2)})`);
+        root.style.setProperty("--glow-right", `rgba(255, 126, 96, ${sunsetCool.toFixed(2)})`);
+    }
+
+    if (currentScene === "night") {
+        const moonGlow = 0.08 + nightProgress * 0.08;
+        root.style.setProperty("--glow-left", `rgba(90, 140, 220, ${moonGlow.toFixed(2)})`);
+        root.style.setProperty("--glow-right", `rgba(79, 140, 255, ${(0.06 + nightProgress * 0.04).toFixed(2)})`);
+    }
+
+    if (!sunVisible) {
+        root.style.setProperty("--sun-x", `86%`);
+        root.style.setProperty("--sun-y", `18%`);
+    }
+}
+
+function updateSceneParticles(theme, sunriseProgress = 0, sunsetProgress = 0, nightProgress = 1) {
+    if (theme === "morning") {
+        const alpha = 0.45 + sunriseProgress * 0.18;
+        particleColor = `rgba(90, 170, 255, ${alpha.toFixed(2)})`;
+        connectionColorBase = "90, 170, 255";
+    } else if (theme === "afternoon") {
+        const mixed = sunsetProgress > 0
+            ? `rgba(255, 150, 102, ${(0.42 + sunsetProgress * 0.12).toFixed(2)})`
+            : "rgba(255, 164, 88, 0.45)";
+
+        particleColor = mixed;
+        connectionColorBase = sunsetProgress > 0 ? "255, 150, 102" : "255, 164, 88";
+    } else {
+        const alpha = 0.36 + nightProgress * 0.39;
+        particleColor = `rgba(57, 198, 255, ${alpha.toFixed(2)})`;
+        connectionColorBase = "57, 198, 255";
+    }
+}
 /* =========================
    7. RELÓGIO
 ========================= */
@@ -254,28 +391,31 @@ function initCardsNavigation() {
     if (!secondEl || !minuteEl || !hourEl || !timeEl || !dayEl || !dateEl) return;
 
     function updateClock() {
-        const now = new Date();
+    const now = new Date();
 
-        const second = now.getSeconds();
-        const minute = now.getMinutes();
-        const hour = now.getHours();
+    const second = now.getSeconds();
+    const minute = now.getMinutes();
+    const hour = now.getHours();
 
-        const secondDeg = second * 6;
-        const minuteDeg = minute * 6 + second * 0.1;
-        const hourDeg = (hour % 12) * 30 + minute * 0.5;
+    const secondDeg = second * 6;
+    const minuteDeg = minute * 6 + second * 0.1;
+    const hourDeg = (hour % 12) * 30 + minute * 0.5;
 
-        secondEl.style.transform = `rotate(${secondDeg}deg)`;
-        minuteEl.style.transform = `rotate(${minuteDeg}deg)`;
-        hourEl.style.transform = `rotate(${hourDeg}deg)`;
+    secondEl.style.transform = `rotate(${secondDeg}deg)`;
+    minuteEl.style.transform = `rotate(${minuteDeg}deg)`;
+    hourEl.style.transform = `rotate(${hourDeg}deg)`;
 
-        timeEl.textContent = now.toLocaleTimeString("pt-PT", {
-            hour: "2-digit",
-            minute: "2-digit"
-        });
+    timeEl.textContent = now.toLocaleTimeString("pt-PT", {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
 
-        dayEl.textContent = days[now.getDay()];
-        dateEl.textContent = `${now.getDate()} de ${months[now.getMonth()]}`;
-    }
+    dayEl.textContent = days[now.getDay()];
+    dateEl.textContent = `${now.getDate()} de ${months[now.getMonth()]}`;
+
+    setSceneTheme(now);
+}
+    
 
     updateClock();
     setInterval(updateClock, 1000);
@@ -284,6 +424,7 @@ function initCardsNavigation() {
 /* =========================
    8. INICIALIZAÇÃO
 ========================= */
+setSceneTheme(new Date());
 initCanvas();
 createParticles();
 animateParticles();
@@ -293,3 +434,23 @@ window.addEventListener("resize", () => {
     initCanvas();
     createParticles();
 });
+
+
+/* =========================
+   FOGUETE ANIMADO
+========================= */
+function initRocket() {
+    const rocket = document.querySelector(".rocket");
+    if (!rocket) return;
+
+    function launchRocket() {
+        rocket.style.animation = "none";
+        rocket.offsetHeight;
+        rocket.style.animation = "rocketFly 8s cubic-bezier(0.2, 0, 0.2, 1) forwards";
+    }
+
+    launchRocket();
+    setInterval(launchRocket, 9000);
+}
+
+initRocket();
