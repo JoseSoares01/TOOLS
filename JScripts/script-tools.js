@@ -501,3 +501,42 @@ window.addEventListener("resize", () => {
     initCanvas();
     createParticles();
 });
+
+
+async function initWeatherWidget() {
+    const widget = document.querySelector(".weather-floating");
+    const tempEl = document.getElementById("weatherTemp");
+    if (!widget || !tempEl) return;
+
+    const url = "https://api.open-meteo.com/v1/forecast?latitude=38.7223&longitude=-9.1393&current=temperature_2m&timezone=auto";
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Falha ao obter temperatura");
+
+        const data = await response.json();
+        const temperature = data?.current?.temperature_2m;
+
+        if (typeof temperature !== "number") {
+            throw new Error("Temperatura inválida");
+        }
+
+        const rounded = Math.round(temperature);
+        tempEl.textContent = `${rounded}°C`;
+
+        widget.classList.remove("is-cold", "is-mild", "is-warm", "is-hot");
+
+        if (rounded < 12) {
+            widget.classList.add("is-cold");
+        } else if (rounded < 20) {
+            widget.classList.add("is-mild");
+        } else if (rounded < 28) {
+            widget.classList.add("is-warm");
+        } else {
+            widget.classList.add("is-hot");
+        }
+    } catch (error) {
+        tempEl.textContent = "--°C";
+        console.error("Erro ao carregar temperatura de Lisboa:", error);
+    }
+}

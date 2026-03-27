@@ -12,8 +12,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 </head>
-<body class="fade-in" data-theme="night">
 
+
+<body class="fade-in" data-theme="night">
+    
     <!-- PRELOADER -->
     <div id="preloader" aria-hidden="true">
         <div class="spinner"></div>
@@ -22,11 +24,6 @@
     <!-- OVERLAY DE TRANSIÇÃO -->
     <div class="overlay"></div>
 
-    <div class="weather-card">
-    <span class="weather-label">Temperatura em Lisboa</span>
-    <strong class="weather-temp" id="weatherTemp">--°C</strong>
-    <p class="weather-location">Lisboa, Portugal</p>
-</div>
 
     <!-- FUNDO ANIMADO -->
     <div class="animated-bg" aria-hidden="true">
@@ -101,6 +98,8 @@
         <div class="bg-scan"></div>
     </div>
 
+    
+
     <main class="dashboard-shell">
         <!-- HERO / TOPBAR -->
         <header class="hero-panel">
@@ -163,6 +162,7 @@
                 </div>
             </div>
         </section>
+
 
         <!-- GRID -->
         <section class="cards-container">
@@ -271,6 +271,7 @@
                 </div>
             </article>
         </section>
+        
 
         <!-- FOOTER -->
         <footer class="main-footer glass-panel">
@@ -283,6 +284,12 @@
             </div>
         </footer>
     </main>
+
+    <div class="weather-floating" aria-label="Temperatura atual em Lisboa">
+    <span class="weather-city">Lisboa</span>
+    <strong class="weather-temp" id="weatherTemp">--°C</strong>
+    <span class="weather-dot"></span>
+</div>
 
     <script src="/JScripts/SidebarMenu.js"></script>
     <script src="/JScripts/script-tools.js"></script>
