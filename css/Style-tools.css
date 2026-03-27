@@ -48,16 +48,19 @@
     --radius-sm: 12px;
 
     --shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+
     --sunrise-progress: 0;
---sunset-progress: 0;
---night-progress: 1;
+    --midday-progress: 0;
+    --sunset-progress: 0;
+    --dusk-progress: 0;
+    --night-progress: 1;
 
---stars-density: 0.92;
---glass-glow: rgba(57, 198, 255, 0.10);
---glass-border-glow: rgba(255, 255, 255, 0.08);
+    --stars-density: 0.92;
+    --glass-glow: rgba(57, 198, 255, 0.10);
+    --glass-border-glow: rgba(255, 255, 255, 0.08);
 
---hero-reflection:
-    radial-gradient(circle at 15% 0%, rgba(57,198,255,0.10), transparent 34%);
+    --hero-reflection:
+        radial-gradient(circle at 15% 0%, rgba(57,198,255,0.10), transparent 34%);
 }
 
 * {
@@ -254,21 +257,6 @@ body {
     transition: opacity 1.2s ease, background 1.2s ease;
 }
 
-.bg-scan {
-    position: absolute;
-    inset: -20%;
-    background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        rgba(57, 198, 255, 0.02) 44%,
-        rgba(57, 198, 255, 0.07) 50%,
-        rgba(57, 198, 255, 0.02) 56%,
-        transparent 100%
-    );
-    animation: scanMove 8s linear infinite;
-    opacity: 0.34;
-}
-
 @keyframes floatOrb {
     0% { transform: translate(0, 0) scale(1); }
     25% { transform: translate(18px, -24px) scale(1.04); }
@@ -297,17 +285,9 @@ body {
 }
 
 /* =========================
-   HERO PANEL
+   GLASS PANEL
 ========================= */
-.hero-panel {
-    display: grid;
-    grid-template-columns: 1.3fr 0.9fr;
-    gap: 22px;
-    margin-bottom: 22px;
-}
-
-.hero-copy,
-.hero-side {
+.glass-panel {
     position: relative;
     background: var(--panel);
     border: 1px solid var(--line);
@@ -321,20 +301,40 @@ body {
     overflow: hidden;
 }
 
-.hero-copy > *,
-.hero-side > *,
-.toolbar-panel > *,
-.main-footer > *,
-.clock-card > *,
-.mini-status-card > * {
+.glass-panel::before {
     content: "";
-    position: relative;
-    z-index: 1;
+    position: absolute;
     inset: 0;
     background: var(--hero-reflection);
     opacity: 1;
     pointer-events: none;
     transition: background 1.2s ease, opacity 1.2s ease;
+}
+
+/* =========================
+   HERO PANEL
+========================= */
+.hero-panel {
+    display: grid;
+    grid-template-columns: 1.3fr 0.9fr;
+    gap: 22px;
+    margin-bottom: 22px;
+}
+
+.hero-copy,
+.hero-side,
+.toolbar-panel,
+.main-footer {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-copy > *,
+.hero-side > *,
+.toolbar-panel > *,
+.main-footer > * {
+    position: relative;
+    z-index: 1;
 }
 
 .hero-copy {
@@ -400,6 +400,7 @@ body {
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.08);
     overflow: hidden;
+    z-index: 1;
 }
 
 .status-dot {
@@ -427,6 +428,7 @@ body {
 ========================= */
 .clock-card {
     position: relative;
+    z-index: 1;
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: 22px;
@@ -550,23 +552,12 @@ body {
    TOOLBAR
 ========================= */
 .toolbar-panel {
-    position: relative;
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-xl);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    box-shadow:
-        var(--shadow),
-        inset 0 1px 0 rgba(255,255,255,0.06),
-        0 0 0 1px var(--glass-border-glow);
     padding: 20px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
     margin-bottom: 24px;
-    overflow: hidden;
 }
 
 .toolbar-left h2 {
@@ -734,18 +725,11 @@ body {
    FOOTER
 ========================= */
 .main-footer {
-    position: relative;
     margin-top: 28px;
-    background: rgba(10, 18, 32, 0.60);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 22px;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     padding: 20px;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.45s ease, transform 0.45s ease;
-    overflow: hidden;
 }
 
 .footer-container {
@@ -784,59 +768,7 @@ body {
 }
 
 /* =========================
-   RESPONSIVO
-========================= */
-@media (max-width: 1100px) {
-    .hero-panel {
-        grid-template-columns: 1fr;
-    }
-
-    .clock-card {
-        grid-template-columns: 1fr;
-    }
-
-    .clock-analog {
-        justify-self: start;
-    }
-}
-
-@media (max-width: 760px) {
-    .dashboard-shell {
-        padding: 18px 12px 24px;
-    }
-
-    .hero-copy,
-    .hero-side,
-    .toolbar-panel {
-        padding: 18px;
-        border-radius: 22px;
-    }
-
-    .toolbar-panel {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .cards-container {
-        grid-template-columns: 1fr;
-    }
-
-    .clock-card {
-        gap: 14px;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .bg-orb,
-    .bg-grid,
-    .bg-scan,
-    .spinner {
-        animation: none;
-    }
-}
-
-/* =========================
-   CENÁRIO DINÂMICO (DIA/TARDE/NOITE)
+   CENÁRIO DINÂMICO
 ========================= */
 .sky-glow {
     position: absolute;
@@ -899,6 +831,7 @@ body {
     left: auto;
     right: 10%;
     top: 16%;
+    transform: translate(0, 0);
     background:
         radial-gradient(circle at 35% 30%, #ffffff 0%, #dce9ff 45%, #b8c9f2 75%, rgba(184,201,242,0.2) 100%);
     box-shadow:
@@ -913,6 +846,72 @@ body {
     border-radius: 50%;
     background: rgba(9, 18, 32, 0.20);
     filter: blur(1px);
+}
+
+/* BANDEIRAS NA LUA */
+.moon-flags {
+    position: absolute;
+    left: 18%;
+    bottom: 12%;
+    display: flex;
+    gap: 8px;
+    align-items: end;
+    z-index: 3;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity .6s ease, transform .6s ease;
+}
+
+.moon-flag {
+    position: relative;
+    width: 14px;
+    height: 10px;
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 0 6px rgba(255,255,255,.18);
+    animation: tinyWave 2.4s ease-in-out infinite;
+    transform-origin: left center;
+}
+
+.moon-flag::before {
+    content: "";
+    position: absolute;
+    left: -2px;
+    bottom: -10px;
+    width: 2px;
+    height: 16px;
+    background: rgba(210, 220, 240, 0.9);
+    border-radius: 999px;
+}
+
+.flag-pt {
+    background:
+      linear-gradient(90deg, #006847 0 40%, #da291c 40% 100%);
+}
+
+.flag-br {
+    background: #009b3a;
+    animation-delay: .25s;
+}
+
+.flag-br::after {
+    content: "";
+    position: absolute;
+    inset: 2px 3px;
+    background: #ffdf00;
+    transform: rotate(45deg);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+@keyframes tinyWave {
+    0%, 100% { transform: perspective(40px) rotateY(0deg) translateY(0); }
+    50% { transform: perspective(40px) rotateY(-10deg) translateY(-1px); }
+}
+
+body[data-theme="sunset"] .moon-flags,
+body[data-theme="night"] .moon-flags {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .cloud-layer {
@@ -963,6 +962,7 @@ body {
     inset: 0;
     opacity: var(--stars-opacity);
     transition: opacity 1.2s ease;
+    z-index: 4;
 }
 
 .star {
@@ -1006,7 +1006,7 @@ body {
    TEMAS POR HORÁRIO
 ========================= */
 
-/* MANHÃ — 07:00 às 12:59 */
+/* MANHÃ — 07:00 às 11:59 */
 body[data-theme="morning"] {
     --bg-1: #dff1ff;
     --bg-2: #f5fbff;
@@ -1049,6 +1049,61 @@ body[data-theme="morning"] {
     --tag-text: #1769aa;
     --btn-bg: #1382e8;
     --btn-bg-hover: #0f6fcc;
+
+    --glass-border-glow: rgba(255, 214, 120, 0.12);
+    --hero-reflection:
+        radial-gradient(circle at 14% 0%, rgba(255, 220, 132, 0.24), transparent 32%),
+        linear-gradient(180deg, rgba(255,255,255,0.08), transparent 45%);
+}
+
+/* MEIO-DIA — 12:00 às 12:59 */
+body[data-theme="midday"] {
+    --bg-1: #eef9ff;
+    --bg-2: #ffffff;
+
+    --panel: rgba(255, 255, 255, 0.56);
+    --panel-strong: rgba(255, 255, 255, 0.72);
+    --line: rgba(120, 170, 215, 0.16);
+
+    --text: #14334d;
+    --text-soft: #5f7c96;
+
+    --accent: #46aef9;
+    --accent-2: #7ec8ff;
+
+    --sky-top: #d5efff;
+    --sky-bottom: #ffffff;
+    --sky-radial-left: rgba(255, 236, 168, 0.30);
+    --sky-radial-right: rgba(142, 214, 255, 0.20);
+
+    --grid-line: rgba(64, 122, 173, 0.05);
+    --scan-color: rgba(120, 195, 255, 0.05);
+
+    --sun-opacity: 1;
+    --moon-opacity: 0;
+    --cloud-opacity: 0.9;
+    --stars-opacity: 0;
+
+    --glow-left: rgba(255, 234, 160, 0.36);
+    --glow-right: rgba(132, 210, 255, 0.16);
+
+    --orb-1: rgba(255, 225, 120, 0.12);
+    --orb-2: rgba(120, 195, 255, 0.10);
+    --orb-3: rgba(120, 225, 205, 0.08);
+
+    --card-surface: rgba(255,255,255,0.88);
+    --card-body-bg: rgba(255,255,255,0.95);
+    --card-title: #16324a;
+    --card-text: #607487;
+    --tag-bg: #edf8ff;
+    --tag-text: #1a6db4;
+    --btn-bg: #1a8ef0;
+    --btn-bg-hover: #137ad0;
+
+    --glass-border-glow: rgba(160, 210, 255, 0.12);
+    --hero-reflection:
+        radial-gradient(circle at 50% 0%, rgba(255, 241, 192, 0.22), transparent 34%),
+        linear-gradient(180deg, rgba(255,255,255,0.08), transparent 46%);
 }
 
 /* TARDE — 13:00 às 16:59 */
@@ -1094,9 +1149,64 @@ body[data-theme="afternoon"] {
     --tag-text: #c56b19;
     --btn-bg: #f08a24;
     --btn-bg-hover: #d97614;
+
+    --glass-border-glow: rgba(255, 170, 96, 0.14);
+    --hero-reflection:
+        radial-gradient(circle at 82% 0%, rgba(255, 179, 94, 0.22), transparent 34%),
+        linear-gradient(180deg, rgba(255,255,255,0.07), transparent 46%);
 }
 
-/* NOITE — 17:00 às 06:59 */
+/* PÔR DO SOL — 17:00 às 17:59 */
+body[data-theme="sunset"] {
+    --bg-1: #2b2449;
+    --bg-2: #ffb47a;
+
+    --panel: rgba(255, 239, 228, 0.30);
+    --panel-strong: rgba(255, 239, 228, 0.42);
+    --line: rgba(255, 216, 196, 0.18);
+
+    --text: #fff7f0;
+    --text-soft: #f3d0c0;
+
+    --accent: #ff8a5c;
+    --accent-2: #d290ff;
+
+    --sky-top: #6c4ca7;
+    --sky-bottom: #ffba83;
+    --sky-radial-left: rgba(255, 144, 92, 0.38);
+    --sky-radial-right: rgba(150, 105, 255, 0.24);
+
+    --grid-line: rgba(255,255,255,0.04);
+    --scan-color: rgba(255, 154, 102, 0.05);
+
+    --sun-opacity: 1;
+    --moon-opacity: 0.2;
+    --cloud-opacity: 0.55;
+    --stars-opacity: 0.14;
+
+    --glow-left: rgba(255, 120, 88, 0.40);
+    --glow-right: rgba(139, 92, 246, 0.20);
+
+    --orb-1: rgba(255, 126, 96, 0.16);
+    --orb-2: rgba(152, 102, 255, 0.16);
+    --orb-3: rgba(255, 198, 130, 0.08);
+
+    --card-surface: rgba(255,255,255,0.92);
+    --card-body-bg: rgba(255,255,255,0.96);
+    --card-title: #4c2b2f;
+    --card-text: #7d6466;
+    --tag-bg: #fff0e9;
+    --tag-text: #d75c34;
+    --btn-bg: #f06f3b;
+    --btn-bg-hover: #d85d2d;
+
+    --glass-border-glow: rgba(255, 164, 122, 0.16);
+    --hero-reflection:
+        radial-gradient(circle at 84% 0%, rgba(255, 168, 108, 0.20), transparent 34%),
+        linear-gradient(180deg, rgba(255,255,255,0.06), transparent 46%);
+}
+
+/* NOITE */
 body[data-theme="night"] {
     --bg-1: #06101d;
     --bg-2: #0b1829;
@@ -1139,23 +1249,7 @@ body[data-theme="night"] {
     --tag-text: #2563eb;
     --btn-bg: #0e5fd7;
     --btn-bg-hover: #0a4fb8;
-}
 
-body[data-theme="morning"] {
-    --glass-border-glow: rgba(255, 214, 120, 0.12);
-    --hero-reflection:
-        radial-gradient(circle at 14% 0%, rgba(255, 220, 132, 0.24), transparent 32%),
-        linear-gradient(180deg, rgba(255,255,255,0.08), transparent 45%);
-}
-
-body[data-theme="afternoon"] {
-    --glass-border-glow: rgba(255, 170, 96, 0.14);
-    --hero-reflection:
-        radial-gradient(circle at 82% 0%, rgba(255, 179, 94, 0.22), transparent 34%),
-        linear-gradient(180deg, rgba(255,255,255,0.07), transparent 46%);
-}
-
-body[data-theme="night"] {
     --glass-border-glow: rgba(120, 170, 255, 0.10);
     --hero-reflection:
         radial-gradient(circle at 86% 0%, rgba(188, 216, 255, 0.10), transparent 28%),
@@ -1167,24 +1261,19 @@ body[data-theme="night"] {
 ========================= */
 .rocket {
     position: absolute;
-    right: 8%;  /* 🔥 agora no lado direito */
+    right: 8%;
     left: auto;
     bottom: -80px;
-
     width: 90px;
     height: 220px;
-
     transform: scale(0.18);
     transform-origin: bottom center;
-
     opacity: 0;
     pointer-events: none;
-
     z-index: 1;
     filter: blur(0.4px);
 }
 
-/* PONTA */
 .rocket-nose {
     position: absolute;
     top: 0;
@@ -1199,7 +1288,6 @@ body[data-theme="night"] {
     z-index: 5;
 }
 
-/* CORPO */
 .rocket-body {
     position: absolute;
     top: 24px;
@@ -1252,7 +1340,6 @@ body[data-theme="night"] {
     );
 }
 
-/* JANELA */
 .rocket-window {
     position: absolute;
     top: 40px;
@@ -1282,7 +1369,6 @@ body[data-theme="night"] {
     transform: rotate(35deg);
 }
 
-/* ALETAS LATERAIS */
 .rocket-fin {
     position: absolute;
     bottom: 48px;
@@ -1305,7 +1391,6 @@ body[data-theme="night"] {
     clip-path: polygon(0% 0%, 58% 8%, 100% 100%, 0% 78%);
 }
 
-/* ALETA CENTRAL */
 .rocket-fin-center {
     position: absolute;
     bottom: 34px;
@@ -1319,7 +1404,6 @@ body[data-theme="night"] {
     z-index: 5;
 }
 
-/* BASE */
 .rocket-base {
     position: absolute;
     bottom: 42px;
@@ -1335,7 +1419,6 @@ body[data-theme="night"] {
     z-index: 6;
 }
 
-/* FOGO INTERNO */
 .rocket-flame-core {
     position: absolute;
     bottom: -12px;
@@ -1357,7 +1440,6 @@ body[data-theme="night"] {
     animation: flameCoreFlicker 0.14s infinite alternate;
 }
 
-/* FOGO EXTERNO */
 .rocket-flame {
     position: absolute;
     bottom: -34px;
@@ -1391,7 +1473,6 @@ body[data-theme="night"] {
     filter: blur(3px);
 }
 
-/* ANIMAÇÕES DO FOGO */
 @keyframes flameFlicker {
     0% {
         transform: translateX(-50%) scaleY(1) scaleX(1);
@@ -1414,7 +1495,6 @@ body[data-theme="night"] {
     }
 }
 
-/* SUBIDA RETA */
 @keyframes rocketFly {
     0% {
         transform: translateY(0) scale(0.18);
@@ -1432,5 +1512,179 @@ body[data-theme="night"] {
     100% {
         transform: translateY(-111vh) scale(0.18);
         opacity: 0;
+    }
+}
+
+/* =========================
+   METEOROS
+========================= */
+.cosmic-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 6;
+    opacity: 0;
+    transition: opacity .8s ease;
+}
+
+.mini-meteor {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 999px;
+    background: radial-gradient(circle, #fff 0%, #ffd7a8 45%, #ff7b5c 100%);
+    box-shadow:
+        0 0 6px rgba(255,255,255,.9),
+        0 0 12px rgba(255,170,120,.6),
+        -18px 8px 18px rgba(255,120,90,.22);
+    opacity: 0;
+    transform: translate3d(0,0,0) rotate(-25deg) scale(.8);
+}
+
+.mini-meteor::before {
+    content: "";
+    position: absolute;
+    right: 1px;
+    top: 50%;
+    width: 34px;
+    height: 2px;
+    transform: translateY(-50%);
+    transform-origin: right center;
+    border-radius: 999px;
+    background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,190,130,.18) 35%,
+        rgba(255,120,90,.45) 100%
+    );
+    filter: blur(1px);
+}
+
+.meteor-1 {
+    top: 18%;
+    left: -10%;
+    animation: meteorPass1 9s linear infinite;
+    animation-delay: 2s;
+}
+
+.meteor-2 {
+    top: 30%;
+    left: -14%;
+    animation: meteorPass2 13s linear infinite;
+    animation-delay: 7s;
+}
+
+@keyframes meteorPass1 {
+    0% {
+        opacity: 0;
+        transform: translate3d(0,0,0) rotate(-25deg) scale(.8);
+    }
+    6% {
+        opacity: .95;
+    }
+    22% {
+        opacity: .95;
+        transform: translate3d(52vw, 16vh, 0) rotate(-25deg) scale(1);
+    }
+    28% {
+        opacity: 0;
+        transform: translate3d(64vw, 20vh, 0) rotate(-25deg) scale(.95);
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(64vw, 20vh, 0) rotate(-25deg) scale(.95);
+    }
+}
+
+@keyframes meteorPass2 {
+    0% {
+        opacity: 0;
+        transform: translate3d(0,0,0) rotate(-18deg) scale(.7);
+    }
+    5% {
+        opacity: .8;
+    }
+    18% {
+        opacity: .9;
+        transform: translate3d(46vw, 12vh, 0) rotate(-18deg) scale(.9);
+    }
+    24% {
+        opacity: 0;
+        transform: translate3d(58vw, 16vh, 0) rotate(-18deg) scale(.85);
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(58vw, 16vh, 0) rotate(-18deg) scale(.85);
+    }
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+@media (max-width: 1100px) {
+    .hero-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .clock-card {
+        grid-template-columns: 1fr;
+    }
+
+    .clock-analog {
+        justify-self: start;
+    }
+}
+
+@media (max-width: 760px) {
+    .dashboard-shell {
+        padding: 18px 12px 24px;
+    }
+
+    .hero-copy,
+    .hero-side,
+    .toolbar-panel,
+    .main-footer {
+        padding: 18px;
+        border-radius: 22px;
+    }
+
+    .toolbar-panel {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cards-container {
+        grid-template-columns: 1fr;
+    }
+
+    .clock-card {
+        gap: 14px;
+        grid-template-columns: 1fr;
+    }
+
+    .clock-analog {
+        width: 150px;
+        height: 150px;
+    }
+
+    .sun,
+    .moon {
+        width: 130px;
+        height: 130px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bg-orb,
+    .bg-grid,
+    .bg-scan,
+    .spinner,
+    .rocket,
+    .mini-meteor,
+    .star,
+    .cloud,
+    .moon-flag {
+        animation: none;
     }
 }

@@ -1,14 +1,6 @@
 /**
  * =========================================================
  * PORTAL DE FERRAMENTAS SERVINFORM
- * ---------------------------------------------------------
- * Melhorias desta versão:
- * - autenticação protegida
- * - fundo animado com partículas e conexões
- * - animação de entrada dos cards
- * - transição suave ao navegar
- * - relógio digital + analógico simplificado
- * - código organizado e comentado
  * =========================================================
  */
 
@@ -42,28 +34,40 @@ const cards = document.querySelectorAll(".modern-card");
 const footer = document.querySelector(".main-footer");
 
 let particles = [];
-
 let currentScene = "night";
 let particleColor = "rgba(57, 198, 255, 0.75)";
 let connectionColorBase = "57, 198, 255";
 
 /* =========================
-   3. CANVAS ANIMADO
+   3. HELPERS
 ========================= */
+function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+}
 
-/**
- * Ajusta o canvas ao tamanho da janela.
- */
+function getRangeProgress(current, start, end) {
+    if (current <= start) return 0;
+    if (current >= end) return 1;
+    return (current - start) / (end - start);
+}
+
+function setRootVar(name, value) {
+    document.documentElement.style.setProperty(name, value);
+}
+
+function getDayProgress(hours, minutes) {
+    return hours + minutes / 60;
+}
+
+/* =========================
+   4. CANVAS ANIMADO
+========================= */
 function initCanvas() {
     if (!canvas || !ctx) return;
-
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 }
 
-/**
- * Classe de partícula do fundo.
- */
 class Particle {
     constructor() {
         this.reset();
@@ -86,16 +90,13 @@ class Particle {
     }
 
     draw() {
-    ctx.fillStyle = particleColor;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fill();
+        ctx.fillStyle = particleColor;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
     }
 }
 
-/**
- * Cria as partículas do fundo.
- */
 function createParticles() {
     if (!canvas) return;
 
@@ -107,9 +108,6 @@ function createParticles() {
     }
 }
 
-/**
- * Loop de animação do canvas.
- */
 function animateParticles() {
     if (!canvas || !ctx) return;
 
@@ -141,7 +139,7 @@ function animateParticles() {
 }
 
 /* =========================
-   4. ENTRADA DA PÁGINA
+   5. ENTRADA DA PÁGINA
 ========================= */
 window.addEventListener("load", () => {
     if (preloader) {
@@ -163,12 +161,8 @@ window.addEventListener("load", () => {
 });
 
 /* =========================
-   5. NAVEGAÇÃO
+   6. NAVEGAÇÃO
 ========================= */
-
-/**
- * Login simples.
- */
 function realizarLogin(usuario, senha) {
     if (usuario === "admin" && senha === "123") {
         const userData = { token: "auth_" + Date.now() };
@@ -183,9 +177,6 @@ function realizarLogin(usuario, senha) {
     }
 }
 
-/**
- * Navegação genérica.
- */
 function navigate(page) {
     document.body.classList.add("fade-out");
     setTimeout(() => {
@@ -193,9 +184,6 @@ function navigate(page) {
     }, 450);
 }
 
-/**
- * Logout.
- */
 function logout() {
     localStorage.removeItem("usuarioLogado");
     document.body.classList.add("fade-out");
@@ -205,13 +193,6 @@ function logout() {
     }, 500);
 }
 
-/* =========================
-   6. CARDS / NAVEGAÇÃO
-========================= */
-
-/**
- * Liga os eventos de clique nos cards.
- */
 function initCardsNavigation() {
     cards.forEach((card) => {
         card.addEventListener("click", function () {
@@ -233,27 +214,9 @@ function initCardsNavigation() {
     });
 }
 
-
 /* =========================
-   7. CENÁRIO DINÂMICO POR HORA
+   7. CENÁRIO DINÂMICO
 ========================= */
-function clamp(value, min, max) {
-    return Math.min(Math.max(value, min), max);
-}
-function getRangeProgress(current, start, end) {
-    if (current <= start) return 0;
-    if (current >= end) return 1;
-    return (current - start) / (end - start);
-}
-
-function setRootVar(name, value) {
-    document.documentElement.style.setProperty(name, value);
-}
-
-function getDayProgress(hours, minutes) {
-    return hours + minutes / 60;
-}
-
 function setSceneTheme(now = new Date()) {
     const h = now.getHours();
     const m = now.getMinutes();
@@ -264,10 +227,14 @@ function setSceneTheme(now = new Date()) {
 
     let theme = "night";
 
-    if (total >= 7 && total < 13) {
+    if (total >= 7 && total < 12) {
         theme = "morning";
+    } else if (total >= 12 && total < 13) {
+        theme = "midday";
     } else if (total >= 13 && total < 17) {
         theme = "afternoon";
+    } else if (total >= 17 && total < 18) {
+        theme = "sunset";
     } else {
         theme = "night";
     }
@@ -276,70 +243,102 @@ function setSceneTheme(now = new Date()) {
     body.setAttribute("data-theme", theme);
 
     const sunriseProgress = getRangeProgress(total, 7, 8);
+    const middayProgress = getRangeProgress(total, 12, 13);
     const sunsetProgress = getRangeProgress(total, 16, 17);
+    const duskProgress = getRangeProgress(total, 17, 18);
 
     let nightProgress = 1;
 
-    if (total >= 17 && total <= 20) {
-        nightProgress = getRangeProgress(total, 17, 20);
-    } else if (total > 20 || total < 7) {
+    if (total >= 17 && total <= 18) {
+        nightProgress = duskProgress;
+    } else if (total > 18 || total < 7) {
         nightProgress = 1;
     } else {
         nightProgress = 0;
     }
 
-    const starsDensity = 0.08 + nightProgress * 0.92;
-    const starsOpacity = nightProgress * 0.95;
+    const starsDensity = 0.06 + nightProgress * 0.94;
+    const starsOpacity = nightProgress * 0.96;
 
     setRootVar("--sunrise-progress", sunriseProgress.toFixed(3));
+    setRootVar("--midday-progress", middayProgress.toFixed(3));
     setRootVar("--sunset-progress", sunsetProgress.toFixed(3));
+    setRootVar("--dusk-progress", duskProgress.toFixed(3));
     setRootVar("--night-progress", nightProgress.toFixed(3));
     setRootVar("--stars-density", starsDensity.toFixed(3));
 
     if (theme === "night") {
         setRootVar("--stars-opacity", starsOpacity.toFixed(3));
+    } else if (theme === "sunset") {
+        setRootVar("--stars-opacity", (duskProgress * 0.25).toFixed(3));
     } else if (theme === "afternoon" && total >= 16 && total < 17) {
-        setRootVar("--stars-opacity", (sunsetProgress * 0.18).toFixed(3));
+        setRootVar("--stars-opacity", (sunsetProgress * 0.12).toFixed(3));
     } else {
         setRootVar("--stars-opacity", "0");
     }
 
-    updateSunPosition(total, sunriseProgress, sunsetProgress, nightProgress);
+    updateSunPosition(
+        total,
+        sunriseProgress,
+        sunsetProgress,
+        nightProgress,
+        middayProgress,
+        duskProgress
+    );
+
     updateSceneParticles(theme, sunriseProgress, sunsetProgress, nightProgress);
+    toggleCosmicEffects(theme, nightProgress, duskProgress);
 }
 
-function updateSunPosition(total, sunriseProgress = 0, sunsetProgress = 0, nightProgress = 1) {
+function updateSunPosition(
+    total,
+    sunriseProgress = 0,
+    sunsetProgress = 0,
+    nightProgress = 1,
+    middayProgress = 0,
+    duskProgress = 0
+) {
     const root = document.documentElement;
 
-    const sunVisible = total >= 7 && total < 17;
-    const progress = clamp((total - 7) / 10, 0, 1);
+    const sunVisible = total >= 7 && total < 18;
+    const progress = clamp((total - 7) / 11, 0, 1);
 
     const x = 8 + progress * 78;
-    const y = 22 - Math.sin(progress * Math.PI) * 14;
+    const y = 23 - Math.sin(progress * Math.PI) * 15;
 
     root.style.setProperty("--sun-x", `${x}%`);
     root.style.setProperty("--sun-y", `${y}%`);
 
     if (currentScene === "morning") {
-        const dawnWarm = 0.22 + sunriseProgress * 0.28;
-        const dawnCool = 0.10 + sunriseProgress * 0.10;
+        const dawnWarm = 0.22 + sunriseProgress * 0.32;
+        const dawnCool = 0.10 + sunriseProgress * 0.12;
 
-        root.style.setProperty("--glow-left", `rgba(255, 210, 115, ${dawnWarm.toFixed(2)})`);
+        root.style.setProperty("--glow-left", `rgba(255, 212, 120, ${dawnWarm.toFixed(2)})`);
         root.style.setProperty("--glow-right", `rgba(135, 204, 255, ${dawnCool.toFixed(2)})`);
     }
 
-    if (currentScene === "afternoon") {
-        const afternoonWarm = 0.24 + sunsetProgress * 0.18;
-        const sunsetCool = 0.14 + sunsetProgress * 0.10;
+    if (currentScene === "midday") {
+        root.style.setProperty("--glow-left", `rgba(255, 235, 170, ${(0.42 + middayProgress * 0.08).toFixed(2)})`);
+        root.style.setProperty("--glow-right", `rgba(125, 205, 255, ${(0.20 + middayProgress * 0.05).toFixed(2)})`);
+    }
 
-        root.style.setProperty("--glow-left", `rgba(255, 168, 86, ${afternoonWarm.toFixed(2)})`);
-        root.style.setProperty("--glow-right", `rgba(255, 126, 96, ${sunsetCool.toFixed(2)})`);
+    if (currentScene === "afternoon") {
+        const afternoonWarm = 0.26 + sunsetProgress * 0.14;
+        const afternoonCool = 0.15 + sunsetProgress * 0.06;
+
+        root.style.setProperty("--glow-left", `rgba(255, 180, 96, ${afternoonWarm.toFixed(2)})`);
+        root.style.setProperty("--glow-right", `rgba(255, 132, 96, ${afternoonCool.toFixed(2)})`);
+    }
+
+    if (currentScene === "sunset") {
+        root.style.setProperty("--glow-left", `rgba(255, 120, 88, ${(0.34 + duskProgress * 0.18).toFixed(2)})`);
+        root.style.setProperty("--glow-right", `rgba(139, 92, 246, ${(0.18 + duskProgress * 0.12).toFixed(2)})`);
     }
 
     if (currentScene === "night") {
-        const moonGlow = 0.08 + nightProgress * 0.08;
+        const moonGlow = 0.08 + nightProgress * 0.10;
         root.style.setProperty("--glow-left", `rgba(90, 140, 220, ${moonGlow.toFixed(2)})`);
-        root.style.setProperty("--glow-right", `rgba(79, 140, 255, ${(0.06 + nightProgress * 0.04).toFixed(2)})`);
+        root.style.setProperty("--glow-right", `rgba(79, 140, 255, ${(0.06 + nightProgress * 0.05).toFixed(2)})`);
     }
 
     if (!sunVisible) {
@@ -353,7 +352,10 @@ function updateSceneParticles(theme, sunriseProgress = 0, sunsetProgress = 0, ni
         const alpha = 0.45 + sunriseProgress * 0.18;
         particleColor = `rgba(90, 170, 255, ${alpha.toFixed(2)})`;
         connectionColorBase = "90, 170, 255";
-    } else if (theme === "afternoon") {
+    } else if (theme === "midday") {
+        particleColor = "rgba(120, 195, 255, 0.42)";
+        connectionColorBase = "120, 195, 255";
+    } else if (theme === "afternoon" || theme === "sunset") {
         const mixed = sunsetProgress > 0
             ? `rgba(255, 150, 102, ${(0.42 + sunsetProgress * 0.12).toFixed(2)})`
             : "rgba(255, 164, 88, 0.45)";
@@ -366,8 +368,22 @@ function updateSceneParticles(theme, sunriseProgress = 0, sunsetProgress = 0, ni
         connectionColorBase = "57, 198, 255";
     }
 }
+
+function toggleCosmicEffects(theme, nightProgress = 0, duskProgress = 0) {
+    const cosmicLayer = document.querySelector(".cosmic-layer");
+    if (!cosmicLayer) return;
+
+    if (theme === "sunset") {
+        cosmicLayer.style.opacity = (0.35 + duskProgress * 0.65).toFixed(2);
+    } else if (theme === "night") {
+        cosmicLayer.style.opacity = (0.75 + nightProgress * 0.25).toFixed(2);
+    } else {
+        cosmicLayer.style.opacity = "0";
+    }
+}
+
 /* =========================
-   7. RELÓGIO
+   8. RELÓGIO
 ========================= */
 (function initClock() {
     const months = [
@@ -391,53 +407,37 @@ function updateSceneParticles(theme, sunriseProgress = 0, sunsetProgress = 0, ni
     if (!secondEl || !minuteEl || !hourEl || !timeEl || !dayEl || !dateEl) return;
 
     function updateClock() {
-    const now = new Date();
+        const now = new Date();
 
-    const second = now.getSeconds();
-    const minute = now.getMinutes();
-    const hour = now.getHours();
+        const second = now.getSeconds();
+        const minute = now.getMinutes();
+        const hour = now.getHours();
 
-    const secondDeg = second * 6;
-    const minuteDeg = minute * 6 + second * 0.1;
-    const hourDeg = (hour % 12) * 30 + minute * 0.5;
+        const secondDeg = second * 6;
+        const minuteDeg = minute * 6 + second * 0.1;
+        const hourDeg = (hour % 12) * 30 + minute * 0.5;
 
-    secondEl.style.transform = `rotate(${secondDeg}deg)`;
-    minuteEl.style.transform = `rotate(${minuteDeg}deg)`;
-    hourEl.style.transform = `rotate(${hourDeg}deg)`;
+        secondEl.style.transform = `rotate(${secondDeg}deg)`;
+        minuteEl.style.transform = `rotate(${minuteDeg}deg)`;
+        hourEl.style.transform = `rotate(${hourDeg}deg)`;
 
-    timeEl.textContent = now.toLocaleTimeString("pt-PT", {
-        hour: "2-digit",
-        minute: "2-digit"
-    });
+        timeEl.textContent = now.toLocaleTimeString("pt-PT", {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
 
-    dayEl.textContent = days[now.getDay()];
-    dateEl.textContent = `${now.getDate()} de ${months[now.getMonth()]}`;
+        dayEl.textContent = days[now.getDay()];
+        dateEl.textContent = `${now.getDate()} de ${months[now.getMonth()]}`;
 
-    setSceneTheme(now);
-}
-    
+        setSceneTheme(now);
+    }
 
     updateClock();
     setInterval(updateClock, 1000);
 })();
 
 /* =========================
-   8. INICIALIZAÇÃO
-========================= */
-setSceneTheme(new Date());
-initCanvas();
-createParticles();
-animateParticles();
-initCardsNavigation();
-
-window.addEventListener("resize", () => {
-    initCanvas();
-    createParticles();
-});
-
-
-/* =========================
-   FOGUETE ANIMADO
+   9. FOGUETE
 ========================= */
 function initRocket() {
     const rocket = document.querySelector(".rocket");
@@ -453,4 +453,17 @@ function initRocket() {
     setInterval(launchRocket, 9000);
 }
 
+/* =========================
+   10. INICIALIZAÇÃO
+========================= */
+setSceneTheme(new Date());
+initCanvas();
+createParticles();
+animateParticles();
+initCardsNavigation();
 initRocket();
+
+window.addEventListener("resize", () => {
+    initCanvas();
+    createParticles();
+});

@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 </head>
-<body class="fade-in">
+<body class="fade-in" data-theme="night">
 
     <!-- PRELOADER -->
     <div id="preloader" aria-hidden="true">
@@ -24,70 +24,81 @@
 
     <!-- FUNDO ANIMADO -->
     <div class="animated-bg" aria-hidden="true">
-    <canvas id="hero-canvas"></canvas>
+        <canvas id="hero-canvas"></canvas>
 
-    <!-- FOGUETE -->
-<div class="rocket">
-    <div class="rocket-nose"></div>
+        <!-- FOGUETE -->
+        <div class="rocket">
+            <div class="rocket-nose"></div>
 
-    <div class="rocket-body">
-        <div class="rocket-window"></div>
+            <div class="rocket-body">
+                <div class="rocket-window"></div>
+            </div>
+
+            <div class="rocket-fin rocket-fin-left"></div>
+            <div class="rocket-fin rocket-fin-right"></div>
+            <div class="rocket-fin-center"></div>
+
+            <div class="rocket-base"></div>
+
+            <div class="rocket-flame-core"></div>
+            <div class="rocket-flame"></div>
+        </div>
+
+        <!-- CENÁRIO DINÂMICO -->
+        <div class="sky-glow sky-glow-left"></div>
+        <div class="sky-glow sky-glow-right"></div>
+
+        <div class="sun-moon-wrap">
+            <div class="sun"></div>
+
+            <div class="moon">
+                <div class="moon-flags">
+                    <span class="moon-flag flag-pt"></span>
+                    <span class="moon-flag flag-br"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="cloud-layer cloud-layer-1">
+            <span class="cloud c1"></span>
+            <span class="cloud c2"></span>
+            <span class="cloud c3"></span>
+        </div>
+
+        <div class="cloud-layer cloud-layer-2">
+            <span class="cloud c4"></span>
+            <span class="cloud c5"></span>
+        </div>
+
+        <div class="cosmic-layer">
+            <span class="mini-meteor meteor-1"></span>
+            <span class="mini-meteor meteor-2"></span>
+        </div>
+
+        <div class="stars-layer">
+            <span class="star s1"></span>
+            <span class="star s2"></span>
+            <span class="star s3"></span>
+            <span class="star s4"></span>
+            <span class="star s5"></span>
+            <span class="star s6"></span>
+            <span class="star s7"></span>
+            <span class="star s8"></span>
+            <span class="star s9"></span>
+            <span class="star s10"></span>
+        </div>
+
+        <div class="bg-orb orb-1"></div>
+        <div class="bg-orb orb-2"></div>
+        <div class="bg-orb orb-3"></div>
+        <div class="bg-grid"></div>
+        <div class="bg-scan"></div>
     </div>
-
-    <div class="rocket-fin rocket-fin-left"></div>
-    <div class="rocket-fin rocket-fin-right"></div>
-    <div class="rocket-fin-center"></div>
-
-    <div class="rocket-base"></div>
-
-    <div class="rocket-flame-core"></div>
-    <div class="rocket-flame"></div>
-</div>
-
-    <!-- CENÁRIO DINÂMICO -->
-    <div class="sky-glow sky-glow-left"></div>
-    <div class="sky-glow sky-glow-right"></div>
-
-    <div class="sun-moon-wrap">
-        <div class="sun"></div>
-        <div class="moon"></div>
-    </div>
-
-    <div class="cloud-layer cloud-layer-1">
-        <span class="cloud c1"></span>
-        <span class="cloud c2"></span>
-        <span class="cloud c3"></span>
-    </div>
-
-    <div class="cloud-layer cloud-layer-2">
-        <span class="cloud c4"></span>
-        <span class="cloud c5"></span>
-    </div>
-
-    <div class="stars-layer">
-        <span class="star s1"></span>
-        <span class="star s2"></span>
-        <span class="star s3"></span>
-        <span class="star s4"></span>
-        <span class="star s5"></span>
-        <span class="star s6"></span>
-        <span class="star s7"></span>
-        <span class="star s8"></span>
-        <span class="star s9"></span>
-        <span class="star s10"></span>
-    </div>
-
-    <div class="bg-orb orb-1"></div>
-    <div class="bg-orb orb-2"></div>
-    <div class="bg-orb orb-3"></div>
-    <div class="bg-grid"></div>
-    <div class="bg-scan"></div>
-</div>
 
     <main class="dashboard-shell">
         <!-- HERO / TOPBAR -->
         <header class="hero-panel">
-            <div class="hero-copy">
+            <div class="hero-copy glass-panel">
                 <p class="eyebrow">Portal interno</p>
                 <h1>Ferramentas Servinform</h1>
                 <p class="hero-subtitle">
@@ -101,7 +112,7 @@
                 </div>
             </div>
 
-            <div class="hero-side">
+            <div class="hero-side glass-panel">
                 <div class="mini-status-card">
                     <span class="status-dot"></span>
                     <div>
@@ -133,7 +144,7 @@
         </header>
 
         <!-- TOOLBAR -->
-        <section class="toolbar-panel">
+        <section class="toolbar-panel glass-panel">
             <div class="toolbar-left">
                 <h2>Ferramentas disponíveis</h2>
                 <p>Selecione uma ferramenta para abrir o respetivo módulo.</p>
@@ -256,7 +267,7 @@
         </section>
 
         <!-- FOOTER -->
-        <footer class="main-footer">
+        <footer class="main-footer glass-panel">
             <div class="footer-container">
                 <img src="/images/imagen.png" alt="Servinform Logo" class="footer-logo">
                 <div class="footer-info">
