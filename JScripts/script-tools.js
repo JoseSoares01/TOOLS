@@ -8,6 +8,9 @@
    1. AUTENTICAÇÃO
 ========================= */
 (function checkAuth() {
+    function u(p) {
+        return window.APP && typeof window.APP.url === "function" ? window.APP.url(p) : p;
+    }
     const session = localStorage.getItem("usuarioLogado");
     const path = window.location.pathname;
     const isLoginPage =
@@ -16,9 +19,9 @@
         path.includes("index.html");
 
     if (!session && !isLoginPage) {
-        window.location.href = "/login.html";
+        window.location.href = u("/index.html");
     } else if (session && isLoginPage) {
-        window.location.href = "/pages/dashboard.html";
+        window.location.href = u("/pages/Tools.html");
     }
 })();
 
@@ -170,7 +173,10 @@ function realizarLogin(usuario, senha) {
         document.body.classList.add("fade-out");
 
         setTimeout(() => {
-            window.location.href = "/pages/dashboard.html";
+            window.location.href =
+                window.APP && typeof window.APP.dashboardUrl === "function"
+                    ? window.APP.dashboardUrl()
+                    : "/pages/Tools.html";
         }, 500);
     } else {
         alert("Credenciais inválidas");
@@ -180,7 +186,9 @@ function realizarLogin(usuario, senha) {
 function navigate(page) {
     document.body.classList.add("fade-out");
     setTimeout(() => {
-        window.location.href = `/pages/${page}.html`;
+        const path = `/pages/${page}.html`;
+        window.location.href =
+            window.APP && typeof window.APP.url === "function" ? window.APP.url(path) : path;
     }, 450);
 }
 
@@ -189,7 +197,11 @@ function logout() {
     document.body.classList.add("fade-out");
 
     setTimeout(() => {
-        window.location.replace("/login.html");
+        const dest =
+            window.APP && typeof window.APP.loginUrl === "function"
+                ? window.APP.loginUrl()
+                : "/index.html";
+        window.location.replace(dest);
     }, 500);
 }
 
@@ -208,7 +220,9 @@ function initCardsNavigation() {
             this.classList.add("expanding");
 
             setTimeout(() => {
-                window.location.href = `/pages/${url}.html`;
+                const path = `/pages/${url}.html`;
+                window.location.href =
+                    window.APP && typeof window.APP.url === "function" ? window.APP.url(path) : path;
             }, 520);
         });
     });

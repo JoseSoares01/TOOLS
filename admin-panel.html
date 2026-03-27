@@ -151,7 +151,7 @@
 <body>
     <div class="imagem_fundo"></div>
     
-    <a href="/index.html" class="back-btn">← Voltar ao Login</a>
+    <a href="index.html" id="admin-back-link" class="back-btn">← Voltar ao Login</a>
     
     <div class="admin-container">
         <div class="admin-header">
@@ -191,8 +191,66 @@
         </div>
     </div>
 
+    <script src="/JScripts/core/app-config.js"></script>
     <script src="/JScripts/database-manager.js"></script>
     <script>
+        (function () {
+            var back = document.getElementById("admin-back-link");
+            if (back && window.APP && typeof window.APP.loginUrl === "function") {
+                back.setAttribute("href", window.APP.loginUrl());
+            }
+        })();
+
+        function assertAdminAccess() {
+            var raw = localStorage.getItem("usuarioLogado");
+            if (!raw) {
+                alert("Sessão expirada. Faça login novamente.");
+                window.location.href =
+                    window.APP && typeof window.APP.loginUrl === "function"
+                        ? window.APP.loginUrl()
+                        : "/index.html";
+                return false;
+            }
+            try {
+                var user = JSON.parse(raw);
+                if (user.tipo !== "Administrador") {
+                    alert("Acesso reservado a administradores.");
+                    window.location.href =
+                        window.APP && typeof window.APP.dashboardUrl === "function"
+                            ? window.APP.dashboardUrl()
+                            : "/pages/Tools.html";
+                    return false;
+                }
+            } catch (e) {
+                localStorage.removeItem("usuarioLogado");
+                window.location.href =
+                    window.APP && typeof window.APP.loginUrl === "function"
+                        ? window.APP.loginUrl()
+                        : "/index.html";
+                return false;
+            }
+            return true;
+        }
+
+        function exportarUsuarios() {
+            if (typeof dbManager === "undefined") return;
+            var blob = new Blob([JSON.stringify(dbManager.users, null, 2)], {
+                type: "application/json;charset=utf-8"
+            });
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "usuarios-svf.json";
+            a.click();
+            setTimeout(function () {
+                URL.revokeObjectURL(a.href);
+            }, 2000);
+        }
+
+        function verEstatisticas() {
+            if (typeof dbManager === "undefined") return;
+            alert(JSON.stringify(dbManager.getStats(), null, 2));
+        }
+
         // Função para carregar estatísticas
         function loadStats() {
             if (typeof dbManager !== 'undefined') {
@@ -310,6 +368,7 @@
 
         // Carrega dados quando a página carrega
         document.addEventListener('DOMContentLoaded', function() {
+            if (!assertAdminAccess()) return;
             loadStats();
             loadUsers();
         });

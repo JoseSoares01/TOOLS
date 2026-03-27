@@ -57,7 +57,21 @@ class SidebarMenu {
             }
         ];
 
+        this.items = this.items.map((item) => ({
+            ...item,
+            href: this.resolveUrl(item.href),
+            icon: this.resolveUrl(item.icon)
+        }));
+
         this.init();
+    }
+
+    /** Usa window.APP.url (app-config.js) quando existir — suporta subpastas em prod */
+    resolveUrl(path) {
+        if (window.APP && typeof window.APP.url === "function") {
+            return window.APP.url(path);
+        }
+        return path;
     }
 
     init() {
@@ -100,7 +114,7 @@ class SidebarMenu {
                         aria-label="Menu lateral"
                         aria-expanded="false"
                     >
-                        <img class="sidebar-brand-logo" src="/images/Logo-Lateral.png" alt="Servinform">
+                        <img class="sidebar-brand-logo" src="${this.resolveUrl("/images/Logo-Lateral.png")}" alt="Servinform">
                         <span class="sidebar-brand-text">Ferramentas</span>
                     </button>
                 </div>
@@ -237,7 +251,11 @@ class SidebarMenu {
         document.body.classList.add("fade-out");
 
         setTimeout(() => {
-            window.location.replace("/login.html");
+            var dest =
+                window.APP && typeof window.APP.loginUrl === "function"
+                    ? window.APP.loginUrl()
+                    : "/index.html";
+            window.location.replace(dest);
         }, 600);
     }
 }
@@ -255,7 +273,11 @@ if (typeof window !== "undefined" && typeof window.logout !== "function") {
         document.body.classList.add("fade-out");
 
         setTimeout(() => {
-            window.location.replace("/login.html");
+            var dest =
+                window.APP && typeof window.APP.loginUrl === "function"
+                    ? window.APP.loginUrl()
+                    : "/index.html";
+            window.location.replace(dest);
         }, 600);
     };
 }

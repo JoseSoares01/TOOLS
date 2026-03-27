@@ -1,6 +1,19 @@
 // Sistema de Login SVF com Banco de Dados Integrado
 // Carrega o gerenciador de banco de dados
 // Nota: O arquivo database-manager.js deve ser carregado antes deste
+// Requer JScripts/core/app-config.js antes deste script para caminhos em subpastas.
+
+function appUrl(p) {
+    return window.APP && typeof window.APP.url === "function" ? window.APP.url(p) : p;
+}
+function dashboardUrl() {
+    return window.APP && typeof window.APP.dashboardUrl === "function"
+        ? window.APP.dashboardUrl()
+        : "/pages/Tools.html";
+}
+function loginPageUrl() {
+    return window.APP && typeof window.APP.loginUrl === "function" ? window.APP.loginUrl() : "/index.html";
+}
 
 // Elementos do DOM para alternância entre formulários
 const container = document.querySelector('.container');
@@ -53,7 +66,7 @@ if (loginForm) {
                 
                 // Redireciona após um breve delay
                 setTimeout(() => {
-                    window.location.href = '/pages/Tools.html';
+                    window.location.href = dashboardUrl();
                 }, 1500);
             } else {
                 showMessage(result.message, 'error');
@@ -72,7 +85,7 @@ if (loginForm) {
                 showMessage('Login realizado com sucesso!', 'success');
                 localStorage.setItem('usuarioLogado', login);
                 setTimeout(() => {
-                    window.location.href = '/pages/Tools.html';
+                    window.location.href = dashboardUrl();
                 }, 1500);
             } else {
                 showMessage('Login ou senha incorretos. Tente novamente.', 'error');
@@ -172,7 +185,7 @@ function verificarLogin() {
                 
                 if (hoursDiff < 24) {
                     // Login ainda válido, redireciona
-                    window.location.href = '/pages/Tools.html';
+                    window.location.href = dashboardUrl();
                     return;
                 }
             }
@@ -191,7 +204,7 @@ document.addEventListener('DOMContentLoaded', verificarLogin);
 function logout() {
     localStorage.removeItem('usuarioLogado');
     localStorage.removeItem('loginTime');
-    window.location.href = '/index.html';
+    window.location.href = loginPageUrl();
 }
 
 // Adiciona funcionalidade de "Lembrar-me"

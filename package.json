@@ -1,0 +1,9 @@
+{
+  "name": "servinform-tools-portal",
+  "private": true,
+  "description": "Portal estático de ferramentas — use npm run dev para testes locais",
+  "scripts": {
+    "dev": "npx --yes serve -l 5173 .",
+    "start": "npm run dev"
+  }
+}
