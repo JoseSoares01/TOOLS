@@ -1688,3 +1688,51 @@ body[data-theme="night"] {
         animation: none;
     }
 }
+
+
+.weather-card {
+    position: relative;
+    z-index: 1;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.05),
+        0 0 24px rgba(255,255,255,0.02);
+}
+
+.weather-card {
+    position: relative;
+    z-index: 1;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.05),
+        0 0 24px rgba(255,255,255,0.02);
+}
+
+.weather-label {
+    display: block;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    margin-bottom: 8px;
+}
+
+.weather-temp {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.weather-location {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+}

@@ -453,6 +453,39 @@ function initRocket() {
     setInterval(launchRocket, 9000);
 }
 
+
+
+
+/* =========================
+   TEMPERATURA FIXA DE LISBOA
+========================= */
+async function initWeatherWidget() {
+    const tempEl = document.getElementById("weatherTemp");
+    if (!tempEl) return;
+
+    const url = "https://api.open-meteo.com/v1/forecast?latitude=38.7223&longitude=-9.1393&current=temperature_2m&timezone=auto";
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error("Falha ao obter temperatura");
+        }
+
+        const data = await response.json();
+        const temperature = data?.current?.temperature_2m;
+
+        if (typeof temperature !== "number") {
+            throw new Error("Temperatura inválida");
+        }
+
+        tempEl.textContent = `${Math.round(temperature)}°C`;
+    } catch (error) {
+        tempEl.textContent = "--°C";
+        console.error("Erro ao carregar temperatura de Lisboa:", error);
+    }
+}
+
+
 /* =========================
    10. INICIALIZAÇÃO
 ========================= */
@@ -462,6 +495,7 @@ createParticles();
 animateParticles();
 initCardsNavigation();
 initRocket();
+initWeatherWidget();
 
 window.addEventListener("resize", () => {
     initCanvas();
