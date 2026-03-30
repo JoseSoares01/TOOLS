@@ -603,19 +603,28 @@ body {
 }
 
 .modern-card {
+    position: relative;
     background: var(--card-surface);
-    border-radius: 28px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-xl);
     overflow: hidden;
     display: flex;
     flex-direction: column;
     cursor: pointer;
     opacity: 0;
     transform: translateY(28px);
-    box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07),
+        0 0 0 1px var(--glass-border-glow);
     transition:
         transform 0.35s ease,
         box-shadow 0.35s ease,
-        opacity 0.35s ease;
+        opacity 0.35s ease,
+        border-color 1s ease,
+        background 1s ease;
 }
 
 .modern-card.show {
@@ -624,14 +633,21 @@ body {
 }
 
 .modern-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 24px 50px rgba(0,0,0,0.24);
+    transform: translateY(-8px);
+    border-color: color-mix(in srgb, var(--accent) 28%, var(--line));
+    box-shadow:
+        0 28px 58px rgba(0, 0, 0, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 0 0 1px var(--glass-border-glow),
+        0 0 42px color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
 .modern-card.expanding {
     transform: scale(1.04);
     z-index: 2000;
-    box-shadow: 0 0 100px rgba(57, 198, 255, 0.30);
+    box-shadow:
+        0 0 100px color-mix(in srgb, var(--accent) 32%, transparent),
+        0 0 0 1px var(--glass-border-glow);
 }
 
 .card-header {
@@ -641,6 +657,16 @@ body {
     justify-content: center;
     position: relative;
     overflow: hidden;
+    transition: background 1.2s ease;
+}
+
+.card-header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent 58%);
+    pointer-events: none;
+    z-index: 1;
 }
 
 .card-header img {
@@ -651,11 +677,11 @@ body {
     z-index: 2;
 }
 
-.bg-grad-1 { background: linear-gradient(135deg, #0d5f89, #33d8ff); }
-.bg-grad-2 { background: linear-gradient(135deg, #0b2740, #0e7fb5); }
-.bg-grad-3 { background: linear-gradient(135deg, #24394d, #4ca1af); }
-.bg-grad-4 { background: linear-gradient(135deg, #17325b, #2f6bc0); }
-.bg-grad-5 { background: linear-gradient(135deg, #0f4c5a, #5dad77); }
+.bg-grad-1 { background: linear-gradient(135deg, var(--sky-top), var(--accent)); }
+.bg-grad-2 { background: linear-gradient(135deg, var(--accent-2), var(--sky-bottom)); }
+.bg-grad-3 { background: linear-gradient(145deg, var(--sky-bottom), var(--accent)); }
+.bg-grad-4 { background: linear-gradient(125deg, var(--accent), var(--accent-2)); }
+.bg-grad-5 { background: linear-gradient(155deg, var(--sky-top), var(--success)); }
 
 .card-body {
     padding: 26px;
@@ -666,9 +692,11 @@ body {
 
 .card-number {
     font-size: 0.8rem;
-    color: #93a1b1;
+    color: var(--text-soft);
     font-weight: 800;
     letter-spacing: 0.14em;
+    opacity: 0.9;
+    transition: color 0.8s ease;
 }
 
 .card-body h3 {
@@ -676,6 +704,7 @@ body {
     margin: 10px 0;
     font-size: 1.36rem;
     font-weight: 800;
+    transition: color 0.8s ease;
 }
 
 .card-body p {
@@ -683,12 +712,14 @@ body {
     font-size: 0.95rem;
     line-height: 1.65;
     min-height: 74px;
+    transition: color 0.8s ease;
 }
 
 .card-footer {
     margin-top: 20px;
     padding-top: 18px;
-    border-top: 1px solid #edf2f6;
+    border-top: 1px solid var(--line);
+    transition: border-color 1s ease;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -832,86 +863,70 @@ body {
     right: 10%;
     top: 16%;
     transform: translate(0, 0);
-    background:
-        radial-gradient(circle at 35% 30%, #ffffff 0%, #dce9ff 45%, #b8c9f2 75%, rgba(184,201,242,0.2) 100%);
-    box-shadow:
-        0 0 32px rgba(210, 225, 255, 0.28),
-        0 0 90px rgba(160, 190, 255, 0.18);
-}
-
-.moon::after {
-    content: "";
-    position: absolute;
-    inset: 14% 10% 10% 36%;
-    border-radius: 50%;
-    background: rgba(9, 18, 32, 0.20);
-    filter: blur(1px);
-}
-
-/* BANDEIRAS NA LUA */
-.moon-flags {
-    position: absolute;
-    left: 18%;
-    bottom: 12%;
-    display: flex;
-    gap: 8px;
-    align-items: end;
-    z-index: 3;
-    opacity: 0;
-    transform: translateY(4px);
-    transition: opacity .6s ease, transform .6s ease;
-}
-
-.moon-flag {
-    position: relative;
-    width: 14px;
-    height: 10px;
-    border-radius: 2px;
     overflow: hidden;
-    box-shadow: 0 0 6px rgba(255,255,255,.18);
-    animation: tinyWave 2.4s ease-in-out infinite;
-    transform-origin: left center;
+    animation: moonShine 2s ease-in-out infinite;
+    background-color: rgb(230, 224, 224);
+    box-shadow:
+        0 0 8px 2px rgba(235, 235, 231, 0.35),
+        0 0 36px rgba(200, 210, 230, 0.22),
+        0 0 72px rgba(160, 180, 220, 0.12);
 }
 
-.moon-flag::before {
-    content: "";
+@keyframes moonShine {
+    0%, 100% {
+        filter: brightness(1);
+        box-shadow:
+            0 0 8px 2px rgba(235, 235, 231, 0.35),
+            0 0 36px rgba(200, 210, 230, 0.22),
+            0 0 72px rgba(160, 180, 220, 0.12);
+    }
+    50% {
+        filter: brightness(1.05);
+        box-shadow:
+            0 0 14px 4px rgba(255, 255, 250, 0.45),
+            0 0 48px rgba(220, 228, 245, 0.28),
+            0 0 88px rgba(180, 200, 235, 0.16);
+    }
+}
+
+.moon-crater {
     position: absolute;
-    left: -2px;
-    bottom: -10px;
-    width: 2px;
-    height: 16px;
-    background: rgba(210, 220, 240, 0.9);
-    border-radius: 999px;
+    border-radius: 50%;
+    background-color: transparent;
+    pointer-events: none;
+    z-index: 1;
 }
 
-.flag-pt {
-    background:
-      linear-gradient(90deg, #006847 0 40%, #da291c 40% 100%);
+.moon-crater--1 {
+    top: 20%;
+    left: 40%;
+    width: 20%;
+    height: 20%;
+    box-shadow: inset 2px 0 4px rgba(167, 167, 167, 0.685);
 }
 
-.flag-br {
-    background: #009b3a;
-    animation-delay: .25s;
+.moon-crater--2 {
+    top: 60%;
+    left: 16%;
+    width: 20%;
+    height: 20%;
+    box-shadow: inset -2px 0 4px rgba(167, 167, 167, 0.685);
 }
 
-.flag-br::after {
-    content: "";
-    position: absolute;
-    inset: 2px 3px;
-    background: #ffdf00;
-    transform: rotate(45deg);
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+.moon-crater--3 {
+    top: 70%;
+    left: 70%;
+    width: 20%;
+    height: 20%;
+    box-shadow: inset 2px 0 4px rgba(167, 167, 167, 0.685);
 }
 
-@keyframes tinyWave {
-    0%, 100% { transform: perspective(40px) rotateY(0deg) translateY(0); }
-    50% { transform: perspective(40px) rotateY(-10deg) translateY(-1px); }
-}
-
-body[data-theme="sunset"] .moon-flags,
-body[data-theme="night"] .moon-flags {
-    opacity: 1;
-    transform: translateY(0);
+.moon-crater--4.moon-crater--sm {
+    top: 40%;
+    left: 60%;
+    width: 10%;
+    height: 10%;
+    box-shadow: inset 2px 0 4px rgba(167, 167, 167, 0.585);
 }
 
 .cloud-layer {
@@ -1684,7 +1699,7 @@ body[data-theme="night"] {
     .mini-meteor,
     .star,
     .cloud,
-    .moon-flag {
+    .moon {
         animation: none;
     }
 }

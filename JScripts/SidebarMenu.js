@@ -85,6 +85,7 @@ class SidebarMenu {
         const sidebar = document.createElement("aside");
         sidebar.className = "sidebar sidebar--collapsed";
         sidebar.setAttribute("aria-label", "Menu lateral");
+        sidebar.setAttribute("aria-expanded", "false");
 
         const navItemsHtml = this.items.map((item) => {
             const tooltip = item.label.replace(/"/g, "&quot;");
@@ -108,15 +109,10 @@ class SidebarMenu {
         sidebar.innerHTML = `
             <div class="sidebar-shell">
                 <div class="sidebar-top">
-                    <button
-                        class="sidebar-brand"
-                        type="button"
-                        aria-label="Menu lateral"
-                        aria-expanded="false"
-                    >
+                    <div class="sidebar-brand">
                         <img class="sidebar-brand-logo" src="${this.resolveUrl("/images/Logo-Lateral.png")}" alt="Servinform">
                         <span class="sidebar-brand-text">Ferramentas</span>
-                    </button>
+                    </div>
                 </div>
 
                 <nav class="sidebar-nav" aria-label="Páginas">
@@ -210,10 +206,7 @@ class SidebarMenu {
         document.body.classList.toggle("sidebar-expanded", expanded);
         document.body.classList.toggle("sidebar-collapsed", !expanded);
 
-        const toggleBtn = this.sidebar.querySelector(".sidebar-brand");
-        if (toggleBtn) {
-            toggleBtn.setAttribute("aria-expanded", expanded ? "true" : "false");
-        }
+        this.sidebar.setAttribute("aria-expanded", expanded ? "true" : "false");
     }
 
     clearAutoCollapse() {
