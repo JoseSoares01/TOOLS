@@ -272,7 +272,159 @@
                 </div>
             </article>
         </section>
-        
+
+        <!--
+            Feature: Newsletter / destaques internos (carrossel horizontal premium)
+            - Secção informativa antes do footer; estilos .tools-nl em Style-tools.css;
+              lógica do carrossel em JScripts/tools-newsletter.js (setas, snap, progresso,
+              dots, autoplay com pausa ao hover, teclado e prefers-reduced-motion).
+        -->
+        <section
+            class="tools-nl"
+            id="tools-newsletter"
+            aria-labelledby="tools-nl-title"
+            aria-roledescription="Carrossel"
+        >
+            <div class="tools-nl__panel">
+                <header class="tools-nl__header">
+                    <div class="tools-nl__header-row">
+                        <span class="tools-nl__badge">Novidades</span>
+                        <p class="tools-nl__kicker">Comunicados internos</p>
+                    </div>
+                    <h2 class="tools-nl__title" id="tools-nl-title">Destaques &amp; novidades</h2>
+                    <p class="tools-nl__subtitle">
+                        Acompanhe marcos da equipa, evolução da plataforma e atualizações das ferramentas.
+                    </p>
+                </header>
+
+                <div class="tools-nl__carousel" data-tools-nl-carousel>
+                    <button
+                        type="button"
+                        class="tools-nl__arrow tools-nl__arrow--prev"
+                        aria-label="Anterior"
+                        data-tools-nl-prev
+                    >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                    <div class="tools-nl__viewport" tabindex="0">
+                        <div class="tools-nl__track" data-tools-nl-track>
+                            <article class="tools-nl__card">
+                                <span class="tools-nl__cat">Marco</span>
+                                <div class="tools-nl__card-top">
+                                    <span class="tools-nl__icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>
+                                    </span>
+                                    <h3 class="tools-nl__card-title">Marco Histórico</h3>
+                                </div>
+                                <p class="tools-nl__card-text">
+                                    A equipa atingiu um máximo de 6.000 faturas/mês contabilizadas em sistema, refletindo o esforço e compromisso de todos.
+                                </p>
+                            </article>
+
+                            <article class="tools-nl__card">
+                                <span class="tools-nl__cat">Equipa</span>
+                                <div class="tools-nl__card-top">
+                                    <span class="tools-nl__icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M20 12v10H4V12M2 7h20v5H2V7zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+                                    </span>
+                                    <h3 class="tools-nl__card-title">1 Ano de Equipa</h3>
+                                </div>
+                                <p class="tools-nl__card-text">
+                                    Parabéns à Anisabel, que celebra 1 ano de trabalho connosco na Trivalor. Obrigado pela dedicação e contributo.
+                                </p>
+                            </article>
+
+                            <article class="tools-nl__card">
+                                <span class="tools-nl__cat">Atualização</span>
+                                <div class="tools-nl__card-top">
+                                    <span class="tools-nl__icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09zM12 15l-3-3a22 22 0 012-3 17 17 0 014-4 17 17 0 014 4 17 17 0 012 3"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M15 12h5s-.55-3.03-2-4c-1.62-1.08-5 0-5 0"/></svg>
+                                    </span>
+                                    <h3 class="tools-nl__card-title">Plataforma Renovada</h3>
+                                </div>
+                                <p class="tools-nl__card-text">
+                                    A página de ferramentas online foi renovada e evoluiu de 2 para 7 ferramentas, com uma experiência mais moderna, dinâmica e eficiente.
+                                </p>
+                            </article>
+
+                            <article class="tools-nl__card">
+                                <span class="tools-nl__cat">Ferramenta</span>
+                                <div class="tools-nl__card-top">
+                                    <span class="tools-nl__icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                    </span>
+                                    <h3 class="tools-nl__card-title">Gerador QR Trivalor</h3>
+                                </div>
+                                <p class="tools-nl__card-text">
+                                    Ferramenta para geração rápida e padronizada de códigos QR no âmbito fiscal. Média atual: 295 QR codes por mês.
+                                </p>
+                            </article>
+
+                            <article class="tools-nl__card">
+                                <span class="tools-nl__cat">Ferramenta</span>
+                                <div class="tools-nl__card-top">
+                                    <span class="tools-nl__icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+                                    </span>
+                                    <h3 class="tools-nl__card-title">Edição de PDFs</h3>
+                                </div>
+                                <p class="tools-nl__card-text">
+                                    Ferramenta criada para juntar, dividir e organizar PDFs, facilitando especialmente o tratamento de faturas com anexos.
+                                </p>
+                            </article>
+
+                            <article class="tools-nl__card">
+                                <span class="tools-nl__cat">Ferramenta</span>
+                                <div class="tools-nl__card-top">
+                                    <span class="tools-nl__icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21.21 15.89A10 10 0 118 2.83"/><path d="M22 12A10 10 0 0012 2v10z"/></svg>
+                                    </span>
+                                    <h3 class="tools-nl__card-title">Distribuição de Custos</h3>
+                                </div>
+                                <p class="tools-nl__card-text">
+                                    Ajuda na redistribuição e validação de valores, com exportação orientada à operação.
+                                </p>
+                            </article>
+
+                            <article class="tools-nl__card">
+                                <span class="tools-nl__cat">Ferramenta</span>
+                                <div class="tools-nl__card-top">
+                                    <span class="tools-nl__icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    </span>
+                                    <h3 class="tools-nl__card-title">Encontrar Cidades</h3>
+                                </div>
+                                <p class="tools-nl__card-text">
+                                    Permite identificar rapidamente se localidades em Portugal pertencem ao Norte ou Sul, apoiando classificações operacionais.
+                                </p>
+                            </article>
+                        </div>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="tools-nl__arrow tools-nl__arrow--next"
+                        aria-label="Seguinte"
+                        data-tools-nl-next
+                    >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="tools-nl__progress-wrap" aria-hidden="true">
+                    <div class="tools-nl__progress-track">
+                        <div class="tools-nl__progress-fill" data-tools-nl-progress></div>
+                    </div>
+                </div>
+
+                <div class="tools-nl__dots" data-tools-nl-dots role="tablist" aria-label="Posição no carrossel"></div>
+            </div>
+        </section>
 
         <!-- FOOTER -->
         <footer class="main-footer glass-panel">
@@ -295,5 +447,6 @@
     <script src="/JScripts/core/app-config.js"></script>
     <script src="/JScripts/SidebarMenu.js"></script>
     <script src="/JScripts/script-tools.js"></script>
+    <script src="/JScripts/tools-newsletter.js"></script>
 </body>
 </html>

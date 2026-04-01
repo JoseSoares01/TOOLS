@@ -859,6 +859,363 @@ body {
 .bg-grad-5 { background: linear-gradient(155deg, var(--sky-top), var(--success)); }
 
 /* =========================
+   NEWSLETTER HORIZONTAL (Tools — prefixo .tools-nl)
+   Destaques internos em carrossel; JS: JScripts/tools-newsletter.js
+========================= */
+.tools-nl {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 32px;
+    margin-bottom: 4px;
+    opacity: 0;
+    transform: translateY(18px);
+    animation: toolsNlReveal 0.7s ease 0.45s forwards;
+}
+
+@keyframes toolsNlReveal {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tools-nl__panel {
+    position: relative;
+    padding: 26px 24px 22px;
+    border-radius: var(--radius-xl);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow:
+        var(--shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 0 0 1px var(--glass-border-glow);
+    overflow: hidden;
+    transition: border-color 1s ease, background 1s ease, box-shadow 0.35s ease;
+}
+
+.tools-nl__panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--hero-reflection);
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 1.2s ease;
+}
+
+.tools-nl__panel > * {
+    position: relative;
+    z-index: 1;
+}
+
+.tools-nl__header {
+    margin-bottom: 22px;
+}
+
+.tools-nl__header-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+    margin-bottom: 10px;
+}
+
+.tools-nl__badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.tools-nl__kicker {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--text-soft);
+    font-weight: 600;
+}
+
+.tools-nl__title {
+    margin: 0 0 8px;
+    font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    line-height: 1.15;
+    transition: color 0.8s ease;
+}
+
+.tools-nl__subtitle {
+    margin: 0;
+    max-width: 62ch;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--text-soft);
+    transition: color 0.8s ease;
+}
+
+.tools-nl__carousel {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.tools-nl__viewport {
+    flex: 1 1 auto;
+    min-width: 0;
+    border-radius: var(--radius-lg);
+    outline: none;
+}
+
+.tools-nl__viewport:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 45%, transparent);
+    border-radius: var(--radius-lg);
+}
+
+.tools-nl__track {
+    display: flex;
+    gap: 16px;
+    padding: 6px 4px 14px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--text) 18%, transparent) transparent;
+}
+
+.tools-nl__track::-webkit-scrollbar {
+    height: 7px;
+}
+
+.tools-nl__track::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--text) 16%, transparent);
+    border-radius: 999px;
+}
+
+.tools-nl__card {
+    flex: 0 0 min(340px, calc(100vw - 120px));
+    max-width: min(340px, calc(100vw - 120px));
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px 20px 18px;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--card-body-bg) 78%, transparent);
+    border: 1px solid var(--line);
+    box-shadow:
+        inset -1px 1px 0 rgba(255, 255, 255, 0.45),
+        0 14px 36px rgba(0, 0, 0, 0.1);
+    transition:
+        transform 0.3s ease,
+        border-color 1s ease,
+        background 1s ease,
+        box-shadow 0.35s ease;
+}
+
+.tools-nl__card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--accent) 22%, var(--line));
+    box-shadow:
+        inset -1px 1px 0 rgba(255, 255, 255, 0.55),
+        0 18px 42px rgba(0, 0, 0, 0.12),
+        0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.tools-nl__cat {
+    align-self: flex-start;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--tag-text);
+    background: var(--tag-bg);
+}
+
+.tools-nl__card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.tools-nl__icon {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.tools-nl__icon svg {
+    display: block;
+}
+
+.tools-nl__card-title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 800;
+    line-height: 1.25;
+    color: var(--card-title);
+    letter-spacing: -0.02em;
+    transition: color 0.8s ease;
+}
+
+.tools-nl__card-text {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.62;
+    color: var(--card-text);
+    flex: 1;
+    transition: color 0.8s ease;
+}
+
+.tools-nl__arrow {
+    flex: 0 0 auto;
+    align-self: center;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--panel-strong) 65%, transparent);
+    color: var(--text);
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        color 0.75s ease;
+}
+
+.tools-nl__arrow:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+    transform: scale(1.04);
+}
+
+.tools-nl__arrow:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.tools-nl__arrow:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.tools-nl__progress-wrap {
+    margin-top: 16px;
+    padding: 0 2px;
+}
+
+.tools-nl__progress-track {
+    height: 3px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--line) 80%, transparent);
+    overflow: hidden;
+}
+
+.tools-nl__progress-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: inherit;
+    background: linear-gradient(
+        90deg,
+        var(--accent),
+        color-mix(in srgb, var(--accent-2) 70%, var(--accent))
+    );
+    transition: width 0.12s ease-out;
+}
+
+.tools-nl__dots {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.tools-nl__dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: none;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--text-soft) 35%, transparent);
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        width 0.25s ease;
+}
+
+.tools-nl__dot:hover {
+    background: color-mix(in srgb, var(--accent) 55%, transparent);
+    transform: scale(1.15);
+}
+
+.tools-nl__dot[aria-selected="true"] {
+    width: 22px;
+    background: var(--accent);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+@media (max-width: 640px) {
+    .tools-nl__panel {
+        padding: 20px 16px 18px;
+    }
+
+    .tools-nl__carousel {
+        gap: 6px;
+    }
+
+    .tools-nl__arrow {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+    }
+
+    .tools-nl__card {
+        flex-basis: min(280px, calc(100vw - 96px));
+        max-width: min(280px, calc(100vw - 96px));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tools-nl {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+
+    .tools-nl__track {
+        scroll-behavior: auto;
+    }
+}
+
+/* =========================
    FOOTER
 ========================= */
 .main-footer {
