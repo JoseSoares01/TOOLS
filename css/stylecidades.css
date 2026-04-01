@@ -218,6 +218,7 @@ body {
   margin-bottom: 22px;
 }
 
+/* Brand: globo em canvas (demo adaptada) */
 .brand-icon {
   width: 78px;
   height: 78px;
@@ -232,6 +233,73 @@ body {
 .brand-icon svg {
   width: 64px;
   height: 64px;
+}
+
+.brand-icon--globe {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  min-height: unset;
+  margin: 0 auto;
+  padding: 0;
+  display: block;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.brand-globe-card {
+  position: relative;
+  width: 100%;
+  padding: 16px;
+  text-align: center;
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  overflow: hidden;
+  /* Mesmo fundo em camadas que o body da página */
+  background:
+    radial-gradient(circle at top left, rgba(0, 210, 255, 0.10), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(0, 255, 136, 0.08), transparent 24%),
+    linear-gradient(135deg, var(--bg-0) 0%, var(--bg-1) 35%, var(--bg-2) 70%, var(--bg-3) 100%);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.brand-globe-inner {
+  position: relative;
+  z-index: 2;
+}
+
+.brand-globe-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 0;
+}
+
+/* Contentor WebGL — sem hover; ocupa a área útil do cartão */
+#cidadesParticleGlobe.brand-particle-globe {
+  width: 100%;
+  max-width: min(280px, 100%);
+  aspect-ratio: 1;
+  min-height: 240px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 14px rgba(60, 100, 180, 0.35));
+  pointer-events: none;
+}
+
+#cidadesParticleGlobe.brand-particle-globe canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none;
 }
 
 .eyebrow {

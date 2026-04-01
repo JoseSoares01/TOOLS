@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Globo de partículas — demo</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: system-ui, sans-serif;
+      background: radial-gradient(ellipse 100% 60% at 50% 0%, #183b73 0%, #0c1f3f 40%, #071427 70%, #030814 100%);
+      color: #e8eef8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+    h1 { font-size: 1.1rem; font-weight: 600; margin: 0 0 1rem; opacity: 0.85; }
+    .panel {
+      width: min(320px, 100%);
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: linear-gradient(180deg, #122a4a 0%, #0a1830 50%, #050c18 100%);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+    }
+    #cidadesParticleGlobe.brand-particle-globe {
+      width: 100%;
+      max-width: 280px;
+      aspect-ratio: 1;
+      min-height: 240px;
+      margin: 0 auto;
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    #cidadesParticleGlobe canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+      pointer-events: none;
+    }
+    p.note { font-size: 0.8rem; opacity: 0.7; max-width: 36rem; margin-top: 1.5rem; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <h1>Globo de partículas (máscara equiretangular · Three.js)</h1>
+  <div class="panel">
+    <div id="cidadesParticleGlobe" class="brand-particle-globe"></div>
+  </div>
+  <p class="note">
+    Máscara: <code>earth_specular_2048.jpg</code> (exemplos Three.js). Se oceano/terra estiverem invertidos no .r,
+    altere <code>INVERT_LAND_MASK = 1</code> em <code>cidades-globe-brand.js</code>. Ajuste <code>LAND_THRESHOLD</code> se necessário.
+  </p>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Mesmo script que buscarcidades — caminho relativo funciona com file:// e npm run dev -->
+  <script src="../JScripts/cidades-globe-brand.js"></script>
+</body>
+</html>

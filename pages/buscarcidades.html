@@ -36,20 +36,14 @@
            ===================================================== -->
       <aside class="side-panel card" aria-label="Informação da aplicação">
         <div class="brand-block">
-          <div class="brand-icon" aria-hidden="true">
-            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="brandGrad" x1="0" y1="0" x2="64" y2="64">
-                  <stop offset="0%" stop-color="#00d2ff"/>
-                  <stop offset="100%" stop-color="#00ff88"/>
-                </linearGradient>
-              </defs>
-              <rect x="6" y="6" width="52" height="52" rx="16" fill="rgba(255,255,255,0.06)" />
-              <path d="M32 14C32 14 23 22 23 34C23 43 32 51 32 51C32 51 41 43 41 34C41 22 32 14 32 14Z"
-                fill="url(#brandGrad)" fill-opacity="0.18" stroke="url(#brandGrad)" stroke-width="1.8"/>
-              <circle cx="32" cy="33" r="5" fill="url(#brandGrad)" fill-opacity="0.85"/>
-              <line x1="18" y1="33" x2="46" y2="33" stroke="#FFD66B" stroke-width="1.6" stroke-dasharray="4 3"/>
-            </svg>
+          <div class="brand-icon brand-icon--globe" aria-hidden="true">
+            <div class="brand-globe-card brand-globe-card--particle-globe">
+              <div class="brand-globe-inner">
+                <div class="brand-globe-wrap">
+                  <div id="cidadesParticleGlobe" class="brand-particle-globe" aria-hidden="true"></div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="brand-copy">
@@ -262,8 +256,10 @@
   </div>
 </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="/JScripts/core/app-config.js"></script>
   <script src="/JScripts/SidebarMenu.js"></script>
+  <script src="/JScripts/cidades-globe-brand.js"></script>
   <script src="/JScripts/scriptcidades.js"></script>
 </body>
 </html>
