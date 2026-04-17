@@ -876,3 +876,63 @@ button {
     background: rgba(57, 198, 255, 0.10);
     outline: none;
 }
+
+/* --- Pesquisa XML fornecedores estrangeiros (TrivalorForeignVendorXml.js) --- */
+.foreign-vendor-xml {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+}
+
+.foreign-vendor-xml__title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    margin-bottom: 10px;
+}
+
+.foreign-vendor-xml__list {
+    margin-top: 8px;
+    max-height: 220px;
+    overflow-y: auto;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    background: var(--panel-strong);
+}
+
+.foreign-vendor-xml__item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 0.88rem;
+    color: var(--text);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.foreign-vendor-xml__item:last-child {
+    border-bottom: none;
+}
+
+.foreign-vendor-xml__item:hover,
+.foreign-vendor-xml__item:focus {
+    background: rgba(57, 198, 255, 0.08);
+    outline: none;
+}
+
+.foreign-vendor-xml__status {
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: var(--text-soft);
+    min-height: 1.2em;
+}
+
+.foreign-vendor-xml__status.foreign-vendor-xml__status--error {
+    color: var(--danger);
+}

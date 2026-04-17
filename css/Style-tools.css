@@ -1088,6 +1088,16 @@ body {
     transition: color 0.8s ease;
 }
 
+.tools-nl__inline-code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.82em;
+    padding: 0.1em 0.35em;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--text) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+    word-break: break-all;
+}
+
 .tools-nl__arrow {
     flex: 0 0 auto;
     align-self: center;

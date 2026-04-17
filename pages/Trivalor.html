@@ -166,10 +166,15 @@
                         </div>
                     </div>
 
-                    <div class="card-actions">
-                        <button type="button" id="openModalBtn" class="btn btn-secondary">
-                            <strong>Estrangeiras</strong>
-                        </button>
+                    <!-- Pesquisa fornecedor (XML faturas_strong_sqr) — lógica em TrivalorForeignVendorXml.js -->
+                    <div class="foreign-vendor-xml" id="foreignVendorXmlBlock">
+                        <p class="foreign-vendor-xml__title">PESQUISAR FORNECEDORES ESTRANGEIROS</p>
+                        <div class="field-group compact">
+                            <label for="foreignVendorXmlSearch">Nome do Fornecedor</label>
+                            <input type="text" id="foreignVendorXmlSearch" autocomplete="off" placeholder="Ex.: VISIOTECH, HONEYWELL…" spellcheck="false">
+                        </div>
+                        <div id="foreignVendorXmlSuggestions" class="foreign-vendor-xml__list" hidden></div>
+                        <p id="foreignVendorXmlStatus" class="foreign-vendor-xml__status" aria-live="polite"></p>
                     </div>
                 </article>
 
@@ -248,21 +253,12 @@
         </section>
     </main>
 
-    <!-- Modal -->
-    <div id="hospitalModal" class="modal">
-        <div class="modal-content">
-            <button class="close" onclick="closeModal()" aria-label="Fechar modal">&times;</button>
-            <h3>Selecione o NIF Avigilon</h3>
-            <select id="hospital_select" onchange="fillAvigilonData()"></select>
-        </div>
-    </div>
-
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
     <script src="/JScripts/core/app-config.js"></script>
     <script src="/JScripts/SidebarMenu.js"></script>
-    <script src="/JScripts/ModalHospital.js"></script>
     <script src="/JScripts/Trivalor.Js"></script>
+    <script src="/JScripts/TrivalorForeignVendorXml.js"></script>
 </body>
 </html>
