@@ -62,7 +62,10 @@ function updateTaxBaseFieldsVisibility() {
     const pais = (paisEl?.value || "").toUpperCase();
     const espacoFiscal = (espacoFiscalEl?.value || "").toUpperCase();
 
-    const showOnlyIsenta = pais === "EU" && espacoFiscal === "EU";
+    /* EU+EU e INT+INT: só base isenta (compras intracomunitárias / internacional sem IVA nacional). */
+    const showOnlyIsenta =
+        (pais === "EU" && espacoFiscal === "EU") ||
+        (pais === "INT" && espacoFiscal === "INT");
 
     const baseIsenta = document.getElementById("base_isenta");
     const baseReduzida = document.getElementById("base_reduzida");
