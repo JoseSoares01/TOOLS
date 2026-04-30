@@ -945,7 +945,7 @@ body {
     font-weight: 600;
 }
 
-#add-newsletter-btn {
+#refresh-newsletter-btn {
     margin-left: auto;
     border: none;
     border-radius: 999px;
@@ -954,6 +954,11 @@ body {
     background: color-mix(in srgb, var(--success) 60%, #fff);
     color: #04233a;
     font-weight: 700;
+}
+
+#refresh-newsletter-btn:disabled {
+    opacity: 0.7;
+    cursor: wait;
 }
 
 .tools-nl__title {
@@ -1062,6 +1067,47 @@ body {
     display: flex;
     align-items: flex-start;
     gap: 12px;
+}
+
+.tools-nl__admin-actions {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tools-nl__edit-btn {
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    border-radius: 999px;
+    padding: 6px 10px;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    color: color-mix(in srgb, var(--accent) 75%, #0b2942);
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tools-nl__edit-btn:hover {
+    background: color-mix(in srgb, var(--accent) 24%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 68%, transparent);
+}
+
+.tools-nl__delete-btn {
+    border: 1px solid color-mix(in srgb, #ef4444 45%, transparent);
+    border-radius: 999px;
+    padding: 6px 10px;
+    background: color-mix(in srgb, #ef4444 16%, transparent);
+    color: #b91c1c;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tools-nl__delete-btn:hover {
+    background: color-mix(in srgb, #ef4444 26%, transparent);
+    border-color: color-mix(in srgb, #ef4444 65%, transparent);
 }
 
 .tools-nl__icon {

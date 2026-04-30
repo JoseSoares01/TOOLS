@@ -116,6 +116,12 @@
         updateDots();
     }
 
+    function reinitializeCarousel() {
+        buildDots();
+        onScroll();
+        startAuto();
+    }
+
     let autoTimer = null;
     const AUTO_MS = 5600;
 
@@ -199,12 +205,14 @@
         }
     });
 
-    buildDots();
-    onScroll();
-    startAuto();
+    reinitializeCarousel();
 
     document.addEventListener("visibilitychange", function () {
         if (document.hidden) clearAuto();
         else startAuto();
+    });
+
+    window.addEventListener("tools-newsletter:entries-updated", function () {
+        reinitializeCarousel();
     });
 })();
