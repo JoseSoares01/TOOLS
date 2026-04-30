@@ -1,4 +1,4 @@
 Newsletter
 1- Marco historico: chegamos a marca de 100 mil faturas contabilizadas no sistema.
 2- Novo menu de Configuracao: pagina dedicada para alterar cores, fontes, formato dos cards e nomes da Tools sem editar codigo.
-3- Camadas de seguranca aplicadas: login protegido com hash, bloqueio de tentativas e politica de seguranca no browser.
+3- Camadas de seguranca aplicadas: login protegido com hash, bloqueio de tentativas e politica de seguranca no brows.
