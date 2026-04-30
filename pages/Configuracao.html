@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>Configuracao de Design</title>
+    <link rel="stylesheet" href="/css/Configuracao.css">
+    <link rel="stylesheet" href="/css/SidebarMenu.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <img src="/images/home-button.png" width="40" class="home-button" onclick="location.href = '/pages/Tools.html';" alt="Voltar para Tools">
+
+    <div class="animated-bg">
+        <div class="bg-orb orb-1"></div>
+        <div class="bg-orb orb-2"></div>
+        <div class="bg-orb orb-3"></div>
+        <div class="bg-grid"></div>
+        <div class="bg-scan"></div>
+    </div>
+
+    <main class="page-shell">
+        <section class="app-panel">
+            <header class="hero-header">
+                <p class="eyebrow">Painel administrativo</p>
+                <h1>Design System</h1>
+                <p class="hero-subtitle">Personalize a Tools sem editar código</p>
+            </header>
+            <section class="group">
+                <h2>Cores</h2>
+                <div class="grid">
+                    <label>Fundo principal<input type="color" id="pageBackground"></label>
+                    <label>Cor do título<input type="color" id="titleColor"></label>
+                    <label>Borda dos cards<input type="color" id="cardBorder"></label>
+                    <label>Tag (fundo)<input type="color" id="cardTagBg"></label>
+                    <label>Tag (texto)<input type="color" id="cardTagText"></label>
+                </div>
+            </section>
+
+            <section class="group">
+                <h2>Fontes</h2>
+                <div class="grid">
+                    <label>Fonte H1<select id="h1Font"></select></label>
+                    <label>Fonte H2<select id="h2Font"></select></label>
+                    <label>Fonte H3<select id="h3Font"></select></label>
+                </div>
+            </section>
+
+            <section class="group">
+                <h2>Forma dos cards</h2>
+                <label class="range-wrap">Raio da borda: <strong id="radiusValue"></strong>px
+                    <input type="range" id="cardRadius" min="12" max="46" step="1">
+                </label>
+            </section>
+
+            <section class="group">
+                <h2>Nomes e descrições dos cards</h2>
+                <div id="cardsEditor" class="cards-editor"></div>
+            </section>
+
+            <div class="actions">
+                <button id="saveBtn" type="button">Salvar configuração</button>
+                <button id="resetBtn" type="button" class="secondary">Restaurar padrão</button>
+                <button id="goToolsBtn" type="button" class="ghost">Abrir Tools</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="/JScripts/core/app-config.js"></script>
+    <script src="/JScripts/design-system.js"></script>
+    <script src="/JScripts/SidebarMenu.js"></script>
+    <script src="/JScripts/configuracao.js"></script>
+</body>
+</html>

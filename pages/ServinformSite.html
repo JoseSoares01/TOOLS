@@ -7,21 +7,33 @@
     <link rel="icon" type="image/x-icon" href="/images/QR.png">
     <link rel="stylesheet" href="/css/ServinformSite.css">
     <link rel="stylesheet" href="/css/SidebarMenu.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <script>
         const usuarioLogado = localStorage.getItem('usuarioLogado');
         if (!usuarioLogado) {
             alert('Você precisa fazer login para acessar esta página.');
-            window.location.href = 'https://suportesvf.pt/login.html';
+            window.location.href = '/index.html';
         }
     </script>
 </head>
 <body>
     <img src="/images/home-button.png" width=40px class="home-button" onclick="location.href = '/pages/Tools.html';">
-    
-    <div class="container">
-        <div>
-            <h2>Calculadora de IVA</h2>
-            <p class="subtitle">Calcule valores com e sem IVA</p>
+
+    <div class="animated-bg">
+        <div class="bg-orb orb-1"></div>
+        <div class="bg-orb orb-2"></div>
+        <div class="bg-orb orb-3"></div>
+        <div class="bg-grid"></div>
+        <div class="bg-scan"></div>
+    </div>
+
+    <main class="page-shell">
+        <section class="app-panel">
+            <header class="hero-header">
+                <p class="eyebrow">Ferramenta fiscal</p>
+                <h1>Calculadora de IVA</h1>
+                <p class="subtitle">Calcule valores com e sem IVA</p>
+            </header>
 
             <div class="table-container">
                 <table id="calculadoraTable">
@@ -70,8 +82,8 @@
                 <button onclick="limparTabela()" class="clear-btn">Limpar Tabela</button>
                 <button onclick="adicionarLinha()" class="add-btn-large">Adicionar Linha</button>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <script src="/JScripts/core/app-config.js"></script>
     <script src="/JScripts/SidebarMenu.js"></script>

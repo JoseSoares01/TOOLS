@@ -40,11 +40,11 @@ const loginForm = document.getElementById('login-form');
 
 // Adicionando um event listener para o envio do formulário de login
 if (loginForm) {
-    loginForm.addEventListener('submit', function(event) {
+    loginForm.addEventListener('submit', async function(event) {
         event.preventDefault(); // Previne o comportamento padrão de enviar o formulário
 
         // Capturando os valores dos campos de login e senha
-        const login = document.getElementById('login').value;
+        const login = document.getElementById('login').value.trim();
         const senha = document.getElementById('password').value;
 
         // Validação básica
@@ -53,10 +53,16 @@ if (loginForm) {
             return;
         }
 
+        if (isLoginLocked(login)) {
+            showMessage('Muitas tentativas. Aguarde alguns minutos e tente novamente.', 'error');
+            return;
+        }
+
         // Usa o sistema de banco de dados para validar login
         if (typeof dbManager !== 'undefined') {
-            const result = dbManager.validateLogin(login, senha);
+            const result = await dbManager.validateLogin(login, senha);
             if (result.success) {
+                clearLoginAttempts(login);
                 // Login bem-sucedido
                 showMessage('Login realizado com sucesso!', 'success');
                 
@@ -69,27 +75,11 @@ if (loginForm) {
                     window.location.href = dashboardUrl();
                 }, 1500);
             } else {
+                registerFailedAttempt(login);
                 showMessage(result.message, 'error');
             }
         } else {
-            // Fallback para sistema antigo se o banco não estiver disponível
-            const usuariosValidos = {
-                JanyelSVF: "SVF_010203",
-                HenriqueSVF: "SVF_020304",
-                TABSVF: "SVF_030405",
-                AnisabelN: "SVF_040506",
-                SRITA: "SVF_060708",
-            };
-
-            if (usuariosValidos[login] && usuariosValidos[login] === senha) {
-                showMessage('Login realizado com sucesso!', 'success');
-                localStorage.setItem('usuarioLogado', login);
-                setTimeout(() => {
-                    window.location.href = dashboardUrl();
-                }, 1500);
-            } else {
-                showMessage('Login ou senha incorretos. Tente novamente.', 'error');
-            }
+            showMessage('Sistema de autenticação indisponível no momento.', 'error');
         }
     });
 }
@@ -99,7 +89,7 @@ const registerForm = document.getElementById('register-form');
 
 // Adicionando um event listener para o envio do formulário de registro
 if (registerForm) {
-    registerForm.addEventListener('submit', function(event) {
+    registerForm.addEventListener('submit', async function(event) {
         event.preventDefault(); // Previne o comportamento padrão de enviar o formulário
 
         // Capturando os valores dos campos de registro
@@ -115,7 +105,7 @@ if (registerForm) {
 
         // Usa o sistema de banco de dados para registro
         if (typeof dbManager !== 'undefined') {
-            const result = dbManager.registerUser({
+            const result = await dbManager.registerUser({
                 usuario: username,
                 email: email,
                 senha: password
@@ -139,6 +129,60 @@ if (registerForm) {
             showMessage('Sistema de registro temporariamente indisponível.', 'warning');
         }
     });
+}
+
+function getAttemptKey(username) {
+    return `loginAttempts:${username.toLowerCase()}`;
+}
+
+function isLoginLocked(username) {
+    const key = getAttemptKey(username);
+    const raw = localStorage.getItem(key);
+    if (!raw) return false;
+    try {
+        const data = JSON.parse(raw);
+        const now = Date.now();
+        if (data.lockUntil && now < data.lockUntil) {
+            return true;
+        }
+        if (data.lastAttempt && (now - data.lastAttempt > 15 * 60 * 1000)) {
+            localStorage.removeItem(key);
+        }
+    } catch (e) {
+        localStorage.removeItem(key);
+    }
+    return false;
+}
+
+function registerFailedAttempt(username) {
+    const key = getAttemptKey(username);
+    const now = Date.now();
+    let count = 0;
+    let lockUntil = null;
+    try {
+        const current = JSON.parse(localStorage.getItem(key) || '{}');
+        if (current.lastAttempt && (now - current.lastAttempt) < 15 * 60 * 1000) {
+            count = (current.count || 0) + 1;
+        } else {
+            count = 1;
+        }
+    } catch (e) {
+        count = 1;
+    }
+
+    if (count >= 5) {
+        lockUntil = now + (5 * 60 * 1000);
+    }
+
+    localStorage.setItem(key, JSON.stringify({
+        count,
+        lastAttempt: now,
+        lockUntil
+    }));
+}
+
+function clearLoginAttempts(username) {
+    localStorage.removeItem(getAttemptKey(username));
 }
 
 // Função para exibir mensagens

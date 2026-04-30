@@ -304,12 +304,12 @@
         }
 
         // Função para editar usuário
-        function editUser(userId) {
+        async function editUser(userId) {
             const user = dbManager.users.find(u => u.id === userId);
             if (user) {
                 const newEmail = prompt('Novo email:', user.email);
                 if (newEmail && newEmail !== user.email) {
-                    const result = dbManager.updateUser(userId, { email: newEmail });
+                    const result = await dbManager.updateUser(userId, { email: newEmail });
                     if (result.success) {
                         alert('Usuário atualizado com sucesso!');
                         loadUsers();
@@ -322,11 +322,11 @@
         }
 
         // Função para alternar status do usuário
-        function toggleUserStatus(userId) {
+        async function toggleUserStatus(userId) {
             const user = dbManager.users.find(u => u.id === userId);
             if (user) {
                 const newStatus = user.status === 'Ativo' ? 'Inativo' : 'Ativo';
-                const result = dbManager.updateUser(userId, { status: newStatus });
+                const result = await dbManager.updateUser(userId, { status: newStatus });
                 if (result.success) {
                     alert(`Usuário ${newStatus.toLowerCase()} com sucesso!`);
                     loadUsers();
@@ -338,13 +338,13 @@
         }
 
         // Função para adicionar usuário de teste
-        function addSampleUser() {
+        async function addSampleUser() {
             const username = prompt('Nome de usuário:');
             const email = prompt('Email:');
             const password = prompt('Senha:');
             
             if (username && email && password) {
-                const result = dbManager.registerUser({
+                const result = await dbManager.registerUser({
                     usuario: username,
                     email: email,
                     senha: password

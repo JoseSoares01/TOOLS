@@ -54,6 +54,12 @@ class SidebarMenu {
                 label: "Encontrar Cidades",
                 href: "/pages/buscarcidades.html",
                 icon: "/pages/icons/cidades.svg"
+            },
+            {
+                key: "Configuracao",
+                label: "Design System",
+                href: "/pages/Configuracao.html",
+                icon: "/pages/icons/dashboard.svg"
             }
         ];
 

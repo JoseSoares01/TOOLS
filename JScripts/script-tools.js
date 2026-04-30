@@ -36,6 +36,12 @@ const preloader = document.getElementById("preloader");
 const cards = document.querySelectorAll(".modern-card");
 const footer = document.querySelector(".main-footer");
 
+function applyDesignSystemIfAvailable() {
+    if (!window.DesignSystem) return;
+    const settings = window.DesignSystem.getSettings();
+    window.DesignSystem.applyToToolsPage(settings);
+}
+
 let particles = [];
 let currentScene = "night";
 let particleColor = "rgba(57, 198, 255, 0.75)";
@@ -145,6 +151,7 @@ function animateParticles() {
    5. ENTRADA DA PÁGINA
 ========================= */
 window.addEventListener("load", () => {
+    applyDesignSystemIfAvailable();
     if (preloader) {
         preloader.classList.add("loader-hidden");
     }

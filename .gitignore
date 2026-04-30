@@ -1,0 +1,12 @@
+database/*.xlsx
+database/*.csv
+*.log
+*.tmp
+*.bak
+.DS_Store
+database/*.xlsx
+database/*.csv
+*.log
+*.tmp
+*.bak
+.DS_Store

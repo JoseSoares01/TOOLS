@@ -945,6 +945,17 @@ body {
     font-weight: 600;
 }
 
+#add-newsletter-btn {
+    margin-left: auto;
+    border: none;
+    border-radius: 999px;
+    padding: 8px 12px;
+    cursor: pointer;
+    background: color-mix(in srgb, var(--success) 60%, #fff);
+    color: #04233a;
+    font-weight: 700;
+}
+
 .tools-nl__title {
     margin: 0 0 8px;
     font-size: clamp(1.35rem, 2.4vw, 1.75rem);
