@@ -9,7 +9,6 @@ Foi implementado um menu de navegação lateral esquerdo em todas as páginas do
 ### 🎯 Navegação Rápida
 - **Dashboard Principal**: Acesso direto à página principal de ferramentas
 - **Trivalor**: Gerador de códigos QR para o sistema Trivalor
-- **BCP Despesas**: Gerador de códigos QR para despesas
 - **Split PDF**: Editor e separador de arquivos PDF
 - **Conversor**: Conversor de imagens para PDF
 - **Calculadora IVA**: Calculadora de IVA para despesas
@@ -44,7 +43,6 @@ Foi implementado um menu de navegação lateral esquerdo em todas as páginas do
 ### Páginas Atualizadas
 - ✅ `ServinformSite.html` - Calculadora IVA
 - ✅ `Tools.html` - Dashboard Principal
-- ✅ `BCP.html` - Gerador QR Despesas
 - ✅ `SplitPDF.html` - Editor PDF
 - ✅ `Convert.html` - Conversor de Imagens
 - ✅ `Trivalor.html` - Gerador QR Trivalor

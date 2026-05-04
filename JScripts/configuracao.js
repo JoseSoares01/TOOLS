@@ -40,7 +40,6 @@ function render(settings) {
     const cards = Array.from(document.querySelectorAll ? [] : []);
     const defaultCards = {
         Trivalor: 'Gerador QR Trivalor',
-        BCP: 'Gerador QR Despesas',
         SplitPDF: 'Editar PDFs',
         Convert: 'Conversor de Imagens',
         ServinformSite: 'Calculadora IVA',

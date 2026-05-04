@@ -20,12 +20,6 @@ class SidebarMenu {
                 icon: "/pages/icons/qrcode.svg"
             },
             {
-                key: "BCP",
-                label: "Despesas",
-                href: "/pages/BCP.html",
-                icon: "/pages/icons/despesas.svg"
-            },
-            {
                 key: "SplitPDF",
                 label: "Editor de PDFs",
                 href: "/pages/SplitPDF.html",

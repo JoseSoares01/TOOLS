@@ -18,7 +18,6 @@ const DEFAULT_DESIGN_SETTINGS = {
     },
     cardNames: {
         Trivalor: { title: 'Gerador QR Trivalor', description: 'Gere códigos QR para o sistema Trivalor de forma rápida, padronizada e segura.' },
-        BCP: { title: 'Gerador QR Despesas', description: 'Crie códigos QR para apoio ao controlo de despesas, faturação e fluxos internos.' },
         SplitPDF: { title: "Editar PDFs", description: 'Mescle, separe e organize documentos PDF com uma interface mais eficiente.' },
         Convert: { title: 'Conversor de Imagens', description: 'Converta imagens em PDF com organização visual, pré-visualização e ordem personalizada.' },
         ServinformSite: { title: 'Calculadora IVA', description: 'Calcule IVA de forma precisa para faturação, despesas e conferência de valores.' },
