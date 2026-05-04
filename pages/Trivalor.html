@@ -76,15 +76,21 @@
 
                         <div class="field-group">
                             <label for="tipologia">Tipologia</label>
-                            <select id="tipologia">
-                                <option value="">Selecione</option>
-                                <option value="FT">FT (Fatura)</option>
-                                <option value="NC">NC (Nota de Crédito)</option>
-                                <option value="RG">RG (Recibo)</option>
-                                <option value="PF">PF (Pro Forma)</option>
-                                <option value="OR">OR (Orçamento)</option>
-                                <option value="RV">RV (Recibo Verde)</option>
-                            </select>
+                            <div class="select-pill-wrap tipologia-select-wrap">
+                                <div class="select-pill-display" aria-hidden="true">
+                                    <span class="select-pill-display__main" id="tipologia_display_main">Selecione</span>
+                                    <span class="tipologia-sigla-pill" id="tipologia_sigla_pill" hidden></span>
+                                </div>
+                                <select id="tipologia" class="tipologia-select-native">
+                                    <option value="">Selecione</option>
+                                    <option value="FT">FT (Fatura)</option>
+                                    <option value="NC">NC (Nota de Crédito)</option>
+                                    <option value="RG">RG (Recibo)</option>
+                                    <option value="PF">PF (Pro Forma)</option>
+                                    <option value="OR">OR (Orçamento)</option>
+                                    <option value="RV">RV (Recibo Verde)</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div class="field-group">
@@ -94,13 +100,13 @@
 
                         <div class="field-group">
                             <label for="espaco_fiscal">Espaço fiscal</label>
-                            <select id="espaco_fiscal">
+                            <select id="espaco_fiscal" class="espaco-fiscal-select" aria-label="Espaço fiscal">
                                 <option value="">Selecione</option>
-                                <option value="PT">PT (Portugal)</option>
-                                <option value="PT-AC">PT-AC (Açores)</option>
-                                <option value="PT-MA">PT-MA (Madeira)</option>
-                                <option value="EU">EU (União Europeia)</option>
-                                <option value="INT">INT (Internacional)</option>
+                                <option value="PT">🇵🇹 Continental (PT)</option>
+                                <option value="PT-AC">🇵🇹 Açores (PT-AC)</option>
+                                <option value="PT-MA">🇵🇹 Madeira (PT-MA)</option>
+                                <option value="EU">🇪🇺 União Europeia (EU)</option>
+                                <option value="INT">🏳️ Estrangeiras (INT)</option>
                             </select>
                         </div>
                     </div>
@@ -123,11 +129,11 @@
                     <div class="form-stack">
                         <div class="field-group">
                             <label for="pais">País / Regime</label>
-                            <select id="pais">
+                            <select id="pais" class="pais-regime-select" aria-label="País ou regime fiscal">
                                 <option value="">Selecione</option>
-                                <option value="PT">PT (Portugal)</option>
-                                <option value="EU">EU (União Europeia)</option>
-                                <option value="INT">INT (Internacional)</option>
+                                <option value="PT">🇵🇹 Portugal e ilhas (PT)</option>
+                                <option value="EU">🇪🇺 União Europeia (EU)</option>
+                                <option value="INT">🏳️ Estrangeiras (INT)</option>
                             </select>
                         </div>
 

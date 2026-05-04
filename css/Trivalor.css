@@ -188,6 +188,156 @@ select option:focus {
     color: #ffffff;
 }
 
+/* País / Regime e Espaço fiscal: seta (appearance já removido nos selects globais) */
+.pais-regime-select,
+.espaco-fiscal-select {
+    padding-right: 2.75rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath stroke='%23eaf4ff' stroke-opacity='0.55' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round' fill='none' d='M3 4.5L6 7.5L9 4.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 12px;
+}
+
+/* Tipologia: campo escuro + cor só na pastilha da sigla (select nativo invisível por cima) */
+.tipologia-select-wrap {
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.05);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.tipologia-select-wrap:focus-within {
+    border-color: rgba(57, 198, 255, 0.55);
+    box-shadow: 0 0 0 4px rgba(57, 198, 255, 0.10);
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.tipologia-select-native {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+}
+
+.tipologia-select-native:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: transparent;
+    background: transparent;
+}
+
+.select-pill-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 14px 16px;
+    padding-right: 2.75rem;
+    font-size: 0.98rem;
+    color: #ffffff;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath stroke='%23eaf4ff' stroke-opacity='0.55' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round' fill='none' d='M3 4.5L6 7.5L9 4.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 12px;
+}
+
+.select-pill-display__main {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tipologia-sigla-pill {
+    flex-shrink: 0;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    color: #1f2937;
+}
+
+.tipologia-sigla-pill[data-tipologia="FT"] {
+    background-color: #ffcdd2;
+}
+
+.tipologia-sigla-pill[data-tipologia="NC"] {
+    background-color: #eceff1;
+}
+
+.tipologia-sigla-pill[data-tipologia="RG"] {
+    background-color: #ffe0b2;
+}
+
+.tipologia-sigla-pill[data-tipologia="PF"] {
+    background-color: #e1bee7;
+}
+
+.tipologia-sigla-pill[data-tipologia="OR"] {
+    background-color: #b3e5fc;
+}
+
+.tipologia-sigla-pill[data-tipologia="RV"] {
+    background-color: #c8e6c9;
+}
+
+/* Tipologia: cores na lista aberta (suporte varia por navegador) */
+#tipologia option[value="FT"] {
+    background-color: #ffcdd2;
+    color: #1f2937;
+}
+
+#tipologia option[value="NC"] {
+    background-color: #eceff1;
+    color: #1f2937;
+}
+
+#tipologia option[value="RG"] {
+    background-color: #ffe0b2;
+    color: #1f2937;
+}
+
+#tipologia option[value="PF"] {
+    background-color: #e1bee7;
+    color: #1f2937;
+}
+
+#tipologia option[value="OR"] {
+    background-color: #b3e5fc;
+    color: #1f2937;
+}
+
+#tipologia option[value="RV"] {
+    background-color: #c8e6c9;
+    color: #1f2937;
+}
+
+#tipologia option[value="FT"]:hover,
+#tipologia option[value="FT"]:checked,
+#tipologia option[value="NC"]:hover,
+#tipologia option[value="NC"]:checked,
+#tipologia option[value="RG"]:hover,
+#tipologia option[value="RG"]:checked,
+#tipologia option[value="PF"]:hover,
+#tipologia option[value="PF"]:checked,
+#tipologia option[value="OR"]:hover,
+#tipologia option[value="OR"]:checked,
+#tipologia option[value="RV"]:hover,
+#tipologia option[value="RV"]:checked {
+    color: #111827;
+}
+
 input::placeholder,
 textarea::placeholder {
     color: rgba(234, 244, 255, 0.42);

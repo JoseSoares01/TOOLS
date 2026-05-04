@@ -90,10 +90,46 @@ function updateTaxBaseFieldsVisibility() {
     });
 }
 
+function syncTipologiaSelectAppearance() {
+    const el = document.getElementById("tipologia");
+    const mainEl = document.getElementById("tipologia_display_main");
+    const pillEl = document.getElementById("tipologia_sigla_pill");
+    if (!el) return;
+
+    const v = el.value || "";
+    if (!v) {
+        if (mainEl) mainEl.textContent = "Selecione";
+        if (pillEl) {
+            pillEl.hidden = true;
+            pillEl.textContent = "";
+            pillEl.removeAttribute("data-tipologia");
+        }
+        return;
+    }
+
+    const opt = el.selectedOptions[0];
+    const raw = (opt && opt.textContent) ? opt.textContent.trim() : "";
+    const parsed = raw.match(/^\s*([A-Z0-9-]+)\s*\(([^)]+)\)\s*$/i);
+    const desc = parsed ? parsed[2].trim() : raw;
+
+    if (mainEl) mainEl.textContent = desc || raw || v;
+    if (pillEl) {
+        pillEl.hidden = false;
+        pillEl.textContent = v;
+        pillEl.setAttribute("data-tipologia", v);
+    }
+}
+
 // event listeners
 document.addEventListener("DOMContentLoaded", function () {
     const espacoFiscalEl = document.getElementById("espaco_fiscal");
     const paisEl = document.getElementById("pais");
+    const tipologiaEl = document.getElementById("tipologia");
+
+    if (tipologiaEl) {
+        tipologiaEl.addEventListener("change", syncTipologiaSelectAppearance);
+        syncTipologiaSelectAppearance();
+    }
 
     if (espacoFiscalEl) {
         espacoFiscalEl.addEventListener("change", function () {
@@ -222,6 +258,7 @@ function clearInputs() {
     document.getElementById("base_intermedia").value = "";
     document.getElementById("base_normal").value = "";
     document.getElementById("imposto_selo").value = "";
+    syncTipologiaSelectAppearance();
 }
 
 //SIDEBAR START//

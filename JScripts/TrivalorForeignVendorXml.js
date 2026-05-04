@@ -276,6 +276,7 @@
         }
         pais.dispatchEvent(new Event("change", { bubbles: true }));
         espaco.dispatchEvent(new Event("change", { bubbles: true }));
+        tipo.dispatchEvent(new Event("change", { bubbles: true }));
     }
 
     function renderSuggestions(container, items, onPick) {
