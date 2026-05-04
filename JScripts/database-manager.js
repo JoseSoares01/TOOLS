@@ -124,7 +124,8 @@ class DatabaseManager {
      */
     validateLogin(username, password) {
         const user = this.findUserByUsername(username);
-        if (user && user.senha === password) {
+        const pwd = password != null ? String(password).trim() : '';
+        if (user && user.senha === pwd) {
             return {
                 success: true,
                 user: {

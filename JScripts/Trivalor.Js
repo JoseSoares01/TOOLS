@@ -90,6 +90,41 @@ function updateTaxBaseFieldsVisibility() {
     });
 }
 
+/**
+ * Mantém País/Regime e Espaço fiscal coerentes:
+ * — EU / INT: mesmo valor nos dois campos;
+ * — PT (Continental e ilhas): se o espaço ainda for EU ou INT, assume Continental (PT).
+ */
+function syncEspacoFromPais() {
+    const paisEl = document.getElementById("pais");
+    const espacoEl = document.getElementById("espaco_fiscal");
+    if (!paisEl || !espacoEl) return;
+    const p = (paisEl.value || "").toUpperCase();
+    const ex = (espacoEl.value || "").toUpperCase();
+    if (p === "EU" || p === "INT") {
+        espacoEl.value = p;
+        return;
+    }
+    if (p === "PT" && (ex === "EU" || ex === "INT")) {
+        espacoEl.value = "PT";
+    }
+}
+
+/** Continental / Açores / Madeira → País/Regime em Continental e ilhas (PT); EU/INT espelham o espaço. */
+function syncPaisFromEspaco() {
+    const paisEl = document.getElementById("pais");
+    const espacoEl = document.getElementById("espaco_fiscal");
+    if (!paisEl || !espacoEl) return;
+    const e = (espacoEl.value || "").toUpperCase();
+    if (e === "EU" || e === "INT") {
+        paisEl.value = e;
+        return;
+    }
+    if (e === "PT" || e === "PT-AC" || e === "PT-MA") {
+        paisEl.value = "PT";
+    }
+}
+
 function syncTipologiaSelectAppearance() {
     const el = document.getElementById("tipologia");
     const mainEl = document.getElementById("tipologia_display_main");
@@ -133,16 +168,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (espacoFiscalEl) {
         espacoFiscalEl.addEventListener("change", function () {
+            syncPaisFromEspaco();
             updateIVARates();
             updateTaxBaseFieldsVisibility();
         });
     }
 
     if (paisEl) {
-        paisEl.addEventListener("change", updateTaxBaseFieldsVisibility);
+        paisEl.addEventListener("change", function () {
+            syncEspacoFromPais();
+            updateIVARates();
+            updateTaxBaseFieldsVisibility();
+        });
     }
 
     // Inicializa placeholders e visibilidade
+    syncEspacoFromPais();
+    syncPaisFromEspaco();
     updateIVARates();
     updateTaxBaseFieldsVisibility();
 });
