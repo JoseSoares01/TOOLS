@@ -253,7 +253,61 @@ class SidebarMenu {
     }
 }
 
+class TopBlurOverlay {
+    constructor(options = {}) {
+        this.options = {
+            height: options.height || "96px"
+        };
+        this.element = null;
+        this._ticking = false;
+        this._onScroll = this.onScroll.bind(this);
+    }
+
+    ensure() {
+        if (typeof document === "undefined") return null;
+
+        const existing = document.querySelector(".top-blur-overlay");
+        if (existing) {
+            this.element = existing;
+            return existing;
+        }
+
+        const overlay = document.createElement("div");
+        overlay.className = "top-blur-overlay";
+        overlay.setAttribute("aria-hidden", "true");
+        overlay.style.setProperty("--top-blur-height", this.options.height);
+
+        document.body.appendChild(overlay);
+        this.element = overlay;
+        this.updateVisibility();
+        window.addEventListener("scroll", this._onScroll, { passive: true });
+        return overlay;
+    }
+
+    onScroll() {
+        if (this._ticking) return;
+        this._ticking = true;
+
+        requestAnimationFrame(() => {
+            this.updateVisibility();
+            this._ticking = false;
+        });
+    }
+
+    updateVisibility() {
+        if (!this.element) return;
+        const shouldShow = window.scrollY > 0;
+        this.element.classList.toggle("is-visible", shouldShow);
+    }
+}
+
+if (typeof window !== "undefined") {
+    window.TopBlurOverlay = TopBlurOverlay;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+    const topBlurOverlay = new TopBlurOverlay();
+    topBlurOverlay.ensure();
     new SidebarMenu();
 });
 

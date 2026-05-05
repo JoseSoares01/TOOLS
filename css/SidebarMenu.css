@@ -15,6 +15,38 @@
     --sidebar-collapsed-w: 82px;
     --sidebar-expanded-w: 286px;
     --sidebar-radius: var(--radius-xl, 26px);
+    --top-blur-height: 96px;
+}
+
+/* =========================
+   TOP BLUR OVERLAY (GLOBAL)
+========================= */
+.top-blur-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--top-blur-height);
+    pointer-events: none;
+    z-index: 40;
+    backdrop-filter: blur(14px) saturate(115%);
+    -webkit-backdrop-filter: blur(14px) saturate(115%);
+    mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
+    background: linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--panel, rgba(255, 255, 255, 0.78)) 58%, rgba(255, 255, 255, 0.20)) 0%,
+        color-mix(in srgb, var(--bg-1, #ffffff) 34%, transparent) 45%,
+        transparent 100%
+    );
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 260ms ease, visibility 260ms ease;
+}
+
+.top-blur-overlay.is-visible {
+    opacity: 0.94;
+    visibility: visible;
 }
 
 /* Reset isolado do sidebar */
@@ -386,6 +418,10 @@ body:not(.sidebar-collapsed):not(.sidebar-expanded) {
    MOBILE
 ========================= */
 @media (max-width: 768px) {
+    .top-blur-overlay {
+        height: 82px;
+    }
+
     .sidebar {
         left: 10px;
         top: 10px;
