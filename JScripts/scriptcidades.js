@@ -9,6 +9,17 @@ const COIMBRA_LAT = 40.2056;       // Latitude de referência
 const MAX_HISTORY = 5;             // Máx. entradas no histórico
 const DEBOUNCE_MS = 300;           // Delay das sugestões
 const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search';
+const ISLANDS_AZORES_KEYWORDS = [
+  'acores', 'azores', 'ilha de sao miguel', 'sao miguel', 'ilha terceira', 'terceira',
+  'ilha do faial', 'faial', 'ilha do pico', 'pico', 'ilha de santa maria', 'santa maria',
+  'ilha de sao jorge', 'sao jorge', 'ilha graciosa', 'graciosa', 'ilha das flores',
+  'flores', 'ilha do corvo', 'corvo', 'ponta delgada', 'ribeira grande', 'angra do heroismo',
+  'cabouco'
+];
+const ISLANDS_MADEIRA_KEYWORDS = [
+  'madeira', 'ilha da madeira', 'funchal', 'porto santo', 'ilha do porto santo',
+  'machico', 'camara de lobos', 'santana', 'sao vicente'
+];
 
 /* ── Dicionário offline ──────────────────────────────────── */
 const OFFLINE_DB = {
@@ -36,6 +47,12 @@ const OFFLINE_DB = {
   'funchal (madeira)':   32.6669,
   'ponta delgada':       37.7412,
   'ponta delgada (açores)': 37.7412,
+  'cabouco':             37.7833,
+  'cabouco (açores)':    37.7833,
+  'ilhas':               37.7412,
+  'acores':              37.7412,
+  'açores':              37.7412,
+  'madeira':             32.6669,
 };
 
 /* ── Elementos DOM ───────────────────────────────────────── */
@@ -68,6 +85,14 @@ function sanitize(str) {
   return str.trim().replace(/\s+/g, ' ');
 }
 
+/** Normaliza texto para comparações tolerantes a acentos */
+function normalizeText(str) {
+  return str
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
 /** Debounce: atrasa execução da função fn por ms milissegundos */
 function debounce(fn, ms) {
   return function(...args) {
@@ -79,6 +104,27 @@ function debounce(fn, ms) {
 /** Determina Norte/Sul com base na latitude */
 function classifyLat(lat) {
   return lat > COIMBRA_LAT ? 'NORTE' : 'SUL';
+}
+
+/** Identifica se o local pertence aos arquipélagos portugueses */
+function detectArchipelago(locationName, originalQuery = '') {
+  const normalized = normalizeText(locationName || '');
+  const normalizedQuery = normalizeText(originalQuery || '');
+
+  if (normalizedQuery.includes('ilhas')) return 'ILHAS';
+  if (ISLANDS_AZORES_KEYWORDS.some(keyword => normalized.includes(keyword))) {
+    return 'AÇORES';
+  }
+  if (ISLANDS_AZORES_KEYWORDS.some(keyword => normalizedQuery.includes(keyword))) {
+    return 'AÇORES';
+  }
+  if (ISLANDS_MADEIRA_KEYWORDS.some(keyword => normalized.includes(keyword))) {
+    return 'MADEIRA';
+  }
+  if (ISLANDS_MADEIRA_KEYWORDS.some(keyword => normalizedQuery.includes(keyword))) {
+    return 'MADEIRA';
+  }
+  return null;
 }
 
 /* ── Gestão de estados (loading / erro / resultado / vazio) ── */
@@ -98,13 +144,16 @@ function showError(msg) {
   showState(stateError);
 }
 
-function showResult(name, lat, source) {
-  const classification = classifyLat(lat);
-  const isNorte = classification === 'NORTE';
+function showResult(name, lat, source, queryUsed = '') {
+  const archipelago = detectArchipelago(name, queryUsed);
+  const classification = archipelago
+    ? (archipelago === 'ILHAS' ? 'ILHAS' : `ILHAS (${archipelago})`)
+    : classifyLat(lat);
+  const badgeClass = archipelago ? 'ilhas' : (classification === 'NORTE' ? 'norte' : 'sul');
 
   // Badge tipografia grande com classe de cor
   resultBadge.textContent = classification;
-  resultBadge.className = 'result-badge ' + (isNorte ? 'norte' : 'sul');
+  resultBadge.className = 'result-badge ' + badgeClass;
   resultBadge.setAttribute('aria-label', `Este local é ${classification}`);
 
   // Pills de detalhe
@@ -181,7 +230,7 @@ async function geocodeLocation(query) {
   // 3. Chamar API Nominatim
   const url = new URL(NOMINATIM_URL);
   url.searchParams.set('format', 'json');
-  url.searchParams.set('limit', '1');
+  url.searchParams.set('limit', '5');
   url.searchParams.set('addressdetails', '1');
   url.searchParams.set('countrycodes', 'pt');
   url.searchParams.set('q', query);
@@ -203,7 +252,25 @@ async function geocodeLocation(query) {
     throw new Error(`Não encontrei "${query}" em Portugal. Tente ser mais específico (ex: "Vila Real, Portugal").`);
   }
 
-  const result = data[0];
+  const isPlaceLike = item => {
+    const cls = item.class || '';
+    const type = item.type || '';
+    const addresstype = item.addresstype || '';
+    const allowedAddressTypes = new Set([
+      'city', 'town', 'village', 'municipality', 'county', 'state', 'region',
+      'suburb', 'hamlet', 'island', 'archipelago', 'locality', 'quarter'
+    ]);
+    if (allowedAddressTypes.has(addresstype)) return true;
+    if (cls === 'place' || cls === 'boundary') return true;
+    if (type === 'administrative' || type === 'island' || type === 'archipelago') return true;
+    return false;
+  };
+
+  const result = data.find(isPlaceLike);
+  if (!result) {
+    throw new Error('A pesquisa não corresponde a uma localidade. Introduza cidade, vila, freguesia ou região.');
+  }
+
   return {
     name:   result.display_name,
     lat:    parseFloat(result.lat),
@@ -328,7 +395,7 @@ async function verifyLocation() {
 
   try {
     const result = await geocodeLocation(query);
-    showResult(result.name, result.lat, result.source);
+    showResult(result.name, result.lat, result.source, query);
   } catch (err) {
     showError(err.message || 'Ocorreu um erro inesperado. Tente novamente.');
   }
@@ -397,6 +464,7 @@ function renderHistory() {
 
     const dotClass = item.classification === 'NORTE' ? 'norte'
                    : item.classification === 'SUL'   ? 'sul'
+                   : item.classification.startsWith('ILHAS') ? 'ilhas'
                    : 'unknown';
 
     li.innerHTML = `

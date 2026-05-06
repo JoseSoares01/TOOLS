@@ -897,6 +897,14 @@ body {
   box-shadow: 0 0 0 1px rgba(255, 145, 77, 0.06), 0 0 36px var(--south-glow);
 }
 
+.result-badge.ilhas {
+  background: linear-gradient(135deg, rgba(136, 132, 255, 0.24), rgba(79, 183, 255, 0.24));
+  border: 1px solid rgba(143, 171, 255, 0.35);
+  box-shadow: 0 0 0 1px rgba(143, 171, 255, 0.08), 0 0 36px rgba(123, 160, 255, 0.25);
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  letter-spacing: -0.01em;
+}
+
 .result-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1020,6 +1028,11 @@ body {
 .history-dot.sul {
   background: #ff9a57;
   box-shadow: 0 0 12px rgba(255, 154, 87, 0.55);
+}
+
+.history-dot.ilhas {
+  background: #8ca3ff;
+  box-shadow: 0 0 12px rgba(140, 163, 255, 0.55);
 }
 
 .history-dot.unknown {
