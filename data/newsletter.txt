@@ -8,3 +8,4 @@ Newsletter
 🇵🇹 Madeira (PT-MA)
 🇪🇺 União Europeia (EU)
 🏳️ Estrangeiras INT (INT)
+6- SplitPDF (mesclar): o download do PDF mesclado agora usa automaticamente o nome do primeiro documento da fila (ex.: 85978562.pdf).

@@ -288,6 +288,48 @@ function setSceneTheme(now = new Date()) {
     setRootVar("--night-progress", nightProgress.toFixed(3));
     setRootVar("--stars-density", starsDensity.toFixed(3));
 
+    const dayArcProgress = clamp((total - 7) / 11, 0, 1);
+    const middayPeak = 1 - Math.abs(dayArcProgress - 0.5) / 0.5;
+
+    let sunOpacity = 0;
+    let sunScale = 0.92;
+    let sunGlow = 0.22;
+    let sunWarmth = 0.22;
+
+    if (theme === "morning") {
+        const dawnBoost = getRangeProgress(total, 7, 9);
+        sunOpacity = 0.18 + dawnBoost * 0.62;
+        sunScale = 0.9 + dawnBoost * 0.15;
+        sunGlow = 0.24 + dawnBoost * 0.26;
+        sunWarmth = 0.2 + dawnBoost * 0.16;
+    } else if (theme === "midday") {
+        sunOpacity = 0.92 + middayProgress * 0.06;
+        sunScale = 1.04 + middayProgress * 0.08;
+        sunGlow = 0.62 + middayProgress * 0.22;
+        sunWarmth = 0.24;
+    } else if (theme === "afternoon") {
+        const lateAfternoonProgress = getRangeProgress(total, 13, 17);
+        sunOpacity = 0.9 - lateAfternoonProgress * 0.22;
+        sunScale = 1.02 - lateAfternoonProgress * 0.08;
+        sunGlow = 0.54 - lateAfternoonProgress * 0.14;
+        sunWarmth = 0.32 + lateAfternoonProgress * 0.34;
+    } else if (theme === "sunset") {
+        sunOpacity = 0.72 - duskProgress * 0.72;
+        sunScale = 0.96 - duskProgress * 0.11;
+        sunGlow = 0.5 - duskProgress * 0.34;
+        sunWarmth = 0.62 + duskProgress * 0.34;
+    } else {
+        sunOpacity = 0;
+        sunScale = 0.9;
+        sunGlow = 0.18;
+        sunWarmth = 0.22;
+    }
+
+    setRootVar("--sun-opacity", clamp(sunOpacity, 0, 1).toFixed(3));
+    setRootVar("--sun-scale", clamp(sunScale, 0.85, 1.15).toFixed(3));
+    setRootVar("--sun-glow", clamp(sunGlow, 0, 1).toFixed(3));
+    setRootVar("--sun-warmth", clamp(sunWarmth, 0, 1).toFixed(3));
+
     if (theme === "night") {
         setRootVar("--stars-opacity", starsOpacity.toFixed(3));
     } else if (theme === "sunset") {
@@ -304,7 +346,9 @@ function setSceneTheme(now = new Date()) {
         sunsetProgress,
         nightProgress,
         middayProgress,
-        duskProgress
+        duskProgress,
+        dayArcProgress,
+        middayPeak
     );
 
     updateSceneParticles(theme, sunriseProgress, sunsetProgress, nightProgress);
@@ -317,15 +361,19 @@ function updateSunPosition(
     sunsetProgress = 0,
     nightProgress = 1,
     middayProgress = 0,
-    duskProgress = 0
+    duskProgress = 0,
+    dayArcProgress = 0,
+    middayPeak = 0
 ) {
     const root = document.documentElement;
 
     const sunVisible = total >= 7 && total < 18;
-    const progress = clamp((total - 7) / 11, 0, 1);
+    const progress = dayArcProgress;
 
-    const x = 8 + progress * 78;
-    const y = 23 - Math.sin(progress * Math.PI) * 15;
+    // Arco amplo e cinematográfico:
+    // nasce à esquerda (quase fora), atinge topo ao meio-dia e desce à direita.
+    const x = -6 + progress * 112;
+    const y = 52 - Math.sin(progress * Math.PI) * 50;
 
     root.style.setProperty("--sun-x", `${x}%`);
     root.style.setProperty("--sun-y", `${y}%`);
@@ -339,8 +387,8 @@ function updateSunPosition(
     }
 
     if (currentScene === "midday") {
-        root.style.setProperty("--glow-left", `rgba(255, 235, 170, ${(0.42 + middayProgress * 0.08).toFixed(2)})`);
-        root.style.setProperty("--glow-right", `rgba(125, 205, 255, ${(0.20 + middayProgress * 0.05).toFixed(2)})`);
+        root.style.setProperty("--glow-left", `rgba(255, 235, 170, ${(0.48 + middayProgress * 0.1).toFixed(2)})`);
+        root.style.setProperty("--glow-right", `rgba(125, 205, 255, ${(0.24 + middayProgress * 0.08).toFixed(2)})`);
     }
 
     if (currentScene === "afternoon") {
@@ -363,8 +411,9 @@ function updateSunPosition(
     }
 
     if (!sunVisible) {
-        root.style.setProperty("--sun-x", `86%`);
-        root.style.setProperty("--sun-y", `18%`);
+        // Fora do período diurno, esconde o sol fora do campo útil.
+        root.style.setProperty("--sun-x", `104%`);
+        root.style.setProperty("--sun-y", `58%`);
     }
 }
 

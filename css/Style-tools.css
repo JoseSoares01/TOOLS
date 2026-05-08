@@ -54,6 +54,9 @@
     --sunset-progress: 0;
     --dusk-progress: 0;
     --night-progress: 1;
+    --sun-scale: 1;
+    --sun-glow: 0.3;
+    --sun-warmth: 0.25;
 
     --stars-density: 0.92;
     --glass-glow: rgba(57, 198, 255, 0.10);
@@ -279,9 +282,9 @@ body {
    SHELL
 ========================= */
 .dashboard-shell {
-    width: min(1380px, 100%);
+    width: min(1480px, calc(100vw - 56px));
     margin: 0 auto;
-    padding: 28px 20px 34px;
+    padding: 24px 22px 34px;
 }
 
 /* =========================
@@ -597,11 +600,11 @@ body {
    CARDS GRID (layout tipo “neumorphic” + reflexo do tema)
 ========================= */
 .cards-container {
-    width: min(75rem, 100%);
-    margin-inline: auto;
+    width: 100%;
+    margin-inline: 0;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
-    gap: 2rem;
+    gap: 1.45rem;
 }
 
 /* Tons de barra / ícone — alinhados aos antigos bg-grad */
@@ -870,6 +873,153 @@ body {
     opacity: 0;
     transform: translateY(18px);
     animation: toolsNlReveal 0.7s ease 0.45s forwards;
+}
+
+/* Reestruturação desktop: conteúdo amplo + coluna de newsletter alinhada */
+@media (min-width: 1200px) {
+    .dashboard-shell {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) clamp(340px, 23vw, 376px);
+        grid-template-areas:
+            "hero newsletter"
+            "toolbar newsletter"
+            "cards newsletter"
+            "footer newsletter";
+        gap: 20px 22px;
+        align-items: start;
+        min-height: 100vh;
+    }
+
+    .hero-panel { grid-area: hero; margin-bottom: 2px; }
+    .toolbar-panel { grid-area: toolbar; margin-bottom: 2px; }
+    .cards-container { grid-area: cards; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .main-footer { grid-area: footer; margin-top: 2px; }
+
+    .hero-panel {
+        grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.96fr);
+        gap: 18px;
+    }
+
+    .hero-copy,
+    .hero-side,
+    .toolbar-panel,
+    .main-footer,
+    .modern-card,
+    .tools-nl__panel {
+        border-radius: 24px;
+    }
+
+    .hero-copy { padding: 26px; }
+    .hero-side { padding: 20px; }
+    .toolbar-panel { padding: 18px 22px; }
+    .modern-card { padding: 1.45rem; }
+
+    .tools-nl {
+        grid-area: newsletter;
+        position: sticky;
+        top: 14px;
+        right: auto;
+        width: 100%;
+        max-width: 100%;
+        height: calc(100vh - 28px);
+        max-height: calc(100vh - 28px);
+        margin-top: 0;
+        margin-bottom: 0;
+        z-index: 2;
+        opacity: 1;
+        transform: none;
+        animation: none;
+        align-self: start;
+    }
+
+    .tools-nl__panel {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 16px 14px 14px;
+    }
+
+    .tools-nl__header {
+        margin-bottom: 12px;
+    }
+
+    .tools-nl__carousel {
+        flex: 1;
+        min-height: 0;
+        display: block;
+        margin-top: 0;
+    }
+
+    .tools-nl__viewport {
+        height: 100%;
+        min-height: 0;
+    }
+
+    .tools-nl__track {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        height: 100%;
+        padding: 2px 4px 2px 2px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scroll-snap-type: y proximity;
+        scrollbar-width: thin;
+        scrollbar-color: color-mix(in srgb, var(--text-soft) 32%, transparent) transparent;
+    }
+
+    .tools-nl__track::-webkit-scrollbar {
+        width: 7px;
+        height: 7px;
+    }
+
+    .tools-nl__track::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--text-soft) 32%, transparent);
+    }
+
+    .tools-nl__card {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 100%;
+        min-height: auto;
+        padding: 12px 11px;
+        border-radius: 16px;
+        gap: 7px;
+        scroll-snap-align: start;
+    }
+
+    .tools-nl__title {
+        font-size: clamp(1.24rem, 1.45vw, 1.42rem);
+        margin-bottom: 4px;
+    }
+
+    .tools-nl__subtitle {
+        font-size: 0.84rem;
+        line-height: 1.45;
+    }
+
+    .tools-nl__card-title {
+        font-size: 0.88rem;
+    }
+
+    .tools-nl__card-text {
+        font-size: 0.78rem;
+        line-height: 1.4;
+    }
+
+    .tools-nl__arrow,
+    .tools-nl__progress-wrap,
+    .tools-nl__dots {
+        display: none;
+    }
+}
+
+@keyframes toolsNlRevealRight {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 @keyframes toolsNlReveal {
@@ -1175,6 +1325,11 @@ body {
         color 0.75s ease;
 }
 
+/* Botões de navegação removidos por decisão de layout */
+.tools-nl__arrow {
+    display: none !important;
+}
+
 .tools-nl__arrow:hover:not(:disabled) {
     background: color-mix(in srgb, var(--accent) 16%, transparent);
     border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
@@ -1379,12 +1534,14 @@ body {
 
 .sun {
     opacity: var(--sun-opacity);
+    transform: translate(-50%, -50%) scale(var(--sun-scale));
     background:
         radial-gradient(circle at 35% 35%, #fff7c2 0%, #ffe082 20%, #ffca5f 42%, #ffad33 70%, rgba(255,173,51,0.15) 100%);
     box-shadow:
-        0 0 50px rgba(255, 196, 77, 0.45),
-        0 0 120px rgba(255, 170, 40, 0.26),
-        0 0 220px rgba(255, 160, 55, 0.14);
+        0 0 50px rgba(255, 196, 77, calc(0.2 + var(--sun-glow) * 0.45)),
+        0 0 120px rgba(255, 170, 40, calc(0.1 + var(--sun-glow) * 0.28)),
+        0 0 220px rgba(255, 160, 55, calc(0.05 + var(--sun-glow) * 0.16));
+    filter: saturate(calc(1 + var(--sun-warmth) * 0.4));
 }
 
 .moon {
@@ -2217,6 +2374,22 @@ body[data-theme="night"] {
     .moon {
         width: 130px;
         height: 130px;
+    }
+}
+
+/* Override final (desktop): garante newsletter vertical com scroll interno */
+@media (min-width: 1200px) {
+    .tools-nl__viewport {
+        overflow: hidden;
+    }
+
+    .tools-nl__track {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scroll-snap-type: y proximity;
+        -webkit-overflow-scrolling: touch;
     }
 }
 
