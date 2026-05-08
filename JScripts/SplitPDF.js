@@ -423,7 +423,14 @@ async function mergeSelectedPDFs() {
         }
 
         const mergedBytes = await mergedPdf.save();
-        downloadBlob(mergedBytes, "documento_mesclado.pdf", "application/pdf");
+
+        const firstSelectedRecord = findPdfById(selectedItems[0].dataset.id);
+        const firstBaseName = firstSelectedRecord
+            ? firstSelectedRecord.name.replace(/\.pdf$/i, "").trim()
+            : "documento_mesclado";
+        const mergedFileName = `${firstBaseName || "documento_mesclado"}.pdf`;
+
+        downloadBlob(mergedBytes, mergedFileName, "application/pdf");
 
         showToast("PDFs mesclados com sucesso.", "success");
     } catch (error) {
