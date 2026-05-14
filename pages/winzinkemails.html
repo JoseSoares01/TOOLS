@@ -566,6 +566,11 @@
       return Math.round((num + Number.EPSILON) * 100) / 100;
     }
 
+    /** Arredondamento a 4 casas — alinhado ao SAP para coluna % */
+    function round4(num) {
+      return Math.round((num + Number.EPSILON) * 10000) / 10000;
+    }
+
     function formatDecimal(value, digits = 2) {
       if (!Number.isFinite(value)) return '';
       if (numberMode.value === 'raw') {
@@ -584,7 +589,7 @@
 
     function formatPercent(value) {
       if (!Number.isFinite(value)) return '';
-      return `${formatDecimal(value, 2)}%`;
+      return `${formatDecimal(value, 4)}%`;
     }
 
     function excelColumnName(index) {
@@ -713,7 +718,7 @@
       const withoutVatVal = parseNumeric(data[rowIndex][columnMap.withoutVat]);
       if (columnMap.percent === -1) return;
       if (Number.isFinite(baseTotalWithoutVat) && baseTotalWithoutVat !== 0 && Number.isFinite(withoutVatVal)) {
-        data[rowIndex][columnMap.percent] = formatPercent(round2((withoutVatVal / baseTotalWithoutVat) * 100));
+        data[rowIndex][columnMap.percent] = formatPercent(round4((withoutVatVal / baseTotalWithoutVat) * 100));
       }
     }
 
@@ -794,7 +799,7 @@
         const headerName = normalizeText(headers[c]);
 
         if (c === 0 || c === cols.percent || headerName === '%') {
-          data[totalRowIndex][c] = Number.isFinite(percentSum) ? formatPercent(round2(percentSum)) : '';
+          data[totalRowIndex][c] = Number.isFinite(percentSum) ? formatPercent(round4(percentSum)) : '';
           continue;
         }
         if (c === cols.withoutVat) {
@@ -1033,34 +1038,34 @@
     function runSelfTests() {
       console.assert(parseNumeric('6.715,87 €') === 6715.87, 'Teste falhou: parseNumeric moeda PT');
       console.assert(parseNumeric('23%') === 23, 'Teste falhou: parseNumeric percentagem');
-      console.assert(formatPercent(100) === '100,00%' || formatPercent(100) === '100.00%', 'Teste falhou: formatPercent');
+      console.assert(formatPercent(100) === '100,0000%' || formatPercent(100) === '100.0000%', 'Teste falhou: formatPercent');
       console.assert(detectColumnMap(['%', 'Total S/IVA', 'IVA', 'Total']).total === 3, 'Teste falhou: detectColumnMap total');
       console.assert(detectColumnMap(['%', 'Total S/IVA', 'IVA', 'Total']).withoutVat === 1, 'Teste falhou: detectColumnMap total s/iva');
 
       const testSheet = [
         ['%', 'Total S/IVA', 'IVA', 'Total'],
-        ['50,00%', '100,00 €', '23', '123,00 €'],
-        ['50,00%', '100,00 €', '23', '123,00 €'],
-        ['100,00%', '200,00 €', '', '246,00 €']
+        ['50,0000%', '100,00 €', '23', '123,00 €'],
+        ['50,0000%', '100,00 €', '23', '123,00 €'],
+        ['100,0000%', '200,00 €', '', '246,00 €']
       ];
       sheetsData.__test__ = deepClone(testSheet);
       recalcTotals('__test__');
       sheetsData.__test__[1][1] = '150,00 €';
       recalcTotals('__test__');
-      console.assert(sheetsData.__test__[1][0] === '75,00%' || sheetsData.__test__[1][0] === '75.00%', 'Teste falhou: percentagem deve atualizar ao alterar S/IVA pela base original');
-      console.assert(sheetsData.__test__[2][0] === '50,00%' || sheetsData.__test__[2][0] === '50.00%', 'Teste falhou: percentagem da outra linha deve manter-se');
-      console.assert(sheetsData.__test__[3][0] === '125,00%' || sheetsData.__test__[3][0] === '125.00%', 'Teste falhou: percentagem total deve refletir nova soma');
+      console.assert(sheetsData.__test__[1][0] === '75,0000%' || sheetsData.__test__[1][0] === '75.0000%', 'Teste falhou: percentagem deve atualizar ao alterar S/IVA pela base original');
+      console.assert(sheetsData.__test__[2][0] === '50,0000%' || sheetsData.__test__[2][0] === '50.0000%', 'Teste falhou: percentagem da outra linha deve manter-se');
+      console.assert(sheetsData.__test__[3][0] === '125,0000%' || sheetsData.__test__[3][0] === '125.0000%', 'Teste falhou: percentagem total deve refletir nova soma');
       console.assert(sheetsData.__test__[3][1] === '250,00 €' || sheetsData.__test__[3][1] === '250.00 €', 'Teste falhou: total S/IVA final deve atualizar');
       console.assert(sheetsData.__test__[3][3] === '307,50 €' || sheetsData.__test__[3][3] === '307.50 €', 'Teste falhou: total final deve atualizar');
 
       sheetsData.__test__ = deepClone(testSheet);
       updateDependentValues('__test__', 1, 0);
-      sheetsData.__test__[1][0] = '80,00%';
+      sheetsData.__test__[1][0] = '80,0000%';
       updateDependentValues('__test__', 1, 0);
       recalcTotals('__test__');
       console.assert(sheetsData.__test__[1][1] === '160,00 €' || sheetsData.__test__[1][1] === '160.00 €', 'Teste falhou: editar % deve atualizar S/IVA');
       console.assert(sheetsData.__test__[1][3] === '196,80 €' || sheetsData.__test__[1][3] === '196.80 €', 'Teste falhou: editar % deve atualizar total da linha');
-      console.assert(sheetsData.__test__[3][0] === '130,00%' || sheetsData.__test__[3][0] === '130.00%', 'Teste falhou: editar % deve alterar o total global de percentagem');
+      console.assert(sheetsData.__test__[3][0] === '130,0000%' || sheetsData.__test__[3][0] === '130.0000%', 'Teste falhou: editar % deve alterar o total global de percentagem');
       console.assert(sheetsData.__test__[3][1] === '260,00 €' || sheetsData.__test__[3][1] === '260.00 €', 'Teste falhou: editar % deve alterar o total global S/IVA');
       console.assert(sheetsData.__test__[3][3] === '319,80 €' || sheetsData.__test__[3][3] === '319.80 €', 'Teste falhou: editar % deve alterar o total global Total');
       delete sheetsData.__test__;
