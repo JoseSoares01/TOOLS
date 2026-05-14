@@ -402,6 +402,7 @@
           <input id="fileInput" type="file" accept=".xlsx,.xls,.xml,.csv,text/xml,application/xml" />
           <button class="btn soft" id="addRowBtn" type="button">Adicionar linha</button>
           <button class="btn warn" id="removeRowBtn" type="button">Remover linha</button>
+          <button class="btn soft" id="duplicateRowBtn" type="button">Duplicar linha</button>
           <button class="btn ghost" id="undoBtn" type="button">Desfazer</button>
           <button class="btn ghost" id="resetAllBtn" type="button">Desfazer tudo</button>
           <button class="btn primary" id="downloadBtn" type="button">Exportar Excel</button>
@@ -456,7 +457,7 @@
         </div>
 
         <div class="footer-note">
-          Lê Excel, XML Spreadsheet 2003 e CSV. Recalcula automaticamente %, Total S/IVA, IVA e Total.
+          Lê Excel, XML Spreadsheet 2003 e CSV. Recalcula automaticamente %, Total S/IVA, IVA e Total. «Duplicar linha» insere uma cópia e reparte o Total S/IVA ao meio (mesmo IVA e restantes colunas iguais).
         </div>
       </section>
     </main>
@@ -471,6 +472,7 @@
     const sheetInfoEl = document.getElementById('sheetInfo');
     const addRowBtn = document.getElementById('addRowBtn');
     const removeRowBtn = document.getElementById('removeRowBtn');
+    const duplicateRowBtn = document.getElementById('duplicateRowBtn');
     const downloadBtn = document.getElementById('downloadBtn');
     const numberMode = document.getElementById('numberMode');
     const changesCountEl = document.getElementById('changesCount');
@@ -569,6 +571,15 @@
     /** Arredondamento a 4 casas — alinhado ao SAP para coluna % */
     function round4(num) {
       return Math.round((num + Number.EPSILON) * 10000) / 10000;
+    }
+
+    /** Divide um montante em duas partes que somam o original (2 casas decimais). */
+    function splitHalfAmount(value) {
+      if (!Number.isFinite(value)) return { first: NaN, second: NaN };
+      if (value === 0) return { first: 0, second: 0 };
+      const first = round2(value / 2);
+      const second = round2(value - first);
+      return { first, second };
     }
 
     function formatDecimal(value, digits = 2) {
@@ -1118,6 +1129,93 @@
       data.splice(totalRowIndex - 1, 1);
       originalSheetsData[currentSheet].splice(totalRowIndex - 1, 1);
       renderSheet(currentSheet);
+    });
+
+    duplicateRowBtn.addEventListener('click', () => {
+      if (!currentSheet) return;
+      const data = sheetsData[currentSheet];
+      const origSheet = originalSheetsData[currentSheet];
+      const totalRowIndex = getTotalRowIndex(data);
+      const row = lastFocusedCell?.row;
+      if (row == null || row <= 0 || row >= totalRowIndex) {
+        statusEl.textContent = 'Clique numa célula da linha a duplicar (não use a linha de totais).';
+        return;
+      }
+
+      const headers = data[0];
+      const cols = detectColumnMap(headers);
+      if (cols.withoutVat === -1 && cols.total === -1) {
+        statusEl.textContent = 'É necessária a coluna Total S/IVA ou Total para repartir valores.';
+        return;
+      }
+
+      const oldRow = (data[row] || []).map(c => (c == null ? '' : c));
+      const width = Math.max(headers.length, oldRow.length);
+      while (oldRow.length < width) oldRow.push('');
+
+      let withoutVal = cols.withoutVat !== -1 ? parseNumeric(oldRow[cols.withoutVat]) : NaN;
+      if (!Number.isFinite(withoutVal) && cols.total !== -1) {
+        const totalVal = parseNumeric(oldRow[cols.total]);
+        const vatRate = getVatRateForRow(data, row, cols);
+        const divisor = 1 + vatRate / 100;
+        if (Number.isFinite(totalVal) && Number.isFinite(vatRate) && divisor !== 0) {
+          withoutVal = round2(totalVal / divisor);
+        }
+      }
+
+      if (!Number.isFinite(withoutVal)) {
+        statusEl.textContent = 'Não há valor em Total S/IVA (ou em Total com IVA) para dividir ao meio.';
+        return;
+      }
+
+      pushHistory('duplicar linha');
+      const origSnap = deepClone(origSheet[row] || []);
+      while (origSnap.length < width) origSnap.push('');
+
+      const { first: w0, second: w1 } = splitHalfAmount(withoutVal);
+      const newRow0 = oldRow.map(c => (c == null ? '' : String(c)));
+      const newRow1 = oldRow.map(c => (c == null ? '' : String(c)));
+
+      data.splice(row + 1, 0, new Array(width).fill(''));
+      origSheet.splice(row + 1, 0, new Array(width).fill(''));
+
+      if (cols.withoutVat >= 0) {
+        newRow0[cols.withoutVat] = formatCurrency(w0);
+        newRow1[cols.withoutVat] = formatCurrency(w1);
+      }
+      if (cols.percent >= 0) {
+        newRow0[cols.percent] = '';
+        newRow1[cols.percent] = '';
+      }
+      if (cols.total >= 0) {
+        newRow0[cols.total] = '';
+        newRow1[cols.total] = '';
+      }
+
+      data[row] = newRow0;
+      data[row + 1] = newRow1;
+      const headerLen = headers.length;
+      for (const rr of [row, row + 1]) {
+        while (data[rr].length < headerLen) data[rr].push('');
+        if (data[rr].length > headerLen) data[rr].length = headerLen;
+      }
+
+      const baseline = deepClone(origSnap);
+      while (baseline.length < headerLen) baseline.push('');
+      if (baseline.length > headerLen) baseline.length = headerLen;
+      origSheet[row] = deepClone(baseline);
+      origSheet[row + 1] = deepClone(baseline);
+
+      recalcTotals(currentSheet);
+      if (lastFocusedCell) {
+        lastFocusedCell = {
+          row: row + 1,
+          col: Math.min(lastFocusedCell.col, Math.max(0, headerLen - 1))
+        };
+      }
+      renderSheet(currentSheet);
+      restoreFocus();
+      statusEl.textContent = 'Linha duplicada: Total S/IVA repartido em duas linhas iguais (mesmo IVA).';
     });
 
     resetSheetBtn.addEventListener('click', () => {
