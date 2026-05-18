@@ -101,8 +101,8 @@ body {
     transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
 
-/* Destaque após gerar o QR (chama atenção) */
-.qr-summary-card.qr-summary-card--active {
+/* Vermelho: dados em falta no QR */
+.qr-summary-card.qr-summary-card--incomplete {
     background: linear-gradient(165deg, rgba(140, 28, 36, 0.94), rgba(75, 14, 22, 0.96));
     border-color: rgba(255, 130, 140, 0.55);
     box-shadow:
@@ -111,24 +111,45 @@ body {
         0 20px 48px rgba(0, 0, 0, 0.4);
 }
 
-.qr-summary-card--active .section-heading h2 {
+/* Verde: todos os campos A, B, F e O válidos */
+.qr-summary-card.qr-summary-card--complete {
+    background: linear-gradient(165deg, rgba(22, 110, 62, 0.94), rgba(12, 58, 38, 0.96));
+    border-color: rgba(120, 255, 180, 0.45);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 0 0 1px rgba(66, 230, 164, 0.28),
+        0 20px 48px rgba(0, 0, 0, 0.35);
+}
+
+.qr-summary-card--incomplete .section-heading h2,
+.qr-summary-card--complete .section-heading h2 {
     color: #ffffff;
 }
 
-.qr-summary-card--active .section-heading p {
+.qr-summary-card--incomplete .section-heading p {
     color: rgba(255, 230, 230, 0.88);
 }
 
-.qr-summary-card--active .qr-summary-item {
+.qr-summary-card--complete .section-heading p {
+    color: rgba(220, 255, 235, 0.88);
+}
+
+.qr-summary-card--incomplete .qr-summary-item,
+.qr-summary-card--complete .qr-summary-item {
     background: rgba(0, 0, 0, 0.28);
     border-color: rgba(255, 255, 255, 0.14);
 }
 
-.qr-summary-card--active .qr-summary-item dt {
+.qr-summary-card--incomplete .qr-summary-item dt {
     color: rgba(255, 220, 220, 0.85);
 }
 
-.qr-summary-card--active .qr-summary-item dd {
+.qr-summary-card--complete .qr-summary-item dt {
+    color: rgba(200, 255, 220, 0.85);
+}
+
+.qr-summary-card--incomplete .qr-summary-item dd,
+.qr-summary-card--complete .qr-summary-item dd {
     color: #ffffff;
 }
 

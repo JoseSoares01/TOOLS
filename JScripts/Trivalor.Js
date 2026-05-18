@@ -251,6 +251,13 @@ function formatQrTotalDisplay(oValue) {
     return `${n.toLocaleString("pt-PT", { minimumFractionDigits: 2, maximumFractionDigits: 4 })} €`;
 }
 
+function setQrSummaryPanelHighlight(panel, state) {
+    if (!panel) return;
+    panel.classList.remove("qr-summary-card--incomplete", "qr-summary-card--complete");
+    if (state === "incomplete") panel.classList.add("qr-summary-card--incomplete");
+    else if (state === "complete") panel.classList.add("qr-summary-card--complete");
+}
+
 function updateQrSummaryFromString(qrString) {
     const panel = document.getElementById("qrSummaryPanel");
     const alertsEl = document.getElementById("qr_summary_alerts");
@@ -262,7 +269,7 @@ function updateQrSummaryFromString(qrString) {
     const trimmed = qrString && typeof qrString === "string" ? qrString.trim() : "";
 
     if (!trimmed) {
-        if (panel) panel.classList.remove("qr-summary-card--active");
+        setQrSummaryPanelHighlight(panel, "idle");
         if (alertsEl) {
             alertsEl.hidden = true;
             alertsEl.replaceChildren();
@@ -275,7 +282,6 @@ function updateQrSummaryFromString(qrString) {
     }
 
     const map = parsePortugueseATQRString(trimmed);
-    if (panel) panel.classList.add("qr-summary-card--active");
 
     if (elV) elV.textContent = isQrNifSummaryMissing(map.A) ? dash : map.A;
     if (elE) elE.textContent = isQrNifSummaryMissing(map.B) ? dash : map.B;
@@ -295,6 +301,8 @@ function updateQrSummaryFromString(qrString) {
     if (isQrTotalSummaryMissing(map.O)) {
         alerts.push("VALOR TOTAL NÃO PREENCHIDO. VERIFIQUE O QR CODE…");
     }
+
+    setQrSummaryPanelHighlight(panel, alerts.length ? "incomplete" : "complete");
 
     if (alertsEl) {
         alertsEl.replaceChildren();
