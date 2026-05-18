@@ -215,36 +215,101 @@ function parsePortugueseATQRString(str) {
     return map;
 }
 
-/** Campo F (AAAAMMDD) → DD/MM/AAAA */
-function formatQrDateToDisplay(fValue) {
-    if (fValue == null || fValue === "") return "—";
+/** Campo F (AAAAMMDD) válido: 8 dígitos após limpar não-dígitos. */
+function isQrDateFieldPresentAndValid(fValue) {
+    if (fValue == null || String(fValue).trim() === "") return false;
     const digits = String(fValue).replace(/\D/g, "");
-    if (digits.length !== 8) return String(fValue);
+    return digits.length === 8;
+}
+
+/** Campo F (AAAAMMDD) → DD/MM/AAAA, ou «—» se inválido/em falta. */
+function formatQrDateToDisplay(fValue) {
+    if (!isQrDateFieldPresentAndValid(fValue)) return "—";
+    const digits = String(fValue).replace(/\D/g, "");
     const y = digits.slice(0, 4);
     const m = digits.slice(4, 6);
     const d = digits.slice(6, 8);
     return `${d}/${m}/${y}`;
 }
 
+function isQrNifSummaryMissing(val) {
+    if (val == null) return true;
+    const s = String(val).trim();
+    return s === "" || s === "0";
+}
+
+function isQrTotalSummaryMissing(oValue) {
+    if (oValue == null || String(oValue).trim() === "") return true;
+    const n = parseFloat(String(oValue).replace(",", "."));
+    return !Number.isFinite(n);
+}
+
 /** Exibe o total (campo O) com separadores pt-PT quando for número. */
 function formatQrTotalDisplay(oValue) {
-    if (oValue == null || oValue === "") return "—";
+    if (isQrTotalSummaryMissing(oValue)) return "—";
     const n = parseFloat(String(oValue).replace(",", "."));
-    if (!Number.isFinite(n)) return String(oValue);
     return `${n.toLocaleString("pt-PT", { minimumFractionDigits: 2, maximumFractionDigits: 4 })} €`;
 }
 
 function updateQrSummaryFromString(qrString) {
-    const map = parsePortugueseATQRString(qrString);
+    const panel = document.getElementById("qrSummaryPanel");
+    const alertsEl = document.getElementById("qr_summary_alerts");
     const elV = document.getElementById("qr_sum_nif_vendedor");
     const elE = document.getElementById("qr_sum_nif_empresa");
     const elD = document.getElementById("qr_sum_data");
     const elT = document.getElementById("qr_sum_total");
     const dash = "—";
-    if (elV) elV.textContent = map.A != null && map.A !== "" ? map.A : dash;
-    if (elE) elE.textContent = map.B != null && map.B !== "" ? map.B : dash;
+    const trimmed = qrString && typeof qrString === "string" ? qrString.trim() : "";
+
+    if (!trimmed) {
+        if (panel) panel.classList.remove("qr-summary-card--active");
+        if (alertsEl) {
+            alertsEl.hidden = true;
+            alertsEl.replaceChildren();
+        }
+        if (elV) elV.textContent = dash;
+        if (elE) elE.textContent = dash;
+        if (elD) elD.textContent = dash;
+        if (elT) elT.textContent = dash;
+        return;
+    }
+
+    const map = parsePortugueseATQRString(trimmed);
+    if (panel) panel.classList.add("qr-summary-card--active");
+
+    if (elV) elV.textContent = isQrNifSummaryMissing(map.A) ? dash : map.A;
+    if (elE) elE.textContent = isQrNifSummaryMissing(map.B) ? dash : map.B;
     if (elD) elD.textContent = formatQrDateToDisplay(map.F);
-    if (elT) elT.textContent = map.O != null && map.O !== "" ? formatQrTotalDisplay(map.O) : dash;
+    if (elT) elT.textContent = isQrTotalSummaryMissing(map.O) ? dash : formatQrTotalDisplay(map.O);
+
+    const alerts = [];
+    if (isQrNifSummaryMissing(map.A)) {
+        alerts.push("NIF DO VENDEDOR NÃO PREENCHIDO. VERIFIQUE O QR CODE…");
+    }
+    if (isQrNifSummaryMissing(map.B)) {
+        alerts.push("NIF DA EMPRESA NÃO PREENCHIDO. VERIFIQUE O QR CODE…");
+    }
+    if (!isQrDateFieldPresentAndValid(map.F)) {
+        alerts.push("DATA NÃO PREENCHIDA. VERIFIQUE O QR CODE…");
+    }
+    if (isQrTotalSummaryMissing(map.O)) {
+        alerts.push("VALOR TOTAL NÃO PREENCHIDO. VERIFIQUE O QR CODE…");
+    }
+
+    if (alertsEl) {
+        alertsEl.replaceChildren();
+        if (alerts.length) {
+            alerts.forEach((text) => {
+                const p = document.createElement("p");
+                p.className = "qr-summary-alert";
+                p.textContent = text;
+                alertsEl.appendChild(p);
+            });
+            alertsEl.hidden = false;
+        } else {
+            alertsEl.hidden = true;
+        }
+    }
 }
 
 function generateQRCode() {
