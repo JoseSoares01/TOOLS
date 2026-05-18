@@ -191,6 +191,62 @@ document.addEventListener("DOMContentLoaded", function () {
 
 let qrPopupTimeout;
 
+/**
+ * Parte a string fiscal do QR (segmentos KEY:VAL separados por * ou ;).
+ * @param {string} str
+ * @returns {Record<string, string>}
+ */
+function parsePortugueseATQRString(str) {
+    const map = {};
+    if (!str || typeof str !== "string") return map;
+    const trimmed = str.trim();
+    const delim = trimmed.includes("*") ? "*" : trimmed.includes(";") ? ";" : null;
+    if (!delim) return map;
+    const parts = trimmed.split(delim);
+    for (let i = 0; i < parts.length; i++) {
+        const part = parts[i].trim();
+        if (!part) continue;
+        const colon = part.indexOf(":");
+        if (colon <= 0) continue;
+        const key = part.slice(0, colon).trim();
+        const value = part.slice(colon + 1);
+        if (key) map[key] = value;
+    }
+    return map;
+}
+
+/** Campo F (AAAAMMDD) → DD/MM/AAAA */
+function formatQrDateToDisplay(fValue) {
+    if (fValue == null || fValue === "") return "—";
+    const digits = String(fValue).replace(/\D/g, "");
+    if (digits.length !== 8) return String(fValue);
+    const y = digits.slice(0, 4);
+    const m = digits.slice(4, 6);
+    const d = digits.slice(6, 8);
+    return `${d}/${m}/${y}`;
+}
+
+/** Exibe o total (campo O) com separadores pt-PT quando for número. */
+function formatQrTotalDisplay(oValue) {
+    if (oValue == null || oValue === "") return "—";
+    const n = parseFloat(String(oValue).replace(",", "."));
+    if (!Number.isFinite(n)) return String(oValue);
+    return `${n.toLocaleString("pt-PT", { minimumFractionDigits: 2, maximumFractionDigits: 4 })} €`;
+}
+
+function updateQrSummaryFromString(qrString) {
+    const map = parsePortugueseATQRString(qrString);
+    const elV = document.getElementById("qr_sum_nif_vendedor");
+    const elE = document.getElementById("qr_sum_nif_empresa");
+    const elD = document.getElementById("qr_sum_data");
+    const elT = document.getElementById("qr_sum_total");
+    const dash = "—";
+    if (elV) elV.textContent = map.A != null && map.A !== "" ? map.A : dash;
+    if (elE) elE.textContent = map.B != null && map.B !== "" ? map.B : dash;
+    if (elD) elD.textContent = formatQrDateToDisplay(map.F);
+    if (elT) elT.textContent = map.O != null && map.O !== "" ? formatQrTotalDisplay(map.O) : dash;
+}
+
 function generateQRCode() {
     const nif_vendedor = limitCharacters(document.getElementById("nif_vendedor").value || '0', 15);
     const nif_empresa = limitCharacters(document.getElementById("nif_empresa").value || '0', 15);
@@ -264,6 +320,7 @@ function generateQRCode() {
         document.getElementById('qrcode').innerHTML = '';
         document.getElementById('qrcode').appendChild(qrCodeImage);
         document.getElementById('qr_data').value = dados_qr_code;
+        updateQrSummaryFromString(dados_qr_code);
         showQrCodePopup();
         
         setTimeout(clearInputs, 1000);

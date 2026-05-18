@@ -9,3 +9,4 @@ Newsletter
 🇪🇺 União Europeia (EU)
 🏳️ Estrangeiras INT (INT)
 6- SplitPDF (mesclar): o download do PDF mesclado agora usa automaticamente o nome do primeiro documento da fila (ex.: 85978562.pdf).
+7- Gerador de QR (Trivalor): novo painel «Resumo fiscal» ao lado da pré-visualização. Após clicar em «Gerar QR», o painel preenche automaticamente quatro campos lidos da string fiscal do código QR (mesmo formato AT, segmentos separados por *): (1) NIF do vendedor — campo A; (2) NIF da empresa — campo B; (3) data do documento — campo F, apresentada em DD/MM/AAAA a partir de AAAAMMDD; (4) valor total — campo O, formatado em português com 2 a 4 casas decimais e símbolo €. O parser aceita também strings com separador «;» quando não há asteriscos. A grelha principal passou a quatro colunas (painel mais estreito para o resumo); em ecrãs médios o QR e o resumo ficam lado a lado na segunda linha. Ficheiros: pages/Trivalor.html, css/Trivalor.css, JScripts/Trivalor.Js.
