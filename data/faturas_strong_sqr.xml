@@ -46,7 +46,7 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="faturas_strong_SQR">
-  <Table ss:ExpandedColumnCount="4" ss:ExpandedRowCount="49" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="4" ss:ExpandedRowCount="50" x:FullColumns="1"
    x:FullRows="1" ss:DefaultRowHeight="14.4">
    <Row>
     <Cell ss:StyleID="s62"><Data ss:Type="String">NIF Fornecedor</Data></Cell>
@@ -340,6 +340,12 @@
     <Cell ss:StyleID="s63"><Data ss:Type="String">212123259</Data></Cell>
     <Cell ss:StyleID="s63"><Data ss:Type="String">GAMANET CONSULTING s.r.o.</Data></Cell>
     <Cell ss:StyleID="s63"><Data ss:Type="String">503257567</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">EU</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">6344291</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">SHOES FOR CREWS</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">500142858</Data></Cell>
     <Cell ss:StyleID="s63"><Data ss:Type="String">EU</Data></Cell>
    </Row>
   </Table>
