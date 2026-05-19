@@ -46,7 +46,7 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="faturas_strong_SQR">
-  <Table ss:ExpandedColumnCount="4" ss:ExpandedRowCount="52" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="4" ss:ExpandedRowCount="49" x:FullColumns="1"
    x:FullRows="1" ss:DefaultRowHeight="14.4">
    <Row>
     <Cell ss:StyleID="s62"><Data ss:Type="String">NIF Fornecedor</Data></Cell>
@@ -247,18 +247,6 @@
     <Cell ss:StyleID="s63"><Data ss:Type="String">EU</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s63"><Data ss:Type="String">ESB60347010</Data></Cell>
-    <Cell ss:StyleID="s63"><Data ss:Type="String">BY DEMES GROUP</Data></Cell>
-    <Cell ss:StyleID="s63"><Data ss:Type="String">503257567</Data></Cell>
-    <Cell ss:StyleID="s63"><Data ss:Type="String">PT</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s63"><Data ss:Type="String">B60347010</Data></Cell>
-    <Cell ss:StyleID="s63"><Data ss:Type="String">BY DEMES GROUP</Data></Cell>
-    <Cell ss:StyleID="s63"><Data ss:Type="String">503257567</Data></Cell>
-    <Cell ss:StyleID="s63"><Data ss:Type="String">EU</Data></Cell>
-   </Row>
-   <Row>
     <Cell ss:StyleID="s63"><Data ss:Type="String">DE811345117</Data></Cell>
     <Cell ss:StyleID="s63"><Data ss:Type="String">TELENOT SECURITY SYSTEMS</Data></Cell>
     <Cell ss:StyleID="s63"><Data ss:Type="String">503257567</Data></Cell>
@@ -351,12 +339,6 @@
    <Row>
     <Cell ss:StyleID="s63"><Data ss:Type="String">212123259</Data></Cell>
     <Cell ss:StyleID="s63"><Data ss:Type="String">GAMANET CONSULTING s.r.o.</Data></Cell>
-    <Cell ss:StyleID="s63"><Data ss:Type="String">503257567</Data></Cell>
-    <Cell ss:StyleID="s63"><Data ss:Type="String">EU</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s63"><Data ss:Type="String">60347010</Data></Cell>
-    <Cell ss:StyleID="s63"><Data ss:Type="String">BY DEMES GROUP</Data></Cell>
     <Cell ss:StyleID="s63"><Data ss:Type="String">503257567</Data></Cell>
     <Cell ss:StyleID="s63"><Data ss:Type="String">EU</Data></Cell>
    </Row>
