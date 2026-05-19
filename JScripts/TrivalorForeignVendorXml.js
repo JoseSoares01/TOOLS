@@ -13,6 +13,8 @@
  * Base isenta: este módulo NUNCA altera #base_isenta.
  *
  * Deduplicação: uma entrada por NIF fornecedor + Zona (normalizados); o Excel repete muitas linhas iguais.
+ * Regra de negócio: o mesmo NIF e o mesmo nome com zonas diferentes (ex.: EU vs INT) NUNCA são tratados como
+ * duplicado — são operações distintas (Europa vs internacional). A chave inclui sempre a Zona.
  *
  * Atualização do ficheiro XML: substitua /data/faturas_strong_sqr.xml no servidor.
  * - Pedidos com cache: 'no-store' para o browser não ficar com XML antigo.
@@ -130,8 +132,9 @@
             }
 
             /**
-             * Uma linha única por (NIF fornecedor + zona): o XML repete a mesma fatura/fornecedor
-             * centenas de vezes; NIF empresa costuma ser o mesmo. Ignora repetidos adicionais.
+             * Chave única = NIF fornecedor + Zona (EU, INT, PT, …).
+             * Mesmo NIF e mesmo nome: se uma linha for EU e outra INT (ou PT), são dois registos — não fundir.
+             * O XML repete linhas idênticas; NIF empresa costuma repetir-se. Mantém-se o primeiro par (NIF|Zona).
              * Se no futuro o mesmo NIF+zona tiver NIF empresa distintos, mantém-se o primeiro visto.
              */
             var dedupeKey = normNif(nifFornecedor) + "|" + normZona(zona);
