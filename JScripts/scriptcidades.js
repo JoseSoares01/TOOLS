@@ -1,316 +1,550 @@
 /**
- * Norte ou Sul (PT) — app.js
- * Verifica se uma localidade portuguesa está a norte ou sul de Coimbra.
- * Utiliza a API Nominatim (OpenStreetMap) com fallback offline.
+ * Norte ou Sul (PT) — busca de localidades
+ * Cidade, freguesia, distrito ou código postal (4xxx-xxx).
+ * Seleccionar uma sugestão classifica imediatamente (sem Enter).
  */
 
-/* ── Constantes ─────────────────────────────────────────── */
-const COIMBRA_LAT = 40.2056;       // Latitude de referência
-const MAX_HISTORY = 5;             // Máx. entradas no histórico
-const DEBOUNCE_MS = 300;           // Delay das sugestões
+const COIMBRA_LAT = 40.2056;
+const MAX_HISTORY = 8;
+const DEBOUNCE_MS = 280;
+const SUGGEST_LIMIT = 10;
 const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search';
+const NOMINATIM_HEADERS = {
+  Accept: 'application/json',
+  'User-Agent': 'trivalor-norte-sul-pt/2.0 (internal tools)',
+};
+
 const ISLANDS_AZORES_KEYWORDS = [
   'acores', 'azores', 'ilha de sao miguel', 'sao miguel', 'ilha terceira', 'terceira',
   'ilha do faial', 'faial', 'ilha do pico', 'pico', 'ilha de santa maria', 'santa maria',
   'ilha de sao jorge', 'sao jorge', 'ilha graciosa', 'graciosa', 'ilha das flores',
   'flores', 'ilha do corvo', 'corvo', 'ponta delgada', 'ribeira grande', 'angra do heroismo',
-  'cabouco'
+  'cabouco',
 ];
 const ISLANDS_MADEIRA_KEYWORDS = [
   'madeira', 'ilha da madeira', 'funchal', 'porto santo', 'ilha do porto santo',
-  'machico', 'camara de lobos', 'santana', 'sao vicente'
+  'machico', 'camara de lobos', 'santana', 'sao vicente',
 ];
 
-/* ── Dicionário offline ──────────────────────────────────── */
 const OFFLINE_DB = {
-  'lisboa':              38.7223,
-  'porto':               41.1579,
-  'coimbra':             40.2056,
-  'braga':               41.5454,
-  'aveiro':              40.6405,
-  'faro':                37.0194,
-  'setúbal':             38.5244,
-  'setubal':             38.5244,
-  'viseu':               40.6566,
-  'vila real':           41.3006,
-  'guarda':              40.5373,
-  'évora':               38.5714,
-  'evora':               38.5714,
-  'leiria':              39.7436,
-  'santarém':            39.2362,
-  'santarem':            39.2362,
-  'castelo branco':      39.8197,
-  'bragança':            41.8062,
-  'braganca':            41.8062,
-  'viana do castelo':    41.6932,
-  'funchal':             32.6669,
-  'funchal (madeira)':   32.6669,
-  'ponta delgada':       37.7412,
-  'ponta delgada (açores)': 37.7412,
-  'cabouco':             37.7833,
-  'cabouco (açores)':    37.7833,
-  'ilhas':               37.7412,
-  'acores':              37.7412,
-  'açores':              37.7412,
-  'madeira':             32.6669,
+  lisboa: 38.7223,
+  porto: 41.1579,
+  coimbra: 40.2056,
+  braga: 41.5454,
+  aveiro: 40.6405,
+  faro: 37.0194,
+  setubal: 38.5244,
+  'setúbal': 38.5244,
+  viseu: 40.6566,
+  'vila real': 41.3006,
+  guarda: 40.5373,
+  evora: 38.5714,
+  'évora': 38.5714,
+  leiria: 39.7436,
+  santarem: 39.2362,
+  'santarém': 39.2362,
+  'castelo branco': 39.8197,
+  braganca: 41.8062,
+  'bragança': 41.8062,
+  'viana do castelo': 41.6932,
+  funchal: 32.6669,
+  'ponta delgada': 37.7412,
+  cabouco: 37.7833,
+  acores: 37.7412,
+  'açores': 37.7412,
+  madeira: 32.6669,
+  amadora: 38.7542,
+  sintra: 38.7989,
+  cascais: 38.6979,
+  guimaraes: 41.4425,
+  'guimarães': 41.4425,
+  matosinhos: 41.1821,
+  maia: 41.2357,
+  'vila nova de gaia': 41.1239,
+  almada: 38.6796,
+  oeiras: 38.6921,
+  gondomar: 41.1446,
+  barcelos: 41.5388,
+  famalicao: 41.4078,
+  'famalicão': 41.4078,
+  'santa maria da feira': 40.9255,
+  'vila do conde': 41.3518,
+  'póvoa de varzim': 41.3834,
+  'povoa de varzim': 41.3834,
+  beja: 38.0153,
+  portalegre: 39.2968,
+  'torres vedras': 39.0911,
+  'caldas da rainha': 39.4031,
+  penafiel: 41.2078,
+  lousada: 41.2767,
+  felgueiras: 41.3682,
 };
 
-/* ── Elementos DOM ───────────────────────────────────────── */
-const cityInput       = document.getElementById('cityInput');
-const verifyBtn       = document.getElementById('verifyBtn');
+/** Primeiros 4 dígitos do CP → latitude aproximada (modo offline) */
+const OFFLINE_POSTAL_PREFIX = {
+  1000: 38.7223,
+  1050: 38.7071,
+  1100: 38.7223,
+  1250: 38.7644,
+  1300: 38.7071,
+  1500: 38.7538,
+  1600: 38.7921,
+  1700: 38.7578,
+  1800: 38.7542,
+  1900: 38.7542,
+  2000: 38.5244,
+  2400: 39.7441,
+  2500: 39.8222,
+  2600: 38.9551,
+  2700: 38.9933,
+  2800: 38.6556,
+  2900: 38.5244,
+  3000: 40.2033,
+  4000: 41.1579,
+  4100: 41.1579,
+  4200: 41.1579,
+  4300: 41.1579,
+  4400: 41.6932,
+  4500: 41.1579,
+  4600: 41.5518,
+  4700: 41.5518,
+  4800: 41.5454,
+  4900: 41.5454,
+  5000: 41.1579,
+  5100: 41.1579,
+  5200: 41.1579,
+  5300: 41.1579,
+  6000: 39.8222,
+  6100: 39.8222,
+  6200: 40.2111,
+  6300: 40.2111,
+  7000: 38.5714,
+  8000: 37.0194,
+  9000: 32.6669,
+  9500: 37.7412,
+};
+
+const cityInput = document.getElementById('cityInput');
+const verifyBtn = document.getElementById('verifyBtn');
 const suggestionsList = document.getElementById('suggestionsList');
-const stateEmpty      = document.getElementById('stateEmpty');
-const stateLoading    = document.getElementById('stateLoading');
-const stateError      = document.getElementById('stateError');
-const stateResult     = document.getElementById('stateResult');
-const errorMsg        = document.getElementById('errorMsg');
-const resultBadge     = document.getElementById('resultBadge');
-const pillLat         = document.getElementById('pillLat');
-const pillSource      = document.getElementById('pillSource');
-const historyList     = document.getElementById('historyList');
-const historyEmpty    = document.getElementById('historyEmpty');
-const clearHistory    = document.getElementById('clearHistory');
-const offlineToggle   = document.getElementById('offlineToggle');
+const stateEmpty = document.getElementById('stateEmpty');
+const stateLoading = document.getElementById('stateLoading');
+const stateError = document.getElementById('stateError');
+const stateResult = document.getElementById('stateResult');
+const errorMsg = document.getElementById('errorMsg');
+const resultBadge = document.getElementById('resultBadge');
+const pillLat = document.getElementById('pillLat');
+const pillSource = document.getElementById('pillSource');
+const pillLocality = document.getElementById('pillLocality');
+const pillPostal = document.getElementById('pillPostal');
+const historyList = document.getElementById('historyList');
+const historyEmpty = document.getElementById('historyEmpty');
+const clearHistory = document.getElementById('clearHistory');
+const offlineToggle = document.getElementById('offlineToggle');
+const errorPopup = document.getElementById('errorPopup');
+const errorPopupMessage = document.getElementById('errorPopupMessage');
+const closeErrorPopupBtn = document.getElementById('closeErrorPopup');
 
-/* ── Estado da aplicação ─────────────────────────────────── */
-let offlineMode       = false;
-let debounceTimer     = null;
-let currentSuggestions = [];        // Sugestões atuais para navegação por teclado
-let selectedIndex     = -1;         // Índice selecionado no dropdown
+let offlineMode = false;
+let debounceTimer = null;
+let currentSuggestions = [];
+let selectedIndex = -1;
+let searchAbort = null;
 
-/* ── Utilitários ─────────────────────────────────────────── */
-
-/** Sanitiza input: trim + colapsa espaços múltiplos */
 function sanitize(str) {
   return str.trim().replace(/\s+/g, ' ');
 }
 
-/** Normaliza texto para comparações tolerantes a acentos */
 function normalizeText(str) {
-  return str
+  return String(str || '')
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
 }
 
-/** Debounce: atrasa execução da função fn por ms milissegundos */
 function debounce(fn, ms) {
-  return function(...args) {
+  return function (...args) {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => fn.apply(this, args), ms);
   };
 }
 
-/** Determina Norte/Sul com base na latitude */
 function classifyLat(lat) {
   return lat > COIMBRA_LAT ? 'NORTE' : 'SUL';
 }
 
-/** Identifica se o local pertence aos arquipélagos portugueses */
 function detectArchipelago(locationName, originalQuery = '') {
   const normalized = normalizeText(locationName || '');
   const normalizedQuery = normalizeText(originalQuery || '');
-
   if (normalizedQuery.includes('ilhas')) return 'ILHAS';
-  if (ISLANDS_AZORES_KEYWORDS.some(keyword => normalized.includes(keyword))) {
+  if (ISLANDS_AZORES_KEYWORDS.some((k) => normalized.includes(k) || normalizedQuery.includes(k))) {
     return 'AÇORES';
   }
-  if (ISLANDS_AZORES_KEYWORDS.some(keyword => normalizedQuery.includes(keyword))) {
-    return 'AÇORES';
-  }
-  if (ISLANDS_MADEIRA_KEYWORDS.some(keyword => normalized.includes(keyword))) {
-    return 'MADEIRA';
-  }
-  if (ISLANDS_MADEIRA_KEYWORDS.some(keyword => normalizedQuery.includes(keyword))) {
+  if (ISLANDS_MADEIRA_KEYWORDS.some((k) => normalized.includes(k) || normalizedQuery.includes(k))) {
     return 'MADEIRA';
   }
   return null;
 }
 
-/* ── Gestão de estados (loading / erro / resultado / vazio) ── */
+/** Código postal PT: 1234 ou 1234-567 */
+function parsePostalCode(query) {
+  const compact = String(query).replace(/\s/g, '');
+  const m = compact.match(/^(\d{4})(?:-?(\d{3}))?$/);
+  if (!m) return null;
+  return m[2] ? `${m[1]}-${m[2]}` : m[1];
+}
 
-/** Mostra apenas o estado desejado, esconde os restantes */
+function isPostalCodeQuery(query) {
+  return parsePostalCode(query) !== null;
+}
+
 function showState(state) {
-  [stateEmpty, stateLoading, stateError, stateResult].forEach(el => {
-    el.hidden = el !== state;
+  [stateEmpty, stateLoading, stateError, stateResult].forEach((el) => {
+    if (el) el.hidden = el !== state;
   });
 }
 
-function showEmpty()   { showState(stateEmpty); }
-function showLoading() { showState(stateLoading); }
-
-function showError(msg) {
-  errorMsg.textContent = msg;
-  showState(stateError);
+function showEmpty() {
+  closePopupError();
+  showState(stateEmpty);
 }
 
-function showResult(name, lat, source, queryUsed = '') {
+function showLoading() {
+  if (stateLoading) {
+    stateLoading.hidden = false;
+    stateLoading.className = 'loading-inline-state';
+    stateLoading.innerHTML =
+      '<p class="loading-inline-title">A localizar…</p><p class="loading-inline-text">A consultar Portugal (nome ou código postal).</p>';
+  }
+  showState(stateLoading);
+}
+
+function showError(msg) {
+  if (errorMsg) errorMsg.textContent = msg;
+  showState(stateError);
+  showPopupError(msg);
+}
+
+function closePopupError() {
+  if (errorPopup) errorPopup.hidden = true;
+}
+
+function showPopupError(msg) {
+  if (!errorPopup) return;
+  if (errorPopupMessage) errorPopupMessage.textContent = msg;
+  errorPopup.hidden = false;
+}
+
+function showResult(details) {
+  const {
+    name,
+    lat,
+    source,
+    queryUsed = '',
+    locality = '',
+    postalCode = '',
+    district = '',
+  } = details;
+
   const archipelago = detectArchipelago(name, queryUsed);
   const classification = archipelago
-    ? (archipelago === 'ILHAS' ? 'ILHAS' : `ILHAS (${archipelago})`)
+    ? archipelago === 'ILHAS'
+      ? 'ILHAS'
+      : `ILHAS (${archipelago})`
     : classifyLat(lat);
-  const badgeClass = archipelago ? 'ilhas' : (classification === 'NORTE' ? 'norte' : 'sul');
+  const badgeClass = archipelago ? 'ilhas' : classification === 'NORTE' ? 'norte' : 'sul';
 
-  // Badge tipografia grande com classe de cor
   resultBadge.textContent = classification;
   resultBadge.className = 'result-badge ' + badgeClass;
   resultBadge.setAttribute('aria-label', `Este local é ${classification}`);
 
-  // Pills de detalhe
-  pillLat.textContent    = `${lat.toFixed(4)}°`;
+  pillLat.textContent = `${lat.toFixed(4)}°`;
   pillSource.textContent = source;
+  if (pillLocality) {
+    pillLocality.textContent = locality || name.split(',')[0].trim() || '—';
+  }
+  if (pillPostal) {
+    pillPostal.textContent = postalCode || '—';
+  }
 
   showState(stateResult);
+  closePopupError();
 
-  // Adicionar ao histórico
-  addToHistory(name, classification, lat);
+  const shortName = locality || name.split(',')[0].trim();
+  addToHistory(shortName, classification, lat, postalCode, district);
 }
 
-/* ── API Nominatim ───────────────────────────────────────── */
+function formatPlaceType(item) {
+  const t = item.addresstype || item.type || item.class || '';
+  const map = {
+    city: 'Cidade',
+    town: 'Vila',
+    village: 'Aldeia',
+    municipality: 'Município',
+    county: 'Concelho',
+    suburb: 'Bairro',
+    hamlet: 'Lugar',
+    locality: 'Localidade',
+    postcode: 'Código postal',
+    neighbourhood: 'Bairro',
+    quarter: 'Zona',
+    island: 'Ilha',
+    archipelago: 'Arquipélago',
+    administrative: 'Administrativo',
+  };
+  return map[t] || (t ? capitalize(String(t)) : 'Local');
+}
 
-/**
- * Busca sugestões de locais na API Nominatim enquanto o utilizador digita.
- * Retorna array de { name, lat } ou [] em caso de erro.
- */
+function mapNominatimItem(item, queryUsed) {
+  const addr = item.address || {};
+  const city =
+    addr.city ||
+    addr.town ||
+    addr.village ||
+    addr.municipality ||
+    addr.city_district ||
+    addr.suburb ||
+    '';
+  const postalCode = addr.postcode || '';
+  const district = addr.state || addr.county || addr.region || '';
+  const parish = addr.suburb || addr.neighbourhood || addr.quarter || '';
+  const locality = city || parish || item.name || item.display_name.split(',')[0].trim();
+  const shortName = locality;
+  const typeLabel = formatPlaceType(item);
+
+  return {
+    name: item.display_name,
+    shortName,
+    lat: parseFloat(item.lat),
+    lon: parseFloat(item.lon),
+    postalCode,
+    district,
+    city,
+    parish,
+    typeLabel,
+    source: 'API Nominatim',
+    queryUsed,
+    isPostal: item.class === 'place' && item.type === 'postcode' || item.addresstype === 'postcode',
+  };
+}
+
+function isPlaceLike(item) {
+  const cls = item.class || '';
+  const type = item.type || '';
+  const addresstype = item.addresstype || '';
+  const allowed = new Set([
+    'city', 'town', 'village', 'municipality', 'county', 'state', 'region',
+    'suburb', 'hamlet', 'island', 'archipelago', 'locality', 'quarter',
+    'postcode', 'neighbourhood', 'administrative',
+  ]);
+  if (allowed.has(addresstype)) return true;
+  if (cls === 'place' || cls === 'boundary') return true;
+  if (type === 'administrative' || type === 'island' || type === 'archipelago' || type === 'postcode') {
+    return true;
+  }
+  return false;
+}
+
+function dedupeSuggestions(list) {
+  const seen = new Set();
+  const out = [];
+  for (const item of list) {
+    const key = `${item.lat.toFixed(3)}|${normalizeText(item.shortName)}|${item.postalCode || ''}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(item);
+  }
+  return out;
+}
+
+async function nominatimFetch(params) {
+  if (searchAbort) searchAbort.abort();
+  searchAbort = new AbortController();
+
+  const url = new URL(NOMINATIM_URL);
+  Object.entries(params).forEach(([k, v]) => {
+    if (v != null && v !== '') url.searchParams.set(k, String(v));
+  });
+
+  const response = await fetch(url.toString(), {
+    headers: NOMINATIM_HEADERS,
+    signal: searchAbort.signal,
+  });
+
+  if (!response.ok) throw new Error('API indisponível');
+  return response.json();
+}
+
 async function fetchSuggestions(query) {
-  if (offlineMode) return getOfflineSuggestions(query);
+  const postal = parsePostalCode(query);
+  if (offlineMode) {
+    return getOfflineSuggestions(query, postal);
+  }
+
   try {
-    const url = new URL(NOMINATIM_URL);
-    url.searchParams.set('format', 'json');
-    url.searchParams.set('limit', '5');
-    url.searchParams.set('addressdetails', '1');
-    url.searchParams.set('countrycodes', 'pt');
-    url.searchParams.set('q', query);
+    let items = [];
 
-    const response = await fetch(url.toString(), {
-      headers: {
-        'Accept': 'application/json',
-        'User-Agent': 'norte-ou-sul-pt/1.0 (educational project)'
-      }
-    });
+    if (postal) {
+      const [byCode, byQuery] = await Promise.all([
+        nominatimFetch({
+          format: 'json',
+          limit: SUGGEST_LIMIT,
+          addressdetails: 1,
+          countrycodes: 'pt',
+          postalcode: postal,
+        }).catch(() => []),
+        nominatimFetch({
+          format: 'json',
+          limit: SUGGEST_LIMIT,
+          addressdetails: 1,
+          countrycodes: 'pt',
+          q: `${postal}, Portugal`,
+        }).catch(() => []),
+      ]);
+      items = [...(byCode || []), ...(byQuery || [])];
+    } else {
+      items = await nominatimFetch({
+        format: 'json',
+        limit: SUGGEST_LIMIT,
+        addressdetails: 1,
+        countrycodes: 'pt',
+        q: query.includes('portugal') ? query : `${query}, Portugal`,
+      });
+    }
 
-    if (!response.ok) throw new Error('API indisponível');
+    const mapped = (items || [])
+      .filter(isPlaceLike)
+      .map((item) => mapNominatimItem(item, query));
 
-    const data = await response.json();
-    // Mapeia resultados para { name, lat }
-    return data.map(item => ({
-      name: item.display_name,
-      lat:  parseFloat(item.lat)
-    }));
-  } catch {
-    // Fallback silencioso: usa offline para sugestões
-    return getOfflineSuggestions(query);
+    return dedupeSuggestions(mapped).slice(0, SUGGEST_LIMIT);
+  } catch (err) {
+    if (err.name === 'AbortError') return [];
+    return getOfflineSuggestions(query, postal);
   }
 }
 
-/**
- * Geocodifica um local específico via API Nominatim.
- * Retorna { name, lat, source } ou lança erro.
- */
 async function geocodeLocation(query) {
-  const normalized = query.toLowerCase();
+  const normalized = normalizeText(query);
+  const postal = parsePostalCode(query);
 
-  // 1. Verificar dicionário offline primeiro
-  if (OFFLINE_DB[normalized] !== undefined) {
+  if (postal && OFFLINE_POSTAL_PREFIX[parseInt(postal.slice(0, 4), 10)] != null) {
+    const prefix = parseInt(postal.slice(0, 4), 10);
+    const lat = OFFLINE_POSTAL_PREFIX[prefix];
     return {
-      name:   query,
-      lat:    OFFLINE_DB[normalized],
-      source: 'Offline (dicionário)'
+      name: `Código postal ${postal}`,
+      shortName: postal,
+      lat,
+      postalCode: postal,
+      locality: 'Portugal (aprox.)',
+      district: '',
+      source: 'Offline (código postal)',
+      queryUsed: query,
     };
   }
 
-  // 2. Se modo offline ativado, não vai à API
+  if (OFFLINE_DB[normalized] !== undefined) {
+    const lat = OFFLINE_DB[normalized];
+    return {
+      name: capitalize(query),
+      shortName: capitalize(query),
+      lat,
+      source: 'Offline (dicionário)',
+      queryUsed: query,
+    };
+  }
+
   if (offlineMode) {
-    // Tenta correspondência parcial no dicionário
     const match = findOfflineMatch(normalized);
-    if (match) return { name: query, lat: match.lat, source: 'Offline (dicionário)' };
-    throw new Error(`"${query}" não encontrado no modo offline. Tente: Lisboa, Porto, Braga…`);
-  }
-
-  // 3. Chamar API Nominatim
-  const url = new URL(NOMINATIM_URL);
-  url.searchParams.set('format', 'json');
-  url.searchParams.set('limit', '5');
-  url.searchParams.set('addressdetails', '1');
-  url.searchParams.set('countrycodes', 'pt');
-  url.searchParams.set('q', query);
-
-  const response = await fetch(url.toString(), {
-    headers: {
-      'Accept': 'application/json',
-      'User-Agent': 'norte-ou-sul-pt/1.0 (educational project)'
+    if (match) {
+      return {
+        name: capitalize(query),
+        shortName: capitalize(query),
+        lat: match.lat,
+        source: 'Offline (dicionário)',
+        queryUsed: query,
+      };
     }
-  });
-
-  if (!response.ok) {
-    throw new Error('Erro de ligação à API. Verifique a sua ligação à internet.');
+    throw new Error(`"${query}" não encontrado no modo offline. Tente cidade ou código postal (ex: 4000-001).`);
   }
 
-  const data = await response.json();
-
-  if (!data || data.length === 0) {
-    throw new Error(`Não encontrei "${query}" em Portugal. Tente ser mais específico (ex: "Vila Real, Portugal").`);
+  const suggestions = await fetchSuggestions(query);
+  if (suggestions.length > 0) {
+    return { ...suggestions[0], source: 'API Nominatim' };
   }
 
-  const isPlaceLike = item => {
-    const cls = item.class || '';
-    const type = item.type || '';
-    const addresstype = item.addresstype || '';
-    const allowedAddressTypes = new Set([
-      'city', 'town', 'village', 'municipality', 'county', 'state', 'region',
-      'suburb', 'hamlet', 'island', 'archipelago', 'locality', 'quarter'
-    ]);
-    if (allowedAddressTypes.has(addresstype)) return true;
-    if (cls === 'place' || cls === 'boundary') return true;
-    if (type === 'administrative' || type === 'island' || type === 'archipelago') return true;
-    return false;
-  };
-
-  const result = data.find(isPlaceLike);
-  if (!result) {
-    throw new Error('A pesquisa não corresponde a uma localidade. Introduza cidade, vila, freguesia ou região.');
+  if (postal) {
+    throw new Error(`Código postal "${postal}" não encontrado. Verifique os dígitos (ex: 4000-001).`);
   }
-
-  return {
-    name:   result.display_name,
-    lat:    parseFloat(result.lat),
-    source: 'API Nominatim'
-  };
+  throw new Error(`Não encontrei "${query}" em Portugal. Tente cidade, freguesia ou código postal.`);
 }
 
-/* ── Offline helpers ─────────────────────────────────────── */
+function getOfflineSuggestions(query, postal) {
+  const q = normalizeText(query);
+  const out = [];
 
-/** Sugestões offline: filtra dicionário por query */
-function getOfflineSuggestions(query) {
-  const q = query.toLowerCase();
-  return Object.entries(OFFLINE_DB)
-    .filter(([key]) => key.includes(q))
-    .slice(0, 5)
-    .map(([key, lat]) => ({
-      name: capitalize(key),
-      lat
-    }));
+  if (postal) {
+    const prefix = parseInt(postal.slice(0, 4), 10);
+    const lat = OFFLINE_POSTAL_PREFIX[prefix];
+    if (lat != null) {
+      out.push({
+        name: `Código postal ${postal}, Portugal`,
+        shortName: postal,
+        lat,
+        postalCode: postal,
+        district: 'Offline',
+        typeLabel: 'Código postal',
+        source: 'Offline (código postal)',
+        queryUsed: query,
+      });
+    }
+  }
+
+  Object.entries(OFFLINE_DB)
+    .filter(([key]) => key.includes(q) || q.includes(key))
+    .slice(0, 6)
+    .forEach(([key, lat]) => {
+      out.push({
+        name: `${capitalize(key)}, Portugal`,
+        shortName: capitalize(key),
+        lat,
+        postalCode: '',
+        district: '',
+        typeLabel: 'Cidade',
+        source: 'Offline (dicionário)',
+        queryUsed: query,
+      });
+    });
+
+  return dedupeSuggestions(out).slice(0, SUGGEST_LIMIT);
 }
 
-/** Correspondência parcial no dicionário offline */
 function findOfflineMatch(query) {
-  // Procura a key que contenha a query ou vice-versa
   for (const [key, lat] of Object.entries(OFFLINE_DB)) {
     if (key.includes(query) || query.includes(key)) return { lat };
+  }
+  const postal = parsePostalCode(query);
+  if (postal) {
+    const lat = OFFLINE_POSTAL_PREFIX[parseInt(postal.slice(0, 4), 10)];
+    if (lat != null) return { lat };
   }
   return null;
 }
 
-/** Capitaliza cada palavra de uma string */
 function capitalize(str) {
-  return str.replace(/\b\w/g, c => c.toUpperCase());
+  return str.replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-/* ── Renderização de sugestões (dropdown) ────────────────── */
+function buildSuggestionMeta(item) {
+  const parts = [];
+  if (item.typeLabel) parts.push(item.typeLabel);
+  if (item.postalCode) parts.push(`CP ${item.postalCode}`);
+  if (item.district) parts.push(item.district);
+  return parts.join(' · ') || 'Portugal';
+}
 
 function renderSuggestions(suggestions) {
   currentSuggestions = suggestions;
-  selectedIndex = -1;
+  selectedIndex = suggestions.length ? 0 : -1;
 
   if (!suggestions || suggestions.length === 0) {
     hideSuggestions();
@@ -322,19 +556,27 @@ function renderSuggestions(suggestions) {
     const li = document.createElement('li');
     li.role = 'option';
     li.id = `suggestion-${idx}`;
-    li.setAttribute('aria-selected', 'false');
+    li.setAttribute('aria-selected', idx === 0 ? 'true' : 'false');
     li.className = 'suggestion-item';
+    li.dataset.index = String(idx);
 
-    // Ícone pin SVG inline
+    const meta = buildSuggestionMeta(item);
+    const title = item.shortName || item.name.split(',')[0].trim();
+    const subtitle = truncate(item.name, 72);
+
     li.innerHTML = `
       <svg class="s-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
         <path d="M7 1C5.07 1 3.5 2.57 3.5 4.5c0 2.92 3.5 8.5 3.5 8.5s3.5-5.58 3.5-8.5C10.5 2.57 8.93 1 7 1z" fill="currentColor" fill-opacity="0.55"/>
         <circle cx="7" cy="4.5" r="1.5" fill="white"/>
       </svg>
-      <span class="suggestion-name">${escapeHtml(truncate(item.name, 60))}</span>
+      <div class="suggestion-body">
+        <span class="suggestion-name">${escapeHtml(title)}</span>
+        <span class="suggestion-meta">${escapeHtml(meta)}</span>
+        <span class="suggestion-sub">${escapeHtml(subtitle)}</span>
+      </div>
     `;
 
-    li.addEventListener('click', () => selectSuggestion(item));
+    li.addEventListener('click', () => applySuggestion(item));
     li.addEventListener('mouseenter', () => {
       selectedIndex = idx;
       updateSuggestionHighlight();
@@ -344,6 +586,7 @@ function renderSuggestions(suggestions) {
 
   suggestionsList.hidden = false;
   cityInput.setAttribute('aria-expanded', 'true');
+  updateSuggestionHighlight();
 }
 
 function hideSuggestions() {
@@ -354,7 +597,6 @@ function hideSuggestions() {
   selectedIndex = -1;
 }
 
-/** Atualiza highlight visual e aria-selected no dropdown */
 function updateSuggestionHighlight() {
   const items = suggestionsList.querySelectorAll('.suggestion-item');
   items.forEach((item, idx) => {
@@ -363,30 +605,36 @@ function updateSuggestionHighlight() {
   });
   if (selectedIndex >= 0) {
     cityInput.setAttribute('aria-activedescendant', `suggestion-${selectedIndex}`);
-    // Scroll suave para item selecionado
-    const activeEl = suggestionsList.querySelector(`#suggestion-${selectedIndex}`);
+    const activeEl = document.getElementById(`suggestion-${selectedIndex}`);
     if (activeEl) activeEl.scrollIntoView({ block: 'nearest' });
   }
 }
 
-/** Preenche input ao clicar/selecionar sugestão */
-function selectSuggestion(item) {
-  // Extrai nome curto (antes da primeira vírgula) para o input
-  const shortName = item.name.split(',')[0].trim();
-  cityInput.value = shortName;
+/** Seleccionar sugestão → resultado imediato (sem Enter) */
+function applySuggestion(item) {
+  if (!item || !Number.isFinite(item.lat)) return;
+  const shortName = item.shortName || item.name.split(',')[0].trim();
+  const q = sanitize(cityInput.value);
+  cityInput.value =
+    item.postalCode && (isPostalCodeQuery(q) || isPostalCodeQuery(shortName))
+      ? item.postalCode
+      : shortName;
   hideSuggestions();
-  cityInput.focus();
-  // Não dispara verificação automática — utilizador decide quando clicar
+  showResult({
+    name: item.name,
+    lat: item.lat,
+    source: item.source || 'Seleção',
+    queryUsed: item.queryUsed || cityInput.value,
+    locality: item.city || item.shortName || shortName,
+    postalCode: item.postalCode || '',
+    district: item.district || '',
+  });
 }
 
-/* ── Verificar localização ───────────────────────────────── */
-
 async function verifyLocation() {
-  const raw   = cityInput.value;
-  const query = sanitize(raw);
-
+  const query = sanitize(cityInput.value);
   if (!query) {
-    showError('Por favor, introduza o nome de uma localidade.');
+    showError('Introduza uma cidade, localidade ou código postal.');
     return;
   }
 
@@ -395,15 +643,20 @@ async function verifyLocation() {
 
   try {
     const result = await geocodeLocation(query);
-    showResult(result.name, result.lat, result.source, query);
+    showResult({
+      name: result.name,
+      lat: result.lat,
+      source: result.source,
+      queryUsed: query,
+      locality: result.city || result.shortName || query,
+      postalCode: result.postalCode || (parsePostalCode(query) || ''),
+      district: result.district || '',
+    });
   } catch (err) {
     showError(err.message || 'Ocorreu um erro inesperado. Tente novamente.');
   }
 }
 
-/* ── Histórico ───────────────────────────────────────────── */
-
-/** Carrega histórico do localStorage */
 function loadHistory() {
   try {
     return JSON.parse(localStorage.getItem('nortesul_history') || '[]');
@@ -412,46 +665,34 @@ function loadHistory() {
   }
 }
 
-/** Guarda histórico no localStorage */
 function saveHistory(history) {
   try {
     localStorage.setItem('nortesul_history', JSON.stringify(history));
   } catch {
-    // localStorage indisponível — silencia
+    /* ignore */
   }
 }
 
-/** Adiciona entrada ao histórico (deduplicação pelo nome) */
-function addToHistory(name, classification, lat) {
+function addToHistory(name, classification, lat, postalCode = '', district = '') {
   let history = loadHistory();
-
-  // Remove entrada duplicada se já existir
-  const shortName = name.split(',')[0].trim();
-  history = history.filter(item => item.name !== shortName);
-
-  // Adiciona no início
-  history.unshift({ name: shortName, classification, lat });
-
-  // Limita a MAX_HISTORY entradas
+  history = history.filter((item) => item.name !== name);
+  history.unshift({ name, classification, lat, postalCode, district });
   history = history.slice(0, MAX_HISTORY);
-
   saveHistory(history);
   renderHistory();
 }
 
-/** Renderiza o histórico na UI */
 function renderHistory() {
   const history = loadHistory();
   historyList.innerHTML = '';
 
   if (history.length === 0) {
-    historyList.appendChild(historyEmpty.cloneNode(true));
-    historyEmpty.hidden = false;
+    const empty = historyEmpty.cloneNode(true);
+    historyList.appendChild(empty);
     clearHistory.hidden = true;
     return;
   }
 
-  historyEmpty.hidden = true;
   clearHistory.hidden = false;
 
   history.forEach((item, idx) => {
@@ -459,23 +700,31 @@ function renderHistory() {
     li.className = 'history-item';
     li.tabIndex = 0;
     li.role = 'listitem';
-    li.setAttribute('aria-label', `${item.name}: ${item.classification}. Clique para repetir pesquisa.`);
+    li.setAttribute(
+      'aria-label',
+      `${item.name}: ${item.classification}. Clique para repetir.`
+    );
     li.style.animationDelay = `${idx * 0.05}s`;
 
-    const dotClass = item.classification === 'NORTE' ? 'norte'
-                   : item.classification === 'SUL'   ? 'sul'
-                   : item.classification.startsWith('ILHAS') ? 'ilhas'
-                   : 'unknown';
+    const dotClass =
+      item.classification === 'NORTE'
+        ? 'norte'
+        : item.classification === 'SUL'
+          ? 'sul'
+          : String(item.classification).startsWith('ILHAS')
+            ? 'ilhas'
+            : 'unknown';
+
+    const extra = item.postalCode ? ` · ${item.postalCode}` : '';
 
     li.innerHTML = `
       <span class="history-dot ${dotClass}" aria-hidden="true"></span>
-      <span class="history-name">${escapeHtml(item.name)}</span>
+      <span class="history-name">${escapeHtml(item.name)}${escapeHtml(extra)}</span>
       <span class="history-result">${item.classification}</span>
     `;
 
-    // Clique ou Enter repete a pesquisa
     li.addEventListener('click', () => repeatSearch(item.name));
-    li.addEventListener('keydown', e => {
+    li.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         repeatSearch(item.name);
@@ -486,45 +735,41 @@ function renderHistory() {
   });
 }
 
-/** Repete uma pesquisa a partir do histórico */
 function repeatSearch(name) {
   cityInput.value = name;
   verifyLocation();
-  // Scroll suave para o topo do card
   cityInput.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-/* ── Helpers ─────────────────────────────────────────────── */
-
-/** Escapa HTML para prevenir XSS nas sugestões */
 function escapeHtml(str) {
-  const map = { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;' };
-  return str.replace(/[&<>"']/g, c => map[c]);
+  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+  return String(str).replace(/[&<>"']/g, (c) => map[c]);
 }
 
-/** Trunca string a maxLen caracteres */
 function truncate(str, maxLen) {
-  return str.length > maxLen ? str.slice(0, maxLen) + '…' : str;
+  return str.length > maxLen ? `${str.slice(0, maxLen)}…` : str;
 }
 
-/* ── Event Listeners ─────────────────────────────────────── */
+function minQueryLength(query) {
+  const postal = parsePostalCode(query);
+  if (postal) return postal.length >= 4;
+  return query.length >= 2;
+}
 
-// Botão Verificar
 verifyBtn.addEventListener('click', verifyLocation);
 
-// Enter no input dispara verificação
-cityInput.addEventListener('keydown', e => {
+cityInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
-    if (selectedIndex >= 0 && currentSuggestions[selectedIndex]) {
-      // Se há item selecionado no dropdown, seleciona-o
-      selectSuggestion(currentSuggestions[selectedIndex]);
+    e.preventDefault();
+    if (!suggestionsList.hidden && currentSuggestions.length) {
+      const idx = selectedIndex >= 0 ? selectedIndex : 0;
+      applySuggestion(currentSuggestions[idx]);
     } else {
       verifyLocation();
     }
     return;
   }
 
-  // Navegação por teclado no dropdown
   if (!suggestionsList.hidden) {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
@@ -532,7 +777,7 @@ cityInput.addEventListener('keydown', e => {
       updateSuggestionHighlight();
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      selectedIndex = Math.max(selectedIndex - 1, -1);
+      selectedIndex = Math.max(selectedIndex - 1, 0);
       updateSuggestionHighlight();
     } else if (e.key === 'Escape') {
       hideSuggestions();
@@ -540,10 +785,9 @@ cityInput.addEventListener('keydown', e => {
   }
 });
 
-// Input com debounce para sugestões
 const debouncedSuggest = debounce(async (value) => {
   const query = sanitize(value);
-  if (query.length < 2) {
+  if (!minQueryLength(query)) {
     hideSuggestions();
     return;
   }
@@ -551,24 +795,21 @@ const debouncedSuggest = debounce(async (value) => {
   renderSuggestions(suggestions);
 }, DEBOUNCE_MS);
 
-cityInput.addEventListener('input', e => {
+cityInput.addEventListener('input', (e) => {
   debouncedSuggest(e.target.value);
-  // Se campo ficou vazio, mostra estado vazio
-  if (!event.target.value.trim()) {
-  hideSuggestions();
-  closePopupError();
-  showEmpty();
-}
+  if (!e.target.value.trim()) {
+    hideSuggestions();
+    closePopupError();
+    showEmpty();
+  }
 });
 
-// Fechar sugestões ao clicar fora
-document.addEventListener('click', e => {
+document.addEventListener('click', (e) => {
   if (!e.target.closest('.search-wrapper')) {
     hideSuggestions();
   }
 });
 
-// Limpar histórico
 clearHistory.addEventListener('click', () => {
   if (confirm('Tem a certeza que quer limpar o histórico?')) {
     saveHistory([]);
@@ -576,15 +817,21 @@ clearHistory.addEventListener('click', () => {
   }
 });
 
-// Toggle modo offline
 offlineToggle.addEventListener('click', () => {
   offlineMode = !offlineMode;
   offlineToggle.setAttribute('aria-checked', offlineMode ? 'true' : 'false');
-  // Feedback visual opcional: toast ou log
-  console.info(`Modo offline: ${offlineMode ? 'Ativado' : 'Desativado'}`);
+  offlineToggle.setAttribute('aria-label', offlineMode ? 'Desactivar modo offline' : 'Activar modo offline');
+  const q = sanitize(cityInput.value);
+  if (q.length >= 2) debouncedSuggest(q);
 });
 
-/* ── Inicialização ───────────────────────────────────────── */
+if (closeErrorPopupBtn) {
+  closeErrorPopupBtn.addEventListener('click', closePopupError);
+}
+if (errorPopup) {
+  errorPopup.querySelector('.error-popup-backdrop')?.addEventListener('click', closePopupError);
+}
+
 function init() {
   showEmpty();
   renderHistory();

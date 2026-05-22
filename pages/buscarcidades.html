@@ -50,8 +50,9 @@
             <span class="eyebrow">Portugal · Geolocalização</span>
             <h1 class="app-title">Norte ou Sul?</h1>
             <p class="app-subtitle">
-              Descubra rapidamente se uma localidade portuguesa fica a
-              <strong>norte</strong> ou <strong>sul</strong> da linha de Coimbra.
+              Pesquise por <strong>cidade</strong>, <strong>localidade</strong> ou
+              <strong>código postal</strong> (ex: 4000-001). Escolha na lista — o resultado
+              aparece na hora, sem carregar em Enter.
             </p>
           </div>
         </div>
@@ -111,11 +112,11 @@
               <span class="section-kicker">Verificação</span>
               <h2 class="section-title">Pesquisar localidade</h2>
             </div>
-            <div class="section-chip" aria-hidden="true">PT</div>
+            <div class="section-chip" aria-hidden="true">PT · CP</div>
           </div>
 
           <div class="search-wrapper" role="search">
-            <label for="cityInput" class="sr-only">Nome da cidade ou região em Portugal</label>
+            <label for="cityInput" class="sr-only">Cidade, localidade ou código postal em Portugal</label>
 
             <div class="input-shell">
               <div class="input-icon" aria-hidden="true">
@@ -129,7 +130,7 @@
                 id="cityInput"
                 type="text"
                 class="city-input"
-                placeholder="Ex: Braga, Faro, Évora, Vila Real..."
+                placeholder="Cidade, localidade ou código postal — ex: Braga, 4000-001, Évora…"
                 autocomplete="off"
                 aria-autocomplete="list"
                 aria-controls="suggestionsList"
@@ -139,7 +140,7 @@
                 spellcheck="false"
               />
 
-              <button id="verifyBtn" class="verify-btn" type="button" aria-label="Verificar localização">
+              <button id="verifyBtn" class="verify-btn verify-btn--secondary" type="button" aria-label="Verificar texto introduzido (opcional)">
                 <span class="verify-btn-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none">
                     <path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -149,6 +150,11 @@
                 <span>Verificar</span>
               </button>
             </div>
+
+            <p class="search-hint">
+              Escreva e <strong>clique numa sugestão</strong> para ver Norte ou Sul. Aceita códigos postais
+              (<code>1234</code> ou <code>1234-567</code>). Enter só é necessário se não escolher da lista.
+            </p>
 
             <!-- Sugestões -->
             <ul
@@ -166,7 +172,7 @@
   <div id="stateEmpty" class="empty-inline-state">
     <p class="empty-inline-title">Introduza uma localidade</p>
     <p class="empty-inline-text">
-      Pesquise por uma cidade, vila ou região de Portugal para obter o resultado imediato.
+      Pesquise por cidade, freguesia, distrito ou código postal e seleccione um resultado na lista.
     </p>
   </div>
 
@@ -186,6 +192,16 @@
     </div>
 
     <div class="result-grid" role="list" aria-label="Detalhes do resultado">
+      <article class="result-card" role="listitem">
+        <span class="result-card-label">Localidade</span>
+        <strong id="pillLocality" class="result-card-value">—</strong>
+      </article>
+
+      <article class="result-card" role="listitem">
+        <span class="result-card-label">Código postal</span>
+        <strong id="pillPostal" class="result-card-value">—</strong>
+      </article>
+
       <article class="result-card" role="listitem">
         <span class="result-card-label">Latitude</span>
         <strong id="pillLat" class="result-card-value">—</strong>
