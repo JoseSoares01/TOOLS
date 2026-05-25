@@ -66,12 +66,12 @@
                     <div class="form-stack">
                         <div class="field-group">
                             <label for="nif_vendedor">NIF do vendedor</label>
-                            <input type="text" id="nif_vendedor" placeholder="Ex: 501234567">
+                            <input type="text" id="nif_vendedor" placeholder="Ex: 501234567" autocomplete="off" spellcheck="false">
                         </div>
 
                         <div class="field-group">
                             <label for="nif_empresa">NIF da empresa</label>
-                            <input type="text" id="nif_empresa" placeholder="Ex: 502145820">
+                            <input type="text" id="nif_empresa" placeholder="Ex: 502145820" autocomplete="off" spellcheck="false">
                         </div>
 
                         <div class="field-group">
@@ -95,7 +95,7 @@
 
                         <div class="field-group">
                             <label for="numero_fatura">Número da fatura</label>
-                            <input type="text" id="numero_fatura" placeholder="Ex: FT 2026A1/268">
+                            <input type="text" id="numero_fatura" placeholder="Ex: FT 2026A1/268" autocomplete="off" spellcheck="false">
                         </div>
 
                         <div class="field-group">
@@ -108,6 +108,33 @@
                                 <option value="EU">🇪🇺 União Europeia (EU)</option>
                                 <option value="INT">🏳️ Estrangeiras (INT)</option>
                             </select>
+                        </div>
+
+                        <!-- Retenção na fonte (só para RV) -->
+                        <div class="rv-retencao-block" id="rvRetencaoBlock" hidden>
+                            <div class="rv-retencao-question">
+                                <span class="rv-retencao-label">Este Recibo Verde tem Retenção?</span>
+                                <div class="rv-retencao-toggle-group">
+                                    <button type="button" class="rv-toggle-btn" id="rvRetSim" data-value="sim">Sim</button>
+                                    <button type="button" class="rv-toggle-btn" id="rvRetNao" data-value="nao">Não</button>
+                                </div>
+                            </div>
+
+                            <div class="rv-retencao-fields" id="rvRetencaoFields" hidden>
+                                <div class="field-group">
+                                    <label for="retencao_valor">Retenção na fonte (€)</label>
+                                    <input type="text" inputmode="decimal" id="retencao_valor" placeholder="Ex: 1414.55 ou 1414,55">
+                                </div>
+                                <div class="field-group">
+                                    <label for="retencao_tipo">Tipo de retenção</label>
+                                    <select id="retencao_tipo" class="espaco-fiscal-select" aria-label="Tipo de retenção">
+                                        <option value="">Selecione o tipo</option>
+                                        <option value="IRS">IRS</option>
+                                        <option value="IRC">IRC</option>
+                                        <option value="RENDAS">Rendas</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -148,27 +175,27 @@
 
                         <div class="field-group">
                             <label for="base_isenta">Base isenta</label>
-                            <input type="number" step="0.01" id="base_isenta" placeholder="0.00">
+                            <input type="text" inputmode="decimal" id="base_isenta" placeholder="0.00">
                         </div>
 
                         <div class="field-group">
                             <label for="base_reduzida">Base reduzida</label>
-                            <input type="number" step="0.01" id="base_reduzida" placeholder="0.00">
+                            <input type="text" inputmode="decimal" id="base_reduzida" placeholder="0.00">
                         </div>
 
                         <div class="field-group">
                             <label for="base_intermedia">Base intermédia</label>
-                            <input type="number" step="0.01" id="base_intermedia" placeholder="0.00">
+                            <input type="text" inputmode="decimal" id="base_intermedia" placeholder="0.00">
                         </div>
 
                         <div class="field-group">
                             <label for="base_normal">Base normal</label>
-                            <input type="number" step="0.01" id="base_normal" placeholder="0.00">
+                            <input type="text" inputmode="decimal" id="base_normal" placeholder="0.00">
                         </div>
 
                         <div class="field-group">
                             <label for="imposto_selo">Imposto de selo</label>
-                            <input type="number" step="0.01" id="imposto_selo" placeholder="0.00">
+                            <input type="text" inputmode="decimal" id="imposto_selo" placeholder="0.00">
                         </div>
                     </div>
 
@@ -252,12 +279,12 @@
                 <div class="calc-form">
                     <div class="field-group">
                         <label for="valor">Valor com IVA (€)</label>
-                        <input type="number" id="valor" placeholder="Ex: 2033.10" step="0.01">
+                        <input type="text" inputmode="decimal" id="valor" placeholder="Ex: 2033.10 ou 2033,10">
                     </div>
 
                     <div class="field-group">
                         <label for="iva">Taxa de IVA (%)</label>
-                        <input type="number" id="iva" value="23" step="0.01">
+                        <input type="text" inputmode="decimal" id="iva" value="23">
                     </div>
 
                     <div class="calc-button-wrap">

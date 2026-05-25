@@ -153,6 +153,73 @@ body {
     color: #ffffff;
 }
 
+/* Retenção na fonte (RV) */
+.rv-retencao-block {
+    margin-top: 16px;
+    padding: 18px;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--line);
+}
+
+.rv-retencao-block[hidden] {
+    display: none !important;
+}
+
+.rv-retencao-question {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.rv-retencao-label {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.rv-retencao-toggle-group {
+    display: flex;
+    gap: 8px;
+}
+
+.rv-toggle-btn {
+    appearance: none;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-soft);
+    font: inherit;
+    font-size: 0.86rem;
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.rv-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.10);
+    color: var(--text);
+}
+
+.rv-toggle-btn.rv-toggle-active {
+    background: linear-gradient(135deg, rgba(57, 198, 255, 0.28), rgba(79, 140, 255, 0.22));
+    border-color: rgba(57, 198, 255, 0.50);
+    color: #ffffff;
+}
+
+.rv-retencao-fields {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.rv-retencao-fields[hidden] {
+    display: none !important;
+}
+
 .qr-summary-alerts {
     margin-top: 18px;
     display: flex;

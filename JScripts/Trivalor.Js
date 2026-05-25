@@ -14,6 +14,18 @@ function limitCharacters(input, maxLength) {
     return input.slice(0, maxLength);
 }
 
+/** Limpa valor colado/digitado (aceita vírgula, espaços, €) e devolve float. */
+function parseDecimalInput(rawValue) {
+    if (typeof rawValue !== "string") rawValue = String(rawValue || "");
+    const cleaned = rawValue
+        .replace(/€/g, "")
+        .replace(/\s/g, "")
+        .replace(/\.(?=\d{3}(\D|$))/g, "")
+        .replace(",", ".");
+    const n = parseFloat(cleaned);
+    return Number.isFinite(n) ? n : 0;
+}
+
 function updateIVARates() {
     const espacoFiscal = document.getElementById("espaco_fiscal").value;
     let baseIsenta = document.getElementById("base_isenta");
@@ -155,6 +167,45 @@ function syncTipologiaSelectAppearance() {
     }
 }
 
+/* ── Retenção na fonte (RV) ────────────────────────────────── */
+let rvRetencaoAtiva = false;
+
+function toggleRvRetencaoBlock() {
+    const tipologiaEl = document.getElementById("tipologia");
+    const block = document.getElementById("rvRetencaoBlock");
+    if (!block) return;
+    const isRV = tipologiaEl && tipologiaEl.value === "RV";
+    block.hidden = !isRV;
+    if (!isRV) {
+        rvRetencaoAtiva = false;
+        const fields = document.getElementById("rvRetencaoFields");
+        if (fields) fields.hidden = true;
+        document.querySelectorAll(".rv-toggle-btn").forEach(b => b.classList.remove("rv-toggle-active"));
+    }
+}
+
+function setupRvRetencaoListeners() {
+    const btnSim = document.getElementById("rvRetSim");
+    const btnNao = document.getElementById("rvRetNao");
+    const fields = document.getElementById("rvRetencaoFields");
+
+    function setActive(sim) {
+        rvRetencaoAtiva = sim;
+        if (btnSim) btnSim.classList.toggle("rv-toggle-active", sim);
+        if (btnNao) btnNao.classList.toggle("rv-toggle-active", !sim);
+        if (fields) fields.hidden = !sim;
+        if (!sim) {
+            const valEl = document.getElementById("retencao_valor");
+            const tipoEl = document.getElementById("retencao_tipo");
+            if (valEl) valEl.value = "";
+            if (tipoEl) tipoEl.value = "";
+        }
+    }
+
+    if (btnSim) btnSim.addEventListener("click", () => setActive(true));
+    if (btnNao) btnNao.addEventListener("click", () => setActive(false));
+}
+
 // event listeners
 document.addEventListener("DOMContentLoaded", function () {
     const espacoFiscalEl = document.getElementById("espaco_fiscal");
@@ -162,8 +213,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const tipologiaEl = document.getElementById("tipologia");
 
     if (tipologiaEl) {
-        tipologiaEl.addEventListener("change", syncTipologiaSelectAppearance);
+        tipologiaEl.addEventListener("change", function () {
+            syncTipologiaSelectAppearance();
+            toggleRvRetencaoBlock();
+        });
         syncTipologiaSelectAppearance();
+        toggleRvRetencaoBlock();
     }
 
     if (espacoFiscalEl) {
@@ -181,6 +236,8 @@ document.addEventListener("DOMContentLoaded", function () {
             updateTaxBaseFieldsVisibility();
         });
     }
+
+    setupRvRetencaoListeners();
 
     // Inicializa placeholders e visibilidade
     syncEspacoFromPais();
@@ -328,11 +385,11 @@ function generateQRCode() {
     const data = limitCharacters(document.getElementById("data").value || '0', 8);
     const numero_fatura = document.getElementById("numero_fatura").value || '0';
     const espaco_fiscal = document.getElementById("espaco_fiscal").value.toUpperCase() || '0';
-    const base_isenta = parseFloat(document.getElementById("base_isenta").value) || 0;
-    const base_reduzida = parseFloat(document.getElementById("base_reduzida").value) || 0;
-    const base_intermedia = parseFloat(document.getElementById("base_intermedia").value) || 0;
-    const base_normal = parseFloat(document.getElementById("base_normal").value) || 0;
-    const imposto_selo = parseFloat(document.getElementById("imposto_selo").value) || 0;
+    const base_isenta = parseDecimalInput(document.getElementById("base_isenta").value);
+    const base_reduzida = parseDecimalInput(document.getElementById("base_reduzida").value);
+    const base_intermedia = parseDecimalInput(document.getElementById("base_intermedia").value);
+    const base_normal = parseDecimalInput(document.getElementById("base_normal").value);
+    const imposto_selo = parseDecimalInput(document.getElementById("imposto_selo").value);
 
     if (!validateAlphanumeric(nif_vendedor) || !validateAlphanumeric(nif_empresa)) {
         alert("NIF do vendedor e NIF da empresa devem conter apenas letras e números.");
@@ -381,7 +438,24 @@ function generateQRCode() {
     const total_impostos = iva_reduzida + iva_intermedia + iva_normal;
     const total_fatura = base_isenta + base_reduzida + base_intermedia + base_normal + total_impostos + imposto_selo;
 
-    const dados_qr_code = `A:${nif_vendedor}*B:${nif_empresa}*C:${pais}*D:${tipologia}*E:N*F:${data}*G:${numero_fatura}*H:*I1:${espaco_fiscal}*I2:${base_isenta.toFixed(2)}*I3:${base_reduzida.toFixed(2)}*I4:${iva_reduzida.toFixed(4)}*I5:${base_intermedia.toFixed(2)}*I6:${iva_intermedia.toFixed(4)}*I7:${base_normal.toFixed(2)}*I8:${iva_normal.toFixed(4)}*M:${imposto_selo.toFixed(2)}*N:${total_impostos.toFixed(4)}*O:${total_fatura.toFixed(4)}*P:0*Q:*R:*S:SEM_QR_CODE*`.replace(/\s+/g, ' ').trim();
+    // Retenção na fonte (RV)
+    let retencao_valor = 0;
+    let retencao_tipo = "";
+    if (tipologia === "RV" && rvRetencaoAtiva) {
+        retencao_valor = parseDecimalInput(document.getElementById("retencao_valor").value);
+        retencao_tipo = (document.getElementById("retencao_tipo").value || "").toUpperCase();
+        if (retencao_valor > 0 && !retencao_tipo) {
+            alert("Selecione o tipo de retenção (IRS, IRC ou Rendas).");
+            return;
+        }
+    }
+
+    let dados_qr_code;
+    if (retencao_valor > 0 && retencao_tipo) {
+        dados_qr_code = `A:${nif_vendedor}*B:${nif_empresa}*C:${pais}*D:${tipologia}*E:N*F:${data}*G:${numero_fatura}*H:*I1:${espaco_fiscal}*I2:${base_isenta.toFixed(2)}*I3:${base_reduzida.toFixed(2)}*I4:${iva_reduzida.toFixed(4)}*I5:${base_intermedia.toFixed(2)}*I6:${iva_intermedia.toFixed(4)}*I7:${base_normal.toFixed(2)}*I8:${iva_normal.toFixed(4)}*M:${imposto_selo.toFixed(2)}*N:${total_impostos.toFixed(4)}*O:${total_fatura.toFixed(4)}*P:${retencao_valor.toFixed(2)}*Q:0*R:0000*T:${retencao_tipo}*`.replace(/\s+/g, ' ').trim();
+    } else {
+        dados_qr_code = `A:${nif_vendedor}*B:${nif_empresa}*C:${pais}*D:${tipologia}*E:N*F:${data}*G:${numero_fatura}*H:*I1:${espaco_fiscal}*I2:${base_isenta.toFixed(2)}*I3:${base_reduzida.toFixed(2)}*I4:${iva_reduzida.toFixed(4)}*I5:${base_intermedia.toFixed(2)}*I6:${iva_intermedia.toFixed(4)}*I7:${base_normal.toFixed(2)}*I8:${iva_normal.toFixed(4)}*M:${imposto_selo.toFixed(2)}*N:${total_impostos.toFixed(4)}*O:${total_fatura.toFixed(4)}*P:0*Q:*R:*S:SEM_QR_CODE*`.replace(/\s+/g, ' ').trim();
+    }
 
     QRCode.toDataURL(dados_qr_code, { errorCorrectionLevel: 'M' }, function(err, url) {
         if (err) {
@@ -430,7 +504,13 @@ function clearInputs() {
     document.getElementById("base_intermedia").value = "";
     document.getElementById("base_normal").value = "";
     document.getElementById("imposto_selo").value = "";
+    const retValEl = document.getElementById("retencao_valor");
+    const retTipoEl = document.getElementById("retencao_tipo");
+    if (retValEl) retValEl.value = "";
+    if (retTipoEl) retTipoEl.value = "";
+    rvRetencaoAtiva = false;
     syncTipologiaSelectAppearance();
+    toggleRvRetencaoBlock();
 }
 
 //SIDEBAR START//
@@ -568,10 +648,10 @@ function togglePaisCheck() {
 // ===== FUNÇÕES DA CALCULADORA DE IVA =====
 
 function calcularIVA() {
-    const valorComIVA = parseFloat(document.getElementById('valor').value);
-    const taxaIVA = parseFloat(document.getElementById('iva').value);
+    const valorComIVA = parseDecimalInput(document.getElementById('valor').value);
+    const taxaIVA = parseDecimalInput(document.getElementById('iva').value);
 
-    if (isNaN(valorComIVA) || isNaN(taxaIVA) || valorComIVA <= 0 || taxaIVA < 0) {
+    if (!valorComIVA || valorComIVA <= 0 || taxaIVA < 0) {
         alert("Por favor, insira valores válidos.");
         return;
     }
