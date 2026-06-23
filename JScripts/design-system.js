@@ -22,7 +22,8 @@ const DEFAULT_DESIGN_SETTINGS = {
         Convert: { title: 'Conversor de Imagens', description: 'Converta imagens em PDF com organização visual, pré-visualização e ordem personalizada.' },
         ServinformSite: { title: 'Calculadora IVA', description: 'Calcule IVA de forma precisa para faturação, despesas e conferência de valores.' },
         winzinkemails: { title: 'Distribuição de Custos', description: 'Edite e gere ficheiros de distribuição de custos com fluxo claro.' },
-        buscarcidades: { title: 'Encontrar Cidades', description: 'Localize cidades e regiões em Portugal com uma experiência rápida.' }
+        buscarcidades: { title: 'Encontrar Cidades', description: 'Localize cidades e regiões em Portugal com uma experiência rápida.' },
+        Pedidos: { title: 'Pedidos', description: 'Contactos por empresa para pedidos de conta razão, erros contábeis e esclarecimentos de fatura.' }
     }
 };
 

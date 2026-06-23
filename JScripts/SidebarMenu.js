@@ -50,6 +50,12 @@ class SidebarMenu {
                 icon: "/pages/icons/cidades.svg"
             },
             {
+                key: "Pedidos",
+                label: "Pedidos",
+                href: "/pages/Pedidos.html",
+                icon: "/pages/icons/email.svg"
+            },
+            {
                 key: "Configuracao",
                 label: "Design System",
                 href: "/pages/Configuracao.html",

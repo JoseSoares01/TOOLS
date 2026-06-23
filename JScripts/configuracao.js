@@ -44,7 +44,8 @@ function render(settings) {
         Convert: 'Conversor de Imagens',
         ServinformSite: 'Calculadora IVA',
         winzinkemails: 'Distribuição de Custos',
-        buscarcidades: 'Encontrar Cidades'
+        buscarcidades: 'Encontrar Cidades',
+        Pedidos: 'Pedidos'
     };
     Object.keys(defaultCards).forEach((key) => {
         if (!settings.cardNames[key]) settings.cardNames[key] = { title: defaultCards[key], description: '' };

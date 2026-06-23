@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedidos · Empresas</title>
+  <link rel="stylesheet" href="/css/Pedidos.css" />
+  <link rel="stylesheet" href="/css/SidebarMenu.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <main class="page-shell" role="main">
+    <header class="page-header">
+      <p class="page-eyebrow">Contactos · Pedidos internos</p>
+      <h1 class="page-title">Pedidos</h1>
+      <p class="page-subtitle">
+        Selecione uma empresa para ver os dados SAP, os tipos de pedido disponíveis e os e-mails de destino.
+        Em todos os envios, inclua em CC o Serviço Papel Zero e o contacto TRIVALOR indicados.
+      </p>
+    </header>
+
+    <div class="pedidos-layout">
+      <aside class="panel companies-panel" aria-label="Lista de empresas">
+        <h2 class="companies-panel__title">Empresas</h2>
+        <div id="companyList" class="company-list" role="listbox" aria-label="Empresas"></div>
+      </aside>
+
+      <div class="detail-column">
+        <section class="panel detail-panel" id="detailPanel" aria-live="polite" hidden></section>
+        <section class="panel empty-state" id="emptyState">
+          Selecione uma empresa na lista para ver os contactos e tipos de pedido.
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div id="copyToast" class="copy-toast" hidden role="status" aria-live="polite"></div>
+
+  <script src="/JScripts/core/app-config.js"></script>
+  <script src="/JScripts/SidebarMenu.js"></script>
+  <script src="/JScripts/Pedidos.js"></script>
+</body>
+</html>
