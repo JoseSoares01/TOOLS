@@ -68,7 +68,7 @@
 
         return entries
             .sort((a, b) => Number(a.id.replace(/\D/g, '')) - Number(b.id.replace(/\D/g, '')))
-            .slice(0, FALLBACK_LIMIT);
+            .slice(-FALLBACK_LIMIT);
     }
 
     function saveCache(entries) {

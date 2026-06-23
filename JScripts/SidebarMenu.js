@@ -54,12 +54,6 @@ class SidebarMenu {
                 label: "Pedidos",
                 href: "/pages/Pedidos.html",
                 icon: "/pages/icons/email.svg"
-            },
-            {
-                key: "Configuracao",
-                label: "Design System",
-                href: "/pages/Configuracao.html",
-                icon: "/pages/icons/dashboard.svg"
             }
         ];
 
