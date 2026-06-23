@@ -256,6 +256,10 @@ function setSceneTheme(now = new Date()) {
     currentScene = theme;
     body.setAttribute("data-theme", theme);
 
+    if (typeof window.SidebarTheme !== "undefined") {
+        window.SidebarTheme.apply(document.querySelector(".sidebar"), now);
+    }
+
     const sunriseProgress = getRangeProgress(total, 7, 8);
     const middayProgress = getRangeProgress(total, 12, 13);
     const sunsetProgress = getRangeProgress(total, 16, 17);

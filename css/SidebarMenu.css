@@ -1,6 +1,6 @@
 /* =========================================================
    SIDEBAR MENU — Servinform
-   Alinhado ao portal (glass + tema por horário via body)
+   Tema solar alinhado ao Dashboard (Tools)
 ========================================================= */
 
 :root {
@@ -59,14 +59,17 @@
    CONTAINER PRINCIPAL
 ========================= */
 .sidebar {
-    --sb-panel: var(--panel, var(--sidebar-fallback-panel));
-    --sb-line: var(--line, var(--sidebar-fallback-line));
-    --sb-accent: var(--accent, var(--sidebar-fallback-accent));
-    --sb-accent-2: var(--accent-2, var(--sidebar-fallback-accent-2));
-    --sb-text: var(--text, var(--sidebar-fallback-text));
-    --sb-text-soft: var(--text-soft, var(--sidebar-fallback-text-soft));
-    --sb-glass-glow: var(--glass-border-glow, rgba(255, 255, 255, 0.08));
-    --sb-shadow: var(--shadow, 0 24px 60px rgba(0, 0, 0, 0.35));
+    --sb-panel: var(--sidebar-fallback-panel);
+    --sb-line: var(--sidebar-fallback-line);
+    --sb-accent: var(--sidebar-fallback-accent);
+    --sb-accent-2: var(--sidebar-fallback-accent-2);
+    --sb-text: var(--sidebar-fallback-text);
+    --sb-text-soft: var(--sidebar-fallback-text-soft);
+    --sb-glass-glow: rgba(255, 255, 255, 0.08);
+    --sb-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    --sb-reflection:
+        radial-gradient(circle at 15% 0%, rgba(57, 198, 255, 0.10), transparent 34%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 42%);
 
     position: fixed;
     left: 14px;
@@ -87,9 +90,99 @@
     transition:
         width 260ms ease,
         transform 260ms ease,
-        box-shadow 260ms ease,
-        border-color 1s ease,
-        background 1s ease;
+        box-shadow 1.2s ease,
+        border-color 1.2s ease,
+        background 1.2s ease,
+        color 1s ease;
+}
+
+.sidebar[data-theme="morning"] {
+    --sb-panel: rgba(255, 255, 255, 0.50);
+    --sb-line: rgba(120, 160, 210, 0.18);
+    --sb-text: #10304d;
+    --sb-text-soft: #53708d;
+    --sb-accent: #2a9df4;
+    --sb-accent-2: #62b6ff;
+    --sb-glass-glow: rgba(255, 214, 120, 0.12);
+    --sb-shadow: 0 24px 60px rgba(64, 122, 173, 0.18);
+    --sb-reflection:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 45%);
+}
+
+.sidebar[data-theme="midday"] {
+    --sb-panel: rgba(255, 255, 255, 0.56);
+    --sb-line: rgba(120, 170, 215, 0.16);
+    --sb-text: #14334d;
+    --sb-text-soft: #5f7c96;
+    --sb-accent: #46aef9;
+    --sb-accent-2: #7ec8ff;
+    --sb-glass-glow: rgba(160, 210, 255, 0.12);
+    --sb-shadow: 0 24px 60px rgba(64, 122, 173, 0.16);
+    --sb-reflection:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 46%);
+}
+
+.sidebar[data-theme="afternoon"] {
+    --sb-panel: rgba(255, 249, 239, 0.44);
+    --sb-line: rgba(181, 133, 76, 0.16);
+    --sb-text: #4f2f13;
+    --sb-text-soft: #866445;
+    --sb-accent: #ff9f43;
+    --sb-accent-2: #ffba66;
+    --sb-glass-glow: rgba(255, 170, 96, 0.14);
+    --sb-shadow: 0 24px 60px rgba(140, 98, 55, 0.18);
+    --sb-reflection:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 46%);
+}
+
+.sidebar[data-theme="sunset"] {
+    --sb-panel: rgba(255, 239, 228, 0.30);
+    --sb-line: rgba(255, 216, 196, 0.18);
+    --sb-text: #fff7f0;
+    --sb-text-soft: #f3d0c0;
+    --sb-accent: #ff8a5c;
+    --sb-accent-2: #d290ff;
+    --sb-glass-glow: rgba(255, 164, 122, 0.16);
+    --sb-shadow: 0 24px 60px rgba(44, 28, 64, 0.28);
+    --sb-reflection:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 46%);
+}
+
+.sidebar[data-theme="night"] {
+    --sb-panel: rgba(10, 18, 32, 0.74);
+    --sb-line: rgba(255, 255, 255, 0.10);
+    --sb-text: #edf5ff;
+    --sb-text-soft: #9cb1c6;
+    --sb-accent: #39c6ff;
+    --sb-accent-2: #4f8cff;
+    --sb-glass-glow: rgba(120, 170, 255, 0.10);
+    --sb-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    --sb-reflection:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 42%);
+}
+
+.sidebar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+        radial-gradient(circle at 8% 0%, var(--sb-ambient-left, transparent), transparent 58%),
+        radial-gradient(circle at 92% 8%, var(--sb-ambient-right, transparent), transparent 54%),
+        var(--sb-reflection);
+    pointer-events: none;
+    z-index: 0;
+    transition: background 1.2s ease, opacity 1s ease;
+}
+
+.sidebar::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    pointer-events: none;
+    z-index: 0;
 }
 
 .sidebar.sidebar--collapsed {
@@ -97,6 +190,8 @@
 }
 
 .sidebar-shell {
+    position: relative;
+    z-index: 1;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -148,7 +243,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition: opacity 200ms ease, width 200ms ease, color 0.8s ease;
+    transition: opacity 200ms ease, width 200ms ease, color 1s ease;
 }
 
 .sidebar.sidebar--collapsed .sidebar-brand {
@@ -211,8 +306,8 @@
         background 200ms ease,
         transform 200ms ease,
         box-shadow 200ms ease,
-        color 0.75s ease,
-        border-color 200ms ease;
+        color 1s ease,
+        border-color 1.2s ease;
     border: 1px solid transparent;
 }
 
@@ -229,7 +324,9 @@
 .sidebar-link.current-page {
     background: color-mix(in srgb, var(--sb-accent) 14%, transparent);
     border-color: color-mix(in srgb, var(--sb-accent) 35%, var(--sb-line));
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sb-accent) 22%, transparent);
+    box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--sb-accent) 22%, transparent),
+        0 8px 22px color-mix(in srgb, var(--sb-accent) 12%, transparent);
 }
 
 .sidebar-link.current-page .sidebar-label {
@@ -244,12 +341,13 @@
     object-fit: contain;
     filter: brightness(0) invert(1);
     opacity: 0.9;
+    transition: filter 1s ease, opacity 1s ease;
 }
 
-/* Painéis claros (manhã / meio-dia / tarde): ícones escuros */
-body[data-theme="morning"] .sidebar .sidebar-icon,
-body[data-theme="midday"] .sidebar .sidebar-icon,
-body[data-theme="afternoon"] .sidebar .sidebar-icon {
+/* Temas claros: ícones escuros (igual Dashboard) */
+.sidebar[data-theme="morning"] .sidebar-icon,
+.sidebar[data-theme="midday"] .sidebar-icon,
+.sidebar[data-theme="afternoon"] .sidebar-icon {
     filter: brightness(0);
     opacity: 0.5;
 }

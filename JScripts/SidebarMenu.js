@@ -1,3 +1,100 @@
+class SidebarTheme {
+    static getDayTotal(now = new Date()) {
+        return now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600;
+    }
+
+    static getRangeProgress(current, start, end) {
+        if (current <= start) return 0;
+        if (current >= end) return 1;
+        return (current - start) / (end - start);
+    }
+
+    static getThemeByTime(now = new Date()) {
+        const total = this.getDayTotal(now);
+
+        if (total >= 7 && total < 12) return "morning";
+        if (total >= 12 && total < 13) return "midday";
+        if (total >= 13 && total < 17) return "afternoon";
+        if (total >= 17 && total < 18) return "sunset";
+        return "night";
+    }
+
+    /** No Dashboard o body já tem o tema do sol — espelhamos para ficar em sincronia */
+    static resolveTheme(now = new Date()) {
+        const bodyTheme = document.body && document.body.getAttribute("data-theme");
+        if (bodyTheme) return bodyTheme;
+        return this.getThemeByTime(now);
+    }
+
+    static applyAmbientGlow(el, now = new Date()) {
+        const total = this.getDayTotal(now);
+        const theme = el.getAttribute("data-theme") || this.resolveTheme(now);
+
+        const sunriseProgress = this.getRangeProgress(total, 7, 8);
+        const middayProgress = this.getRangeProgress(total, 12, 13);
+        const sunsetProgress = this.getRangeProgress(total, 16, 17);
+        const duskProgress = this.getRangeProgress(total, 17, 18);
+
+        let nightProgress = 1;
+        if (total >= 17 && total <= 18) {
+            nightProgress = duskProgress;
+        } else if (total > 18 || total < 7) {
+            nightProgress = 1;
+        } else {
+            nightProgress = 0;
+        }
+
+        let ambientLeft = "transparent";
+        let ambientRight = "transparent";
+
+        if (theme === "morning") {
+            const dawnWarm = 0.22 + sunriseProgress * 0.32;
+            const dawnCool = 0.10 + sunriseProgress * 0.12;
+            ambientLeft = `rgba(255, 212, 120, ${dawnWarm.toFixed(2)})`;
+            ambientRight = `rgba(135, 204, 255, ${dawnCool.toFixed(2)})`;
+        } else if (theme === "midday") {
+            ambientLeft = `rgba(255, 235, 170, ${(0.48 + middayProgress * 0.1).toFixed(2)})`;
+            ambientRight = `rgba(125, 205, 255, ${(0.24 + middayProgress * 0.08).toFixed(2)})`;
+        } else if (theme === "afternoon") {
+            const afternoonWarm = 0.26 + sunsetProgress * 0.14;
+            const afternoonCool = 0.15 + sunsetProgress * 0.06;
+            ambientLeft = `rgba(255, 180, 96, ${afternoonWarm.toFixed(2)})`;
+            ambientRight = `rgba(255, 132, 96, ${afternoonCool.toFixed(2)})`;
+        } else if (theme === "sunset") {
+            ambientLeft = `rgba(255, 120, 88, ${(0.34 + duskProgress * 0.18).toFixed(2)})`;
+            ambientRight = `rgba(139, 92, 246, ${(0.18 + duskProgress * 0.12).toFixed(2)})`;
+        } else {
+            const moonGlow = 0.08 + nightProgress * 0.10;
+            ambientLeft = `rgba(90, 140, 220, ${moonGlow.toFixed(2)})`;
+            ambientRight = `rgba(79, 140, 255, ${(0.06 + nightProgress * 0.05).toFixed(2)})`;
+        }
+
+        el.style.setProperty("--sb-ambient-left", ambientLeft);
+        el.style.setProperty("--sb-ambient-right", ambientRight);
+        el.style.setProperty("--sb-night-strength", nightProgress.toFixed(3));
+    }
+
+    static apply(sidebar, now = new Date()) {
+        const el = sidebar || document.querySelector(".sidebar");
+        if (!el) return;
+
+        const theme = this.resolveTheme(now);
+        if (el.getAttribute("data-theme") !== theme) {
+            el.setAttribute("data-theme", theme);
+        }
+
+        this.applyAmbientGlow(el, now);
+    }
+
+    static start(sidebar) {
+        this._sidebar = sidebar;
+        this.apply(sidebar);
+
+        if (this._timer) return;
+        this._timer = window.setInterval(() => this.apply(this._sidebar), 1000);
+    }
+}
+
 class SidebarMenu {
     constructor() {
         this.sidebar = null;
@@ -76,6 +173,7 @@ class SidebarMenu {
 
     init() {
         this.createSidebar();
+        SidebarTheme.start(this.sidebar);
         this.bindEvents();
         this.setActivePage();
         this.setExpanded(false); // começa sempre recolhida
@@ -84,6 +182,7 @@ class SidebarMenu {
     createSidebar() {
         const sidebar = document.createElement("aside");
         sidebar.className = "sidebar sidebar--collapsed";
+        sidebar.setAttribute("data-theme", "night");
         sidebar.setAttribute("aria-label", "Menu lateral");
         sidebar.setAttribute("aria-expanded", "false");
 
@@ -303,6 +402,7 @@ class TopBlurOverlay {
 
 if (typeof window !== "undefined") {
     window.TopBlurOverlay = TopBlurOverlay;
+    window.SidebarTheme = SidebarTheme;
 }
 
 document.addEventListener("DOMContentLoaded", () => {

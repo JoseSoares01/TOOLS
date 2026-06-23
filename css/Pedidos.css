@@ -138,9 +138,22 @@ body {
 
 .attention-card__note {
     margin: 0;
+    flex: 1;
+    min-width: 0;
     font-size: 0.86rem;
     line-height: 1.55;
     color: var(--text-soft);
+}
+
+.attention-copy-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.attention-copy-btn {
+    flex-shrink: 0;
+    margin-top: 2px;
 }
 
 .attention-card__note code,

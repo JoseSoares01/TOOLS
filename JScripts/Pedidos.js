@@ -220,10 +220,13 @@
         }, 2200);
     }
 
-    async function copyText(text) {
+    async function copyText(text, label) {
+        const toastOk = label ? "Texto copiado para a área de transferência." : "E-mail copiado para a área de transferência.";
+        const toastFail = label ? "Não foi possível copiar. Selecione o texto manualmente." : "Não foi possível copiar. Selecione o e-mail manualmente.";
+
         try {
             await navigator.clipboard.writeText(text);
-            showToast("E-mail copiado para a área de transferência.");
+            showToast(toastOk);
             return true;
         } catch {
             const ta = document.createElement("textarea");
@@ -234,8 +237,8 @@
             ta.select();
             const ok = document.execCommand("copy");
             document.body.removeChild(ta);
-            if (ok) showToast("E-mail copiado para a área de transferência.");
-            else showToast("Não foi possível copiar. Selecione o e-mail manualmente.");
+            if (ok) showToast(toastOk);
+            else showToast(toastFail);
             return ok;
         }
     }
@@ -385,7 +388,7 @@
         const copyBtn = e.target.closest("[data-copy]");
         if (copyBtn && copyBtn.dataset.copy) {
             e.preventDefault();
-            copyText(copyBtn.dataset.copy);
+            copyText(copyBtn.dataset.copy, copyBtn.dataset.copyLabel || "");
         }
     });
 
