@@ -108,8 +108,8 @@
             nif: "507166620",
             groups: [
                 {
-                    title: "S. Mais Sul + Itau Sul",
-                    people: "Henriqueta Pacheco + Teresa Rodrigues",
+                    title: "S. Mais — Sul",
+                    people: "Henriqueta Pacheco + Teresa Rodrigues (com Itau Sul + Contabilidade)",
                     emails: [
                         { address: "contabilidade.itau@b2b.com.pt", label: "Contabilidade Itau" },
                         { address: "henriqueta.pacheco@b2b.com.pt", label: "Henriqueta Pacheco" },
@@ -117,7 +117,7 @@
                     ],
                 },
                 {
-                    title: "S. Mais Norte",
+                    title: "S. Mais — Norte",
                     people: "Fátima Ferraria + Amanda",
                     emails: [
                         { address: "fatima.ferraria@b2b.com.pt", label: "Fátima Ferraria" },
@@ -208,6 +208,12 @@
             .replace(/"/g, "&quot;");
     }
 
+    function formatTitleWithRegions(title) {
+        return escapeHtml(title)
+            .replace(/\bNorte\b/g, '<span class="region-label region-label--norte">Norte</span>')
+            .replace(/\bSul\b/g, '<span class="region-label region-label--sul">Sul</span>');
+    }
+
     function showToast(message) {
         if (!copyToast) return;
         copyToast.textContent = message;
@@ -272,7 +278,7 @@
         return `
             <section class="contact-group">
                 <header class="contact-group__head">
-                    <h3 class="contact-group__title">${escapeHtml(group.title)}</h3>
+                    <h3 class="contact-group__title">${formatTitleWithRegions(group.title)}</h3>
                     <p class="contact-group__people">${escapeHtml(group.people)}</p>
                 </header>
                 <div class="email-list">

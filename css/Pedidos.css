@@ -468,6 +468,19 @@ body {
     color: #fff;
 }
 
+.region-label {
+    font-weight: 900;
+    letter-spacing: 0.02em;
+}
+
+.region-label--sul {
+    color: #39c6ff;
+}
+
+.region-label--norte {
+    color: #ff6b6b;
+}
+
 .contact-group__people,
 .cc-block__hint {
     margin: 0;
