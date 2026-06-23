@@ -151,6 +151,12 @@ class SidebarMenu {
                 label: "Pedidos",
                 href: "/pages/Pedidos.html",
                 icon: "/pages/icons/email.svg"
+            },
+            {
+                key: "Manuais",
+                label: "Manuais",
+                href: "/pages/Manuais.html",
+                icon: "/pages/icons/pdf.svg"
             }
         ];
 

@@ -1,0 +1,394 @@
+:root {
+    --mm-bg: #1a1d21;
+    --mm-bg-stage: #14171b;
+    --mm-node: #1f4d38;
+    --mm-node-hover: #27634a;
+    --mm-node-root: #3a3f46;
+    --mm-node-border: rgba(120, 200, 160, 0.35);
+    --mm-line: #6eb8a0;
+    --mm-text: #f4fbf7;
+    --mm-text-soft: rgba(244, 251, 247, 0.72);
+    --mm-radius: 14px;
+    --font: Inter, "Segoe UI", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: var(--font);
+    color: var(--mm-text);
+    background: var(--mm-bg);
+    overflow: hidden;
+}
+
+.manuais-shell {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 20px 20px 16px;
+    min-height: 0;
+}
+
+.manuais-header {
+    flex-shrink: 0;
+    margin-bottom: 14px;
+}
+
+.manuais-kicker {
+    margin: 0 0 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mm-text-soft);
+}
+
+.manuais-title {
+    margin: 0;
+    font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+    font-weight: 800;
+    color: #fff;
+}
+
+.manuais-hint {
+    margin: 8px 0 0;
+    font-size: 0.82rem;
+    color: var(--mm-text-soft);
+}
+
+.manuais-stage {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--mm-bg-stage);
+    overflow: hidden;
+}
+
+.manuais-viewport {
+    position: absolute;
+    inset: 0;
+    cursor: grab;
+    overflow: hidden;
+}
+
+.manuais-viewport.is-dragging {
+    cursor: grabbing;
+}
+
+.manuais-board {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+    padding: 40px 48px 80px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.manuais-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.mm-tree {
+    display: flex;
+    align-items: center;
+}
+
+.mm-branch {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.mm-node-wrap {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.mm-node {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 280px;
+    padding: 10px 14px;
+    border: 1px solid var(--mm-node-border);
+    border-radius: var(--mm-radius);
+    background: var(--mm-node);
+    color: var(--mm-text);
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.35;
+    text-align: left;
+    cursor: default;
+    transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+.mm-node--root {
+    background: var(--mm-node-root);
+    border-color: rgba(255, 255, 255, 0.14);
+    max-width: 240px;
+    font-size: 0.88rem;
+}
+
+.mm-node--toggle {
+    cursor: pointer;
+}
+
+.mm-node--toggle:hover {
+    background: var(--mm-node-hover);
+    transform: translateY(-1px);
+}
+
+.mm-node__chevron {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.2);
+    font-size: 0.7rem;
+    color: #b8e8d4;
+    transition: transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mm-node--expanded .mm-node__chevron {
+    transform: rotate(180deg);
+}
+
+.mm-node__label {
+    flex: 1;
+    min-width: 0;
+    word-break: break-word;
+}
+
+.mm-node__actions {
+    display: inline-flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.mm-copy-btn,
+.mm-link-btn {
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.18);
+    color: #dff7ec;
+    cursor: pointer;
+    transition: background 0.16s ease, border-color 0.16s ease;
+}
+
+.mm-copy-btn:hover,
+.mm-link-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.28);
+}
+
+.mm-copy-btn svg,
+.mm-link-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+.mm-children-outer {
+    display: grid;
+    grid-template-columns: 0fr;
+    width: 0;
+    max-width: 0;
+    min-width: 0;
+    margin-left: 0;
+    opacity: 0;
+    overflow: hidden;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        grid-template-columns 520ms cubic-bezier(0.16, 1, 0.3, 1),
+        margin-left 520ms cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 420ms cubic-bezier(0.16, 1, 0.3, 1),
+        max-width 520ms cubic-bezier(0.16, 1, 0.3, 1),
+        width 520ms cubic-bezier(0.16, 1, 0.3, 1),
+        visibility 0s linear 520ms;
+    will-change: grid-template-columns, margin-left, opacity, max-width;
+}
+
+.mm-children-outer.is-expanded {
+    grid-template-columns: 1fr;
+    width: auto;
+    max-width: 5000px;
+    margin-left: 56px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+        grid-template-columns 520ms cubic-bezier(0.16, 1, 0.3, 1),
+        margin-left 520ms cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 420ms cubic-bezier(0.16, 1, 0.3, 1),
+        max-width 520ms cubic-bezier(0.16, 1, 0.3, 1),
+        width 520ms cubic-bezier(0.16, 1, 0.3, 1),
+        visibility 0s linear 0s;
+}
+
+.mm-children-outer.is-suppressed {
+    grid-template-columns: 0fr !important;
+    width: 0 !important;
+    max-width: 0 !important;
+    margin-left: 0 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+}
+
+.mm-children-inner {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.mm-children-outer:not(.is-expanded) .mm-children-inner,
+.mm-children-outer.is-suppressed .mm-children-inner {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.mm-children {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+    padding-left: 0;
+}
+
+.mm-children-outer:not(.is-expanded) .mm-branch,
+.mm-children-outer.is-suppressed .mm-branch {
+    animation: none !important;
+    opacity: 0 !important;
+    transform: translateX(-14px) !important;
+    pointer-events: none !important;
+}
+
+.mm-children-outer.is-expanded:not(.is-suppressed) > .mm-children-inner > .mm-children > .mm-branch {
+    animation: mmBranchReveal 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes mmBranchReveal {
+    from {
+        opacity: 0;
+        transform: translateX(-14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mm-children-outer,
+    .mm-node__chevron,
+    .mm-children-outer.is-expanded:not(.is-suppressed) > .mm-children-inner > .mm-children > .mm-branch {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
+
+.manuais-zoom {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 14px;
+    background: rgba(20, 23, 27, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.manuais-zoom__btn {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.16s ease;
+}
+
+.manuais-zoom__btn:hover {
+    background: rgba(110, 184, 160, 0.22);
+}
+
+.copy-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%) translateY(12px);
+    z-index: 2000;
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: rgba(10, 22, 33, 0.95);
+    border: 1px solid rgba(110, 184, 160, 0.35);
+    color: #d7ffe9;
+    font-size: 0.88rem;
+    font-weight: 700;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.32);
+    opacity: 0;
+    transition: opacity 0.22s ease, transform 0.22s ease;
+    pointer-events: none;
+}
+
+.copy-toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.copy-toast[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .manuais-shell {
+        padding: 12px;
+    }
+
+    .mm-node {
+        max-width: 220px;
+        font-size: 0.78rem;
+    }
+
+    .mm-children-outer.is-expanded {
+        margin-left: 36px;
+    }
+}

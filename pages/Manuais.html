@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manuais · Fluxo de Facturas</title>
+  <link rel="stylesheet" href="/css/Manuais.css" />
+  <link rel="stylesheet" href="/css/SidebarMenu.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <main class="manuais-shell">
+    <header class="manuais-header">
+      <div>
+        <p class="manuais-kicker">Documentação interna</p>
+        <h1 class="manuais-title">Fluxo de Gestão de Facturas Trivalor</h1>
+      </div>
+      <p class="manuais-hint">Clique nos nós com seta para expandir ou recolher ramos. Arraste para mover · use +/− para zoom.</p>
+    </header>
+
+    <div class="manuais-stage" id="manuaisStage">
+      <div class="manuais-viewport" id="manuaisViewport">
+        <svg class="manuais-lines" id="manuaisLines" aria-hidden="true"></svg>
+        <div class="manuais-board" id="manuaisBoard"></div>
+      </div>
+
+      <div class="manuais-zoom" aria-label="Controlos de zoom">
+        <button type="button" class="manuais-zoom__btn" id="zoomIn" title="Aumentar zoom" aria-label="Aumentar zoom">+</button>
+        <button type="button" class="manuais-zoom__btn" id="zoomOut" title="Reduzir zoom" aria-label="Reduzir zoom">−</button>
+        <button type="button" class="manuais-zoom__btn" id="zoomReset" title="Recentrar" aria-label="Recentrar">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M12 3v3M12 18v3M3 12h3M18 12h3M7.05 7.05l2.12 2.12M14.83 14.83l2.12 2.12M16.95 7.05l-2.12 2.12M9.17 14.83l-2.12 2.12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <div id="copyToast" class="copy-toast" hidden role="status" aria-live="polite"></div>
+
+  <script src="/JScripts/core/app-config.js"></script>
+  <script src="/JScripts/SidebarMenu.js"></script>
+  <script src="/JScripts/Manuais.js"></script>
+</body>
+</html>

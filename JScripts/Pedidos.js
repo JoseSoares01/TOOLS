@@ -6,11 +6,8 @@
         { email: "Rui.henriques@trivalor.pt", label: "TRIVALOR — Rui Henriques" },
     ];
 
-    const GERAL_CONTACTS = {
-        title: "Geral Norte / Sul",
-        people: "Armanda Gonçalves",
-        emails: [{ address: "armanda.goncalves@b2b.com.pt", label: "Armanda Gonçalves" }],
-    };
+    const ARMANDA_EMAIL = "armanda.goncalves@b2b.com.pt";
+    const ARMANDA_COMPANY_ID = "gertal";
 
     const REQUEST_TYPES = [
         "Conta Razão",
@@ -47,7 +44,15 @@
             name: "GERTAL",
             razao: "GERTAL - COMP",
             nif: "500126623",
-            groups: [],
+            groups: [
+                {
+                    title: "Geral Norte / Sul",
+                    people: "Armanda Gonçalves",
+                    emails: [
+                        { address: "armanda.goncalves@b2b.com.pt", label: "Armanda Gonçalves" },
+                    ],
+                },
+            ],
         },
         {
             id: "iberlim",
@@ -274,6 +279,19 @@
             </div>`;
     }
 
+    function getVisibleGroups(company) {
+        return company.groups
+            .map((group) => ({
+                ...group,
+                emails: group.emails.filter((email) => {
+                    const isArmanda = email.address.toLowerCase() === ARMANDA_EMAIL;
+                    if (!isArmanda) return true;
+                    return company.id === ARMANDA_COMPANY_ID;
+                }),
+            }))
+            .filter((group) => group.emails.length > 0);
+    }
+
     function renderContactGroup(group) {
         return `
             <section class="contact-group">
@@ -288,15 +306,10 @@
     }
 
     function renderCompanyDetail(company) {
-        const groupsHtml = company.groups.length
-            ? company.groups.map(renderContactGroup).join("")
-            : `<p class="no-contacts">Sem contactos específicos registados para esta empresa. Utilize os contactos gerais e CC obrigatório.</p>`;
-
-        const geralHtml = renderContactGroup({
-            title: GERAL_CONTACTS.title,
-            people: GERAL_CONTACTS.people,
-            emails: GERAL_CONTACTS.emails,
-        });
+        const visibleGroups = getVisibleGroups(company);
+        const groupsHtml = visibleGroups.length
+            ? visibleGroups.map(renderContactGroup).join("")
+            : `<p class="no-contacts">Sem contactos específicos registados para esta empresa. Utilize o CC obrigatório indicado abaixo.</p>`;
 
         const ccHtml = `
             <section class="cc-block">
@@ -347,7 +360,6 @@
             <section class="contacts-block">
                 <h3 class="section-title">Destinatários do pedido</h3>
                 ${groupsHtml}
-                ${geralHtml}
                 ${ccHtml}
             </section>`;
 
