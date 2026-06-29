@@ -1190,12 +1190,22 @@ button {
 }
 
 .dropdown-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     padding: 10px 12px;
     border-radius: 10px;
     cursor: pointer;
     color: #eaf4ff;
     font-size: 14px;
     transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.dropdown-option__flag,
+.vendor-country-flag {
+    font-size: 1.15em;
+    line-height: 1;
+    flex-shrink: 0;
 }
 
 .dropdown-option:hover,
@@ -1230,7 +1240,9 @@ button {
 }
 
 .foreign-vendor-xml__item {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     width: 100%;
     text-align: left;
     padding: 10px 12px;

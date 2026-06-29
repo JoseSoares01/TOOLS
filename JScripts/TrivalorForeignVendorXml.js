@@ -282,6 +282,16 @@
         tipo.dispatchEvent(new Event("change", { bubbles: true }));
     }
 
+    function avigilonCountryFlag(nome, nifFornecedor) {
+        var nomeUp = (nome || "").toUpperCase();
+        var nif = (nifFornecedor || "").toUpperCase();
+
+        if (/CANADA/.test(nomeUp) || nif.indexOf("CA501011001") === 0) return "🇨🇦";
+        if (/ALEMANHA|GERMANY/.test(nomeUp) || nif.indexOf("DE453247169") === 0) return "🇩🇪";
+        if (/HOLANDA|NETHERLANDS|\bNL\b/.test(nomeUp) || nif.indexOf("NL823582851") === 0) return "🇳🇱";
+        return "";
+    }
+
     function renderSuggestions(container, items, onPick) {
         container.innerHTML = "";
         container.hidden = items.length === 0;
@@ -295,7 +305,20 @@
                 if (rec.zona) {
                     label += " [" + rec.zona + "]";
                 }
-                btn.textContent = label;
+
+                var flag = avigilonCountryFlag(rec.nome, rec.nifFornecedor);
+                if (flag) {
+                    var flagSpan = document.createElement("span");
+                    flagSpan.className = "vendor-country-flag";
+                    flagSpan.textContent = flag;
+                    flagSpan.setAttribute("aria-hidden", "true");
+                    btn.appendChild(flagSpan);
+                }
+
+                var textSpan = document.createElement("span");
+                textSpan.textContent = label;
+                btn.appendChild(textSpan);
+
                 btn.addEventListener("click", function () {
                     onPick(rec);
                 });

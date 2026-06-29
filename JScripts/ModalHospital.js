@@ -1,9 +1,9 @@
 const avigilonNifs = [
     { value: "", label: "Selecione uma opção" },
     { value: "", label: "=== AVIGILON ===", isGroup: true },
-    { value: "CA501011001_503257567", country: "INT", label: "CANADA - CA501011001" },
-    { value: "NL823582851_503257567", country: "INT", label: "HOLANDA - NL823582851" },
-    { value: "DE453247169_503257567", country: "EU", label: "ALEMANHA - DE453247169" },
+    { value: "CA501011001_503257567", country: "INT", label: "CANADA - CA501011001", flag: "🇨🇦" },
+    { value: "NL823582851_503257567", country: "INT", label: "HOLANDA - NL823582851", flag: "🇳🇱" },
+    { value: "DE453247169_503257567", country: "EU", label: "ALEMANHA - DE453247169", flag: "🇩🇪" },
     { value: "", label: "=== VISIOTECH ===", isGroup: true },
     { value: "ESB80645518_503257567", country: "EU", label: "VISIOTECH - ESB80645518" },
     { value: "", label: "=== ADEMCO ADI ===", isGroup: true },
@@ -54,7 +54,18 @@ function populateDropdownList() {
         opt.className = 'dropdown-option';
         opt.tabIndex = 0;
         opt.dataset.value = item.value;
-        opt.textContent = item.label;
+
+        if (item.flag) {
+            const flag = document.createElement('span');
+            flag.className = 'dropdown-option__flag';
+            flag.textContent = item.flag;
+            flag.setAttribute('aria-hidden', 'true');
+            opt.appendChild(flag);
+        }
+
+        const label = document.createElement('span');
+        label.textContent = item.label;
+        opt.appendChild(label);
 
         opt.addEventListener('click', () => {
             applySelection(item.value);
