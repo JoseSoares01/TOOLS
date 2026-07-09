@@ -20,6 +20,32 @@ const container = document.querySelector('.container');
 const LoginLink = document.querySelector('.SignInLink');
 const RegisterLink = document.querySelector('.SignUpLink');
 
+function syncFloatingInputState(input) {
+    const box = input.closest('.input-box');
+    if (!box) return;
+    box.classList.toggle('is-filled', input.value.trim().length > 0);
+}
+
+function initFloatingInputs() {
+    const inputs = document.querySelectorAll('.input-box input:not([type="checkbox"])');
+
+    inputs.forEach((input) => {
+        syncFloatingInputState(input);
+        input.addEventListener('input', () => syncFloatingInputState(input));
+        input.addEventListener('change', () => syncFloatingInputState(input));
+    });
+
+    // Autofill do browser pode preencher após o paint inicial
+    window.setTimeout(() => {
+        inputs.forEach(syncFloatingInputState);
+    }, 120);
+    window.setTimeout(() => {
+        inputs.forEach(syncFloatingInputState);
+    }, 600);
+}
+
+document.addEventListener('DOMContentLoaded', initFloatingInputs);
+
 // Event listeners para alternância entre formulários
 if (RegisterLink) {
     RegisterLink.addEventListener('click', (e) => {
