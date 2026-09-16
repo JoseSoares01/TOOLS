@@ -11,8 +11,33 @@ const SUGGEST_LIMIT = 10;
 const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search';
 const NOMINATIM_HEADERS = {
   Accept: 'application/json',
-  'User-Agent': 'trivalor-norte-sul-pt/2.0 (internal tools)',
+  'User-Agent': 'trivalor-norte-sul-pt/2.1 (internal tools)',
 };
+
+/** Prefixos / termos de equipamento social que o Nominatim muitas vezes não resolve como localidade */
+const NOISE_PREFIXES = [
+  'lar',
+  'lares',
+  'centro social',
+  'centro de dia',
+  'centro',
+  'residencia',
+  'residência',
+  'hospital',
+  'clinica',
+  'clínica',
+  'escola',
+  'jardim de infancia',
+  'jardim de infância',
+  'creche',
+  'ipss',
+  'santa casa',
+  'misericordia',
+  'misericórdia',
+  'casa de',
+  'equipamento social',
+  'equip social',
+];
 
 const ISLANDS_AZORES_KEYWORDS = [
   'acores', 'azores', 'ilha de sao miguel', 'sao miguel', 'ilha terceira', 'terceira',
@@ -78,6 +103,11 @@ const OFFLINE_DB = {
   penafiel: 41.2078,
   lousada: 41.2767,
   felgueiras: 41.3682,
+  /** Freguesias / localidades pedidas com frequência (ex.: «Lar Alcaria») */
+  alcaria: 40.1997,
+  'alcaria fundao': 40.1997,
+  'alcaria fundão': 40.1997,
+  'lar alcaria': 40.1997,
 };
 
 /** Primeiros 4 dígitos do CP → latitude aproximada (modo offline) */
@@ -173,6 +203,58 @@ function classifyLat(lat) {
   return lat > COIMBRA_LAT ? 'NORTE' : 'SUL';
 }
 
+/**
+ * Excepções operacionais Norte/Sul (locais na fronteira de Coimbra
+ * ou com regra de negócio própria — ex.: Lar Alcaria / Alcaria Fundão = NORTE).
+ */
+const CLASSIFICATION_OVERRIDES = [
+  {
+    force: 'NORTE',
+    // «Lar Alcaria» e freguesia Alcaria (Fundão); CP 6230-xxx
+    matchAny: [
+      'lar alcaria',
+      'alcaria fundao',
+      'alcaria fundão',
+      '6230-022',
+      '6230-024',
+    ],
+    requireAll: null,
+  },
+  {
+    force: 'NORTE',
+    matchAny: ['alcaria'],
+    requireAll: ['fundao'],
+  },
+];
+
+function resolveClassification({ name, lat, queryUsed = '', locality = '', postalCode = '', district = '' }) {
+  const archipelago = detectArchipelago(name, queryUsed);
+  if (archipelago) {
+    return archipelago === 'ILHAS' ? 'ILHAS' : `ILHAS (${archipelago})`;
+  }
+
+  const blob = normalizeText(
+    [name, queryUsed, locality, postalCode, district].filter(Boolean).join(' ')
+  );
+
+  for (const rule of CLASSIFICATION_OVERRIDES) {
+    const anyOk = (rule.matchAny || []).some((m) => blob.includes(normalizeText(m)));
+    if (!anyOk) continue;
+    if (rule.requireAll && rule.requireAll.length) {
+      const allOk = rule.requireAll.every((m) => blob.includes(normalizeText(m)));
+      if (!allOk) continue;
+    }
+    return rule.force;
+  }
+
+  // CP 6230 (Fundão / Alcaria) → NORTE na regra operacional
+  if (postalCode && String(postalCode).replace(/\s/g, '').startsWith('6230')) {
+    return 'NORTE';
+  }
+
+  return classifyLat(lat);
+}
+
 function detectArchipelago(locationName, originalQuery = '') {
   const normalized = normalizeText(locationName || '');
   const normalizedQuery = normalizeText(originalQuery || '');
@@ -246,13 +328,16 @@ function showResult(details) {
     district = '',
   } = details;
 
-  const archipelago = detectArchipelago(name, queryUsed);
-  const classification = archipelago
-    ? archipelago === 'ILHAS'
-      ? 'ILHAS'
-      : `ILHAS (${archipelago})`
-    : classifyLat(lat);
-  const badgeClass = archipelago ? 'ilhas' : classification === 'NORTE' ? 'norte' : 'sul';
+  const classification = resolveClassification({
+    name,
+    lat,
+    queryUsed,
+    locality,
+    postalCode,
+    district,
+  });
+  const isIlhas = String(classification).startsWith('ILHAS');
+  const badgeClass = isIlhas ? 'ilhas' : classification === 'NORTE' ? 'norte' : 'sul';
 
   resultBadge.textContent = classification;
   resultBadge.className = 'result-badge ' + badgeClass;
@@ -291,8 +376,70 @@ function formatPlaceType(item) {
     island: 'Ilha',
     archipelago: 'Arquipélago',
     administrative: 'Administrativo',
+    building: 'Edifício / equipamento',
+    amenity: 'Equipamento',
+    social_facility: 'Equipamento social',
+    nursing_home: 'Lar',
+    residential: 'Residencial',
   };
   return map[t] || (t ? capitalize(String(t)) : 'Local');
+}
+
+/** Tokens úteis para matching (ignora stopwords curtas) */
+function queryTokens(query) {
+  return normalizeText(query)
+    .split(/[^a-z0-9]+/)
+    .filter((t) => t.length >= 3 && !['para', 'com', 'dos', 'das', 'del', 'the', 'and'].includes(t));
+}
+
+/**
+ * Gera variantes da pesquisa: query original, sem prefixos (Lar, Centro…),
+ * e localidade isolada — ex. «LAR ALCARIA» → «Alcaria».
+ */
+function buildQueryVariants(query) {
+  const raw = sanitize(query);
+  const variants = [];
+  const seen = new Set();
+
+  function push(q) {
+    const s = sanitize(q);
+    if (!s || s.length < 2) return;
+    const key = normalizeText(s);
+    if (seen.has(key)) return;
+    seen.add(key);
+    variants.push(s);
+  }
+
+  push(raw);
+
+  let stripped = normalizeText(raw);
+  for (const prefix of NOISE_PREFIXES) {
+    const p = normalizeText(prefix);
+    if (stripped === p || stripped.startsWith(p + ' ')) {
+      stripped = stripped.slice(p.length).trim();
+      break;
+    }
+  }
+  if (stripped && stripped !== normalizeText(raw)) {
+    push(stripped);
+  }
+
+  const tokens = queryTokens(raw);
+  if (tokens.length >= 2) {
+    const significant = tokens.filter(
+      (t) => !NOISE_PREFIXES.some((p) => normalizeText(p) === t || normalizeText(p).includes(t))
+    );
+    if (significant.length) {
+      push(significant.join(' '));
+      if (significant.length > 1) {
+        push(significant[significant.length - 1]);
+      }
+    }
+  } else if (tokens.length === 1 && tokens[0] !== normalizeText(raw)) {
+    push(tokens[0]);
+  }
+
+  return variants;
 }
 
 function mapNominatimItem(item, queryUsed) {
@@ -302,13 +449,21 @@ function mapNominatimItem(item, queryUsed) {
     addr.town ||
     addr.village ||
     addr.municipality ||
+    addr.hamlet ||
     addr.city_district ||
     addr.suburb ||
     '';
   const postalCode = addr.postcode || '';
   const district = addr.state || addr.county || addr.region || '';
-  const parish = addr.suburb || addr.neighbourhood || addr.quarter || '';
-  const locality = city || parish || item.name || item.display_name.split(',')[0].trim();
+  const parish = addr.suburb || addr.neighbourhood || addr.quarter || addr.hamlet || '';
+  const namedPlace = item.name || '';
+  const locality =
+    addr.village ||
+    addr.hamlet ||
+    city ||
+    parish ||
+    namedPlace ||
+    item.display_name.split(',')[0].trim();
   const shortName = locality;
   const typeLabel = formatPlaceType(item);
 
@@ -336,13 +491,72 @@ function isPlaceLike(item) {
     'city', 'town', 'village', 'municipality', 'county', 'state', 'region',
     'suburb', 'hamlet', 'island', 'archipelago', 'locality', 'quarter',
     'postcode', 'neighbourhood', 'administrative',
+    'building', 'amenity', 'social_facility', 'nursing_home', 'residential',
+    'office', 'healthcare', 'community_centre', 'place_of_worship',
   ]);
   if (allowed.has(addresstype)) return true;
-  if (cls === 'place' || cls === 'boundary') return true;
-  if (type === 'administrative' || type === 'island' || type === 'archipelago' || type === 'postcode') {
+  if (cls === 'place' || cls === 'boundary' || cls === 'building' || cls === 'amenity') return true;
+  if (
+    type === 'administrative' ||
+    type === 'island' ||
+    type === 'archipelago' ||
+    type === 'postcode' ||
+    type === 'social_facility' ||
+    type === 'nursing_home' ||
+    type === 'service'
+  ) {
     return true;
   }
-  return false;
+  // Qualquer resultado em PT com coordenadas (fallback mais permissivo)
+  return Number.isFinite(parseFloat(item.lat)) && Number.isFinite(parseFloat(item.lon));
+}
+
+/** Preferir localidades / freguesias sobre edifícios genéricos */
+function placeRankBoost(item) {
+  const t = item.addresstype || item.type || '';
+  const cls = item.class || '';
+  if (['city', 'town', 'village', 'municipality', 'hamlet', 'locality'].includes(t)) return 40;
+  if (cls === 'boundary' || t === 'administrative') return 30;
+  if (t === 'postcode') return 25;
+  if (['suburb', 'neighbourhood', 'quarter'].includes(t)) return 18;
+  if (cls === 'amenity' || t === 'social_facility' || t === 'nursing_home') return 12;
+  if (cls === 'building') return 6;
+  return 0;
+}
+
+function scoreSuggestion(item, originalQuery) {
+  const hay = normalizeText(
+    [item.name, item.shortName, item.city, item.parish, item.district, item.postalCode]
+      .filter(Boolean)
+      .join(' ')
+  );
+  const allTokens = queryTokens(originalQuery);
+  const noiseSet = new Set(
+    NOISE_PREFIXES.flatMap((p) => normalizeText(p).split(/\s+/)).filter((t) => t.length >= 3)
+  );
+  const tokens = allTokens.filter((t) => !noiseSet.has(t));
+  const scoreTokens = tokens.length ? tokens : allTokens;
+  let score = placeRankBoost(item);
+
+  if (!scoreTokens.length) return score;
+
+  let matched = 0;
+  for (const tok of scoreTokens) {
+    if (hay.includes(tok)) matched += 1;
+  }
+  score += matched * 22;
+
+  const short = normalizeText(item.shortName || '');
+  const lastTok = scoreTokens[scoreTokens.length - 1];
+  if (short === lastTok) score += 35;
+  else if (short.includes(lastTok)) score += 18;
+
+  if (matched === 0) score -= 40;
+
+  const importance = typeof item._importance === 'number' ? item._importance : 0;
+  score += importance * 8;
+
+  return score;
 }
 
 function dedupeSuggestions(list) {
@@ -357,9 +571,19 @@ function dedupeSuggestions(list) {
   return out;
 }
 
-async function nominatimFetch(params) {
-  if (searchAbort) searchAbort.abort();
-  searchAbort = new AbortController();
+function rankSuggestions(list, originalQuery) {
+  return dedupeSuggestions(list)
+    .map((item) => ({ ...item, _score: scoreSuggestion(item, originalQuery) }))
+    .sort((a, b) => b._score - a._score)
+    .slice(0, SUGGEST_LIMIT);
+}
+
+async function nominatimFetch(params, sharedAbort) {
+  if (!sharedAbort) {
+    if (searchAbort) searchAbort.abort();
+    searchAbort = new AbortController();
+  }
+  const controller = sharedAbort || searchAbort;
 
   const url = new URL(NOMINATIM_URL);
   Object.entries(params).forEach(([k, v]) => {
@@ -368,11 +592,24 @@ async function nominatimFetch(params) {
 
   const response = await fetch(url.toString(), {
     headers: NOMINATIM_HEADERS,
-    signal: searchAbort.signal,
+    signal: controller.signal,
   });
 
   if (!response.ok) throw new Error('API indisponível');
   return response.json();
+}
+
+async function nominatimSearchQuery(q, sharedAbort) {
+  return nominatimFetch(
+    {
+      format: 'json',
+      limit: SUGGEST_LIMIT,
+      addressdetails: 1,
+      countrycodes: 'pt',
+      q: /portugal/i.test(q) ? q : `${q}, Portugal`,
+    },
+    sharedAbort
+  ).catch(() => []);
 }
 
 async function fetchSuggestions(query) {
@@ -382,41 +619,54 @@ async function fetchSuggestions(query) {
   }
 
   try {
+    if (searchAbort) searchAbort.abort();
+    searchAbort = new AbortController();
+    const batchAbort = searchAbort;
+
     let items = [];
 
     if (postal) {
       const [byCode, byQuery] = await Promise.all([
-        nominatimFetch({
-          format: 'json',
-          limit: SUGGEST_LIMIT,
-          addressdetails: 1,
-          countrycodes: 'pt',
-          postalcode: postal,
-        }).catch(() => []),
-        nominatimFetch({
-          format: 'json',
-          limit: SUGGEST_LIMIT,
-          addressdetails: 1,
-          countrycodes: 'pt',
-          q: `${postal}, Portugal`,
-        }).catch(() => []),
+        nominatimFetch(
+          {
+            format: 'json',
+            limit: SUGGEST_LIMIT,
+            addressdetails: 1,
+            countrycodes: 'pt',
+            postalcode: postal,
+          },
+          batchAbort
+        ).catch(() => []),
+        nominatimSearchQuery(postal, batchAbort),
       ]);
       items = [...(byCode || []), ...(byQuery || [])];
     } else {
-      items = await nominatimFetch({
-        format: 'json',
-        limit: SUGGEST_LIMIT,
-        addressdetails: 1,
-        countrycodes: 'pt',
-        q: query.includes('portugal') ? query : `${query}, Portugal`,
-      });
+      const variants = buildQueryVariants(query);
+      const primary = await nominatimSearchQuery(variants[0], batchAbort);
+      items = primary || [];
+
+      if (items.length < 3 && variants.length > 1) {
+        const rest = await Promise.all(
+          variants.slice(1).map((v) => nominatimSearchQuery(v, batchAbort))
+        );
+        for (const batch of rest) {
+          items = items.concat(batch || []);
+        }
+      }
     }
 
     const mapped = (items || [])
       .filter(isPlaceLike)
-      .map((item) => mapNominatimItem(item, query));
+      .map((item) => {
+        const mappedItem = mapNominatimItem(item, query);
+        mappedItem._importance = typeof item.importance === 'number' ? item.importance : 0;
+        return mappedItem;
+      });
 
-    return dedupeSuggestions(mapped).slice(0, SUGGEST_LIMIT);
+    const ranked = rankSuggestions(mapped, query);
+    if (ranked.length) return ranked;
+
+    return getOfflineSuggestions(query, postal);
   } catch (err) {
     if (err.name === 'AbortError') return [];
     return getOfflineSuggestions(query, postal);
@@ -475,11 +725,14 @@ async function geocodeLocation(query) {
   if (postal) {
     throw new Error(`Código postal "${postal}" não encontrado. Verifique os dígitos (ex: 4000-001).`);
   }
-  throw new Error(`Não encontrei "${query}" em Portugal. Tente cidade, freguesia ou código postal.`);
+  throw new Error(
+    `Não encontrei "${query}" em Portugal. Tente a localidade (ex.: Alcaria), freguesia, concelho ou código postal (ex.: 6230-022).`
+  );
 }
 
 function getOfflineSuggestions(query, postal) {
-  const q = normalizeText(query);
+  const variants = buildQueryVariants(query);
+  const keysTried = new Set(variants.map((v) => normalizeText(v)));
   const out = [];
 
   if (postal) {
@@ -499,28 +752,34 @@ function getOfflineSuggestions(query, postal) {
     }
   }
 
-  Object.entries(OFFLINE_DB)
-    .filter(([key]) => key.includes(q) || q.includes(key))
-    .slice(0, 6)
-    .forEach(([key, lat]) => {
-      out.push({
-        name: `${capitalize(key)}, Portugal`,
-        shortName: capitalize(key),
-        lat,
-        postalCode: '',
-        district: '',
-        typeLabel: 'Cidade',
-        source: 'Offline (dicionário)',
-        queryUsed: query,
-      });
+  Object.entries(OFFLINE_DB).forEach(([key, lat]) => {
+    const hit = [...keysTried].some(
+      (q) => key.includes(q) || q.includes(key) || key === q
+    );
+    if (!hit) return;
+    out.push({
+      name: `${capitalize(key)}, Portugal`,
+      shortName: capitalize(key),
+      lat,
+      postalCode: '',
+      district: '',
+      typeLabel: 'Cidade',
+      source: 'Offline (dicionário)',
+      queryUsed: query,
     });
+  });
 
-  return dedupeSuggestions(out).slice(0, SUGGEST_LIMIT);
+  return rankSuggestions(out, query);
 }
 
 function findOfflineMatch(query) {
-  for (const [key, lat] of Object.entries(OFFLINE_DB)) {
-    if (key.includes(query) || query.includes(key)) return { lat };
+  const variants = buildQueryVariants(query);
+  for (const variant of variants) {
+    const q = normalizeText(variant);
+    if (OFFLINE_DB[q] !== undefined) return { lat: OFFLINE_DB[q] };
+    for (const [key, lat] of Object.entries(OFFLINE_DB)) {
+      if (key.includes(q) || q.includes(key)) return { lat };
+    }
   }
   const postal = parsePostalCode(query);
   if (postal) {
