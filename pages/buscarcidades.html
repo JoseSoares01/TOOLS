@@ -8,47 +8,46 @@
   <link rel="stylesheet" href="/css/stylecidades.css" />
   <link rel="stylesheet" href="/css/SidebarMenu.css" />
 
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap"
     rel="stylesheet"
   />
 </head>
 <body>
-  <!-- =========================================================
-       BACKGROUND DECORATIVO
-       ========================================================= -->
+  <!-- Background decorativo -->
   <div class="app-bg" aria-hidden="true">
     <div class="bg-orb orb-1"></div>
     <div class="bg-orb orb-2"></div>
     <div class="bg-orb orb-3"></div>
     <div class="bg-grid"></div>
+    <div class="bg-curves"></div>
     <div class="bg-noise"></div>
   </div>
 
   <main class="page-shell" role="main">
     <section class="app-panel">
 
-      <!-- =====================================================
-           COLUNA ESQUERDA / ASIDE
-           ===================================================== -->
-      <aside class="side-panel card" aria-label="Informação da aplicação">
+      <!-- ========== COLUNA ESQUERDA ========== -->
+      <aside class="side-panel card geo-hero" aria-label="Informação da aplicação">
+
         <div class="brand-block">
-          <div class="brand-icon brand-icon--globe" aria-hidden="true">
-            <div class="brand-globe-card brand-globe-card--particle-globe">
-              <div class="brand-globe-inner">
-                <div class="brand-globe-wrap">
-                  <div id="cidadesParticleGlobe" class="brand-particle-globe" aria-hidden="true"></div>
-                </div>
-              </div>
-            </div>
+          <div class="globe-frame" aria-hidden="true">
+            <img
+              class="globe-img"
+              src="/images/norte-sul-globe.jpg"
+              alt=""
+              width="640"
+              height="548"
+              decoding="async"
+            />
+            <div class="globe-glow"></div>
           </div>
 
           <div class="brand-copy">
             <span class="eyebrow">Portugal · Geolocalização</span>
-            <h1 class="app-title">Norte ou Sul?</h1>
+            <h1 class="app-title">Norte ou <span class="app-title__accent">Sul</span>?</h1>
             <p class="app-subtitle">
               Pesquise por <strong>cidade</strong>, <strong>localidade</strong>,
               <strong>lar / equipamento</strong> ou <strong>código postal</strong>
@@ -59,39 +58,67 @@
 
         <div class="info-stack">
           <div class="info-card">
-            <span class="info-label">Regra base</span>
-            <strong class="info-value">Coimbra divide Norte / Sul</strong>
-            <p class="info-text">
-              A classificação é feita usando a latitude da localidade comparada com a latitude de Coimbra.
-            </p>
+            <span class="info-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 12v5c3 2 9 2 12 0v-5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <div class="info-body">
+              <span class="info-label">Regra Base</span>
+              <strong class="info-value">Coimbra divide Norte / Sul</strong>
+              <p class="info-text">
+                A classificação usa a latitude da localidade comparada com a latitude de Coimbra.
+              </p>
+            </div>
           </div>
 
           <div class="info-card">
-            <span class="info-label">Linha de corte</span>
-            <strong class="info-value">40.2056°</strong>
-            <p class="info-text">
-              Valor de referência usado pelo verificador.
-            </p>
-          </div>
-        </div>
-
-        <div class="settings-card">
-          <div class="settings-row">
-            <div class="settings-copy">
-              <label class="toggle-label" for="offlineToggle">Modo offline</label>
-              <p class="toggle-help">Usa apenas a regra/local fallback, sem depender da API.</p>
+            <span class="info-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="12" r="8"/>
+                <path d="M12 8v8M8 12h8" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <div class="info-body">
+              <span class="info-label">Linha de Corte</span>
+              <strong class="info-value">40.2056°</strong>
+              <p class="info-text">
+                Valor de referência usado pelo verificador.
+              </p>
             </div>
+          </div>
 
-            <button
-              id="offlineToggle"
-              class="toggle-btn"
-              type="button"
-              role="switch"
-              aria-checked="false"
-              aria-label="Activar modo offline"
-            >
-              <span class="toggle-knob"></span>
-            </button>
+          <div class="info-card info-card--offline">
+            <span class="info-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M1 1l22 22" stroke-linecap="round"/>
+                <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55" stroke-linecap="round"/>
+                <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39" stroke-linecap="round"/>
+                <path d="M10.71 5.05A16 16 0 0 1 22.58 9" stroke-linecap="round"/>
+                <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88" stroke-linecap="round"/>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0" stroke-linecap="round"/>
+                <path d="M12 20h.01" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <div class="info-body">
+              <div class="settings-row">
+                <div class="settings-copy">
+                  <label class="toggle-label" for="offlineToggle">Modo Offline</label>
+                  <p class="toggle-help">Usa apenas a regra/local fallback, sem depender da API.</p>
+                </div>
+                <button
+                  id="offlineToggle"
+                  class="toggle-btn"
+                  type="button"
+                  role="switch"
+                  aria-checked="false"
+                  aria-label="Activar modo offline"
+                >
+                  <span class="toggle-knob"></span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -100,19 +127,23 @@
         </div>
       </aside>
 
-      <!-- =====================================================
-           COLUNA DIREITA / CONTEÚDO PRINCIPAL
-           ===================================================== -->
+      <!-- ========== COLUNA DIREITA ========== -->
       <section class="main-panel">
 
-        <!-- HERO / SEARCH -->
-        <div class="card hero-card" aria-label="Verificador de localização">
+        <div class="card hero-card search-panel" aria-label="Verificador de localização">
           <div class="section-head">
             <div class="section-title-wrap">
               <span class="section-kicker">Verificação</span>
               <h2 class="section-title">Pesquisar localidade</h2>
+              <p class="section-subtitle">
+                Descubra se a localidade pertence ao Norte ou Sul de Portugal.
+              </p>
             </div>
-            <div class="section-chip" aria-hidden="true">PT · CP</div>
+
+            <div class="pt-badge" aria-hidden="true">
+              <img class="pt-badge__flag" src="/images/pt-flag-badge.png" alt="" width="28" height="28" />
+              <span class="pt-badge__text">PT · CP</span>
+            </div>
           </div>
 
           <div class="search-wrapper" role="search">
@@ -140,7 +171,7 @@
                 spellcheck="false"
               />
 
-              <button id="verifyBtn" class="verify-btn verify-btn--secondary" type="button" aria-label="Verificar texto introduzido (opcional)">
+              <button id="verifyBtn" class="verify-btn" type="button" aria-label="Verificar texto introduzido (opcional)">
                 <span class="verify-btn-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none">
                     <path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -152,11 +183,14 @@
             </div>
 
             <p class="search-hint">
-              Escreva e <strong>clique numa sugestão</strong> para ver Norte ou Sul. Aceita códigos postais
-              (<code>1234</code> ou <code>1234-567</code>). Enter só é necessário se não escolher da lista.
+              <span class="search-hint__icon" aria-hidden="true">💡</span>
+              <span class="search-hint__text">
+                Escreva e <strong>clique numa sugestão</strong> para ver Norte ou Sul. Aceita códigos postais
+                <span class="cp-pill">1234</span> ou <span class="cp-pill">1234-567</span>.
+                Enter só é necessário se não escolher da lista.
+              </span>
             </p>
 
-            <!-- Sugestões -->
             <ul
               id="suggestionsList"
               class="suggestions-list"
@@ -166,69 +200,88 @@
             ></ul>
           </div>
 
-          <!-- Estados -->
+          <!-- Estados (IDs JS intactos) -->
           <div id="stateArea" class="state-area" aria-live="polite" aria-atomic="true">
-  <!-- Estado inicial discreto, sem card -->
-  <div id="stateEmpty" class="empty-inline-state">
-    <p class="empty-inline-title">Introduza uma localidade</p>
-    <p class="empty-inline-text">
-      Pesquise por cidade, freguesia, distrito ou código postal e seleccione um resultado na lista.
-    </p>
-  </div>
 
-  <!-- Mantido apenas para compatibilidade com o JS -->
-  <div id="stateLoading" hidden></div>
+            <div id="stateEmpty" class="empty-inline-state result-card-empty">
+              <div class="empty-deco" aria-hidden="true">
+                <span class="empty-deco__ring"></span>
+                <span class="empty-deco__ring empty-deco__ring--2"></span>
+              </div>
+              <div class="empty-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                  <path d="M12 21s7-4.5 7-11a7 7 0 1 0-14 0c0 6.5 7 11 7 11Z" stroke-linejoin="round"/>
+                  <circle cx="12" cy="10" r="2.5"/>
+                </svg>
+              </div>
+              <p class="empty-inline-title">Introduza uma localidade</p>
+              <p class="empty-inline-text">
+                Pesquise por cidade, freguesia, distrito ou código postal e seleccione um resultado na lista.
+              </p>
+            </div>
 
-  <!-- Mantido apenas para compatibilidade com o JS -->
-  <div id="stateError" hidden>
-    <p id="errorMsg"></p>
-  </div>
+            <div id="stateLoading" hidden></div>
 
-  <!-- Resultado -->
-  <div id="stateResult" class="result-state" hidden>
-    <div class="result-top">
-      <span class="result-caption">Classificação</span>
-      <div id="resultBadge" class="result-badge"></div>
-    </div>
+            <div id="stateError" hidden>
+              <p id="errorMsg"></p>
+            </div>
 
-    <div class="result-grid" role="list" aria-label="Detalhes do resultado">
-      <article class="result-card" role="listitem">
-        <span class="result-card-label">Localidade</span>
-        <strong id="pillLocality" class="result-card-value">—</strong>
-      </article>
+            <div id="stateResult" class="result-state" hidden>
+              <div class="result-top">
+                <span class="result-caption">Classificação</span>
+                <div id="resultBadge" class="result-badge"></div>
+              </div>
 
-      <article class="result-card" role="listitem">
-        <span class="result-card-label">Código postal</span>
-        <strong id="pillPostal" class="result-card-value">—</strong>
-      </article>
+              <div class="result-grid" role="list" aria-label="Detalhes do resultado">
+                <article class="result-card" role="listitem">
+                  <span class="result-card-label">Localidade</span>
+                  <strong id="pillLocality" class="result-card-value">—</strong>
+                </article>
 
-      <article class="result-card" role="listitem">
-        <span class="result-card-label">Latitude</span>
-        <strong id="pillLat" class="result-card-value">—</strong>
-      </article>
+                <article class="result-card" role="listitem">
+                  <span class="result-card-label">Código postal</span>
+                  <strong id="pillPostal" class="result-card-value">—</strong>
+                </article>
 
-      <article class="result-card" role="listitem">
-        <span class="result-card-label">Linha de corte</span>
-        <strong class="result-card-value">40.2056°</strong>
-      </article>
+                <article class="result-card" role="listitem">
+                  <span class="result-card-label">Latitude</span>
+                  <strong id="pillLat" class="result-card-value">—</strong>
+                </article>
 
-      <article class="result-card" role="listitem">
-        <span class="result-card-label">Fonte</span>
-        <strong id="pillSource" class="result-card-value">—</strong>
-      </article>
-    </div>
-  </div>
-</div>
+                <article class="result-card" role="listitem">
+                  <span class="result-card-label">Linha de corte</span>
+                  <strong class="result-card-value">40.2056°</strong>
+                </article>
 
-        <!-- HISTÓRICO -->
-        <div class="card history-card" aria-label="Histórico de pesquisas">
+                <article class="result-card" role="listitem">
+                  <span class="result-card-label">Fonte</span>
+                  <strong id="pillSource" class="result-card-value">—</strong>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Histórico -->
+        <div class="card history-card recent-card" aria-label="Histórico de pesquisas">
           <div class="history-header">
-            <div>
-              <span class="section-kicker">Atividade</span>
-              <h3 class="history-title">Pesquisas recentes</h3>
+            <div class="history-header__left">
+              <span class="history-clock" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <circle cx="12" cy="12" r="9"/>
+                  <path d="M12 7v5l3 2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <div>
+                <span class="section-kicker">Atividade</span>
+                <h3 class="history-title">Pesquisas recentes</h3>
+              </div>
             </div>
 
             <button id="clearHistory" class="clear-btn" type="button" aria-label="Limpar histórico" hidden>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path d="M3 6h18M8 6V4h8v2M9 10v8M15 10v8M5 6l1 14h12l1-14" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
               Limpar
             </button>
           </div>
@@ -242,40 +295,38 @@
   </main>
 
   <!-- Popup de erro -->
-<div id="errorPopup" class="error-popup" hidden>
-  <div class="error-popup-backdrop"></div>
+  <div id="errorPopup" class="error-popup" hidden>
+    <div class="error-popup-backdrop"></div>
 
-  <div
-    class="error-popup-card"
-    role="alertdialog"
-    aria-modal="true"
-    aria-labelledby="errorPopupTitle"
-    aria-describedby="errorPopupMessage"
-  >
-    <div class="error-popup-icon" aria-hidden="true">!</div>
-
-    <div class="error-popup-content">
-      <h3 id="errorPopupTitle" class="error-popup-title">Ocorreu um erro</h3>
-      <p id="errorPopupMessage" class="error-popup-text">
-        Não foi possível concluir a operação.
-      </p>
-    </div>
-
-    <button
-      id="closeErrorPopup"
-      class="error-popup-close"
-      type="button"
-      aria-label="Fechar aviso"
+    <div
+      class="error-popup-card"
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby="errorPopupTitle"
+      aria-describedby="errorPopupMessage"
     >
-      Fechar
-    </button>
-  </div>
-</div>
+      <div class="error-popup-icon" aria-hidden="true">!</div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+      <div class="error-popup-content">
+        <h3 id="errorPopupTitle" class="error-popup-title">Ocorreu um erro</h3>
+        <p id="errorPopupMessage" class="error-popup-text">
+          Não foi possível concluir a operação.
+        </p>
+      </div>
+
+      <button
+        id="closeErrorPopup"
+        class="error-popup-close"
+        type="button"
+        aria-label="Fechar aviso"
+      >
+        Fechar
+      </button>
+    </div>
+  </div>
+
   <script src="/JScripts/core/app-config.js"></script>
   <script src="/JScripts/SidebarMenu.js"></script>
-  <script src="/JScripts/cidades-globe-brand.js"></script>
   <script src="/JScripts/scriptcidades.js"></script>
 </body>
 </html>
