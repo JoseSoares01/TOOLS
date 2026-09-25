@@ -703,6 +703,25 @@ function formatarData() {
     }
 }
 
+/** Abre o calendário nativo em qualquer clique no campo de data */
+function abrirCalendarioData(event) {
+    const el = document.getElementById('data_calendario');
+    if (!el) return;
+    if (event && event.target === el) return;
+    if (typeof el.showPicker === 'function') {
+        try {
+            el.showPicker();
+            return;
+        } catch (err) {
+            /* fallback abaixo */
+        }
+    }
+    el.focus();
+    el.click();
+}
+
+window.abrirCalendarioData = abrirCalendarioData;
+
 // Lista de países da União Europeia
 const paisesUE = [
     "Alemanha", "Áustria", "Bélgica", "Bulgária", "Chipre", "Croácia", 

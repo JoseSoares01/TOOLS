@@ -219,10 +219,17 @@
                         </div>
 
                         <div class="field-group">
-                            <label for="data">Data do documento</label>
-                            <div class="date-input-container">
-                                <input type="text" id="data" placeholder="AAAAMMDD" readonly>
-                                <input type="date" id="data_calendario" onchange="formatarData()">
+                            <label for="data_calendario">Data do documento</label>
+                            <div
+                                class="date-input-container"
+                                onclick="abrirCalendarioData(event)"
+                                onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();abrirCalendarioData(event);}"
+                                role="button"
+                                tabindex="0"
+                                aria-label="Abrir calendário da data do documento"
+                            >
+                                <input type="text" id="data" placeholder="AAAAMMDD" readonly tabindex="-1" aria-hidden="true">
+                                <input type="date" id="data_calendario" onchange="formatarData()" aria-label="Selecionar data">
                                 <ion-icon name="calendar-outline" class="calendar-icon"></ion-icon>
                             </div>
                         </div>
