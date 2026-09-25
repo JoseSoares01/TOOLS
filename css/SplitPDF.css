@@ -1,26 +1,39 @@
+/* =========================================================
+   PDF Tools — Mesclar e Separar
+   Dark Premium · Glassmorphism · alinhado ao Gerador QR
+   (UI only — IDs e classes do SplitPDF.js preservados)
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap');
+
 :root {
-    --bg-1: #07111d;
-    --bg-2: #0c1626;
-    --panel: rgba(10, 18, 32, 0.72);
-    --panel-strong: rgba(10, 18, 32, 0.88);
-    --line: rgba(255, 255, 255, 0.10);
-    --line-strong: rgba(77, 180, 255, 0.24);
+    --bg-0: #020817;
+    --bg-1: #04152d;
+    --bg-2: #0A2342;
 
-    --text: #edf5ff;
-    --text-soft: #9fb3c8;
+    --panel: rgba(8, 19, 42, 0.82);
+    --panel-strong: rgba(6, 14, 32, 0.92);
 
-    --accent: #39c6ff;
-    --accent-2: #4f8cff;
-    --success: #42e6a4;
-    --danger: #ff6b7a;
-    --warning: #ffbf5f;
+    --line: rgba(255, 255, 255, 0.08);
+    --line-blue: rgba(80, 150, 255, 0.15);
 
-    --radius-xl: 28px;
-    --radius-lg: 20px;
+    --text: #F8FAFC;
+    --text-soft: #94A3B8;
+
+    --accent: #2F8CFF;
+    --accent-2: #4DA3FF;
+    --purple: #7C4DFF;
+    --success: #22C55E;
+    --danger: #ff6f7d;
+
+    --shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+    --glow-btn: 0 12px 40px rgba(47, 140, 255, 0.45);
+
+    --radius-xl: 26px;
+    --radius-lg: 18px;
     --radius-md: 16px;
-    --radius-sm: 12px;
 
-    --shadow: 0 20px 50px rgba(0, 0, 0, 0.34);
+    --ease: 250ms ease;
 }
 
 * {
@@ -35,59 +48,54 @@ body {
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Manrope', system-ui, sans-serif;
     color: var(--text);
-    background: linear-gradient(145deg, var(--bg-1), var(--bg-2));
+    background: var(--bg-0);
     overflow-x: hidden;
 }
 
-/* =========================
-   FUNDO ANIMADO
-========================= */
+/* ---------- Background ---------- */
 .animated-bg {
     position: fixed;
     inset: 0;
-    z-index: -1;
-    overflow: hidden;
+    z-index: 0;
     pointer-events: none;
+    overflow: hidden;
     background:
-        radial-gradient(circle at top left, rgba(57, 198, 255, 0.10), transparent 28%),
-        radial-gradient(circle at bottom right, rgba(79, 140, 255, 0.08), transparent 24%),
-        linear-gradient(145deg, #07111d, #0c1626);
+        radial-gradient(ellipse 70% 50% at 18% 12%, rgba(47, 140, 255, 0.16), transparent 55%),
+        radial-gradient(ellipse 55% 45% at 82% 18%, rgba(124, 77, 255, 0.10), transparent 50%),
+        linear-gradient(160deg, var(--bg-0) 0%, var(--bg-1) 48%, var(--bg-2) 100%);
 }
 
 .bg-orb {
     position: absolute;
     border-radius: 50%;
     filter: blur(80px);
-    opacity: 0.28;
-    animation: floatOrb 18s ease-in-out infinite;
+    opacity: 0.4;
 }
 
 .orb-1 {
-    width: 280px;
-    height: 280px;
-    background: rgba(57, 198, 255, 0.20);
-    top: 10%;
-    left: 6%;
+    width: 420px;
+    height: 420px;
+    top: -120px;
+    left: 16%;
+    background: rgba(47, 140, 255, 0.22);
 }
 
 .orb-2 {
-    width: 340px;
-    height: 340px;
-    background: rgba(79, 140, 255, 0.16);
-    right: 8%;
-    top: 48%;
-    animation-delay: 2s;
+    width: 360px;
+    height: 360px;
+    top: 30%;
+    right: -80px;
+    background: rgba(124, 77, 255, 0.14);
 }
 
 .orb-3 {
-    width: 230px;
-    height: 230px;
-    background: rgba(66, 230, 164, 0.14);
+    width: 400px;
+    height: 400px;
+    bottom: -140px;
     left: 35%;
-    bottom: 10%;
-    animation-delay: 4s;
+    background: rgba(34, 197, 94, 0.10);
 }
 
 .bg-grid {
@@ -96,220 +104,281 @@ body {
     background-image:
         linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 38px 38px;
-    opacity: 0.30;
-    mask-image: radial-gradient(circle at center, black 32%, transparent 90%);
-    -webkit-mask-image: radial-gradient(circle at center, black 32%, transparent 90%);
-    animation: moveGrid 22s linear infinite;
-}
-
-.bg-pages span {
-    position: absolute;
-    width: 120px;
-    height: 150px;
-    border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    background:
-        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
-    animation: floatPage 20s linear infinite;
-    opacity: 0.12;
-}
-
-.bg-pages span::before {
-    content: "";
-    position: absolute;
-    top: 18px;
-    left: 18px;
-    right: 18px;
-    height: 2px;
-    background: rgba(255,255,255,0.10);
-    box-shadow:
-        0 14px 0 rgba(255,255,255,0.08),
-        0 28px 0 rgba(255,255,255,0.08),
-        0 42px 0 rgba(255,255,255,0.08);
-}
-
-.bg-pages span:nth-child(1) {
-    top: 8%;
-    right: 22%;
-    animation-delay: 0s;
-}
-.bg-pages span:nth-child(2) {
-    top: 58%;
-    left: 8%;
-    animation-delay: 5s;
-}
-.bg-pages span:nth-child(3) {
-    bottom: 12%;
-    right: 12%;
-    animation-delay: 8s;
-}
-.bg-pages span:nth-child(4) {
-    top: 22%;
-    left: 42%;
-    animation-delay: 12s;
+    background-size: 56px 56px;
+    opacity: 0.3;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black, transparent);
 }
 
 .bg-scan {
-    position: absolute;
-    inset: -20%;
-    background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        rgba(57, 198, 255, 0.02) 44%,
-        rgba(57, 198, 255, 0.07) 50%,
-        rgba(57, 198, 255, 0.02) 56%,
-        transparent 100%
-    );
-    animation: scanMove 8s linear infinite;
-    opacity: 0.38;
+    display: none;
 }
 
-@keyframes floatOrb {
-    0% { transform: translate(0,0) scale(1); }
-    25% { transform: translate(20px,-24px) scale(1.04); }
-    50% { transform: translate(-12px,18px) scale(0.98); }
-    75% { transform: translate(15px,10px) scale(1.03); }
-    100% { transform: translate(0,0) scale(1); }
-}
-
-@keyframes moveGrid {
-    0% { transform: translate(0, 0); }
-    100% { transform: translate(20px, 38px); }
-}
-
-@keyframes scanMove {
-    0% { transform: translateY(-35%); }
-    100% { transform: translateY(35%); }
-}
-
-@keyframes floatPage {
-    0% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-18px) rotate(1deg); }
-    100% { transform: translateY(0) rotate(0deg); }
-}
-
-/* =========================
-   LAYOUT
-========================= */
+/* ---------- Layout ---------- */
 .page-shell {
+    position: relative;
+    z-index: 1;
     min-height: 100vh;
-    padding: 28px 20px;
+    padding: 28px 28px 48px;
 }
 
-.tool-panel {
-    width: min(1180px, 100%);
+.app-panel {
+    width: min(1400px, 100%);
     margin: 0 auto;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--line);
-    border-radius: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.panel-card {
+    padding: 32px;
+    border-radius: var(--radius-xl);
+    background: var(--panel);
+    border: 1px solid var(--line-blue);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     box-shadow: var(--shadow);
-    padding: 28px;
 }
 
-/* =========================
-   HEADER
-========================= */
-.header-card {
+.section-heading {
     display: flex;
-    align-items: center;
-    gap: 18px;
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-xl);
-    padding: 20px;
+    align-items: flex-start;
+    gap: 14px;
     margin-bottom: 22px;
 }
 
-.home-btn {
-    width: 48px;
-    height: 48px;
-    border: none;
-    border-radius: 14px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    flex-shrink: 0;
-    box-shadow: 0 14px 26px rgba(57, 198, 255, 0.18);
-}
-
-.home-btn:hover {
-    transform: translateY(-1px) scale(1.03);
-}
-
-.eyebrow {
-    font-size: 0.82rem;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--text-soft);
-    margin-bottom: 8px;
-}
-
-.header-copy h1 {
-    font-size: clamp(1.8rem, 3vw, 2.7rem);
+.section-heading h2 {
+    font-family: 'Manrope', 'Inter', sans-serif;
+    font-size: 1.35rem;
     font-weight: 800;
-    line-height: 1.05;
-    margin-bottom: 8px;
-}
-
-.subtitle {
-    color: var(--text-soft);
-    font-size: 0.96rem;
-    line-height: 1.6;
-}
-
-/* =========================
-   CARDS
-========================= */
-.upload-card,
-.toolbar-card,
-.files-card {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-xl);
-    padding: 22px;
-}
-
-.upload-card,
-.toolbar-card {
-    margin-bottom: 22px;
-}
-
-.section-heading h3 {
-    font-size: 1.1rem;
-    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 4px;
 }
 
 .section-heading p {
+    font-size: 0.88rem;
     color: var(--text-soft);
-    font-size: 0.94rem;
-    margin-bottom: 16px;
+    line-height: 1.45;
 }
 
-/* =========================
-   DROP AREA
-========================= */
+.card-bubble {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.card-bubble--blue {
+    background: linear-gradient(145deg, #2F8CFF, #4DA3FF);
+    box-shadow: 0 0 20px rgba(47, 140, 255, 0.45);
+}
+
+.card-bubble--purple {
+    background: linear-gradient(145deg, #6D28D9, #7C4DFF);
+    box-shadow: 0 0 20px rgba(124, 77, 255, 0.4);
+}
+
+.card-bubble--green {
+    background: linear-gradient(145deg, #16A34A, #22C55E);
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+}
+
+/* ---------- Topbar ---------- */
+.pdf-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 64px;
+    padding: 12px 18px;
+    border-radius: 22px;
+    background: rgba(8, 19, 42, 0.72);
+    border: 1px solid var(--line-blue);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: var(--shadow);
+}
+
+.pdf-topbar__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.pdf-topbar__badge {
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+}
+
+.pdf-topbar__meta {
+    font-size: 0.86rem;
+    color: var(--text-soft);
+}
+
+.pdf-topbar__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.pdf-chip {
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-soft);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--line);
+}
+
+.pdf-chip--accent {
+    color: #dbeafe;
+    background: rgba(47, 140, 255, 0.12);
+    border-color: rgba(77, 163, 255, 0.28);
+}
+
+/* ---------- Hero ---------- */
+.pdf-hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr);
+    gap: 24px;
+    align-items: center;
+    overflow: hidden;
+    padding: 28px 28px 30px;
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(80, 150, 255, 0.12);
+    background:
+        radial-gradient(circle at 82% 35%, rgba(59, 130, 246, 0.16), transparent 45%),
+        linear-gradient(135deg, #03111F 0%, #041A35 50%, #020817 100%);
+    box-shadow: var(--shadow);
+}
+
+.eyebrow {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--accent-2);
+    margin-bottom: 14px;
+}
+
+.brand-title {
+    font-family: 'Manrope', 'Inter', sans-serif;
+    font-size: clamp(2.1rem, 4.2vw, 3.4rem);
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    color: #fff;
+    margin-bottom: 14px;
+}
+
+.brand-title__accent {
+    color: var(--accent-2);
+}
+
+.hero-subtitle {
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: var(--text-soft);
+    max-width: 52ch;
+}
+
+.pdf-hero__aside {
+    position: relative;
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pdf-hero-art {
+    position: relative;
+    width: 180px;
+    height: 160px;
+}
+
+.pdf-hero-glow {
+    position: absolute;
+    inset: -30%;
+    background: radial-gradient(circle, rgba(47, 140, 255, 0.35), transparent 65%);
+    filter: blur(28px);
+    z-index: 0;
+}
+
+.pdf-stack {
+    position: absolute;
+    width: 110px;
+    height: 140px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(160deg, rgba(248, 250, 252, 0.12), rgba(255, 255, 255, 0.04));
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+    z-index: 1;
+}
+
+.pdf-stack--1 {
+    left: 8px;
+    top: 18px;
+    transform: rotate(-12deg);
+    opacity: 0.55;
+}
+
+.pdf-stack--2 {
+    left: 36px;
+    top: 10px;
+    transform: rotate(-4deg);
+    opacity: 0.75;
+}
+
+.pdf-stack--3 {
+    left: 64px;
+    top: 4px;
+    padding: 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: linear-gradient(160deg, rgba(248, 250, 252, 0.95), rgba(226, 232, 240, 0.9));
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.35),
+        0 0 30px rgba(47, 140, 255, 0.25);
+}
+
+.pdf-stack--3 span {
+    display: block;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.14);
+}
+
+.pdf-stack--3 span:nth-child(2) { width: 78%; }
+.pdf-stack--3 span:nth-child(3) { width: 55%; }
+
+/* ---------- Drop area ---------- */
 .drop-area {
     position: relative;
-    border: 2px dashed rgba(255,255,255,0.16);
-    border-radius: 24px;
-    padding: 38px 22px;
+    border: 2px dashed rgba(80, 150, 255, 0.28);
+    border-radius: 22px;
+    padding: 40px 22px;
     text-align: center;
-    background:
-        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-    transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+    background: rgba(2, 8, 23, 0.35);
+    transition: border-color var(--ease), background var(--ease), transform var(--ease), box-shadow var(--ease);
 }
 
 .drop-area.drag-over {
-    border-color: rgba(57, 198, 255, 0.45);
-    background: rgba(57, 198, 255, 0.08);
+    border-color: rgba(77, 163, 255, 0.65);
+    background: rgba(47, 140, 255, 0.10);
+    box-shadow: 0 0 0 4px rgba(47, 140, 255, 0.12);
     transform: translateY(-1px);
 }
 
@@ -326,35 +395,40 @@ body {
     align-items: center;
     justify-content: center;
     color: #dff4ff;
-    background: linear-gradient(135deg, rgba(57,198,255,0.16), rgba(79,140,255,0.10));
-    border: 1px solid rgba(255,255,255,0.10);
+    background: linear-gradient(135deg, rgba(47, 140, 255, 0.2), rgba(124, 77, 255, 0.12));
+    border: 1px solid rgba(77, 163, 255, 0.25);
 }
 
-.drop-area h2 {
-    font-size: 1.3rem;
-    margin-bottom: 10px;
+.drop-area h3 {
+    font-family: 'Manrope', 'Inter', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 8px;
 }
 
-.drop-area p {
+.drop-area > p {
     color: var(--text-soft);
     margin-bottom: 18px;
 }
 
 .select-files-btn {
     border: none;
-    min-height: 50px;
-    padding: 0 20px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    min-height: 54px;
+    padding: 0 24px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, #2F8CFF, #4DA3FF);
     color: white;
     font-weight: 700;
+    font-size: 0.95rem;
+    font-family: inherit;
     cursor: pointer;
-    transition: transform 0.22s ease, box-shadow 0.22s ease;
-    box-shadow: 0 14px 24px rgba(57, 198, 255, 0.18);
+    transition: transform var(--ease), box-shadow var(--ease);
+    box-shadow: var(--glow-btn);
 }
 
 .select-files-btn:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 48px rgba(47, 140, 255, 0.55);
 }
 
 .helper-row {
@@ -362,70 +436,75 @@ body {
     flex-wrap: wrap;
     gap: 10px;
     justify-content: center;
-    margin-top: 18px;
+    margin-top: 20px;
 }
 
 .helper-pill {
     padding: 8px 12px;
     border-radius: 999px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--line);
     color: var(--text-soft);
-    font-size: 0.84rem;
+    font-size: 0.82rem;
 }
 
-/* =========================
-   TOOLBAR
-========================= */
+/* ---------- Dashboard 2 col ---------- */
+.pdf-dashboard {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.4fr);
+    gap: 24px;
+    align-items: start;
+}
+
 .toolbar-card {
     display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.toolbar-info h3 {
-    font-size: 1.08rem;
-    margin-bottom: 6px;
-}
-
-.toolbar-info p {
-    color: var(--text-soft);
-    font-size: 0.95rem;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .action-buttons {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 12px;
 }
 
 .action-btn {
-    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 54px;
     padding: 0 18px;
-    border-radius: 14px;
+    border-radius: var(--radius-lg);
     border: 1px solid var(--line);
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     color: white;
     font-weight: 700;
+    font-size: 0.95rem;
+    font-family: inherit;
     cursor: pointer;
-    transition: all 0.22s ease;
+    transition: all var(--ease);
+}
+
+.action-btn__icon {
+    opacity: 0.75;
+    font-size: 1.05rem;
 }
 
 .action-btn:hover:not(:disabled) {
-    transform: translateY(-1px);
-    background: rgba(255,255,255,0.08);
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(77, 163, 255, 0.35);
 }
 
 .action-btn.primary {
-    background: rgba(66, 230, 164, 0.14);
-    border-color: rgba(66, 230, 164, 0.26);
-    color: #dffff0;
+    background: linear-gradient(135deg, #2F8CFF, #4DA3FF);
+    border: none;
+    box-shadow: var(--glow-btn);
 }
 
 .action-btn.primary:hover:not(:disabled) {
-    background: rgba(66, 230, 164, 0.20);
+    box-shadow: 0 16px 48px rgba(47, 140, 255, 0.55);
 }
 
 .action-btn.ghost {
@@ -433,13 +512,42 @@ body {
 }
 
 .action-btn:disabled {
-    opacity: 0.46;
+    opacity: 0.42;
     cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
 }
 
-/* =========================
-   FILES GRID
-========================= */
+.toolbar-tips {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+}
+
+.tip-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(2, 8, 23, 0.35);
+    border: 1px solid var(--line);
+}
+
+.tip-item strong {
+    font-size: 0.84rem;
+    color: var(--accent-2);
+}
+
+.tip-item span {
+    font-size: 0.8rem;
+    color: var(--text-soft);
+}
+
+/* ---------- Files ---------- */
 .files-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
@@ -449,28 +557,28 @@ body {
 
 .file-item {
     position: relative;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--line);
     border-radius: 18px;
     padding: 12px;
     cursor: pointer;
-    transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+    transition: transform var(--ease), border-color var(--ease), box-shadow var(--ease), background var(--ease);
     animation: cardIn 0.22s ease;
 }
 
 .file-item:hover {
     transform: translateY(-2px);
-    border-color: rgba(57,198,255,0.22);
+    border-color: rgba(77, 163, 255, 0.35);
 }
 
 .file-item.selected {
-    background: rgba(57, 198, 255, 0.10);
-    border-color: rgba(57, 198, 255, 0.34);
-    box-shadow: 0 0 0 1px rgba(57,198,255,0.06), 0 14px 28px rgba(0,0,0,0.16);
+    background: rgba(47, 140, 255, 0.12);
+    border-color: rgba(77, 163, 255, 0.5);
+    box-shadow: 0 0 0 3px rgba(47, 140, 255, 0.14), 0 14px 28px rgba(0, 0, 0, 0.2);
 }
 
 .file-item.dragging {
-    opacity: 0.58;
+    opacity: 0.55;
     transform: scale(0.98);
 }
 
@@ -479,10 +587,11 @@ body {
     min-height: 210px;
     border-radius: 14px;
     overflow: hidden;
-    background: rgba(255,255,255,0.04);
+    background: rgba(2, 8, 23, 0.45);
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .page-preview canvas {
@@ -503,6 +612,7 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-weight: 600;
 }
 
 .file-pages {
@@ -525,8 +635,9 @@ body {
     font-size: 18px;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 10px 18px rgba(0,0,0,0.20);
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.25);
     transition: transform 0.2s ease;
+    z-index: 2;
 }
 
 .remove-btn:hover {
@@ -537,18 +648,19 @@ body {
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    border: 3px solid rgba(255,255,255,0.10);
-    border-top-color: var(--accent);
+    border: 3px solid rgba(255, 255, 255, 0.10);
+    border-top-color: var(--accent-2);
     animation: spin 0.8s linear infinite;
     margin: 20px auto;
 }
 
 .empty-state {
-    border: 1px dashed rgba(255,255,255,0.10);
+    border: 1px dashed rgba(80, 150, 255, 0.22);
     border-radius: 20px;
-    padding: 36px 18px;
+    padding: 40px 18px;
     text-align: center;
     color: var(--text-soft);
+    background: rgba(2, 8, 23, 0.25);
 }
 
 .empty-state.hidden {
@@ -560,8 +672,8 @@ body {
     height: 64px;
     margin: 0 auto 14px;
     border-radius: 20px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(47, 140, 255, 0.12);
+    border: 1px solid rgba(77, 163, 255, 0.25);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -572,11 +684,10 @@ body {
 .empty-state h4 {
     color: white;
     margin-bottom: 8px;
+    font-family: 'Manrope', 'Inter', sans-serif;
 }
 
-/* =========================
-   TOAST
-========================= */
+/* ---------- Toast ---------- */
 .toast-container {
     position: fixed;
     right: 20px;
@@ -592,47 +703,43 @@ body {
     max-width: 360px;
     padding: 14px 16px;
     border-radius: 14px;
-    border: 1px solid rgba(255,255,255,0.10);
+    border: 1px solid rgba(255, 255, 255, 0.10);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 16px 30px rgba(0,0,0,0.24);
+    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.28);
     animation: toastIn 0.22s ease;
     color: white;
+    font-size: 0.9rem;
 }
 
 .toast.success {
-    background: rgba(66, 230, 164, 0.14);
-    border-color: rgba(66, 230, 164, 0.25);
+    background: rgba(34, 197, 94, 0.16);
+    border-color: rgba(34, 197, 94, 0.32);
 }
 
 .toast.error {
-    background: rgba(255, 107, 122, 0.14);
-    border-color: rgba(255, 107, 122, 0.25);
+    background: rgba(255, 107, 122, 0.16);
+    border-color: rgba(255, 107, 122, 0.32);
 }
 
 .toast.info {
-    background: rgba(57, 198, 255, 0.14);
-    border-color: rgba(57, 198, 255, 0.25);
+    background: rgba(47, 140, 255, 0.16);
+    border-color: rgba(77, 163, 255, 0.32);
 }
 
-/* =========================
-   FOOTER
-========================= */
+/* ---------- Footer ---------- */
 .footer {
     text-align: center;
-    margin-top: 26px;
-    padding-bottom: 8px;
+    padding: 8px 0 4px;
 }
 
 .footer img {
     height: 38px;
     filter: brightness(0) invert(1);
-    opacity: 0.6;
+    opacity: 0.55;
 }
 
-/* =========================
-   ANIMAÇÕES
-========================= */
+/* ---------- Animations ---------- */
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
@@ -659,62 +766,48 @@ body {
     }
 }
 
-/* =========================
-   RESPONSIVO
-========================= */
-@media (max-width: 900px) {
-    .tool-panel {
-        padding: 18px;
-        border-radius: 24px;
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+    .pdf-dashboard {
+        grid-template-columns: 1fr;
     }
 
-    .header-card,
-    .upload-card,
-    .toolbar-card,
-    .files-card {
-        padding: 18px;
-        border-radius: 20px;
+    .pdf-hero {
+        grid-template-columns: 1fr;
     }
 
-    .toolbar-card {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .action-buttons {
-        width: 100%;
-    }
-
-    .action-btn {
-        flex: 1 1 100%;
+    .pdf-hero__aside {
+        display: none;
     }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 720px) {
     .page-shell {
-        padding: 16px 12px;
+        padding: 16px 14px 36px;
     }
 
-    .header-card {
+    .panel-card,
+    .pdf-hero {
+        padding: 22px;
+    }
+
+    .pdf-topbar {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .action-btn {
+        width: 100%;
     }
 
     .files-list {
         grid-template-columns: 1fr;
     }
-
-    .drop-area {
-        padding: 28px 16px;
-    }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .bg-orb,
-    .bg-grid,
-    .bg-pages span,
-    .bg-scan,
-    .loading {
+    .loading,
+    .file-item {
         animation: none;
     }
 }
