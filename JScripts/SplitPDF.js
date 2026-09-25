@@ -76,39 +76,130 @@ function showToast(message, type = "info") {
 }
 
 /**
- * Lê um ficheiro e devolve uma cópia independente em Uint8Array.
- * (Evita ArrayBuffer “detached” após o pdf.js consumir o buffer no preview.)
+ * Lê o ficheiro original e devolve bytes novos (sempre a fresco).
  */
 async function readFileAsUint8Array(file) {
     const buffer = await file.arrayBuffer();
-    return new Uint8Array(buffer.slice(0));
+    const copy = new Uint8Array(buffer.byteLength);
+    copy.set(new Uint8Array(buffer));
+    return copy;
 }
 
 /**
- * Garante bytes do PDF em memória (reutiliza cache do registo).
+ * Bytes a partir do File original.
  */
 async function getPdfBytes(pdfRecord) {
-    if (pdfRecord.bytes instanceof Uint8Array && pdfRecord.bytes.byteLength > 0) {
-        return pdfRecord.bytes.slice(0);
+    if (!pdfRecord || !pdfRecord.file) {
+        throw new Error("Ficheiro PDF em falta.");
     }
-
-    const bytes = await readFileAsUint8Array(pdfRecord.file);
-    pdfRecord.bytes = bytes.slice(0);
-    return bytes;
+    return readFileAsUint8Array(pdfRecord.file);
 }
 
 /**
- * Carrega um PDF com pdf-lib de forma tolerante.
+ * Garante que PDFLib está disponível.
  */
-async function loadPdfWithLib(bytes) {
+function assertPdfLib() {
     if (typeof PDFLib === "undefined" || !PDFLib.PDFDocument) {
         throw new Error("A biblioteca PDF-Lib não carregou. Recarregue a página.");
     }
+}
 
-    return PDFLib.PDFDocument.load(bytes, {
-        ignoreEncryption: true,
-        updateMetadata: false
+/**
+ * Abre um PDF com pdf.js a partir de bytes (cópia exclusiva para o worker).
+ */
+async function openPdfJsDocument(bytes) {
+    if (typeof pdfjsLib === "undefined") {
+        throw new Error("A biblioteca PDF.js não carregou. Recarregue a página.");
+    }
+
+    const data = new Uint8Array(bytes.byteLength);
+    data.set(bytes);
+
+    const loadingTask = pdfjsLib.getDocument({ data });
+    return loadingTask.promise;
+}
+
+/**
+ * Converte um canvas num JPEG Uint8Array.
+ */
+async function canvasToJpegBytes(canvas, quality = 0.92) {
+    const blob = await new Promise((resolve, reject) => {
+        canvas.toBlob(
+            (result) => (result ? resolve(result) : reject(new Error("Falha ao gerar imagem da página."))),
+            "image/jpeg",
+            quality
+        );
     });
+    return new Uint8Array(await blob.arrayBuffer());
+}
+
+/**
+ * Renderiza UMA página (1-based) com pdf.js e devolve JPEG + dimensões em pontos.
+ * Este caminho garante conteúdo visível (o mesmo motor do preview).
+ */
+async function renderPdfPageToJpeg(pdfJsDoc, pageNumber, scale = 2) {
+    const page = await pdfJsDoc.getPage(pageNumber);
+    const viewport = page.getViewport({ scale });
+
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d", { alpha: false });
+    canvas.width = Math.max(1, Math.floor(viewport.width));
+    canvas.height = Math.max(1, Math.floor(viewport.height));
+
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    await page.render({
+        canvasContext: context,
+        viewport
+    }).promise;
+
+    const jpegBytes = await canvasToJpegBytes(canvas);
+
+    /* Tamanho da página em pontos PDF (1/72") */
+    const widthPt = viewport.width / scale;
+    const heightPt = viewport.height / scale;
+
+    canvas.width = 0;
+    canvas.height = 0;
+
+    return { jpegBytes, widthPt, heightPt };
+}
+
+/**
+ * Cria um PDF de 1 página a partir de um JPEG renderizado.
+ */
+async function createPdfFromJpegPage(jpegBytes, widthPt, heightPt) {
+    assertPdfLib();
+    const pdfDoc = await PDFLib.PDFDocument.create();
+    const image = await pdfDoc.embedJpg(jpegBytes);
+    const page = pdfDoc.addPage([widthPt, heightPt]);
+    page.drawImage(image, {
+        x: 0,
+        y: 0,
+        width: widthPt,
+        height: heightPt
+    });
+    return pdfDoc.save({ useObjectStreams: false });
+}
+
+/**
+ * Adiciona ao PDF destino todas as páginas de um documento pdf.js (renderizadas).
+ */
+async function appendRenderedPages(targetPdf, pdfJsDoc) {
+    const pageCount = pdfJsDoc.numPages;
+    for (let n = 1; n <= pageCount; n++) {
+        const { jpegBytes, widthPt, heightPt } = await renderPdfPageToJpeg(pdfJsDoc, n);
+        const image = await targetPdf.embedJpg(jpegBytes);
+        const page = targetPdf.addPage([widthPt, heightPt]);
+        page.drawImage(image, {
+            x: 0,
+            y: 0,
+            width: widthPt,
+            height: heightPt
+        });
+    }
+    return pageCount;
 }
 
 /**
@@ -236,8 +327,7 @@ async function addPdfFile(file) {
         id,
         file,
         name: file.name,
-        pages: null,
-        bytes: null
+        pages: null
     };
 
     pdfFiles.push(pdfRecord);
@@ -264,7 +354,7 @@ async function addPdfFile(file) {
     bindFileItemEvents(fileItem);
 
     try {
-        const pageCount = await generatePDFPreview(file, fileItem, pdfRecord);
+        const pageCount = await generatePDFPreview(file, fileItem);
 
         pdfRecord.pages = pageCount;
 
@@ -296,14 +386,10 @@ async function addPdfFile(file) {
  * Gera a preview da primeira página do PDF.
  * Retorna o total de páginas do documento.
  */
-async function generatePDFPreview(file, fileItem, pdfRecord) {
-    /* Cópia própria para o pdf.js (pode “detach” do buffer) + cache para mesclar */
-    const sourceBytes = await readFileAsUint8Array(file);
-    if (pdfRecord) {
-        pdfRecord.bytes = sourceBytes.slice(0);
-    }
-
-    const loadingTask = pdfjsLib.getDocument({ data: sourceBytes });
+async function generatePDFPreview(file, fileItem) {
+    /* Buffer exclusivo para o preview — mesclar/separar lê o File outra vez */
+    const previewBytes = await readFileAsUint8Array(file);
+    const loadingTask = pdfjsLib.getDocument({ data: previewBytes });
     const pdf = await loadingTask.promise;
 
     const page = await pdf.getPage(1);
@@ -445,9 +531,7 @@ async function mergeSelectedPDFs() {
     mergeBtn.textContent = "A mesclar…";
 
     try {
-        if (typeof PDFLib === "undefined" || !PDFLib.PDFDocument) {
-            throw new Error("A biblioteca PDF-Lib não carregou. Recarregue a página.");
-        }
+        assertPdfLib();
 
         const mergedPdf = await PDFLib.PDFDocument.create();
         let pagesMerged = 0;
@@ -457,18 +541,21 @@ async function mergeSelectedPDFs() {
             if (!pdfRecord) continue;
 
             const bytes = await getPdfBytes(pdfRecord);
-            const pdfDoc = await loadPdfWithLib(bytes);
-
-            const copiedPages = await mergedPdf.copyPages(pdfDoc, pdfDoc.getPageIndices());
-            copiedPages.forEach(page => mergedPdf.addPage(page));
-            pagesMerged += copiedPages.length;
+            const pdfJsDoc = await openPdfJsDocument(bytes);
+            try {
+                pagesMerged += await appendRenderedPages(mergedPdf, pdfJsDoc);
+            } finally {
+                if (typeof pdfJsDoc.destroy === "function") {
+                    pdfJsDoc.destroy();
+                }
+            }
         }
 
         if (pagesMerged === 0) {
             throw new Error("Nenhuma página válida para mesclar.");
         }
 
-        const mergedBytes = await mergedPdf.save();
+        const mergedBytes = await mergedPdf.save({ useObjectStreams: false });
 
         const firstSelectedRecord = findPdfById(selectedItems[0].dataset.id);
         const firstBaseName = firstSelectedRecord
@@ -510,23 +597,35 @@ async function splitSelectedPDF() {
         return;
     }
 
+    const previousLabel = splitBtn.textContent;
+    splitBtn.disabled = true;
+    splitBtn.textContent = "A separar…";
+
     try {
-        if (typeof PDFLib === "undefined" || !PDFLib.PDFDocument) {
-            throw new Error("A biblioteca PDF-Lib não carregou. Recarregue a página.");
-        }
+        assertPdfLib();
 
-        const sourcePdf = await loadPdfWithLib(await getPdfBytes(pdfRecord));
-        const pageCount = sourcePdf.getPageCount();
+        const sourceBytes = await getPdfBytes(pdfRecord);
+        const pdfJsDoc = await openPdfJsDocument(sourceBytes);
+        const pageCount = pdfJsDoc.numPages;
+        const baseName = pdfRecord.name.replace(/\.pdf$/i, "");
 
-        for (let i = 0; i < pageCount; i++) {
-            const newPdf = await PDFLib.PDFDocument.create();
-            const [copiedPage] = await newPdf.copyPages(sourcePdf, [i]);
-            newPdf.addPage(copiedPage);
+        try {
+            for (let n = 1; n <= pageCount; n++) {
+                splitBtn.textContent = `A separar… ${n}/${pageCount}`;
 
-            const pdfBytes = await newPdf.save();
-            const fileName = `${pdfRecord.name.replace(/\.pdf$/i, "")}_pagina_${i + 1}.pdf`;
+                const { jpegBytes, widthPt, heightPt } = await renderPdfPageToJpeg(pdfJsDoc, n);
+                const pdfBytes = await createPdfFromJpegPage(jpegBytes, widthPt, heightPt);
+                const fileName = `${baseName}_pagina_${n}.pdf`;
 
-            downloadBlob(pdfBytes, fileName, "application/pdf");
+                downloadBlob(pdfBytes, fileName, "application/pdf");
+
+                /* Pequena pausa para o browser não bloquear múltiplos downloads */
+                await new Promise((r) => setTimeout(r, 120));
+            }
+        } finally {
+            if (typeof pdfJsDoc.destroy === "function") {
+                pdfJsDoc.destroy();
+            }
         }
 
         showToast("PDF separado com sucesso.", "success");
@@ -534,6 +633,9 @@ async function splitSelectedPDF() {
         console.error("Erro ao separar PDF:", error);
         const detail = error && error.message ? ` (${error.message})` : "";
         showToast(`Erro ao separar o PDF.${detail}`, "error");
+    } finally {
+        splitBtn.textContent = previousLabel;
+        updateUIState();
     }
 }
 
@@ -545,7 +647,15 @@ async function splitSelectedPDF() {
  * Faz o download de um blob.
  */
 function downloadBlob(data, filename, mimeType) {
-    const blob = new Blob([data], { type: mimeType });
+    const bytes = data instanceof Uint8Array
+        ? data
+        : new Uint8Array(data);
+
+    /* Cópia explícita — evita ArrayBuffer partilhado/cortado a mais */
+    const safeCopy = new Uint8Array(bytes.byteLength);
+    safeCopy.set(bytes);
+
+    const blob = new Blob([safeCopy], { type: mimeType || "application/pdf" });
     const url = URL.createObjectURL(blob);
 
     const link = document.createElement("a");
@@ -556,7 +666,7 @@ function downloadBlob(data, filename, mimeType) {
     link.click();
     document.body.removeChild(link);
 
-    URL.revokeObjectURL(url);
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
 }
 
 /* =========================
