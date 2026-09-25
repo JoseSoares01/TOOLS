@@ -251,6 +251,41 @@ let qrPopupTimeout;
 let clearFormTimeout = null;
 /** Backup da última string fiscal gerada */
 let lastGeneratedQrString = "";
+const LAST_QR_STORAGE_KEY = "trivalor_last_qr_string";
+
+function loadLastQrFromStorage() {
+    try {
+        const stored = sessionStorage.getItem(LAST_QR_STORAGE_KEY);
+        if (stored && stored.trim()) {
+            lastGeneratedQrString = stored.trim();
+            return lastGeneratedQrString;
+        }
+    } catch (e) {
+        /* sessionStorage pode falhar em modo privado restrito */
+    }
+    return lastGeneratedQrString || "";
+}
+
+function saveLastQrToStorage(qrString) {
+    const value = String(qrString || "").trim();
+    if (!value) return;
+    lastGeneratedQrString = value;
+    try {
+        sessionStorage.setItem(LAST_QR_STORAGE_KEY, value);
+    } catch (e) {
+        /* ignore */
+    }
+}
+
+function getQrStringForReuse() {
+    const qrDataEl = document.getElementById("qr_data");
+    const fromBox = qrDataEl ? String(qrDataEl.value || "").trim() : "";
+    if (fromBox) return fromBox;
+    if (lastGeneratedQrString && String(lastGeneratedQrString).trim()) {
+        return String(lastGeneratedQrString).trim();
+    }
+    return loadLastQrFromStorage();
+}
 
 /**
  * Parte a string fiscal do QR (segmentos KEY:VAL separados por * ou ;).
@@ -568,7 +603,7 @@ function generateQRCode() {
         document.getElementById('qrcode').innerHTML = '';
         document.getElementById('qrcode').appendChild(qrCodeImage);
         document.getElementById('qr_data').value = dados_qr_code;
-        lastGeneratedQrString = dados_qr_code;
+        saveLastQrToStorage(dados_qr_code);
         updateQrSummaryFromString(dados_qr_code);
         clearQrGenerateErrors();
         showQrCodePopup();
@@ -620,11 +655,13 @@ function clearInputs() {
     toggleRvRetencaoBlock();
 
     // Nunca apagar a string / imagem do último QR
-    if (lastGeneratedQrString) {
+    const backup = lastGeneratedQrString || loadLastQrFromStorage();
+    if (backup) {
         const qrDataEl = document.getElementById("qr_data");
-        if (qrDataEl && !String(qrDataEl.value || "").trim()) {
-            qrDataEl.value = lastGeneratedQrString;
+        if (qrDataEl) {
+            qrDataEl.value = backup;
         }
+        saveLastQrToStorage(backup);
     }
 }
 
@@ -634,127 +671,160 @@ function clearInputs() {
  * Não apaga a caixa «Dados do QR» nem a imagem.
  */
 function reutilizarDadosQr() {
-    // Impede que a limpeza automática pós-geração apague o que vamos preencher
-    if (clearFormTimeout) {
-        clearTimeout(clearFormTimeout);
-        clearFormTimeout = null;
-    }
-
-    const qrDataEl = document.getElementById("qr_data");
-    let raw = qrDataEl ? String(qrDataEl.value || "").trim() : "";
-    if (!raw && lastGeneratedQrString) {
-        raw = lastGeneratedQrString;
-        if (qrDataEl) qrDataEl.value = lastGeneratedQrString;
-    }
-
-    if (!raw) {
-        alert("Gere um QR primeiro para poder reutilizar os dados.");
-        return;
-    }
-
-    // Preservar sempre a string na caixa
-    const preservedQr = raw;
-    if (qrDataEl) qrDataEl.value = preservedQr;
-    lastGeneratedQrString = preservedQr;
-
-    const map = parsePortugueseATQRString(preservedQr);
-    const nifVendedor = (map.A || "").trim();
-    const nifEmpresa = (map.B || "").trim();
-    const pais = (map.C || "").trim().toUpperCase();
-    const tipologia = (map.D || "").trim().toUpperCase();
-    const espacoFiscal = (map.I1 || "").trim().toUpperCase();
-
-    if (!nifVendedor && !nifEmpresa && !tipologia && !espacoFiscal && !pais) {
-        alert("Não foi possível ler os dados deste QR.");
-        if (qrDataEl) qrDataEl.value = preservedQr;
-        return;
-    }
-
-    const nifVendedorEl = document.getElementById("nif_vendedor");
-    const nifEmpresaEl = document.getElementById("nif_empresa");
-    const tipologiaEl = document.getElementById("tipologia");
-    const espacoEl = document.getElementById("espaco_fiscal");
-    const paisEl = document.getElementById("pais");
-
-    if (nifVendedorEl && nifVendedor && nifVendedor !== "0") {
-        nifVendedorEl.value = nifVendedor;
-    }
-    if (nifEmpresaEl && nifEmpresa && nifEmpresa !== "0") {
-        nifEmpresaEl.value = nifEmpresa;
-    }
-
-    if (tipologiaEl && tipologia && tipologia !== "0") {
-        const hasOpt = Array.from(tipologiaEl.options).some(
-            (opt) => String(opt.value).toUpperCase() === tipologia
-        );
-        if (hasOpt) tipologiaEl.value = tipologia;
-    }
-
-    if (espacoEl && espacoFiscal && espacoFiscal !== "0") {
-        const hasEspaco = Array.from(espacoEl.options).some(
-            (opt) => String(opt.value).toUpperCase() === espacoFiscal
-        );
-        if (hasEspaco) espacoEl.value = espacoFiscal;
-    }
-
-    if (paisEl && pais && pais !== "0") {
-        const hasPais = Array.from(paisEl.options).some(
-            (opt) => String(opt.value).toUpperCase() === pais
-        );
-        if (hasPais) {
-            paisEl.value = pais;
-        } else if (espacoFiscal === "EU" || espacoFiscal === "INT") {
-            paisEl.value = espacoFiscal;
-        } else if (espacoFiscal === "PT" || espacoFiscal === "PT-AC" || espacoFiscal === "PT-MA") {
-            paisEl.value = "PT";
+    try {
+        // Impede que a limpeza automática pós-geração apague o que vamos preencher
+        if (clearFormTimeout) {
+            clearTimeout(clearFormTimeout);
+            clearFormTimeout = null;
         }
-    } else {
-        syncPaisFromEspaco();
-    }
 
-    if (espacoEl && espacoEl.value) {
-        syncPaisFromEspaco();
-    } else if (paisEl && paisEl.value) {
-        syncEspacoFromPais();
-    }
+        const qrDataEl = document.getElementById("qr_data");
+        const preservedQr = getQrStringForReuse();
 
-    syncTipologiaSelectAppearance();
-    toggleRvRetencaoBlock();
-    updateIVARates();
-    updateTaxBaseFieldsVisibility();
-    clearQrGenerateErrors();
+        if (!preservedQr) {
+            alert("Gere um QR primeiro para poder reutilizar os dados.");
+            return false;
+        }
 
-    // Atualizar UI sem limpar a string do QR
-    if (paisEl) paisEl.dispatchEvent(new Event("change", { bubbles: true }));
-    if (espacoEl) espacoEl.dispatchEvent(new Event("change", { bubbles: true }));
-    if (tipologiaEl) tipologiaEl.dispatchEvent(new Event("change", { bubbles: true }));
+        if (qrDataEl) qrDataEl.value = preservedQr;
+        saveLastQrToStorage(preservedQr);
 
-    // Garantir que a caixa e o backup não foram alterados
-    if (qrDataEl) qrDataEl.value = preservedQr;
-    lastGeneratedQrString = preservedQr;
-    updateQrSummaryFromString(preservedQr);
+        const map = parsePortugueseATQRString(preservedQr);
+        const nifVendedor = (map.A || "").trim();
+        const nifEmpresa = (map.B || "").trim();
+        const pais = (map.C || "").trim().toUpperCase();
+        const tipologia = (map.D || "").trim().toUpperCase();
+        // I1 = espaço fiscal; alguns parsers antigos podem expor só "I"
+        const espacoFiscal = ((map.I1 || map.I || "").trim()).toUpperCase();
 
-    const btn = document.getElementById("btnReutilizarQr");
-    if (btn) {
-        const label = btn.querySelector("strong");
-        const original = "Reutilizar dados do QR";
-        btn.classList.add("is-applied");
-        if (label) label.textContent = "Dados aplicados";
-        clearTimeout(btn._reuseTimeout);
-        btn._reuseTimeout = setTimeout(() => {
-            btn.classList.remove("is-applied");
-            if (label) label.textContent = original;
-        }, 1800);
-    }
+        if (!nifVendedor && !nifEmpresa && !tipologia && !espacoFiscal && !pais) {
+            alert("Não foi possível ler os dados deste QR.");
+            if (qrDataEl) qrDataEl.value = preservedQr;
+            return false;
+        }
 
-    const focusEl = document.getElementById("numero_fatura");
-    if (focusEl) {
-        focusEl.focus();
-        focusEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        const nifVendedorEl = document.getElementById("nif_vendedor");
+        const nifEmpresaEl = document.getElementById("nif_empresa");
+        const tipologiaEl = document.getElementById("tipologia");
+        const espacoEl = document.getElementById("espaco_fiscal");
+        const paisEl = document.getElementById("pais");
+
+        if (nifVendedorEl && nifVendedor && nifVendedor !== "0") {
+            nifVendedorEl.value = nifVendedor;
+        }
+        if (nifEmpresaEl && nifEmpresa && nifEmpresa !== "0") {
+            nifEmpresaEl.value = nifEmpresa;
+        }
+
+        if (tipologiaEl && tipologia && tipologia !== "0") {
+            const hasOpt = Array.prototype.some.call(tipologiaEl.options, function (opt) {
+                return String(opt.value).toUpperCase() === tipologia;
+            });
+            if (hasOpt) tipologiaEl.value = tipologia;
+        }
+
+        if (espacoEl && espacoFiscal && espacoFiscal !== "0") {
+            const hasEspaco = Array.prototype.some.call(espacoEl.options, function (opt) {
+                return String(opt.value).toUpperCase() === espacoFiscal;
+            });
+            if (hasEspaco) espacoEl.value = espacoFiscal;
+        }
+
+        if (paisEl) {
+            if (pais && pais !== "0") {
+                const hasPais = Array.prototype.some.call(paisEl.options, function (opt) {
+                    return String(opt.value).toUpperCase() === pais;
+                });
+                if (hasPais) {
+                    paisEl.value = pais;
+                } else if (espacoFiscal === "EU" || espacoFiscal === "INT") {
+                    paisEl.value = espacoFiscal;
+                } else if (espacoFiscal === "PT" || espacoFiscal === "PT-AC" || espacoFiscal === "PT-MA") {
+                    paisEl.value = "PT";
+                }
+            } else {
+                syncPaisFromEspaco();
+            }
+        }
+
+        if (espacoEl && espacoEl.value) {
+            syncPaisFromEspaco();
+        } else if (paisEl && paisEl.value) {
+            syncEspacoFromPais();
+        }
+
+        syncTipologiaSelectAppearance();
+        toggleRvRetencaoBlock();
+        updateIVARates();
+        updateTaxBaseFieldsVisibility();
+        clearQrGenerateErrors();
+
+        if (paisEl) paisEl.dispatchEvent(new Event("change", { bubbles: true }));
+        if (espacoEl) espacoEl.dispatchEvent(new Event("change", { bubbles: true }));
+        if (tipologiaEl) tipologiaEl.dispatchEvent(new Event("change", { bubbles: true }));
+
+        // Garantir que a caixa e o backup não foram alterados
+        if (qrDataEl) qrDataEl.value = preservedQr;
+        saveLastQrToStorage(preservedQr);
+        updateQrSummaryFromString(preservedQr);
+
+        const btn = document.getElementById("btnReutilizarQr");
+        if (btn) {
+            const label = btn.querySelector("strong");
+            const original = "Reutilizar dados do QR";
+            btn.classList.add("is-applied");
+            if (label) label.textContent = "Dados aplicados";
+            clearTimeout(btn._reuseTimeout);
+            btn._reuseTimeout = setTimeout(function () {
+                btn.classList.remove("is-applied");
+                if (label) label.textContent = original;
+            }, 1800);
+        }
+
+        const focusEl = document.getElementById("numero_fatura");
+        if (focusEl) {
+            focusEl.focus();
+            if (typeof focusEl.scrollIntoView === "function") {
+                focusEl.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+        }
+
+        return true;
+    } catch (err) {
+        console.error("reutilizarDadosQr:", err);
+        alert("Erro ao reutilizar dados do QR. Recarregue a página (Ctrl+F5) e tente novamente.");
+        return false;
     }
 }
 
 window.reutilizarDadosQr = reutilizarDadosQr;
+
+function bindReutilizarQrButton() {
+    const btn = document.getElementById("btnReutilizarQr");
+    if (!btn || btn._reutilizarBound) return;
+    btn._reutilizarBound = true;
+    btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        reutilizarDadosQr();
+    });
+}
+
+// Restaura string do QR se a página ainda tiver backup na sessão
+document.addEventListener("DOMContentLoaded", function () {
+    bindReutilizarQrButton();
+    const stored = loadLastQrFromStorage();
+    const qrDataEl = document.getElementById("qr_data");
+    if (stored && qrDataEl && !String(qrDataEl.value || "").trim()) {
+        qrDataEl.value = stored;
+        updateQrSummaryFromString(stored);
+    }
+});
+
+// Fallback se o script carregar depois do DOMContentLoaded
+if (document.readyState !== "loading") {
+    bindReutilizarQrButton();
+}
 
 //SIDEBAR START//
 /* Set the width of the side navigation to 250px */
