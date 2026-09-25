@@ -377,7 +377,91 @@ function updateQrSummaryFromString(qrString) {
     }
 }
 
+function clearQrGenerateErrors() {
+    const box = document.getElementById("qr_generate_errors");
+    if (!box) return;
+    box.hidden = true;
+    box.replaceChildren();
+    document.querySelectorAll(".field-group.is-invalid").forEach((el) => {
+        el.classList.remove("is-invalid");
+    });
+}
+
+function showQrGenerateErrors(messages, fieldIds) {
+    const box = document.getElementById("qr_generate_errors");
+    if (!box) return;
+
+    box.replaceChildren();
+
+    const title = document.createElement("p");
+    title.className = "qr-generate-errors__title";
+    title.textContent = "Não foi possível gerar o QR. Preencha:";
+    box.appendChild(title);
+
+    messages.forEach((text) => {
+        const p = document.createElement("p");
+        p.className = "qr-generate-errors__item";
+        p.textContent = "• " + text;
+        box.appendChild(p);
+    });
+
+    box.hidden = false;
+
+    document.querySelectorAll(".field-group.is-invalid").forEach((el) => {
+        el.classList.remove("is-invalid");
+    });
+    (fieldIds || []).forEach((id) => {
+        const input = document.getElementById(id);
+        if (!input) return;
+        const group = input.closest(".field-group");
+        if (group) group.classList.add("is-invalid");
+    });
+
+    box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function isRequiredFieldEmpty(value) {
+    return !String(value || "").trim();
+}
+
+function validateRequiredFieldsForQr() {
+    const nifVendedor = document.getElementById("nif_vendedor").value;
+    const nifEmpresa = document.getElementById("nif_empresa").value;
+    const data = document.getElementById("data").value;
+    const numeroFatura = document.getElementById("numero_fatura").value;
+
+    const missing = [];
+    const fieldIds = [];
+
+    if (isRequiredFieldEmpty(nifVendedor) || String(nifVendedor).trim() === "0") {
+        missing.push("NIF do vendedor");
+        fieldIds.push("nif_vendedor");
+    }
+    if (isRequiredFieldEmpty(nifEmpresa) || String(nifEmpresa).trim() === "0") {
+        missing.push("NIF da empresa");
+        fieldIds.push("nif_empresa");
+    }
+    if (isRequiredFieldEmpty(data) || !isQrDateFieldPresentAndValid(data)) {
+        missing.push("Data do documento");
+        fieldIds.push("data");
+    }
+    if (isRequiredFieldEmpty(numeroFatura) || String(numeroFatura).trim() === "0") {
+        missing.push("Número da fatura");
+        fieldIds.push("numero_fatura");
+    }
+
+    return { ok: missing.length === 0, missing, fieldIds };
+}
+
 function generateQRCode() {
+    clearQrGenerateErrors();
+
+    const required = validateRequiredFieldsForQr();
+    if (!required.ok) {
+        showQrGenerateErrors(required.missing, required.fieldIds);
+        return;
+    }
+
     const nif_vendedor = limitCharacters(document.getElementById("nif_vendedor").value || '0', 15);
     const nif_empresa = limitCharacters(document.getElementById("nif_empresa").value || '0', 15);
     const pais = document.getElementById("pais").value.toUpperCase() || '0';
@@ -392,17 +476,23 @@ function generateQRCode() {
     const imposto_selo = parseDecimalInput(document.getElementById("imposto_selo").value);
 
     if (!validateAlphanumeric(nif_vendedor) || !validateAlphanumeric(nif_empresa)) {
-        alert("NIF do vendedor e NIF da empresa devem conter apenas letras e números.");
+        showQrGenerateErrors(
+            ["NIF do vendedor e NIF da empresa devem conter apenas letras e números."],
+            ["nif_vendedor", "nif_empresa"]
+        );
         return;
     }
 
     if (!validateNumeric(data)) {
-        alert("A data deve conter apenas números.");
+        showQrGenerateErrors(["A data deve conter apenas números."], ["data"]);
         return;
     }
 
     if (!validateAlphabetic(pais) || !validateAlphabetic(espaco_fiscal.replace("-", ""))) {
-        alert("Todos campos devem ser preenchidos corretamente.");
+        showQrGenerateErrors(
+            ["Preencha País / Regime e Espaço fiscal corretamente."],
+            ["pais", "espaco_fiscal"]
+        );
         return;
     }
 
@@ -428,7 +518,10 @@ function generateQRCode() {
         taxa_iva_intermedia = 0;
         taxa_iva_normal = 0;
     } else {
-        alert("Espaço fiscal desconhecido. Por favor, insira um espaço fiscal válido (PT, PT-MA, PT-AC, EU, ou INT).");
+        showQrGenerateErrors(
+            ["Espaço fiscal inválido. Escolha PT, PT-MA, PT-AC, EU ou INT."],
+            ["espaco_fiscal"]
+        );
         return;
     }
 
@@ -445,7 +538,10 @@ function generateQRCode() {
         retencao_valor = parseDecimalInput(document.getElementById("retencao_valor").value);
         retencao_tipo = (document.getElementById("retencao_tipo").value || "").toUpperCase();
         if (retencao_valor > 0 && !retencao_tipo) {
-            alert("Selecione o tipo de retenção (IRS, IRC ou Rendas).");
+            showQrGenerateErrors(
+                ["Selecione o tipo de retenção (IRS, IRC ou Rendas)."],
+                ["retencao_tipo"]
+            );
             return;
         }
     }
@@ -460,6 +556,7 @@ function generateQRCode() {
     QRCode.toDataURL(dados_qr_code, { errorCorrectionLevel: 'M' }, function(err, url) {
         if (err) {
             console.error(err);
+            showQrGenerateErrors(["Erro ao gerar a imagem do QR. Tente novamente."], []);
             return;
         }
         const qrCodeImage = new Image();
@@ -468,8 +565,9 @@ function generateQRCode() {
         document.getElementById('qrcode').appendChild(qrCodeImage);
         document.getElementById('qr_data').value = dados_qr_code;
         updateQrSummaryFromString(dados_qr_code);
+        clearQrGenerateErrors();
         showQrCodePopup();
-        
+
         setTimeout(clearInputs, 1000);
     });
 }
@@ -559,31 +657,35 @@ document.querySelectorAll('.copy').forEach(button => {
             textToCopy = target.textContent.trim();
         }
 
-        if (!textToCopy) return;
+        if (!textToCopy) {
+            alert('Gere o QR primeiro para poder copiar.');
+            return;
+        }
 
         const textElement = button.querySelector('.copy-text');
         const iconElement = button.querySelector('.copy-icon');
 
-        const originalText = textElement.textContent;
-        const originalIcon = iconElement.getAttribute('name');
+        const originalText = textElement ? textElement.textContent : '';
+        const originalIcon = iconElement ? iconElement.getAttribute('name') : 'copy-outline';
 
         try {
             await navigator.clipboard.writeText(textToCopy);
 
             button.classList.add('copied');
-            textElement.textContent = 'Copied';
-            iconElement.setAttribute('name', 'checkmark-outline');
+            if (textElement) textElement.textContent = 'Copiado';
+            if (iconElement) iconElement.setAttribute('name', 'checkmark-outline');
 
             clearTimeout(button._copyTimeout);
 
             button._copyTimeout = setTimeout(() => {
                 button.classList.remove('copied');
-                textElement.textContent = originalText;
-                iconElement.setAttribute('name', originalIcon);
-            }, 1800);
+                if (textElement) textElement.textContent = originalText;
+                if (iconElement) iconElement.setAttribute('name', originalIcon);
+            }, 2000);
 
         } catch (error) {
             console.error('Erro ao copiar:', error);
+            alert('Não foi possível copiar. Tente novamente.');
         }
     });
 });

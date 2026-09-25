@@ -7,6 +7,9 @@
     <link rel="icon" type="image/x-icon" href="/images/QR.png">
     <link rel="stylesheet" href="/css/Trivalor.css">
     <link rel="stylesheet" href="/css/SidebarMenu.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <script>
         const usuarioLogado = localStorage.getItem('usuarioLogado');
@@ -18,49 +21,103 @@
 </head>
 <body>
 
-    <div class="animated-bg">
-    <div class="bg-orb orb-1"></div>
-    <div class="bg-orb orb-2"></div>
-    <div class="bg-orb orb-3"></div>
-    <div class="bg-grid"></div>
-    <div class="bg-scan"></div>
-</div>
-
-    <!-- Painel auxiliar: País UE -->
-    <aside class="pais-check-container minimized">
-        <div class="pais-check-header">
-            <span class="titulo-pesquisa">Pesquisar País</span>
-            <button type="button" class="minimize-btn" onclick="togglePaisCheck()">+</button>
-        </div>
-
-        <div class="pais-check-content">
-            <div class="field-group compact">
-                <label for="pais_check">Nome do país</label>
-                <input type="text" id="pais_check" placeholder="Ex: França">
-            </div>
-
-            <button type="button" class="btn btn-secondary btn-full" onclick="verificarPaisUE()">
-                Verificar País
-            </button>
-
-            <div id="pais_resultado" class="pais-resultado"></div>
-        </div>
-    </aside>
+    <div class="animated-bg" aria-hidden="true">
+        <div class="bg-orb orb-1"></div>
+        <div class="bg-orb orb-2"></div>
+        <div class="bg-orb orb-3"></div>
+        <div class="bg-grid"></div>
+        <div class="bg-scan"></div>
+    </div>
 
     <main class="page-shell">
         <section class="app-panel">
-            <header class="hero-header">
-                <p class="eyebrow">Ferramenta fiscal</p>
-                <h1 class="brand-title">Gerador de Código QR</h1>
-                <p class="hero-subtitle">TRIVALOR</p>
+
+            <!-- ========== HEADER SUPERIOR — pesquisa de país (IDs JS intactos) ========== -->
+            <header class="tv-topbar" aria-label="Barra superior">
+                <div class="tv-search-wrap">
+                    <form class="tv-search" role="search" onsubmit="event.preventDefault(); verificarPaisUE();">
+                        <span class="tv-search__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <circle cx="12" cy="12" r="9"/>
+                                <path d="M12 3c2.2 2.4 3.3 5.1 3.3 9s-1.1 6.6-3.3 9M12 3c-2.2 2.4-3.3 5.1-3.3 9s1.1 6.6 3.3 9M3.5 9.5h17M3.5 14.5h17" stroke-linecap="round"/>
+                            </svg>
+                        </span>
+                        <label class="sr-only" for="pais_check">Pesquisar país</label>
+                        <input
+                            type="text"
+                            id="pais_check"
+                            class="tv-search__input"
+                            placeholder="Pesquisar país (ex: França, Brasil…)"
+                            autocomplete="off"
+                            spellcheck="false"
+                            aria-label="Pesquisar país"
+                        >
+                        <button type="submit" class="tv-search__btn" title="Verificar país">
+                            Verificar
+                        </button>
+                        <kbd class="tv-search__kbd" aria-hidden="true">↵</kbd>
+                    </form>
+                    <div id="pais_resultado" class="pais-resultado" role="status" aria-live="polite"></div>
+                </div>
+
+                <div class="tv-topbar__actions">
+                    <button type="button" class="tv-icon-btn" aria-label="Tema" title="Tema">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <circle cx="12" cy="12" r="4"/>
+                            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="tv-icon-btn tv-icon-btn--bell" aria-label="Notificações" title="Notificações">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <path d="M6 9a6 6 0 0 1 12 0c0 7 3 7 3 7H3s3 0 3-7" stroke-linecap="round"/>
+                            <path d="M10 19a2 2 0 0 0 4 0" stroke-linecap="round"/>
+                        </svg>
+                        <span class="tv-badge-dot" aria-hidden="true">8</span>
+                    </button>
+                    <button type="button" class="tv-avatar" aria-label="Utilizador" title="Utilizador">
+                        <span>JS</span>
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
             </header>
 
-            <section class="dashboard-grid">
-                <!-- Coluna esquerda -->
+            <!-- ========== HERO ========== -->
+            <section class="tv-hero" aria-label="Introdução">
+                <div class="tv-hero__copy">
+                    <p class="eyebrow">Ferramenta fiscal</p>
+                    <h1 class="brand-title">Gerador de Código <span class="brand-title__accent">QR</span></h1>
+                    <p class="hero-subtitle">
+                        Gere códigos QR fiscais para documentos da TRIVALOR com bases tributáveis,
+                        tipologias e espaços fiscais — de forma rápida e precisa.
+                    </p>
+                </div>
+
+                <div class="tv-hero__aside">
+                    <div class="hero-illustration" aria-hidden="true">
+                        <img
+                            src="/images/trivalor-hero-qr.png"
+                            alt=""
+                            width="1939"
+                            height="811"
+                            decoding="async"
+                        >
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== GRID 4 COLUNAS ========== -->
+            <section class="dashboard-grid" id="dashboard-grid">
+
+                <!-- 1. Dados do Documento -->
                 <article class="panel-card main-card">
                     <div class="section-heading">
-                        <h2>Dados do Documento</h2>
-                        <p>Preencha os dados essenciais do documento fiscal.</p>
+                        <span class="card-bubble card-bubble--blue" aria-hidden="true">1</span>
+                        <div>
+                            <h2>Dados do Documento</h2>
+                            <p>Preencha os dados essenciais do documento fiscal.</p>
+                        </div>
                     </div>
 
                     <div class="form-stack">
@@ -138,19 +195,16 @@
                         </div>
                     </div>
 
-                    <div class="card-actions">
-                        <button type="button" class="btn btn-primary" onclick="generateQRCode()">
-                            <strong>Gerar QR</strong>
-                            <ion-icon name="qr-code-outline" class="btn-icon"></ion-icon>
-                        </button>
-                    </div>
                 </article>
 
-                <!-- Coluna centro -->
+                <!-- 2. Dados Fiscais -->
                 <article class="panel-card main-card">
                     <div class="section-heading">
-                        <h2>Dados Fiscais</h2>
-                        <p>Defina país, data e bases tributáveis.</p>
+                        <span class="card-bubble card-bubble--purple" aria-hidden="true">2</span>
+                        <div>
+                            <h2>Dados Fiscais</h2>
+                            <p>Defina país, data e bases tributáveis.</p>
+                        </div>
                     </div>
 
                     <div class="form-stack">
@@ -173,24 +227,36 @@
                             </div>
                         </div>
 
-                        <div class="field-group">
+                        <div class="field-group field-group--rate">
                             <label for="base_isenta">Base isenta</label>
-                            <input type="text" inputmode="decimal" id="base_isenta" placeholder="0.00">
+                            <div class="rate-field">
+                                <input type="text" inputmode="decimal" id="base_isenta" placeholder="0.00">
+                                <span class="rate-badge rate-badge--0">0%</span>
+                            </div>
                         </div>
 
-                        <div class="field-group">
+                        <div class="field-group field-group--rate">
                             <label for="base_reduzida">Base reduzida</label>
-                            <input type="text" inputmode="decimal" id="base_reduzida" placeholder="0.00">
+                            <div class="rate-field">
+                                <input type="text" inputmode="decimal" id="base_reduzida" placeholder="0.00">
+                                <span class="rate-badge rate-badge--6">6%</span>
+                            </div>
                         </div>
 
-                        <div class="field-group">
+                        <div class="field-group field-group--rate">
                             <label for="base_intermedia">Base intermédia</label>
-                            <input type="text" inputmode="decimal" id="base_intermedia" placeholder="0.00">
+                            <div class="rate-field">
+                                <input type="text" inputmode="decimal" id="base_intermedia" placeholder="0.00">
+                                <span class="rate-badge rate-badge--13">13%</span>
+                            </div>
                         </div>
 
-                        <div class="field-group">
+                        <div class="field-group field-group--rate">
                             <label for="base_normal">Base normal</label>
-                            <input type="text" inputmode="decimal" id="base_normal" placeholder="0.00">
+                            <div class="rate-field">
+                                <input type="text" inputmode="decimal" id="base_normal" placeholder="0.00">
+                                <span class="rate-badge rate-badge--23">23%</span>
+                            </div>
                         </div>
 
                         <div class="field-group">
@@ -199,11 +265,17 @@
                         </div>
                     </div>
 
-                    <!-- Pesquisa fornecedor (XML faturas_strong_sqr) — lógica em TrivalorForeignVendorXml.js -->
+                    <!-- Pesquisa fornecedor (XML) — lógica em TrivalorForeignVendorXml.js -->
                     <div class="foreign-vendor-xml" id="foreignVendorXmlBlock">
-                        <p class="foreign-vendor-xml__title">PESQUISAR FORNECEDORES ESTRANGEIROS</p>
-                        <div class="field-group compact">
-                            <label for="foreignVendorXmlSearch">Nome do Fornecedor</label>
+                        <p class="foreign-vendor-xml__title">Pesquisar fornecedores estrangeiros</p>
+                        <div class="field-group compact foreign-vendor-xml__search">
+                            <label class="sr-only" for="foreignVendorXmlSearch">Nome do Fornecedor</label>
+                            <span class="foreign-vendor-xml__search-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="7"/>
+                                    <path d="M20 20l-3.5-3.5" stroke-linecap="round"/>
+                                </svg>
+                            </span>
                             <input type="text" id="foreignVendorXmlSearch" autocomplete="off" placeholder="Ex.: VISIOTECH, HONEYWELL…" spellcheck="false">
                         </div>
                         <div id="foreignVendorXmlSuggestions" class="foreign-vendor-xml__list" hidden></div>
@@ -211,11 +283,14 @@
                     </div>
                 </article>
 
-                <!-- Coluna direita -->
+                <!-- 3. Pré-visualização -->
                 <article class="panel-card qr-card">
                     <div class="section-heading">
-                        <h2>Pré-visualização</h2>
-                        <p>Veja o QR gerado e copie a string fiscal.</p>
+                        <span class="card-bubble card-bubble--green" aria-hidden="true">3</span>
+                        <div>
+                            <h2>Pré-visualização</h2>
+                            <p>Veja o QR gerado e copie a string fiscal.</p>
+                        </div>
                     </div>
 
                     <div class="qr-preview-shell">
@@ -228,24 +303,54 @@
                         </div>
                     </div>
 
+                    <div class="qr-quick-actions">
+                        <button
+                            type="button"
+                            class="btn btn-ghost"
+                            onclick="(function(){var n=document.querySelector('#qrcode img,#qrcode canvas'); if(!n){alert('Gere o QR primeiro.'); return;} var a=document.createElement('a'); a.download='qr-trivalor.png'; if(n.tagName==='CANVAS'){a.href=n.toDataURL('image/png');} else {a.href=n.src;} a.click();})()"
+                        >
+                            <ion-icon name="download-outline"></ion-icon>
+                            <span>Descarregar</span>
+                        </button>
+                        <button type="button" class="btn btn-ghost copy copy-qr-btn" data-copy="#qr_data" aria-live="polite">
+                            <span class="copy-qr-btn__idle">
+                                <ion-icon name="copy-outline" class="copy-icon"></ion-icon>
+                                <strong class="copy-text">Copiar QR</strong>
+                            </span>
+                            <span class="copy-label">
+                                <ion-icon name="checkmark-circle" aria-hidden="true"></ion-icon>
+                                <span>Copiado!</span>
+                            </span>
+                        </button>
+                    </div>
+
                     <div class="field-group qr-data-group">
                         <label for="qr_data">Dados do QR</label>
                         <textarea id="qr_data" readonly placeholder="Os dados gerados aparecerão aqui..."></textarea>
                     </div>
 
-                    <div class="qr-actions">
-                        <button type="button" class="copy" data-copy="#qr_data">
-                            <strong class="copy-text">Copiar</strong>
-                            <ion-icon name="copy-outline" class="copy-icon"></ion-icon>
-                            <span class="copy-label">Copiado</span>
+                    <div class="qr-actions card-actions">
+                        <div id="qr_generate_errors" class="qr-generate-errors" hidden role="alert" aria-live="assertive"></div>
+                        <button type="button" class="btn btn-primary" onclick="generateQRCode()">
+                            <ion-icon name="qr-code-outline" class="btn-icon"></ion-icon>
+                            <strong>Gerar QR</strong>
+                            <span class="btn-arrow" aria-hidden="true">→</span>
                         </button>
                     </div>
                 </article>
 
+                <!-- 4. Resumo Fiscal -->
                 <article class="panel-card qr-summary-card" id="qrSummaryPanel" aria-live="polite">
                     <div class="section-heading">
-                        <h2>Resumo fiscal</h2>
-                        <p>Campos A, B, F e O do QR gerado.</p>
+                        <span class="card-bubble card-bubble--check" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4">
+                                <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                        <div>
+                            <h2>Resumo fiscal</h2>
+                            <p>Campos A, B, F e O do QR gerado.</p>
+                        </div>
                     </div>
                     <dl class="qr-summary-list">
                         <div class="qr-summary-item">
@@ -260,20 +365,27 @@
                             <dt>Data do documento</dt>
                             <dd id="qr_sum_data">—</dd>
                         </div>
-                        <div class="qr-summary-item">
+                        <div class="qr-summary-item qr-summary-item--total">
                             <dt>Valor total</dt>
                             <dd id="qr_sum_total">—</dd>
                         </div>
                     </dl>
                     <div id="qr_summary_alerts" class="qr-summary-alerts" hidden></div>
+                    <div class="qr-summary-footnote">
+                        <span class="qr-summary-footnote__icon" aria-hidden="true">i</span>
+                        <p>Confirme os campos A, B, F e O antes de utilizar o QR no documento fiscal.</p>
+                    </div>
                 </article>
             </section>
 
-            <!-- Calculadora IVA -->
+            <!-- Calculadora IVA (funcionalidade intacta) -->
             <section class="calculator-container">
                 <div class="section-heading">
-                    <h2>Calculadora de IVA</h2>
-                    <p>Calcule rapidamente o valor sem IVA, IVA e total.</p>
+                    <span class="card-bubble card-bubble--blue" aria-hidden="true">∑</span>
+                    <div>
+                        <h2>Calculadora de IVA</h2>
+                        <p>Calcule rapidamente o valor sem IVA, IVA e total.</p>
+                    </div>
                 </div>
 
                 <div class="calc-form">
