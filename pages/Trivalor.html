@@ -336,6 +336,16 @@
                         <textarea id="qr_data" readonly placeholder="Os dados gerados aparecerão aqui..."></textarea>
                     </div>
 
+                    <div class="qr-reuse-wrap">
+                        <button type="button" class="btn btn-secondary btn-full" id="btnReutilizarQr" onclick="reutilizarDadosQr()">
+                            <ion-icon name="refresh-outline" class="btn-icon"></ion-icon>
+                            <strong>Reutilizar dados do QR</strong>
+                        </button>
+                        <p class="qr-reuse-hint">
+                            Preenche NIF, tipologia, espaço fiscal e país. Data, nº da fatura e valores ficam livres.
+                        </p>
+                    </div>
+
                     <div class="qr-actions card-actions">
                         <div id="qr_generate_errors" class="qr-generate-errors" hidden role="alert" aria-live="assertive"></div>
                         <button type="button" class="btn btn-primary" onclick="generateQRCode()">

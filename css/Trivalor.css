@@ -1093,6 +1093,29 @@ textarea:focus {
     margin-top: 4px;
 }
 
+.qr-reuse-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.qr-reuse-wrap .btn {
+    gap: 8px;
+}
+
+.qr-reuse-hint {
+    font-size: 0.78rem;
+    line-height: 1.4;
+    color: var(--text-soft);
+    padding: 0 2px;
+}
+
+.qr-reuse-wrap .btn.is-applied {
+    border-color: rgba(34, 197, 94, 0.55);
+    background: rgba(34, 197, 94, 0.14);
+    color: #86efac;
+}
+
 .qr-actions {
     margin-top: auto;
 }
