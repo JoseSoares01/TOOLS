@@ -76,10 +76,39 @@ function showToast(message, type = "info") {
 }
 
 /**
- * Lê um ficheiro e devolve ArrayBuffer.
+ * Lê um ficheiro e devolve uma cópia independente em Uint8Array.
+ * (Evita ArrayBuffer “detached” após o pdf.js consumir o buffer no preview.)
  */
-async function readFileAsArrayBuffer(file) {
-    return await file.arrayBuffer();
+async function readFileAsUint8Array(file) {
+    const buffer = await file.arrayBuffer();
+    return new Uint8Array(buffer.slice(0));
+}
+
+/**
+ * Garante bytes do PDF em memória (reutiliza cache do registo).
+ */
+async function getPdfBytes(pdfRecord) {
+    if (pdfRecord.bytes instanceof Uint8Array && pdfRecord.bytes.byteLength > 0) {
+        return pdfRecord.bytes.slice(0);
+    }
+
+    const bytes = await readFileAsUint8Array(pdfRecord.file);
+    pdfRecord.bytes = bytes.slice(0);
+    return bytes;
+}
+
+/**
+ * Carrega um PDF com pdf-lib de forma tolerante.
+ */
+async function loadPdfWithLib(bytes) {
+    if (typeof PDFLib === "undefined" || !PDFLib.PDFDocument) {
+        throw new Error("A biblioteca PDF-Lib não carregou. Recarregue a página.");
+    }
+
+    return PDFLib.PDFDocument.load(bytes, {
+        ignoreEncryption: true,
+        updateMetadata: false
+    });
 }
 
 /**
@@ -207,7 +236,8 @@ async function addPdfFile(file) {
         id,
         file,
         name: file.name,
-        pages: null
+        pages: null,
+        bytes: null
     };
 
     pdfFiles.push(pdfRecord);
@@ -234,7 +264,7 @@ async function addPdfFile(file) {
     bindFileItemEvents(fileItem);
 
     try {
-        const pageCount = await generatePDFPreview(file, fileItem);
+        const pageCount = await generatePDFPreview(file, fileItem, pdfRecord);
 
         pdfRecord.pages = pageCount;
 
@@ -266,11 +296,14 @@ async function addPdfFile(file) {
  * Gera a preview da primeira página do PDF.
  * Retorna o total de páginas do documento.
  */
-async function generatePDFPreview(file, fileItem) {
-    const arrayBuffer = await readFileAsArrayBuffer(file);
-    const pdfData = new Uint8Array(arrayBuffer);
+async function generatePDFPreview(file, fileItem, pdfRecord) {
+    /* Cópia própria para o pdf.js (pode “detach” do buffer) + cache para mesclar */
+    const sourceBytes = await readFileAsUint8Array(file);
+    if (pdfRecord) {
+        pdfRecord.bytes = sourceBytes.slice(0);
+    }
 
-    const loadingTask = pdfjsLib.getDocument({ data: pdfData });
+    const loadingTask = pdfjsLib.getDocument({ data: sourceBytes });
     const pdf = await loadingTask.promise;
 
     const page = await pdf.getPage(1);
@@ -407,19 +440,32 @@ async function mergeSelectedPDFs() {
         return;
     }
 
+    const previousLabel = mergeBtn.textContent;
+    mergeBtn.disabled = true;
+    mergeBtn.textContent = "A mesclar…";
+
     try {
+        if (typeof PDFLib === "undefined" || !PDFLib.PDFDocument) {
+            throw new Error("A biblioteca PDF-Lib não carregou. Recarregue a página.");
+        }
+
         const mergedPdf = await PDFLib.PDFDocument.create();
+        let pagesMerged = 0;
 
         for (const item of selectedItems) {
             const pdfRecord = findPdfById(item.dataset.id);
             if (!pdfRecord) continue;
 
-            const arrayBuffer = await readFileAsArrayBuffer(pdfRecord.file);
-            const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+            const bytes = await getPdfBytes(pdfRecord);
+            const pdfDoc = await loadPdfWithLib(bytes);
 
             const copiedPages = await mergedPdf.copyPages(pdfDoc, pdfDoc.getPageIndices());
-
             copiedPages.forEach(page => mergedPdf.addPage(page));
+            pagesMerged += copiedPages.length;
+        }
+
+        if (pagesMerged === 0) {
+            throw new Error("Nenhuma página válida para mesclar.");
         }
 
         const mergedBytes = await mergedPdf.save();
@@ -435,7 +481,11 @@ async function mergeSelectedPDFs() {
         showToast("PDFs mesclados com sucesso.", "success");
     } catch (error) {
         console.error("Erro ao mesclar PDFs:", error);
-        showToast("Erro ao mesclar os PDFs.", "error");
+        const detail = error && error.message ? ` (${error.message})` : "";
+        showToast(`Erro ao mesclar os PDFs.${detail}`, "error");
+    } finally {
+        mergeBtn.textContent = previousLabel;
+        updateUIState();
     }
 }
 
@@ -461,7 +511,11 @@ async function splitSelectedPDF() {
     }
 
     try {
-        const sourcePdf = await PDFLib.PDFDocument.load(await readFileAsArrayBuffer(pdfRecord.file));
+        if (typeof PDFLib === "undefined" || !PDFLib.PDFDocument) {
+            throw new Error("A biblioteca PDF-Lib não carregou. Recarregue a página.");
+        }
+
+        const sourcePdf = await loadPdfWithLib(await getPdfBytes(pdfRecord));
         const pageCount = sourcePdf.getPageCount();
 
         for (let i = 0; i < pageCount; i++) {
@@ -478,7 +532,8 @@ async function splitSelectedPDF() {
         showToast("PDF separado com sucesso.", "success");
     } catch (error) {
         console.error("Erro ao separar PDF:", error);
-        showToast("Erro ao separar o PDF.", "error");
+        const detail = error && error.message ? ` (${error.message})` : "";
+        showToast(`Erro ao separar o PDF.${detail}`, "error");
     }
 }
 
