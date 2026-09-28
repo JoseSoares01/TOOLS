@@ -7,7 +7,9 @@
     <link rel="icon" type="image/x-icon" href="/images/QR.png">
     <link rel="stylesheet" href="/css/ServinformSite.css">
     <link rel="stylesheet" href="/css/SidebarMenu.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
     <script>
         const usuarioLogado = localStorage.getItem('usuarioLogado');
         if (!usuarioLogado) {
@@ -17,9 +19,7 @@
     </script>
 </head>
 <body>
-    <img src="/images/home-button.png" width=40px class="home-button" onclick="location.href = '/pages/Tools.html';">
-
-    <div class="animated-bg">
+    <div class="animated-bg" aria-hidden="true">
         <div class="bg-orb orb-1"></div>
         <div class="bg-orb orb-2"></div>
         <div class="bg-orb orb-3"></div>
@@ -29,59 +29,112 @@
 
     <main class="page-shell">
         <section class="app-panel">
-            <header class="hero-header">
-                <p class="eyebrow">Ferramenta fiscal</p>
-                <h1>Calculadora de IVA</h1>
-                <p class="subtitle">Calcule valores com e sem IVA</p>
+
+            <!-- Topbar visual -->
+            <header class="iva-topbar" aria-label="Barra superior">
+                <div class="iva-topbar__brand">
+                    <span class="iva-topbar__badge">Fiscal Tools</span>
+                    <span class="iva-topbar__meta">IVA · Taxas · Totais</span>
+                </div>
+                <div class="iva-topbar__actions">
+                    <span class="iva-chip">0% · 6% · 13% · 23%</span>
+                    <span class="iva-chip iva-chip--accent">Multi-linha</span>
+                </div>
             </header>
 
-            <div class="table-container">
-                <table id="calculadoraTable">
-                    <thead>
-                        <tr>
-                            <th>Taxa IVA (%)</th>
-                            <th>Valor com IVA (€)</th>
-                            <th>Valor sem IVA (€)</th>
-                            <th>IVA (€)</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        <tr class="data-row">
-                            <td>
-                                <select class="taxa-select" onchange="calcular()">
-                                    <option value="0">0% (Isento)</option>
-                                    <option value="6">6%</option>
-                                    <option value="13" selected>13%</option>
-                                    <option value="23">23%</option>
-                                </select>
-                            </td>
-                            <td><input type="number" class="valor-com-iva" step="0.01" oninput="calcular()" placeholder="0.00"></td>
-                            <td class="valor-sem-iva">0,00 €</td>
-                            <td class="valor-iva">0,00 €</td>
-                            <td>
-                                <button class="remove-btn" onclick="removerLinha(this)" title="Remover linha">🗑️</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr class="total-row">
-                            <th>Total</th>
-                            <th id="totalComIva">0,00 €</th>
-                            <th id="totalSemIva">0,00 €</th>
-                            <th id="totalIva">0,00 €</th>
-                            <th>
-                                <button class="add-btn" onclick="adicionarLinha()" title="Adicionar linha">➕</button>
-                            </th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+            <!-- Hero -->
+            <section class="iva-hero" aria-label="Introdução">
+                <div class="iva-hero__copy">
+                    <p class="eyebrow">Ferramenta fiscal</p>
+                    <h1 class="brand-title">Calculadora de <span class="brand-title__accent">IVA</span></h1>
+                    <p class="hero-subtitle">
+                        Introduza valores com IVA, escolha a taxa e obtenha automaticamente
+                        o valor sem IVA, o imposto e os totais.
+                    </p>
+                </div>
+                <div class="iva-hero__aside" aria-hidden="true">
+                    <div class="iva-hero-art">
+                        <div class="iva-hero-card iva-hero-card--1">
+                            <span>%</span>
+                        </div>
+                        <div class="iva-hero-card iva-hero-card--2">
+                            <span>€</span>
+                        </div>
+                        <div class="iva-hero-glow"></div>
+                    </div>
+                </div>
+            </section>
 
-            <div class="button-container">
-                <button onclick="limparTabela()" class="clear-btn">Limpar Tabela</button>
-                <button onclick="adicionarLinha()" class="add-btn-large">Adicionar Linha</button>
-            </div>
+            <!-- Tabela -->
+            <section class="panel-card table-card">
+                <div class="section-heading">
+                    <span class="card-bubble card-bubble--blue" aria-hidden="true">1</span>
+                    <div>
+                        <h2>Linhas de cálculo</h2>
+                        <p>Adicione linhas, escolha a taxa e introduza o valor com IVA.</p>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table id="calculadoraTable">
+                        <thead>
+                            <tr>
+                                <th>Taxa IVA (%)</th>
+                                <th>Valor com IVA (€)</th>
+                                <th>Valor sem IVA (€)</th>
+                                <th>IVA (€)</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <tr class="data-row">
+                                <td>
+                                    <select class="taxa-select" onchange="calcular()">
+                                        <option value="0">0% (Isento)</option>
+                                        <option value="6">6%</option>
+                                        <option value="13" selected>13%</option>
+                                        <option value="23">23%</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" class="valor-com-iva" step="0.01" oninput="calcular()" placeholder="0.00"></td>
+                                <td class="valor-sem-iva">0,00 €</td>
+                                <td class="valor-iva">0,00 €</td>
+                                <td>
+                                    <button class="remove-btn" onclick="removerLinha(this)" title="Remover linha" type="button">🗑️</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <th>Total</th>
+                                <th id="totalComIva">0,00 €</th>
+                                <th id="totalSemIva">0,00 €</th>
+                                <th id="totalIva">0,00 €</th>
+                                <th>
+                                    <button class="add-btn" onclick="adicionarLinha()" title="Adicionar linha" type="button">➕</button>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Ações -->
+            <section class="panel-card actions-card">
+                <div class="section-heading">
+                    <span class="card-bubble card-bubble--purple" aria-hidden="true">2</span>
+                    <div>
+                        <h2>Ações</h2>
+                        <p>Limpe a tabela ou adicione novas linhas de cálculo.</p>
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <button onclick="limparTabela()" class="clear-btn" type="button">Limpar Tabela</button>
+                    <button onclick="adicionarLinha()" class="add-btn-large" type="button">Adicionar Linha</button>
+                </div>
+            </section>
+
         </section>
     </main>
 
