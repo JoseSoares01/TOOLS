@@ -51,6 +51,12 @@
             nifEmpresa: "500271518",
             zona: "EU",
         },
+        {
+            nifFornecedor: "B85774925",
+            nome: "MADRID FAS MACHINE, S.L",
+            nifEmpresa: "500271518",
+            zona: "EU",
+        },
     ];
 
     /** Cache em memória da sessão; é limpo em reload forçado ou ao voltar ao separador. */

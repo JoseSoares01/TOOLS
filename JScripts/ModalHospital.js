@@ -16,6 +16,14 @@ const avigilonNifs = [
         label: "EVOCA - B82428863",
         flag: "🇪🇸"
     },
+    { value: "", label: "=== MADRID FAS MACHINE ===", isGroup: true },
+    {
+        value: "B85774925_500271518",
+        country: "EU",
+        tipologia: "FT",
+        label: "MADRID FAS MACHINE, S.L - B85774925",
+        flag: "🇪🇸"
+    },
 ];
 
 function createDropdownIfNeeded() {
@@ -52,6 +60,8 @@ function populateDropdownList() {
                 label.classList.add('ademco');
             } else if (/evoca/i.test(groupName)) {
                 label.classList.add('evoca');
+            } else if (/madrid fas/i.test(groupName)) {
+                label.classList.add('madrid-fas');
             }
 
             dropdown.appendChild(label);

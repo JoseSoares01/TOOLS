@@ -46,7 +46,7 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="faturas_strong_SQR">
-  <Table ss:ExpandedColumnCount="4" ss:ExpandedRowCount="51" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="4" ss:ExpandedRowCount="52" x:FullColumns="1"
    x:FullRows="1" ss:DefaultRowHeight="14.4">
    <Row>
     <Cell ss:StyleID="s62"><Data ss:Type="String">NIF Fornecedor</Data></Cell>
@@ -351,6 +351,12 @@
    <Row>
     <Cell ss:StyleID="s63"><Data ss:Type="String">B82428863</Data></Cell>
     <Cell ss:StyleID="s63"><Data ss:Type="String">EVOCA</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">500271518</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">EU</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">B85774925</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">MADRID FAS MACHINE, S.L</Data></Cell>
     <Cell ss:StyleID="s63"><Data ss:Type="String">500271518</Data></Cell>
     <Cell ss:StyleID="s63"><Data ss:Type="String">EU</Data></Cell>
    </Row>

@@ -1566,6 +1566,7 @@ textarea:focus {
 .dropdown-group.avigilon { color: #68b4ff; }
 .dropdown-group.ademco { color: #42e6a4; }
 .dropdown-group.evoca { color: #f0b429; }
+.dropdown-group.madrid-fas { color: #c084fc; }
 
 .dropdown-option {
     display: flex;
