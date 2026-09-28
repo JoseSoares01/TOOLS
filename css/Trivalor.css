@@ -1565,6 +1565,7 @@ textarea:focus {
 .dropdown-group.visiotech { color: #ff7a7a; }
 .dropdown-group.avigilon { color: #68b4ff; }
 .dropdown-group.ademco { color: #42e6a4; }
+.dropdown-group.evoca { color: #f0b429; }
 
 .dropdown-option {
     display: flex;

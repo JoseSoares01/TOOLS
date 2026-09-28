@@ -40,6 +40,19 @@
     var DEBOUNCE_MS = 200;
     var VISIBILITY_RELOAD_MS = 600;
 
+    /**
+     * Fornecedores fixos (não dependem só do XML).
+     * Mantêm-se mesmo se o Excel for substituído sem estas linhas.
+     */
+    var EXTRA_VENDORS = [
+        {
+            nifFornecedor: "B82428863",
+            nome: "EVOCA",
+            nifEmpresa: "500271518",
+            zona: "EU",
+        },
+    ];
+
     /** Cache em memória da sessão; é limpo em reload forçado ou ao voltar ao separador. */
     var records = null;
     var debounceTimer = null;
@@ -158,6 +171,32 @@
         return out;
     }
 
+    /** Junta EXTRA_VENDORS à lista do XML (sem duplicar NIF+Zona). */
+    function mergeExtraVendors(list) {
+        var out = Array.isArray(list) ? list.slice() : [];
+        var seen = Object.create(null);
+        var i;
+        for (i = 0; i < out.length; i++) {
+            seen[normNif(out[i].nifFornecedor) + "|" + normZona(out[i].zona)] = true;
+        }
+        for (i = 0; i < EXTRA_VENDORS.length; i++) {
+            var raw = EXTRA_VENDORS[i];
+            var key = normNif(raw.nifFornecedor) + "|" + normZona(raw.zona);
+            if (seen[key]) continue;
+            seen[key] = true;
+            out.push({
+                nifFornecedor: raw.nifFornecedor,
+                nome: raw.nome,
+                nifEmpresa: raw.nifEmpresa,
+                zona: raw.zona,
+                _searchKey: normalizeSearch(
+                    raw.nome + " " + raw.nifFornecedor + " " + raw.nifEmpresa
+                ),
+            });
+        }
+        return out;
+    }
+
     /**
      * @param {function(Array|null, Error|null)} done
      * @param {{ force?: boolean }} [opts] force=true ignora cache em memória e pede ficheiro novo ao servidor
@@ -188,7 +227,7 @@
             })
             .then(function (text) {
                 try {
-                    records = parseSpreadsheetXml(text);
+                    records = mergeExtraVendors(parseSpreadsheetXml(text));
                     console.log(
                         "[Trivalor XML fornecedores] Registos únicos carregados" +
                             (opts.force ? " (atualizado)" : "") +
@@ -197,15 +236,15 @@
                     );
                     done(records, null);
                 } catch (parseEx) {
-                    records = null;
+                    records = mergeExtraVendors([]);
                     console.error("[Trivalor XML fornecedores] Erro ao interpretar o XML:", parseEx);
-                    done(null, parseEx);
+                    done(records, parseEx);
                 }
             })
             .catch(function (err) {
-                records = null;
+                records = mergeExtraVendors([]);
                 console.error("[Trivalor XML fornecedores] Falha ao carregar ou processar o XML:", err);
-                done(null, err);
+                done(records.length ? records : null, err);
             });
     }
 

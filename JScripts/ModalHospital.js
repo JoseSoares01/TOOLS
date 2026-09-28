@@ -8,6 +8,14 @@ const avigilonNifs = [
     { value: "ESB80645518_503257567", country: "EU", label: "VISIOTECH - ESB80645518" },
     { value: "", label: "=== ADEMCO ADI ===", isGroup: true },
     { value: "ESB28668358_503257567", country: "EU", label: "ADEMCO ADI - ESB28668358" },
+    { value: "", label: "=== EVOCA ===", isGroup: true },
+    {
+        value: "B82428863_500271518",
+        country: "EU",
+        tipologia: "FT",
+        label: "EVOCA - B82428863",
+        flag: "🇪🇸"
+    },
 ];
 
 function createDropdownIfNeeded() {
@@ -42,6 +50,8 @@ function populateDropdownList() {
                 label.classList.add('avigilon');
             } else if (/ademco/i.test(groupName) || /adi/i.test(groupName)) {
                 label.classList.add('ademco');
+            } else if (/evoca/i.test(groupName)) {
+                label.classList.add('evoca');
             }
 
             dropdown.appendChild(label);
@@ -87,6 +97,7 @@ function applySelection(selectedValue) {
     const nifEmpresaInput = document.getElementById('nif_empresa');
     const paisSelect = document.getElementById('pais');
     const espacoFiscalSelect = document.getElementById('espaco_fiscal');
+    const tipologiaSelect = document.getElementById('tipologia');
 
     if (!selectedValue) return;
 
@@ -99,6 +110,22 @@ function applySelection(selectedValue) {
     if (nifEmpresaInput) nifEmpresaInput.value = nifEmpresa || '';
     if (paisSelect) paisSelect.value = foundAvigilon.country || '';
     if (espacoFiscalSelect) espacoFiscalSelect.value = foundAvigilon.country || '';
+
+    /* Tipologia opcional por empresa (ex.: EVOCA → FT; EU/INT = IVA zero nas taxas) */
+    if (tipologiaSelect && foundAvigilon.tipologia) {
+        tipologiaSelect.value = foundAvigilon.tipologia;
+        tipologiaSelect.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    if (paisSelect) paisSelect.dispatchEvent(new Event('change', { bubbles: true }));
+    if (espacoFiscalSelect) espacoFiscalSelect.dispatchEvent(new Event('change', { bubbles: true }));
+
+    if (typeof window.updateIVARates === 'function') {
+        window.updateIVARates();
+    }
+    if (typeof window.updateTaxBaseFieldsVisibility === 'function') {
+        window.updateTaxBaseFieldsVisibility();
+    }
 
     closeDropdown();
 }
