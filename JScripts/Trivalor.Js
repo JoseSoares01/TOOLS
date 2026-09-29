@@ -26,6 +26,11 @@ function parseDecimalInput(rawValue) {
     return Number.isFinite(n) ? n : 0;
 }
 
+function setIvaRateBadge(badgeId, percentLabel) {
+    const badge = document.getElementById(badgeId);
+    if (badge) badge.textContent = percentLabel;
+}
+
 function updateIVARates() {
     const espacoFiscal = document.getElementById("espaco_fiscal").value;
     let baseIsenta = document.getElementById("base_isenta");
@@ -33,38 +38,51 @@ function updateIVARates() {
     let baseIntermedia = document.getElementById("base_intermedia");
     let baseNormal = document.getElementById("base_normal");
 
+    let rates = { isenta: "0%", reduzida: "—", intermedia: "—", normal: "—" };
+
     switch (espacoFiscal) {
         case "PT":
+            rates = { isenta: "0%", reduzida: "6%", intermedia: "13%", normal: "23%" };
             baseIsenta.placeholder = "Base isenta (0%)";
             baseReduzida.placeholder = "Base reduzida (6%)";
             baseIntermedia.placeholder = "Base intermédia (13%)";
             baseNormal.placeholder = "Base normal (23%)";
             break;
         case "PT-AC":
+            rates = { isenta: "0%", reduzida: "4%", intermedia: "9%", normal: "16%" };
             baseIsenta.placeholder = "Base isenta (0%)";
             baseReduzida.placeholder = "Base reduzida (4%)";
             baseIntermedia.placeholder = "Base intermédia (9%)";
             baseNormal.placeholder = "Base normal (16%)";
             break;
         case "PT-MA":
+            rates = { isenta: "0%", reduzida: "4%", intermedia: "12%", normal: "22%" };
             baseIsenta.placeholder = "Base isenta (0%)";
             baseReduzida.placeholder = "Base reduzida (4%)";
             baseIntermedia.placeholder = "Base intermédia (12%)";
             baseNormal.placeholder = "Base normal (22%)";
             break;
         case "INT":
+        case "EU":
+            rates = { isenta: "0%", reduzida: "—", intermedia: "—", normal: "—" };
             baseIsenta.placeholder = "Base isenta (0%)";
             baseReduzida.placeholder = "Base reduzida";
             baseIntermedia.placeholder = "Base intermédia";
             baseNormal.placeholder = "Base normal";
             break;
         default:
+            rates = { isenta: "0%", reduzida: "—", intermedia: "—", normal: "—" };
             baseIsenta.placeholder = "Base isenta (0%)";
             baseReduzida.placeholder = "Base reduzida";
             baseIntermedia.placeholder = "Base intermédia";
             baseNormal.placeholder = "Base normal";
             break;
     }
+
+    setIvaRateBadge("badge_isenta", rates.isenta);
+    setIvaRateBadge("badge_reduzida", rates.reduzida);
+    setIvaRateBadge("badge_intermedia", rates.intermedia);
+    setIvaRateBadge("badge_normal", rates.normal);
 }
 
 function updateTaxBaseFieldsVisibility() {
@@ -115,11 +133,10 @@ function syncEspacoFromPais() {
     const ex = (espacoEl.value || "").toUpperCase();
     if (p === "EU" || p === "INT") {
         espacoEl.value = p;
-        return;
-    }
-    if (p === "PT" && (ex === "EU" || ex === "INT")) {
+    } else if (p === "PT" && (ex === "EU" || ex === "INT")) {
         espacoEl.value = "PT";
     }
+    syncFiscalSelectDisplays();
 }
 
 /** Continental / Açores / Madeira → País/Regime em Continental e ilhas (PT); EU/INT espelham o espaço. */
@@ -130,11 +147,31 @@ function syncPaisFromEspaco() {
     const e = (espacoEl.value || "").toUpperCase();
     if (e === "EU" || e === "INT") {
         paisEl.value = e;
-        return;
-    }
-    if (e === "PT" || e === "PT-AC" || e === "PT-MA") {
+    } else if (e === "PT" || e === "PT-AC" || e === "PT-MA") {
         paisEl.value = "PT";
     }
+    syncFiscalSelectDisplays();
+}
+
+function syncSelectPillDisplay(selectId, displayMainId, emptyLabel) {
+    const el = document.getElementById(selectId);
+    const mainEl = document.getElementById(displayMainId);
+    if (!el || !mainEl) return;
+
+    const v = el.value || "";
+    if (!v) {
+        mainEl.textContent = emptyLabel || "Selecione";
+        return;
+    }
+
+    const opt = el.selectedOptions[0];
+    const raw = (opt && opt.textContent) ? opt.textContent.trim() : "";
+    mainEl.textContent = raw || v;
+}
+
+function syncFiscalSelectDisplays() {
+    syncSelectPillDisplay("espaco_fiscal", "espaco_fiscal_display_main");
+    syncSelectPillDisplay("pais", "pais_display_main");
 }
 
 function syncTipologiaSelectAppearance() {
@@ -224,6 +261,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (espacoFiscalEl) {
         espacoFiscalEl.addEventListener("change", function () {
             syncPaisFromEspaco();
+            syncFiscalSelectDisplays();
             updateIVARates();
             updateTaxBaseFieldsVisibility();
         });
@@ -232,6 +270,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (paisEl) {
         paisEl.addEventListener("change", function () {
             syncEspacoFromPais();
+            syncFiscalSelectDisplays();
             updateIVARates();
             updateTaxBaseFieldsVisibility();
         });
@@ -242,6 +281,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Inicializa placeholders e visibilidade
     syncEspacoFromPais();
     syncPaisFromEspaco();
+    syncFiscalSelectDisplays();
     updateIVARates();
     updateTaxBaseFieldsVisibility();
 });
@@ -652,6 +692,8 @@ function clearInputs() {
     if (retTipoEl) retTipoEl.value = "";
     rvRetencaoAtiva = false;
     syncTipologiaSelectAppearance();
+    syncFiscalSelectDisplays();
+    updateIVARates();
     toggleRvRetencaoBlock();
 
     // Nunca apagar a string / imagem do último QR

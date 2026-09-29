@@ -630,8 +630,7 @@ input[type="number"],
 input[type="email"],
 input[type="password"],
 textarea,
-select.espaco-fiscal-select,
-select.pais-regime-select {
+select.espaco-fiscal-select {
     width: 100%;
     height: var(--input-h);
     padding: 0 16px;
@@ -647,8 +646,7 @@ select.pais-regime-select {
     -webkit-appearance: none;
 }
 
-select.espaco-fiscal-select,
-select.pais-regime-select {
+select.espaco-fiscal-select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath stroke='%2394A3B8' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' fill='none' d='M3 4.5L6 7.5L9 4.5'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 14px center;
@@ -675,14 +673,12 @@ textarea::placeholder {
 
 input:hover,
 select.espaco-fiscal-select:hover,
-select.pais-regime-select:hover,
 textarea:hover {
     border-color: rgba(77, 163, 255, 0.35);
 }
 
 input:focus,
 select.espaco-fiscal-select:focus,
-select.pais-regime-select:focus,
 textarea:focus {
     border-color: rgba(77, 163, 255, 0.65);
     box-shadow: var(--glow-blue);
@@ -815,6 +811,19 @@ textarea:focus {
 #tipologia option[value="PF"] { background-color: #e1bee7; color: #1f2937; }
 #tipologia option[value="OR"] { background-color: #b3e5fc; color: #1f2937; }
 #tipologia option[value="RV"] { background-color: #c8e6c9; color: #1f2937; }
+
+/* País / Espaço fiscal: select invisível + pill visível; lista nativa legível no Windows */
+#espaco_fiscal option,
+#pais option {
+    background-color: #ffffff;
+    color: #1f2937;
+}
+
+#espaco_fiscal option[value=""],
+#pais option[value=""] {
+    background-color: #f1f5f9;
+    color: #64748b;
+}
 
 /* Date field — área clicável = campo inteiro */
 .date-input-container {
