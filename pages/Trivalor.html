@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerador de QR Code | Trivalor</title>
     <link rel="icon" type="image/x-icon" href="/images/QR.png">
-    <link rel="stylesheet" href="/css/Trivalor.css">
+    <link rel="stylesheet" href="/css/Trivalor.css?v=20260929d">
     <link rel="stylesheet" href="/css/SidebarMenu.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -157,17 +157,18 @@
 
                         <div class="field-group">
                             <label for="espaco_fiscal">Espaço fiscal</label>
-                            <div class="select-pill-wrap tipologia-select-wrap">
+                            <div class="select-pill-wrap tipologia-select-wrap fiscal-flag-select">
                                 <div class="select-pill-display" aria-hidden="true">
+                                    <span class="fiscal-flag" id="espaco_fiscal_flag" hidden></span>
                                     <span class="select-pill-display__main" id="espaco_fiscal_display_main">Selecione</span>
                                 </div>
-                                <select id="espaco_fiscal" class="tipologia-select-native" aria-label="Espaço fiscal">
+                                <select id="espaco_fiscal" class="tipologia-select-native" aria-label="Espaço fiscal" aria-expanded="false">
                                     <option value="">Selecione</option>
-                                    <option value="PT">🇵🇹 Continental (PT)</option>
-                                    <option value="PT-AC">🇵🇹 Açores (PT-AC)</option>
-                                    <option value="PT-MA">🇵🇹 Madeira (PT-MA)</option>
-                                    <option value="EU">🇪🇺 União Europeia (EU)</option>
-                                    <option value="INT">🏳️ Estrangeiras (INT)</option>
+                                    <option value="PT">Continental (PT)</option>
+                                    <option value="PT-AC">Açores (PT-AC)</option>
+                                    <option value="PT-MA">Madeira (PT-MA)</option>
+                                    <option value="EU">União Europeia (EU)</option>
+                                    <option value="INT">Estrangeiras (INT)</option>
                                 </select>
                             </div>
                         </div>
@@ -215,15 +216,16 @@
                     <div class="form-stack">
                         <div class="field-group">
                             <label for="pais">País / Regime</label>
-                            <div class="select-pill-wrap tipologia-select-wrap">
+                            <div class="select-pill-wrap tipologia-select-wrap fiscal-flag-select">
                                 <div class="select-pill-display" aria-hidden="true">
+                                    <span class="fiscal-flag" id="pais_flag" hidden></span>
                                     <span class="select-pill-display__main" id="pais_display_main">Selecione</span>
                                 </div>
-                                <select id="pais" class="tipologia-select-native" aria-label="País ou regime fiscal">
+                                <select id="pais" class="tipologia-select-native" aria-label="País ou regime fiscal" aria-expanded="false">
                                     <option value="">Selecione</option>
-                                    <option value="PT">🇵🇹 Continental e ilhas (PT)</option>
-                                    <option value="EU">🇪🇺 União Europeia (EU)</option>
-                                    <option value="INT">🏳️ Estrangeiras (INT)</option>
+                                    <option value="PT">Continental e ilhas (PT)</option>
+                                    <option value="EU">União Europeia (EU)</option>
+                                    <option value="INT">Estrangeiras (INT)</option>
                                 </select>
                             </div>
                         </div>
@@ -456,7 +458,7 @@
 
     <script src="/JScripts/core/app-config.js"></script>
     <script src="/JScripts/SidebarMenu.js"></script>
-    <script src="/JScripts/Trivalor.Js?v=20260928b"></script>
-    <script src="/JScripts/TrivalorForeignVendorXml.js?v=20260928b"></script>
+    <script src="/JScripts/Trivalor.Js?v=20260929c"></script>
+    <script src="/JScripts/TrivalorForeignVendorXml.js?v=20260929d"></script>
 </body>
 </html>

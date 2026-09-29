@@ -153,12 +153,40 @@ function syncPaisFromEspaco() {
     syncFiscalSelectDisplays();
 }
 
+const FISCAL_FLAG_PT = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" aria-hidden="true"><rect width="600" height="400" fill="#FF0000"/><rect width="240" height="400" fill="#006600"/><circle cx="240" cy="200" r="86" fill="#FFCC00"/><circle cx="240" cy="200" r="70" fill="none" stroke="#CC0000" stroke-width="8"/><path d="M214 162h52v46c0 24-26 40-26 40s-26-16-26-40z" fill="#fff" stroke="#003399" stroke-width="3"/><rect x="214" y="162" width="52" height="16" fill="#006600"/><rect x="214" y="194" width="26" height="20" fill="#FF0000"/><circle cx="240" cy="214" r="6" fill="#003399"/></svg>';
+const FISCAL_FLAG_EU = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" aria-hidden="true"><rect width="300" height="200" fill="#003399"/><polygon points="150.00,30.00 151.88,35.41 157.61,35.53 153.04,38.99 154.70,44.47 150.00,41.20 145.30,44.47 146.96,38.99 142.39,35.53 148.12,35.41" fill="#FC0"/><polygon points="181.00,38.31 182.88,43.72 188.61,43.83 184.04,47.30 185.70,52.78 181.00,49.51 176.30,52.78 177.96,47.30 173.39,43.83 179.12,43.72" fill="#FC0"/><polygon points="203.69,61.00 205.57,66.41 211.30,66.53 206.74,69.99 208.40,75.47 203.69,72.20 198.99,75.47 200.65,69.99 196.09,66.53 201.81,66.41" fill="#FC0"/><polygon points="212.00,92.00 213.88,97.41 219.61,97.53 215.04,100.99 216.70,106.47 212.00,103.20 207.30,106.47 208.96,100.99 204.39,97.53 210.12,97.41" fill="#FC0"/><polygon points="203.69,123.00 205.57,128.41 211.30,128.53 206.74,131.99 208.40,137.47 203.69,134.20 198.99,137.47 200.65,131.99 196.09,128.53 201.81,128.41" fill="#FC0"/><polygon points="181.00,145.69 182.88,151.10 188.61,151.22 184.04,154.68 185.70,160.17 181.00,156.89 176.30,160.17 177.96,154.68 173.39,151.22 179.12,151.10" fill="#FC0"/><polygon points="150.00,154.00 151.88,159.41 157.61,159.53 153.04,162.99 154.70,168.47 150.00,165.20 145.30,168.47 146.96,162.99 142.39,159.53 148.12,159.41" fill="#FC0"/><polygon points="119.00,145.69 120.88,151.10 126.61,151.22 122.04,154.68 123.70,160.17 119.00,156.89 114.30,160.17 115.96,154.68 111.39,151.22 117.12,151.10" fill="#FC0"/><polygon points="96.31,123.00 98.19,128.41 103.91,128.53 99.35,131.99 101.01,137.47 96.31,134.20 91.60,137.47 93.26,131.99 88.70,128.53 94.43,128.41" fill="#FC0"/><polygon points="88.00,92.00 89.88,97.41 95.61,97.53 91.04,100.99 92.70,106.47 88.00,103.20 83.30,106.47 84.96,100.99 80.39,97.53 86.12,97.41" fill="#FC0"/><polygon points="96.31,61.00 98.19,66.41 103.91,66.53 99.35,69.99 101.01,75.47 96.31,72.20 91.60,75.47 93.26,69.99 88.70,66.53 94.43,66.41" fill="#FC0"/><polygon points="119.00,38.31 120.88,43.72 126.61,43.83 122.04,47.30 123.70,52.78 119.00,49.51 114.30,52.78 115.96,47.30 111.39,43.83 117.12,43.72" fill="#FC0"/></svg>';
+const FISCAL_FLAG_INT = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" aria-hidden="true"><rect width="60" height="40" fill="#F8FAFC"/><path d="M8 10h44v20H8z" fill="none" stroke="#94A3B8" stroke-width="2"/></svg>';
+
+function fiscalFlagMarkup(value) {
+    const v = (value || "").toUpperCase();
+    if (v === "PT" || v === "PT-AC" || v === "PT-MA") return FISCAL_FLAG_PT;
+    if (v === "EU") return FISCAL_FLAG_EU;
+    if (v === "INT") return FISCAL_FLAG_INT;
+    return "";
+}
+
 function syncSelectPillDisplay(selectId, displayMainId, emptyLabel) {
     const el = document.getElementById(selectId);
     const mainEl = document.getElementById(displayMainId);
     if (!el || !mainEl) return;
 
     const v = el.value || "";
+    const flagEl = document.getElementById(selectId + "_flag");
+    const markup = fiscalFlagMarkup(v);
+    if (flagEl) {
+        flagEl.innerHTML = markup;
+        flagEl.hidden = !markup;
+    }
+
+    const menu = document.getElementById(selectId + "_menu");
+    if (menu) {
+        menu.querySelectorAll("[data-value]").forEach((btn) => {
+            const on = btn.getAttribute("data-value") === v;
+            btn.classList.toggle("is-selected", on);
+            btn.setAttribute("aria-selected", on ? "true" : "false");
+        });
+    }
+
     if (!v) {
         mainEl.textContent = emptyLabel || "Selecione";
         return;
@@ -167,6 +195,140 @@ function syncSelectPillDisplay(selectId, displayMainId, emptyLabel) {
     const opt = el.selectedOptions[0];
     const raw = (opt && opt.textContent) ? opt.textContent.trim() : "";
     mainEl.textContent = raw || v;
+}
+
+function closeFiscalFlagMenus() {
+    document.querySelectorAll(".fiscal-flag-menu").forEach((menu) => {
+        menu.hidden = true;
+    });
+    document.querySelectorAll(".panel-card.is-flag-open").forEach((card) => {
+        card.classList.remove("is-flag-open");
+    });
+    document.querySelectorAll(".fiscal-flag-select select").forEach((sel) => {
+        sel.setAttribute("aria-expanded", "false");
+    });
+}
+
+function openFiscalFlagMenu(wrap, menu, select) {
+    closeFiscalFlagMenus();
+    menu.hidden = false;
+    menu.classList.remove("is-up");
+    const card = wrap.closest(".panel-card");
+    if (card) card.classList.add("is-flag-open");
+    if (select) select.setAttribute("aria-expanded", "true");
+
+    const spaceBelow = window.innerHeight - wrap.getBoundingClientRect().bottom;
+    if (spaceBelow < menu.offsetHeight + 16) menu.classList.add("is-up");
+
+    const current = menu.querySelector(".is-selected") || menu.querySelector(".fiscal-flag-option");
+    menu.querySelectorAll(".is-active").forEach((el) => el.classList.remove("is-active"));
+    if (current) {
+        current.classList.add("is-active");
+        current.focus();
+    }
+}
+
+function moveFiscalFlagHighlight(menu, direction) {
+    const items = Array.from(menu.querySelectorAll(".fiscal-flag-option"));
+    if (!items.length) return;
+    const active = menu.querySelector(".is-active");
+    let index = items.indexOf(active);
+    if (index < 0) index = direction > 0 ? -1 : 0;
+    index = (index + direction + items.length) % items.length;
+    items.forEach((el) => el.classList.remove("is-active"));
+    items[index].classList.add("is-active");
+    items[index].focus();
+}
+
+function initFiscalFlagMenus() {
+    ["espaco_fiscal", "pais"].forEach((id) => {
+        const select = document.getElementById(id);
+        if (!select) return;
+        const wrap = select.closest(".fiscal-flag-select");
+        if (!wrap || wrap.dataset.flagReady === "1") return;
+        wrap.dataset.flagReady = "1";
+
+        const menu = document.createElement("div");
+        menu.id = id + "_menu";
+        menu.className = "fiscal-flag-menu";
+        menu.hidden = true;
+        menu.setAttribute("role", "listbox");
+        menu.setAttribute("aria-label", select.getAttribute("aria-label") || "Opções");
+
+        Array.from(select.options).forEach((opt) => {
+            if (!opt.value) return;
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "fiscal-flag-option";
+            btn.setAttribute("role", "option");
+            btn.dataset.value = opt.value;
+
+            const flag = document.createElement("span");
+            flag.className = "fiscal-flag";
+            flag.innerHTML = fiscalFlagMarkup(opt.value);
+            flag.setAttribute("aria-hidden", "true");
+
+            const label = document.createElement("span");
+            label.textContent = (opt.textContent || "").trim();
+
+            btn.appendChild(flag);
+            btn.appendChild(label);
+            btn.addEventListener("click", (event) => {
+                event.preventDefault();
+                select.value = opt.value;
+                select.dispatchEvent(new Event("change", { bubbles: true }));
+                closeFiscalFlagMenus();
+                select.focus();
+            });
+            menu.appendChild(btn);
+        });
+
+        wrap.appendChild(menu);
+
+        select.addEventListener("mousedown", (event) => {
+            event.preventDefault();
+            if (menu.hidden) openFiscalFlagMenu(wrap, menu, select);
+            else {
+                closeFiscalFlagMenus();
+                select.focus();
+            }
+        });
+
+        select.addEventListener("keydown", (event) => {
+            const openKeys = ["ArrowDown", "ArrowUp", "Enter", " "];
+            if (menu.hidden && (openKeys.includes(event.key) || (event.altKey && event.key === "ArrowDown"))) {
+                event.preventDefault();
+                openFiscalFlagMenu(wrap, menu, select);
+            }
+        });
+
+        menu.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                event.preventDefault();
+                closeFiscalFlagMenus();
+                select.focus();
+                return;
+            }
+            if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+                event.preventDefault();
+                moveFiscalFlagHighlight(menu, event.key === "ArrowDown" ? 1 : -1);
+                return;
+            }
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                const current = menu.querySelector(".is-active") || menu.querySelector(".is-selected");
+                if (current) current.click();
+            }
+        });
+    });
+
+    if (!document.documentElement.dataset.fiscalFlagDismiss) {
+        document.documentElement.dataset.fiscalFlagDismiss = "1";
+        document.addEventListener("mousedown", (event) => {
+            if (event.target.closest(".fiscal-flag-select")) return;
+            closeFiscalFlagMenus();
+        });
+    }
 }
 
 function syncFiscalSelectDisplays() {
@@ -277,6 +439,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     setupRvRetencaoListeners();
+    initFiscalFlagMenus();
 
     // Inicializa placeholders e visibilidade
     syncEspacoFromPais();

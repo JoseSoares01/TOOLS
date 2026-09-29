@@ -327,13 +327,17 @@
         tipo.dispatchEvent(new Event("change", { bubbles: true }));
     }
 
+    var FLAG_CA = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 32" aria-hidden="true"><rect width="64" height="32" fill="#fff"/><rect width="16" height="32" fill="#FF0000"/><rect x="48" width="16" height="32" fill="#FF0000"/><path fill="#FF0000" d="M32 3.2l1.7 6.4 6.6-.8-3.4 5.6 5.4 2.2-6 1.3.8 6.4-5.1-3.7-5.1 3.7.8-6.4-6-1.3 5.4-2.2-3.4-5.6 6.6.8z"/></svg>';
+    var FLAG_DE = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 36" aria-hidden="true"><rect width="60" height="12" fill="#000"/><rect y="12" width="60" height="12" fill="#DD0000"/><rect y="24" width="60" height="12" fill="#FFCE00"/></svg>';
+    var FLAG_NL = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 36" aria-hidden="true"><rect width="60" height="12" fill="#AE1C28"/><rect y="12" width="60" height="12" fill="#fff"/><rect y="24" width="60" height="12" fill="#21468B"/></svg>';
+
     function avigilonCountryFlag(nome, nifFornecedor) {
         var nomeUp = (nome || "").toUpperCase();
-        var nif = (nifFornecedor || "").toUpperCase();
+        var nif = String(nifFornecedor || "").replace(/\s+/g, "").toUpperCase();
 
-        if (/CANADA/.test(nomeUp) || nif.indexOf("CA501011001") === 0) return "🇨🇦";
-        if (/ALEMANHA|GERMANY/.test(nomeUp) || nif.indexOf("DE453247169") === 0) return "🇩🇪";
-        if (/HOLANDA|NETHERLANDS|\bNL\b/.test(nomeUp) || nif.indexOf("NL823582851") === 0) return "🇳🇱";
+        if (nomeUp.indexOf("CANADA") !== -1 || nif.indexOf("CA501011001") === 0) return FLAG_CA;
+        if (nomeUp.indexOf("ALEMANHA") !== -1 || nomeUp.indexOf("GERMANY") !== -1 || nif.indexOf("DE") === 0) return FLAG_DE;
+        if (nomeUp.indexOf("HOLANDA") !== -1 || nomeUp.indexOf("NETHERLANDS") !== -1 || nif.indexOf("NL") === 0) return FLAG_NL;
         return "";
     }
 
@@ -355,7 +359,7 @@
                 if (flag) {
                     var flagSpan = document.createElement("span");
                     flagSpan.className = "vendor-country-flag";
-                    flagSpan.textContent = flag;
+                    flagSpan.innerHTML = flag;
                     flagSpan.setAttribute("aria-hidden", "true");
                     btn.appendChild(flagSpan);
                 }
