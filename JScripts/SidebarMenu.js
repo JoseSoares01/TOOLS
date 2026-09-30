@@ -157,6 +157,12 @@ class SidebarMenu {
                 label: "Manuais",
                 href: "/pages/Manuais.html",
                 icon: "/pages/icons/pdf.svg"
+            },
+            {
+                key: "AlmocoAnisabel",
+                label: "Almoço Anisabel",
+                href: "/pages/AlmocoAnisabel.html",
+                icon: "/pages/icons/almoco.svg"
             }
         ];
 

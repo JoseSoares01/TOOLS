@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Almoço Anisabel | Servinform</title>
+    <link rel="icon" type="image/svg+xml" href="/pages/icons/almoco.svg" />
+    <link rel="stylesheet" href="/css/AlmocoAnisabel.css" />
+    <link rel="stylesheet" href="/css/SidebarMenu.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <div class="animated-bg" aria-hidden="true">
+        <div class="bg-orb orb-1"></div>
+        <div class="bg-orb orb-2"></div>
+        <div class="bg-orb orb-3"></div>
+        <div class="bg-grid"></div>
+    </div>
+
+    <main class="page-shell">
+        <section class="app-panel">
+
+            <header class="almoco-topbar" aria-label="Barra superior">
+                <div class="almoco-topbar__brand">
+                    <span class="almoco-topbar__badge">Rotina</span>
+                    <span class="almoco-topbar__meta">Segunda a sexta · 14:00</span>
+                </div>
+                <div class="almoco-topbar__actions">
+                    <span class="almoco-chip" id="weekdayChip">Dia útil</span>
+                    <span class="almoco-chip almoco-chip--accent" id="statusChip">A aguardar</span>
+                </div>
+            </header>
+
+            <section class="almoco-hero panel-card">
+                <div class="almoco-hero__copy">
+                    <p class="eyebrow">Alarme de almoço</p>
+                    <h1 class="brand-title">Hora da <span class="brand-title__accent">Anisabel</span></h1>
+                    <p class="hero-subtitle">
+                        Todos os dias úteis às <strong>14:00</strong> o alarme toca.
+                        Só para quando clicar em <strong>Almoço</strong> — depois começa a contagem de
+                        <strong>1 hora</strong> no relógio.
+                    </p>
+                    <p class="hero-hint" id="nextHint">Próximo alarme: —</p>
+                </div>
+
+                <div class="watch-wrap" aria-live="polite">
+                    <div class="watch-face" id="watchFace" data-phase="idle">
+                        <svg class="watch-ring" viewBox="0 0 200 200" aria-hidden="true">
+                            <circle class="watch-ring__track" cx="100" cy="100" r="82" />
+                            <circle class="watch-ring__progress" id="ringProgress" cx="100" cy="100" r="82" />
+                        </svg>
+
+                        <div class="watch-hands" aria-hidden="true">
+                            <div class="watch-hand watch-hand--hour" id="handHour"></div>
+                            <div class="watch-hand watch-hand--minute" id="handMinute"></div>
+                            <div class="watch-hand watch-hand--second" id="handSecond"></div>
+                            <div class="watch-pivot"></div>
+                        </div>
+
+                        <div class="watch-digital">
+                            <span class="watch-digital__label" id="watchLabel">Almoço</span>
+                            <span class="watch-digital__time" id="watchTime">60:00</span>
+                            <span class="watch-digital__sub" id="watchSub">a aguardar 14:00</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel-card actions-card">
+                <div class="section-heading">
+                    <span class="card-bubble" aria-hidden="true">!</span>
+                    <div>
+                        <h2 id="actionTitle">Estado do alarme</h2>
+                        <p id="actionText">Mantenha esta página aberta para o alarme disparar às 14:00.</p>
+                    </div>
+                </div>
+
+                <div class="action-row">
+                    <button type="button" class="btn-almoco" id="btnAlmoco" disabled>
+                        Almoço
+                    </button>
+                    <button type="button" class="btn-secondary" id="btnEnableAudio">
+                        Ativar som
+                    </button>
+                    <button type="button" class="btn-ghost" id="btnTestAlarm" title="Só para testar">
+                        Testar alarme
+                    </button>
+                </div>
+
+                <p class="audio-status" id="audioStatus">Som: ainda não ativado (o browser bloqueia áudio automático).</p>
+            </section>
+
+        </section>
+    </main>
+
+    <script src="/JScripts/core/app-config.js"></script>
+    <script src="/JScripts/SidebarMenu.js"></script>
+    <script src="/JScripts/AlmocoAnisabel.js"></script>
+</body>
+</html>
