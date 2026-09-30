@@ -1,7 +1,7 @@
 /**
  * Almoço Anisabel
  * - Alarme 14:00, segunda a sexta
- * - Som contínuo até clicar em "Almoço"
+ * - Som contínuo até clicar em "Almoço" (áudio sempre ativo)
  * - Depois: countdown 60 minutos (anel + digital + ponteiros)
  */
 
@@ -16,11 +16,9 @@
     var RING_LEN = 515.22; // 2 * Math.PI * 82
 
     var phase = "idle"; // idle | alarming | counting | done
-    var audioEnabled = false;
     var audioCtx = null;
     var alarmTimer = null;
     var tickTimer = null;
-    var testMode = false;
 
     var els = {};
 
@@ -45,8 +43,7 @@
 
     function lunchMomentToday(d) {
         d = d || new Date();
-        var t = new Date(d.getFullYear(), d.getMonth(), d.getDate(), LUNCH_HOUR, LUNCH_MINUTE, 0, 0);
-        return t;
+        return new Date(d.getFullYear(), d.getMonth(), d.getDate(), LUNCH_HOUR, LUNCH_MINUTE, 0, 0);
     }
 
     function nextLunchDate(from) {
@@ -90,17 +87,29 @@
         );
     }
 
-    /* ---------- Áudio ---------- */
+    /* ---------- Áudio (sempre ativo; desbloqueia em qualquer interação) ---------- */
     function ensureAudio() {
-        if (!audioCtx) {
-            var Ctx = window.AudioContext || window.webkitAudioContext;
-            if (!Ctx) return null;
-            audioCtx = new Ctx();
-        }
+        var Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) return null;
+        if (!audioCtx) audioCtx = new Ctx();
         if (audioCtx.state === "suspended") {
-            audioCtx.resume();
+            audioCtx.resume().catch(function () {});
         }
         return audioCtx;
+    }
+
+    function unlockAudioSilent() {
+        var ctx = ensureAudio();
+        if (!ctx) return;
+        try {
+            var buffer = ctx.createBuffer(1, 1, 22050);
+            var source = ctx.createBufferSource();
+            source.buffer = buffer;
+            source.connect(ctx.destination);
+            source.start(0);
+        } catch (e) {
+            /* ignore */
+        }
     }
 
     function beepOnce() {
@@ -125,9 +134,12 @@
 
     function startAlarmSound() {
         stopAlarmSound();
-        if (!audioEnabled) return;
+        ensureAudio();
         beepOnce();
-        alarmTimer = setInterval(beepOnce, 900);
+        alarmTimer = setInterval(function () {
+            ensureAudio();
+            beepOnce();
+        }, 900);
     }
 
     function stopAlarmSound() {
@@ -137,23 +149,8 @@
         }
     }
 
-    function enableAudio() {
-        var ctx = ensureAudio();
-        if (!ctx) {
-            els.audioStatus.textContent = "Som: não suportado neste browser.";
-            els.audioStatus.className = "audio-status is-warn";
-            return;
-        }
-        audioEnabled = true;
-        beepOnce();
-        els.audioStatus.textContent = "Som: ativado ✓";
-        els.audioStatus.className = "audio-status is-ok";
-        els.btnEnableAudio.textContent = "Som ativo";
-    }
-
     /* ---------- UI ---------- */
     function setRingProgress(ratio) {
-        /* ratio 1 = cheio, 0 = vazio (tempo consumido) */
         var r = Math.max(0, Math.min(1, ratio));
         els.ringProgress.style.strokeDashoffset = String(RING_LEN * (1 - r));
     }
@@ -165,7 +162,6 @@
         var totalSec = remaining / 1000;
         var minutes = (totalSec / 60) % 60;
         var seconds = totalSec % 60;
-        /* Ponteiro de horas ≈ progresso da hora de almoço (volta completa = 60 min) */
         var hourDeg = (elapsed / totalMs) * 360;
         var minuteDeg = (minutes / 60) * 360;
         var secondDeg = (seconds / 60) * 360;
@@ -209,7 +205,8 @@
             els.statusChip.classList.add("almoco-chip--count");
             els.watchLabel.textContent = "Restante";
             els.actionTitle.textContent = "Intervalo de almoço";
-            els.actionText.textContent = "Contagem regressiva de 60 minutos. O aro vai desaparecendo com o tempo.";
+            els.actionText.textContent =
+                "Contagem regressiva de 60 minutos. O aro vai desaparecendo com o tempo.";
         } else if (next === "done") {
             els.statusChip.textContent = "Concluído";
             els.statusChip.classList.add("almoco-chip--accent");
@@ -217,7 +214,8 @@
             els.watchTime.textContent = "00:00";
             els.watchSub.textContent = "intervalo terminou";
             els.actionTitle.textContent = "Almoço concluído";
-            els.actionText.textContent = "Bom regresso ao trabalho. O próximo alarme será no próximo dia útil às 14:00.";
+            els.actionText.textContent =
+                "Bom regresso ao trabalho. O próximo alarme será no próximo dia útil às 14:00.";
             setRingProgress(0);
             setHands(0, COUNTDOWN_MS);
         }
@@ -230,9 +228,7 @@
     function updateNextHint(now) {
         if (phase === "counting" || phase === "alarming") {
             els.nextHint.textContent =
-                phase === "alarming"
-                    ? "Alarme ativo — clique em Almoço"
-                    : "Intervalo em curso";
+                phase === "alarming" ? "Alarme ativo — clique em Almoço" : "Intervalo em curso";
             return;
         }
         els.nextHint.textContent = formatNextHint(nextLunchDate(now));
@@ -260,15 +256,12 @@
     }
 
     function shouldAlarm(now) {
-        if (testMode) return true;
         if (!isWeekday(now)) return false;
         if (getAckDate() === todayKey(now)) return false;
-        var lunch = lunchMomentToday(now);
-        return now.getTime() >= lunch.getTime();
+        return now.getTime() >= lunchMomentToday(now).getTime();
     }
 
     function startCountdown(now) {
-        testMode = false;
         stopAlarmSound();
         var end = (now || new Date()).getTime() + COUNTDOWN_MS;
         setCountdownEnd(end);
@@ -278,13 +271,8 @@
 
     function onAlmocoClick() {
         if (phase !== "alarming") return;
+        unlockAudioSilent();
         startCountdown(new Date());
-    }
-
-    function onTestAlarm() {
-        testMode = true;
-        setPhaseUI("alarming");
-        startAlarmSound();
     }
 
     function tick() {
@@ -305,7 +293,6 @@
                 stopAlarmSound();
                 return;
             }
-            /* acabou */
             setCountdownEnd(null);
             setPhaseUI("done");
             stopAlarmSound();
@@ -316,23 +303,20 @@
             if (phase !== "alarming") {
                 setPhaseUI("alarming");
                 startAlarmSound();
-            } else if (audioEnabled && !alarmTimer) {
+            } else if (!alarmTimer) {
                 startAlarmSound();
             }
             return;
         }
 
-        /* Sem alarme ativo nem countdown */
         if (phase === "alarming") {
-            testMode = false;
             stopAlarmSound();
             setPhaseUI("idle");
             return;
         }
 
         if (phase === "done") {
-            var lunchToday = lunchMomentToday(now);
-            if (now.getTime() < lunchToday.getTime()) {
+            if (now.getTime() < lunchMomentToday(now).getTime()) {
                 setPhaseUI("idle");
             }
             stopAlarmSound();
@@ -347,11 +331,23 @@
 
     function bind() {
         els.btnAlmoco.addEventListener("click", onAlmocoClick);
-        els.btnEnableAudio.addEventListener("click", enableAudio);
-        els.btnTestAlarm.addEventListener("click", onTestAlarm);
+
+        /* Desbloqueia áudio na primeira interação (política do browser) */
+        ["pointerdown", "keydown", "touchstart"].forEach(function (evt) {
+            document.addEventListener(
+                evt,
+                function () {
+                    unlockAudioSilent();
+                },
+                { once: false, passive: true }
+            );
+        });
 
         document.addEventListener("visibilitychange", function () {
-            if (document.visibilityState === "visible") tick();
+            if (document.visibilityState === "visible") {
+                unlockAudioSilent();
+                tick();
+            }
         });
     }
 
@@ -366,9 +362,6 @@
             watchTime: $("watchTime"),
             watchSub: $("watchSub"),
             btnAlmoco: $("btnAlmoco"),
-            btnEnableAudio: $("btnEnableAudio"),
-            btnTestAlarm: $("btnTestAlarm"),
-            audioStatus: $("audioStatus"),
             statusChip: $("statusChip"),
             weekdayChip: $("weekdayChip"),
             nextHint: $("nextHint"),
@@ -378,6 +371,7 @@
 
         els.ringProgress.style.strokeDasharray = String(RING_LEN);
         bind();
+        unlockAudioSilent();
 
         var end = getCountdownEnd();
         if (end && end > Date.now()) {

@@ -413,9 +413,7 @@ body {
     gap: 12px;
 }
 
-.btn-almoco,
-.btn-secondary,
-.btn-ghost {
+.btn-almoco {
     min-height: 52px;
     padding: 0 26px;
     border-radius: var(--radius-btn);
@@ -424,13 +422,10 @@ body {
     font-size: 1rem;
     font-weight: 800;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
-}
-
-.btn-almoco {
     background: linear-gradient(135deg, #ff7a18, #ff3b30);
     color: #fff;
     box-shadow: 0 12px 36px rgba(255, 90, 40, 0.45);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
 }
 
 .btn-almoco:hover:not(:disabled) {
@@ -453,38 +448,6 @@ body {
     50% { transform: scale(1.03); }
 }
 
-.btn-secondary {
-    background: rgba(47, 140, 255, 0.16);
-    border: 1px solid rgba(77, 163, 255, 0.3);
-    color: #fff;
-}
-
-.btn-secondary:hover {
-    background: rgba(47, 140, 255, 0.26);
-    transform: translateY(-1px);
-}
-
-.btn-ghost {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-soft);
-    font-weight: 600;
-}
-
-.btn-ghost:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.audio-status {
-    margin-top: 16px;
-    font-size: 0.84rem;
-    color: var(--text-soft);
-}
-
-.audio-status.is-ok { color: #86efac; }
-.audio-status.is-warn { color: #fbbf24; }
-
 @media (max-width: 860px) {
     .almoco-hero {
         grid-template-columns: 1fr;
@@ -500,5 +463,5 @@ body {
     .panel-card { padding: 22px; }
     .almoco-topbar { flex-direction: column; align-items: flex-start; }
     .action-row { flex-direction: column; }
-    .btn-almoco, .btn-secondary, .btn-ghost { width: 100%; }
+    .btn-almoco { width: 100%; }
 }
