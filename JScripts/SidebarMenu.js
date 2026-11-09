@@ -180,12 +180,75 @@ class SidebarMenu {
     }
 
     init() {
+        this._navigating = false;
         this.createSidebar();
         SidebarTheme.start(this.sidebar);
         this.bindEvents();
         this.setActivePage();
         /* Dock fixo: nunca expande — só tooltip com o nome no hover do ícone */
         this.setExpanded(false);
+        this.playEnterTransition();
+    }
+
+    prefersReducedMotion() {
+        return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+
+    ensureTransitionLayer() {
+        let layer = document.querySelector(".page-transition");
+        if (layer) return layer;
+
+        layer = document.createElement("div");
+        layer.className = "page-transition";
+        layer.setAttribute("aria-hidden", "true");
+        layer.innerHTML = `
+            <div class="page-transition__veil"></div>
+            <div class="page-transition__sheen"></div>
+        `;
+        document.body.appendChild(layer);
+        return layer;
+    }
+
+    playEnterTransition() {
+        const shouldAnimate = sessionStorage.getItem("svf-page-transition") === "1";
+        sessionStorage.removeItem("svf-page-transition");
+
+        if (!shouldAnimate || this.prefersReducedMotion()) {
+            document.body.classList.add("page-enter");
+            window.setTimeout(() => document.body.classList.remove("page-enter"), 520);
+            return;
+        }
+
+        const layer = this.ensureTransitionLayer();
+        layer.classList.add("is-active", "is-entering");
+        document.body.classList.add("page-enter");
+
+        window.setTimeout(() => {
+            layer.classList.remove("is-active", "is-entering");
+            document.body.classList.remove("page-enter");
+        }, 520);
+    }
+
+    playLeaveTransition(href) {
+        if (this._navigating || !href) return;
+        this._navigating = true;
+
+        const reduced = this.prefersReducedMotion();
+        const duration = reduced ? 140 : 420;
+
+        try {
+            sessionStorage.setItem("svf-page-transition", "1");
+        } catch (e) {
+            /* ignore quota / private mode */
+        }
+
+        const layer = this.ensureTransitionLayer();
+        layer.classList.add("is-active", "is-leaving");
+        document.body.classList.add("page-leave", "fade-out");
+
+        window.setTimeout(() => {
+            window.location.href = href;
+        }, duration);
     }
 
     createSidebar() {
@@ -256,14 +319,27 @@ class SidebarMenu {
         this.sidebar.addEventListener("click", (event) => {
             const logoutBtn = event.target.closest(".logout-btn");
             if (logoutBtn) {
+                event.preventDefault();
                 this.handleLogout();
                 return;
             }
 
-            const link = event.target.closest("a.sidebar-link");
-            if (link) {
-                this.handleNavigation(link);
+            const link = event.target.closest("a.sidebar-link, a.sidebar-brand");
+            if (!link) return;
+
+            /* Nova aba / atalhos do browser — deixa o comportamento nativo */
+            if (
+                event.metaKey ||
+                event.ctrlKey ||
+                event.shiftKey ||
+                event.altKey ||
+                event.button === 1
+            ) {
+                return;
             }
+
+            event.preventDefault();
+            this.handleNavigation(link);
         });
     }
 
@@ -301,29 +377,42 @@ class SidebarMenu {
     handleNavigation(link) {
         if (!link?.href) return;
 
+        const current = window.location.pathname.replace(/\/+$/, "");
+        let targetPath = current;
+        try {
+            targetPath = new URL(link.href, window.location.href).pathname.replace(/\/+$/, "");
+        } catch (e) {
+            /* ignore */
+        }
+
+        if (targetPath === current) return;
+
         link.style.pointerEvents = "none";
         link.style.opacity = "0.7";
-        document.body.classList.add("fade-out");
-
-        setTimeout(() => {
-            window.location.href = link.href;
-        }, 180);
+        this.playLeaveTransition(link.href);
     }
 
     handleLogout() {
+        if (this._navigating) return;
+        this._navigating = true;
+
         const btn = this.sidebar.querySelector(".logout-btn");
         if (btn) btn.classList.add("logging-out");
 
         localStorage.removeItem("usuarioLogado");
-        document.body.classList.add("fade-out");
 
-        setTimeout(() => {
-            var dest =
-                window.APP && typeof window.APP.loginUrl === "function"
-                    ? window.APP.loginUrl()
-                    : "/index.html";
+        const dest =
+            window.APP && typeof window.APP.loginUrl === "function"
+                ? window.APP.loginUrl()
+                : "/index.html";
+
+        const layer = this.ensureTransitionLayer();
+        layer.classList.add("is-active", "is-leaving");
+        document.body.classList.add("page-leave", "fade-out");
+
+        window.setTimeout(() => {
             window.location.replace(dest);
-        }, 600);
+        }, this.prefersReducedMotion() ? 140 : 420);
     }
 }
 
@@ -383,16 +472,22 @@ if (typeof window !== "undefined") {
 document.addEventListener("DOMContentLoaded", () => {
     const topBlurOverlay = new TopBlurOverlay();
     topBlurOverlay.ensure();
-    new SidebarMenu();
+    window.__sidebarMenuInstance = new SidebarMenu();
 });
 
 if (typeof window !== "undefined" && typeof window.logout !== "function") {
     window.logout = function logout() {
+        const menu = document.querySelector(".sidebar");
+        if (menu && window.__sidebarMenuInstance && typeof window.__sidebarMenuInstance.handleLogout === "function") {
+            window.__sidebarMenuInstance.handleLogout();
+            return;
+        }
+
         const btn = document.querySelector(".sidebar .logout-btn") || document.querySelector(".logout-btn");
         if (btn) btn.classList.add("logging-out");
 
         localStorage.removeItem("usuarioLogado");
-        document.body.classList.add("fade-out");
+        document.body.classList.add("page-leave", "fade-out");
 
         setTimeout(() => {
             var dest =
@@ -400,6 +495,6 @@ if (typeof window !== "undefined" && typeof window.logout !== "function") {
                     ? window.APP.loginUrl()
                     : "/index.html";
             window.location.replace(dest);
-        }, 600);
+        }, 420);
     };
 }
