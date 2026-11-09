@@ -39,13 +39,82 @@
       margin: 0;
       font-family: var(--font);
       color: var(--text);
+      background: #0b3d2e;
+      overflow-x: hidden;
+    }
+
+    /* Fundo Excel — folhas + grelha + gradientes verdes */
+    .excel-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
       background:
-        radial-gradient(circle at 0% 0%, rgba(40, 161, 100, 0.26), transparent 28%),
-        radial-gradient(circle at 100% 0%, rgba(147, 225, 182, 0.32), transparent 24%),
-        linear-gradient(180deg, var(--bg-1), var(--bg-2));
+        radial-gradient(ellipse 60% 50% at 8% 12%, rgba(40, 161, 100, 0.45), transparent 55%),
+        radial-gradient(ellipse 50% 45% at 92% 8%, rgba(147, 225, 182, 0.35), transparent 50%),
+        radial-gradient(ellipse 55% 40% at 80% 90%, rgba(23, 114, 69, 0.4), transparent 55%),
+        linear-gradient(160deg, #0b3d2e 0%, #177245 42%, #dff2e6 100%);
+    }
+
+    .excel-bg__image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0.55;
+      mix-blend-mode: soft-light;
+      filter: saturate(1.1) contrast(1.05);
+    }
+
+    .excel-bg__veil {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(223, 242, 230, 0.72) 0%, rgba(237, 248, 241, 0.78) 55%, rgba(223, 242, 230, 0.85) 100%),
+        radial-gradient(circle at 20% 20%, rgba(40, 161, 100, 0.18), transparent 40%);
+    }
+
+    .excel-bg__grid {
+      position: absolute;
+      inset: 0;
+      opacity: 0.18;
+      background-image:
+        linear-gradient(rgba(23, 114, 69, 0.35) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(23, 114, 69, 0.35) 1px, transparent 1px);
+      background-size: 48px 28px;
+      mask-image: radial-gradient(ellipse 75% 70% at 50% 40%, black, transparent);
+    }
+
+    /* Logo Excel — diagonal, maior, deslocado à direita */
+    .excel-bg__logo {
+      position: absolute;
+      right: -8%;
+      top: 38%;
+      width: min(64vw, 820px);
+      height: auto;
+      transform: translateY(-36%) rotate(-22deg);
+      opacity: 0.28;
+      filter: drop-shadow(0 28px 60px rgba(11, 61, 46, 0.22)) saturate(1.1);
+      pointer-events: none;
+      user-select: none;
+      z-index: 2;
+    }
+
+    @media (max-width: 900px) {
+      .excel-bg__logo {
+        width: min(85vw, 580px);
+        right: -16%;
+        top: 46%;
+        opacity: 0.2;
+      }
     }
 
     .app-shell {
+      position: relative;
+      z-index: 1;
       min-height: 100vh;
       padding: 20px;
     }
@@ -458,6 +527,25 @@
   </style>
 </head>
 <body>
+  <div class="excel-bg" aria-hidden="true">
+    <img
+      class="excel-bg__image"
+      src="/images/distribuicao-custos-bg.jpg"
+      alt=""
+      decoding="async"
+    />
+    <div class="excel-bg__veil"></div>
+    <div class="excel-bg__grid"></div>
+    <img
+      class="excel-bg__logo"
+      src="/images/excel-logo-bg.png"
+      alt=""
+      width="800"
+      height="800"
+      decoding="async"
+    />
+  </div>
+
   <div class="app-shell">
     <main class="main">
       <section class="topbar glass">

@@ -99,14 +99,10 @@ class SidebarMenu {
     constructor() {
         this.sidebar = null;
         this.currentPage = this.getCurrentPage();
-        this.storageKey = "sidebarExpanded";
-        this.autoCollapseMs = 3000; // 3 segundos
-        this._collapseTimer = null;
-
         this.items = [
             {
                 key: "Tools",
-                label: "Dashboard",
+                label: "Home",
                 href: "/pages/Tools.html",
                 icon: "/pages/icons/dashboard.svg"
             },
@@ -156,7 +152,7 @@ class SidebarMenu {
                 key: "Manuais",
                 label: "Manuais",
                 href: "/pages/Manuais.html",
-                icon: "/pages/icons/pdf.svg"
+                icon: "/pages/icons/manuais.svg"
             },
             {
                 key: "AlmocoAnisabel",
@@ -188,7 +184,8 @@ class SidebarMenu {
         SidebarTheme.start(this.sidebar);
         this.bindEvents();
         this.setActivePage();
-        this.setExpanded(false); // começa sempre recolhida
+        /* Dock fixo: nunca expande — só tooltip com o nome no hover do ícone */
+        this.setExpanded(false);
     }
 
     createSidebar() {
@@ -220,16 +217,23 @@ class SidebarMenu {
         sidebar.innerHTML = `
             <div class="sidebar-shell">
                 <div class="sidebar-top">
-                    <div class="sidebar-brand">
+                    <a
+                        class="sidebar-brand"
+                        href="${this.resolveUrl("/pages/Tools.html")}"
+                        title="Dashboard"
+                        aria-label="Dashboard"
+                    >
                         <img class="sidebar-brand-logo" src="${this.resolveUrl("/images/Logo-Lateral.png")}" alt="Servinform">
                         <span class="sidebar-brand-text">Ferramentas</span>
-                    </div>
+                    </a>
                 </div>
 
                 <nav class="sidebar-nav" aria-label="Páginas">
-                    <ul class="sidebar-list">
-                        ${navItemsHtml}
-                    </ul>
+                    <div class="sidebar-dock" role="presentation">
+                        <ul class="sidebar-list">
+                            ${navItemsHtml}
+                        </ul>
+                    </div>
                 </nav>
 
                 <div class="sidebar-bottom">
@@ -248,35 +252,7 @@ class SidebarMenu {
     bindEvents() {
         if (!this.sidebar) return;
 
-        // Expande automaticamente ao entrar com o mouse
-        this.sidebar.addEventListener("mouseenter", () => {
-            this.clearAutoCollapse();
-            this.setExpanded(true);
-        });
-
-        // Quando sai com o mouse, agenda recolher
-        this.sidebar.addEventListener("mouseleave", () => {
-            this.scheduleAutoCollapse();
-        });
-
-        // Se mover dentro do menu, mantém aberto
-        this.sidebar.addEventListener("mousemove", () => {
-            if (this.sidebar.classList.contains("sidebar--expanded")) {
-                this.clearAutoCollapse();
-            }
-        });
-
-        // Mantém acessível por teclado
-        this.sidebar.addEventListener("focusin", () => {
-            this.clearAutoCollapse();
-            this.setExpanded(true);
-        });
-
-        this.sidebar.addEventListener("focusout", () => {
-            this.scheduleAutoCollapse();
-        });
-
-        // Clique em links e logout
+        // Clique em links e logout (sem expandir a barra)
         this.sidebar.addEventListener("click", (event) => {
             const logoutBtn = event.target.closest(".logout-btn");
             if (logoutBtn) {
@@ -311,28 +287,15 @@ class SidebarMenu {
     setExpanded(expanded) {
         if (!this.sidebar) return;
 
-        this.sidebar.classList.toggle("sidebar--expanded", expanded);
-        this.sidebar.classList.toggle("sidebar--collapsed", !expanded);
+        /* Forçado: dock permanece sempre recolhido */
+        const open = false;
+        this.sidebar.classList.toggle("sidebar--expanded", open);
+        this.sidebar.classList.toggle("sidebar--collapsed", !open);
 
-        document.body.classList.toggle("sidebar-expanded", expanded);
-        document.body.classList.toggle("sidebar-collapsed", !expanded);
+        document.body.classList.toggle("sidebar-expanded", open);
+        document.body.classList.toggle("sidebar-collapsed", !open);
 
-        this.sidebar.setAttribute("aria-expanded", expanded ? "true" : "false");
-    }
-
-    clearAutoCollapse() {
-        if (this._collapseTimer) {
-            clearTimeout(this._collapseTimer);
-            this._collapseTimer = null;
-        }
-    }
-
-    scheduleAutoCollapse() {
-        this.clearAutoCollapse();
-
-        this._collapseTimer = setTimeout(() => {
-            this.setExpanded(false);
-        }, this.autoCollapseMs);
+        this.sidebar.setAttribute("aria-expanded", "false");
     }
 
     handleNavigation(link) {

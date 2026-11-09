@@ -1,5 +1,12 @@
 window.APP_CHANGELOG = [
     {
+        id: "2026-11-09-dock-liquid-glass",
+        date: "2026-11-09",
+        type: "Atualização · UI",
+        title: "Menu dock e liquid glass",
+        summary: "Menu lateral em estilo dock (ícones + tooltip), Home restaurado, cards da Tools com fundo liquid glass e Distribuição de Custos com fundo temático Excel."
+    },
+    {
         id: "2026-04-30-marco-100k-faturas",
         date: "2026-04-30",
         type: "Marco",
