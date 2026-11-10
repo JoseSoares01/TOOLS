@@ -5,7 +5,7 @@
 
 :root {
     /* Fallbacks quando a página não define --panel / --accent (ex.: manutenção) */
-    --sidebar-fallback-panel: rgba(10, 18, 32, 0.82);
+    --sidebar-fallback-panel: rgba(10, 18, 32, 0.48);
     --sidebar-fallback-line: rgba(255, 255, 255, 0.1);
     --sidebar-fallback-accent: #39c6ff;
     --sidebar-fallback-accent-2: #4f8cff;
@@ -97,7 +97,7 @@
 }
 
 .sidebar[data-theme="morning"] {
-    --sb-panel: rgba(255, 255, 255, 0.50);
+    --sb-panel: rgba(255, 255, 255, 0.32);
     --sb-line: rgba(120, 160, 210, 0.18);
     --sb-text: #10304d;
     --sb-text-soft: #53708d;
@@ -110,7 +110,7 @@
 }
 
 .sidebar[data-theme="midday"] {
-    --sb-panel: rgba(255, 255, 255, 0.56);
+    --sb-panel: rgba(255, 255, 255, 0.34);
     --sb-line: rgba(120, 170, 215, 0.16);
     --sb-text: #14334d;
     --sb-text-soft: #5f7c96;
@@ -123,7 +123,7 @@
 }
 
 .sidebar[data-theme="afternoon"] {
-    --sb-panel: rgba(255, 249, 239, 0.44);
+    --sb-panel: rgba(255, 249, 239, 0.28);
     --sb-line: rgba(181, 133, 76, 0.16);
     --sb-text: #4f2f13;
     --sb-text-soft: #866445;
@@ -136,7 +136,7 @@
 }
 
 .sidebar[data-theme="sunset"] {
-    --sb-panel: rgba(255, 239, 228, 0.30);
+    --sb-panel: rgba(255, 239, 228, 0.2);
     --sb-line: rgba(255, 216, 196, 0.18);
     --sb-text: #fff7f0;
     --sb-text-soft: #f3d0c0;
@@ -149,7 +149,7 @@
 }
 
 .sidebar[data-theme="night"] {
-    --sb-panel: rgba(10, 18, 32, 0.74);
+    --sb-panel: rgba(10, 18, 32, 0.42);
     --sb-line: rgba(255, 255, 255, 0.10);
     --sb-text: #edf5ff;
     --sb-text-soft: #9cb1c6;
@@ -292,10 +292,10 @@
     gap: 0;
     padding: 10px 8px;
     border-radius: 24px;
-    background: rgba(12, 12, 14, 0.92);
+    background: rgba(12, 12, 14, 0.52);
     border: 1px solid rgba(255, 255, 255, 0.14);
-    backdrop-filter: blur(20px) saturate(130%);
-    -webkit-backdrop-filter: blur(20px) saturate(130%);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
     box-shadow:
         0 14px 40px rgba(0, 0, 0, 0.35),
         inset 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -306,7 +306,7 @@
 .sidebar[data-theme="morning"] .sidebar-dock,
 .sidebar[data-theme="midday"] .sidebar-dock,
 .sidebar[data-theme="afternoon"] .sidebar-dock {
-    background: rgba(255, 255, 255, 0.72);
+    background: rgba(255, 255, 255, 0.42);
     border-color: rgba(0, 0, 0, 0.08);
     box-shadow:
         0 14px 36px rgba(64, 122, 173, 0.14),
@@ -314,7 +314,7 @@
 }
 
 .sidebar[data-theme="sunset"] .sidebar-dock {
-    background: rgba(28, 18, 32, 0.78);
+    background: rgba(28, 18, 32, 0.48);
     border-color: rgba(255, 216, 196, 0.18);
 }
 

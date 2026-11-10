@@ -2,8 +2,8 @@
     --bg-1: #06101d;
     --bg-2: #0b1829;
 
-    --panel: rgba(10, 18, 32, 0.74);
-    --panel-strong: rgba(9, 17, 30, 0.88);
+    --panel: rgba(10, 18, 32, 0.48);
+    --panel-strong: rgba(9, 17, 30, 0.62);
     --line: rgba(255, 255, 255, 0.10);
 
     --text: #edf5ff;
@@ -33,11 +33,11 @@
     --orb-2: rgba(79, 140, 255, 0.14);
     --orb-3: rgba(66, 230, 164, 0.10);
 
-    --card-surface: rgba(255, 255, 255, 0.28);
-    --card-body-bg: rgba(255, 255, 255, 0.22);
+    --card-surface: rgba(255, 255, 255, 0.16);
+    --card-body-bg: rgba(255, 255, 255, 0.12);
     --card-title: #0d1e31;
     --card-text: #5c6a79;
-    --tag-bg: rgba(238, 247, 255, 0.72);
+    --tag-bg: rgba(238, 247, 255, 0.5);
     --tag-text: #2563eb;
     --btn-bg: #0e5fd7;
     --btn-bg-hover: #0a4fb8;
@@ -282,9 +282,18 @@ body {
    SHELL
 ========================= */
 .dashboard-shell {
-    width: min(1480px, calc(100vw - 56px));
-    margin: 0 auto;
-    padding: 24px 22px 34px;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 18px 12px 28px 4px;
+}
+
+/* Aproxima o conteúdo do dock (limite esquerdo) e da margem direita */
+body.fade-in.sidebar-collapsed,
+body.fade-in.sidebar-expanded,
+body.fade-in:not(.sidebar-collapsed):not(.sidebar-expanded) {
+    padding-left: calc(var(--sidebar-collapsed-w, 82px) + 16px);
+    padding-right: 10px;
 }
 
 /* =========================
@@ -292,11 +301,11 @@ body {
 ========================= */
 .glass-panel {
     position: relative;
-    background: var(--panel);
+    background: color-mix(in srgb, var(--panel) 72%, transparent);
     border: 1px solid var(--line);
     border-radius: var(--radius-xl);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(22px) saturate(150%);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
     box-shadow:
         var(--shadow),
         inset 0 1px 0 rgba(255,255,255,0.06),
@@ -653,22 +662,22 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.38);
     color: var(--card-title);
     font-family: "Inter", system-ui, sans-serif;
-    /* Apple liquid glass — fundo translúcido + blur forte */
+    /* Apple liquid glass — fundo mais transparente + blur */
     background:
         linear-gradient(
             155deg,
-            rgba(255, 255, 255, 0.58) 0%,
-            rgba(255, 255, 255, 0.22) 38%,
-            rgba(255, 255, 255, 0.08) 72%,
-            rgba(255, 255, 255, 0.14) 100%
+            rgba(255, 255, 255, 0.34) 0%,
+            rgba(255, 255, 255, 0.12) 38%,
+            rgba(255, 255, 255, 0.04) 72%,
+            rgba(255, 255, 255, 0.08) 100%
         ),
         linear-gradient(
             to bottom left,
-            color-mix(in srgb, var(--card-body-bg) 70%, transparent),
-            color-mix(in srgb, var(--card-surface) 75%, transparent)
+            color-mix(in srgb, var(--card-body-bg) 48%, transparent),
+            color-mix(in srgb, var(--card-surface) 52%, transparent)
         );
-    backdrop-filter: blur(42px) saturate(185%) brightness(1.06);
-    -webkit-backdrop-filter: blur(42px) saturate(185%) brightness(1.06);
+    backdrop-filter: blur(36px) saturate(170%) brightness(1.04);
+    -webkit-backdrop-filter: blur(36px) saturate(170%) brightness(1.04);
     box-shadow:
         0 18px 48px rgba(0, 0, 0, 0.18),
         0 2px 10px rgba(0, 0, 0, 0.08),
@@ -702,10 +711,10 @@ body {
             rgba(255, 255, 255, 0.02) 55%,
             rgba(255, 255, 255, 0.2) 100%
         ),
-        radial-gradient(ellipse 70% 42% at 18% 0%, rgba(255, 255, 255, 0.55), transparent 62%),
-        radial-gradient(ellipse 48% 34% at 88% 100%, rgba(255, 255, 255, 0.16), transparent 68%),
+        radial-gradient(ellipse 70% 42% at 18% 0%, rgba(255, 255, 255, 0.36), transparent 62%),
+        radial-gradient(ellipse 48% 34% at 88% 100%, rgba(255, 255, 255, 0.1), transparent 68%),
         var(--hero-reflection);
-    opacity: 0.72;
+    opacity: 0.48;
     mix-blend-mode: soft-light;
     animation: cardLiquidShine 8s ease-in-out infinite;
     transition: opacity 1.2s ease, background 1.2s ease;
@@ -928,15 +937,16 @@ body {
 @media (min-width: 1200px) {
     .dashboard-shell {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) clamp(340px, 23vw, 376px);
+        grid-template-columns: minmax(0, 1fr) clamp(390px, 27vw, 460px);
         grid-template-areas:
             "hero newsletter"
             "toolbar newsletter"
             "cards newsletter"
             "footer newsletter";
-        gap: 20px 22px;
+        gap: 18px 16px;
         align-items: start;
         min-height: 100vh;
+        padding: 16px 8px 24px 2px;
     }
 
     .hero-panel { grid-area: hero; margin-bottom: 2px; }
@@ -1082,10 +1092,10 @@ body {
     position: relative;
     padding: 26px 24px 22px;
     border-radius: var(--radius-xl);
-    background: var(--panel);
+    background: color-mix(in srgb, var(--panel) 70%, transparent);
     border: 1px solid var(--line);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(22px) saturate(150%);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
     box-shadow:
         var(--shadow),
         inset 0 1px 0 rgba(255, 255, 255, 0.06),
@@ -1229,10 +1239,12 @@ body {
     gap: 12px;
     padding: 20px 20px 18px;
     border-radius: var(--radius-lg);
-    background: color-mix(in srgb, var(--card-body-bg) 78%, transparent);
+    background: color-mix(in srgb, var(--card-body-bg) 48%, transparent);
     border: 1px solid var(--line);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
     box-shadow:
-        inset -1px 1px 0 rgba(255, 255, 255, 0.45),
+        inset -1px 1px 0 rgba(255, 255, 255, 0.35),
         0 14px 36px rgba(0, 0, 0, 0.1);
     transition:
         transform 0.3s ease,
@@ -1762,8 +1774,8 @@ body[data-theme="morning"] {
     --bg-1: #dff1ff;
     --bg-2: #f5fbff;
 
-    --panel: rgba(255, 255, 255, 0.50);
-    --panel-strong: rgba(255, 255, 255, 0.66);
+    --panel: rgba(255, 255, 255, 0.32);
+    --panel-strong: rgba(255, 255, 255, 0.46);
     --line: rgba(120, 160, 210, 0.18);
 
     --text: #10304d;
@@ -1792,11 +1804,11 @@ body[data-theme="morning"] {
     --orb-2: rgba(92, 185, 255, 0.12);
     --orb-3: rgba(110, 224, 190, 0.10);
 
-    --card-surface: rgba(255, 255, 255, 0.32);
-    --card-body-bg: rgba(255, 255, 255, 0.24);
+    --card-surface: rgba(255, 255, 255, 0.18);
+    --card-body-bg: rgba(255, 255, 255, 0.12);
     --card-title: #16324a;
     --card-text: #5d7287;
-    --tag-bg: rgba(232, 245, 255, 0.7);
+    --tag-bg: rgba(232, 245, 255, 0.5);
     --tag-text: #1769aa;
     --btn-bg: #1382e8;
     --btn-bg-hover: #0f6fcc;
@@ -1812,8 +1824,8 @@ body[data-theme="midday"] {
     --bg-1: #eef9ff;
     --bg-2: #ffffff;
 
-    --panel: rgba(255, 255, 255, 0.56);
-    --panel-strong: rgba(255, 255, 255, 0.72);
+    --panel: rgba(255, 255, 255, 0.34);
+    --panel-strong: rgba(255, 255, 255, 0.48);
     --line: rgba(120, 170, 215, 0.16);
 
     --text: #14334d;
@@ -1842,11 +1854,11 @@ body[data-theme="midday"] {
     --orb-2: rgba(120, 195, 255, 0.10);
     --orb-3: rgba(120, 225, 205, 0.08);
 
-    --card-surface: rgba(255, 255, 255, 0.34);
-    --card-body-bg: rgba(255, 255, 255, 0.26);
+    --card-surface: rgba(255, 255, 255, 0.2);
+    --card-body-bg: rgba(255, 255, 255, 0.14);
     --card-title: #16324a;
     --card-text: #607487;
-    --tag-bg: rgba(237, 248, 255, 0.7);
+    --tag-bg: rgba(237, 248, 255, 0.5);
     --tag-text: #1a6db4;
     --btn-bg: #1a8ef0;
     --btn-bg-hover: #137ad0;
@@ -1862,8 +1874,8 @@ body[data-theme="afternoon"] {
     --bg-1: #fff1d7;
     --bg-2: #ffe5bf;
 
-    --panel: rgba(255, 249, 239, 0.44);
-    --panel-strong: rgba(255, 247, 232, 0.58);
+    --panel: rgba(255, 249, 239, 0.28);
+    --panel-strong: rgba(255, 247, 232, 0.4);
     --line: rgba(181, 133, 76, 0.16);
 
     --text: #4f2f13;
@@ -1892,11 +1904,11 @@ body[data-theme="afternoon"] {
     --orb-2: rgba(255, 210, 120, 0.12);
     --orb-3: rgba(255, 130, 92, 0.08);
 
-    --card-surface: rgba(255, 255, 255, 0.34);
-    --card-body-bg: rgba(255, 252, 246, 0.26);
+    --card-surface: rgba(255, 255, 255, 0.2);
+    --card-body-bg: rgba(255, 252, 246, 0.14);
     --card-title: #4a2d15;
     --card-text: #7a6551;
-    --tag-bg: rgba(255, 241, 223, 0.7);
+    --tag-bg: rgba(255, 241, 223, 0.5);
     --tag-text: #c56b19;
     --btn-bg: #f08a24;
     --btn-bg-hover: #d97614;
@@ -1912,8 +1924,8 @@ body[data-theme="sunset"] {
     --bg-1: #2b2449;
     --bg-2: #ffb47a;
 
-    --panel: rgba(255, 239, 228, 0.30);
-    --panel-strong: rgba(255, 239, 228, 0.42);
+    --panel: rgba(255, 239, 228, 0.2);
+    --panel-strong: rgba(255, 239, 228, 0.3);
     --line: rgba(255, 216, 196, 0.18);
 
     --text: #fff7f0;
@@ -1942,11 +1954,11 @@ body[data-theme="sunset"] {
     --orb-2: rgba(152, 102, 255, 0.16);
     --orb-3: rgba(255, 198, 130, 0.08);
 
-    --card-surface: rgba(255, 255, 255, 0.36);
-    --card-body-bg: rgba(255, 248, 244, 0.28);
+    --card-surface: rgba(255, 255, 255, 0.2);
+    --card-body-bg: rgba(255, 248, 244, 0.14);
     --card-title: #4c2b2f;
     --card-text: #7d6466;
-    --tag-bg: rgba(255, 240, 233, 0.72);
+    --tag-bg: rgba(255, 240, 233, 0.5);
     --tag-text: #d75c34;
     --btn-bg: #f06f3b;
     --btn-bg-hover: #d85d2d;
@@ -1962,8 +1974,8 @@ body[data-theme="night"] {
     --bg-1: #06101d;
     --bg-2: #0b1829;
 
-    --panel: rgba(10, 18, 32, 0.74);
-    --panel-strong: rgba(9, 17, 30, 0.88);
+    --panel: rgba(10, 18, 32, 0.48);
+    --panel-strong: rgba(9, 17, 30, 0.62);
     --line: rgba(255, 255, 255, 0.10);
 
     --text: #edf5ff;
@@ -1992,11 +2004,11 @@ body[data-theme="night"] {
     --orb-2: rgba(79, 140, 255, 0.14);
     --orb-3: rgba(66, 230, 164, 0.10);
 
-    --card-surface: rgba(255, 255, 255, 0.28);
-    --card-body-bg: rgba(255, 255, 255, 0.2);
+    --card-surface: rgba(255, 255, 255, 0.16);
+    --card-body-bg: rgba(255, 255, 255, 0.12);
     --card-title: #0d1e31;
     --card-text: #5c6a79;
-    --tag-bg: rgba(238, 247, 255, 0.72);
+    --tag-bg: rgba(238, 247, 255, 0.5);
     --tag-text: #2563eb;
     --btn-bg: #0e5fd7;
     --btn-bg-hover: #0a4fb8;
@@ -2388,6 +2400,13 @@ body[data-theme="night"] {
 }
 
 @media (max-width: 760px) {
+    body.fade-in.sidebar-collapsed,
+    body.fade-in.sidebar-expanded,
+    body.fade-in:not(.sidebar-collapsed):not(.sidebar-expanded) {
+        padding-left: 20px;
+        padding-right: 12px;
+    }
+
     .dashboard-shell {
         padding: 18px 12px 24px;
     }
