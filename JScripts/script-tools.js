@@ -571,9 +571,9 @@ window.addEventListener("resize", () => {
 
 
 async function initWeatherWidget() {
-    const widget = document.querySelector(".weather-floating");
+    const widget = document.querySelector(".weather-floating") || document.querySelector(".portal-weather");
     const tempEl = document.getElementById("weatherTemp");
-    if (!widget || !tempEl) return;
+    if (!tempEl) return;
 
     const url = "https://api.open-meteo.com/v1/forecast?latitude=38.7223&longitude=-9.1393&current=temperature_2m&timezone=auto";
 
@@ -591,16 +591,18 @@ async function initWeatherWidget() {
         const rounded = Math.round(temperature);
         tempEl.textContent = `${rounded}°C`;
 
-        widget.classList.remove("is-cold", "is-mild", "is-warm", "is-hot");
+        if (widget) {
+            widget.classList.remove("is-cold", "is-mild", "is-warm", "is-hot");
 
-        if (rounded < 12) {
-            widget.classList.add("is-cold");
-        } else if (rounded < 20) {
-            widget.classList.add("is-mild");
-        } else if (rounded < 28) {
-            widget.classList.add("is-warm");
-        } else {
-            widget.classList.add("is-hot");
+            if (rounded < 12) {
+                widget.classList.add("is-cold");
+            } else if (rounded < 20) {
+                widget.classList.add("is-mild");
+            } else if (rounded < 28) {
+                widget.classList.add("is-warm");
+            } else {
+                widget.classList.add("is-hot");
+            }
         }
     } catch (error) {
         tempEl.textContent = "--°C";

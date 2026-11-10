@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="/css/Style-tools.css" />
     <link rel="stylesheet" href="/css/SidebarMenu.css" />
+    <link rel="stylesheet" href="/css/Tools-home.css" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,451 +15,225 @@
     <script src="https://t.contentsquare.net/uxa/7e44cf3c58e76.js"></script>
 </head>
 
+<body class="fade-in home-portal" data-theme="morning">
 
-<body class="fade-in" data-theme="night">
-    
-    <!-- PRELOADER -->
     <div id="preloader" aria-hidden="true">
         <div class="spinner"></div>
     </div>
 
-    <!-- OVERLAY DE TRANSIÇÃO -->
     <div class="overlay"></div>
 
-
-    <!-- FUNDO ANIMADO -->
-    <div class="animated-bg" aria-hidden="true">
+    <div class="animated-bg home-portal-bg" aria-hidden="true">
         <canvas id="hero-canvas"></canvas>
-
-        <!-- FOGUETE -->
-        <div class="rocket">
-            <div class="rocket-nose"></div>
-
-            <div class="rocket-body">
-                <div class="rocket-window"></div>
-            </div>
-
-            <div class="rocket-fin rocket-fin-left"></div>
-            <div class="rocket-fin rocket-fin-right"></div>
-            <div class="rocket-fin-center"></div>
-
-            <div class="rocket-base"></div>
-
-            <div class="rocket-flame-core"></div>
-            <div class="rocket-flame"></div>
-        </div>
-
-        <!-- CENÁRIO DINÂMICO -->
-        <div class="sky-glow sky-glow-left"></div>
-        <div class="sky-glow sky-glow-right"></div>
-
-        <div class="sun-moon-wrap">
-            <div class="sun"></div>
-
-            <div class="moon" aria-hidden="true">
-                <span class="moon-crater moon-crater--1"></span>
-                <span class="moon-crater moon-crater--2"></span>
-                <span class="moon-crater moon-crater--3"></span>
-                <span class="moon-crater moon-crater--4 moon-crater--sm"></span>
-            </div>
-        </div>
-
-        <div class="cloud-layer cloud-layer-1">
-            <span class="cloud c1"></span>
-            <span class="cloud c2"></span>
-            <span class="cloud c3"></span>
-        </div>
-
-        <div class="cloud-layer cloud-layer-2">
-            <span class="cloud c4"></span>
-            <span class="cloud c5"></span>
-        </div>
-
-        <div class="cosmic-layer">
-            <span class="mini-meteor meteor-1"></span>
-            <span class="mini-meteor meteor-2"></span>
-        </div>
-
-        <div class="stars-layer">
-            <span class="star s1"></span>
-            <span class="star s2"></span>
-            <span class="star s3"></span>
-            <span class="star s4"></span>
-            <span class="star s5"></span>
-            <span class="star s6"></span>
-            <span class="star s7"></span>
-            <span class="star s8"></span>
-            <span class="star s9"></span>
-            <span class="star s10"></span>
-        </div>
-
-        <div class="bg-orb orb-1"></div>
-        <div class="bg-orb orb-2"></div>
-        <div class="bg-orb orb-3"></div>
-        <div class="bg-grid"></div>
-        <div class="bg-scan"></div>
+        <div class="portal-blob portal-blob--1"></div>
+        <div class="portal-blob portal-blob--2"></div>
+        <div class="portal-blob portal-blob--3"></div>
     </div>
 
-    
-
-    <main class="dashboard-shell">
-        <!-- HERO / TOPBAR -->
-        <header class="hero-panel">
-            <div class="hero-copy glass-panel">
-                <p class="eyebrow">Portal interno</p>
-                <h1>Ferramentas Servinform</h1>
-                <p class="hero-subtitle">
-                    Aceda rapidamente às ferramentas operacionais, fiscais e documentais da plataforma.
-                </p>
-
-                <div class="hero-badges">
-                    <span class="hero-badge">QR & Fiscal</span>
-                    <span class="hero-badge">PDF & Imagens</span>
-                    <span class="hero-badge">Automação & Utilitários</span>
-                </div>
+    <main class="dashboard-shell portal-shell">
+        <header class="portal-topbar">
+            <div class="portal-brand">
+                <strong>Servinform</strong>
+                <span class="portal-brand-sep">|</span>
+                <span class="portal-brand-sub">PORTAL INTERNO</span>
             </div>
 
-            <div class="hero-side glass-panel">
-                <div class="mini-status-card">
-                    <span class="status-dot"></span>
-                    <div>
-                        <strong>Ambiente ativo</strong>
-                        <p>Portal operacional carregado</p>
-                    </div>
+            <div class="portal-topbar-right">
+                <div class="portal-status-pill">
+                    <span class="portal-status-dot" aria-hidden="true"></span>
+                    Ambiente ativo
                 </div>
 
-                <div class="clock-card">
-                    <div class="clock-top">
-                        <span class="clock-label">Hora atual</span>
-                    </div>
+                <span class="portal-topbar-divider" aria-hidden="true"></span>
 
-                    <div class="clock-digital">
-                        <div class="date"></div>
-                        <div class="time"></div>
-                        <div class="day"></div>
-                    </div>
+                <div class="portal-datetime" id="portalDateTime" aria-live="polite">
+                    <span class="portal-date" id="portalDate">—</span>
+                    <strong class="portal-time" id="portalTime">--:--</strong>
+                </div>
 
-                    <div class="clock-analog">
-                        <div class="clock-face"></div>
-                        <div class="hour-hand"></div>
-                        <div class="minute-hand"></div>
-                        <div class="second-hand"></div>
-                        <div class="clock-center"></div>
-                    </div>
+                <div class="portal-weather" aria-label="Temperatura atual em Lisboa">
+                    <span class="portal-weather-icon" aria-hidden="true">
+                        <svg viewBox="0 0 48 48" width="36" height="36" fill="none">
+                            <circle cx="30" cy="16" r="7" fill="#FBBF24"/>
+                            <path d="M14 34h18a7 7 0 0 0 .3-14 9 9 0 0 0-17.2 2.2A6.5 6.5 0 0 0 14 34Z" fill="#E2E8F0"/>
+                            <path d="M14 34h18a7 7 0 0 0 .3-14 9 9 0 0 0-17.2 2.2A6.5 6.5 0 0 0 14 34Z" fill="#F1F5F9" fill-opacity=".9"/>
+                        </svg>
+                    </span>
+                    <span class="portal-weather-copy">
+                        <strong class="weather-temp" id="weatherTemp">--°C</strong>
+                        <span class="weather-city">Lisboa</span>
+                    </span>
                 </div>
             </div>
         </header>
 
-        <!-- TOOLBAR -->
-        <section class="toolbar-panel glass-panel">
-            <div class="toolbar-left">
-                <h2>Ferramentas disponíveis</h2>
-                <p>Selecione uma ferramenta para abrir o respetivo módulo.</p>
-            </div>
+        <section class="portal-hero">
+            <h1>Ferramentas Servinform</h1>
+            <p class="portal-hero-sub">
+                Aceda rapidamente às ferramentas operacionais, fiscais e documentais da plataforma.
+            </p>
+        </section>
 
-            <div class="toolbar-right">
-                <div class="tool-count">
-                    <span class="tool-count-number">9</span>
+        <section class="portal-toolbar" aria-label="Pesquisa e filtros">
+            <label class="portal-search" for="toolSearch">
+                <span class="portal-search-icon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                </span>
+                <input
+                    id="toolSearch"
+                    type="search"
+                    placeholder="Pesquisar ferramentas..."
+                    autocomplete="off"
+                    spellcheck="false"
+                />
+                <kbd class="portal-search-kbd" aria-hidden="true">⌘ K</kbd>
+            </label>
+
+            <div class="portal-filters-row">
+                <div class="portal-filters" role="tablist" aria-label="Categorias">
+                    <button type="button" class="portal-filter is-active" data-filter="all" role="tab" aria-selected="true">Todas</button>
+                    <button type="button" class="portal-filter" data-filter="fiscal" role="tab" aria-selected="false">
+                        <img class="portal-filter-icon" src="/pages/icons/filter-tag.svg" alt="" aria-hidden="true">
+                        Fiscal
+                    </button>
+                    <button type="button" class="portal-filter" data-filter="documentos" role="tab" aria-selected="false">
+                        <img class="portal-filter-icon" src="/pages/icons/filter-doc.svg" alt="" aria-hidden="true">
+                        Documentos
+                    </button>
+                    <button type="button" class="portal-filter" data-filter="utilitarios" role="tab" aria-selected="false">
+                        <img class="portal-filter-icon" src="/pages/icons/filter-layers.svg" alt="" aria-hidden="true">
+                        Utilitários
+                    </button>
+                </div>
+                <div class="tool-count portal-module-count">
+                    <span class="tool-count-number" id="moduleCount">9</span>
                     <span class="tool-count-label">módulos</span>
                 </div>
             </div>
         </section>
 
-
-        <!-- GRID -->
-        <section class="cards-container">
-            <article class="modern-card card-tone-1" data-url="Trivalor">
-                <h3 class="card-title">Gerador QR Trivalor</h3>
-                <div class="card-icon" aria-hidden="true">
-                    <img src="/images/QR.png" alt="">
-                </div>
-                <div class="card-content">
-                    <span class="card-number">#01</span>
-                    <p class="card-desc">Gere códigos QR para o sistema Trivalor de forma rápida, padronizada e segura.</p>
-                    <div class="card-footer">
-                        <div class="card-tag">Fiscal</div>
-                        <button type="button" class="btn-access">Abrir</button>
+        <div class="portal-layout">
+            <section class="cards-container portal-cards" id="toolsGrid" aria-label="Ferramentas">
+                <article class="modern-card show card-tone-1" data-url="Trivalor" data-category="fiscal" data-search="gerador qr trivalor fiscal">
+                    <div class="card-icon card-icon--app" aria-hidden="true">
+                        <img src="/images/portal-icons/01-qr.png" alt="">
                     </div>
-                </div>
-            </article>
-
-            <article class="modern-card card-tone-3" data-url="SplitPDF">
-                <h3 class="card-title">Editar PDFs</h3>
-                <div class="card-icon" aria-hidden="true">
-                    <img src="/images/pdf.png" alt="">
-                </div>
-                <div class="card-content">
-                    <span class="card-number">#02</span>
-                    <p class="card-desc">Mescle, separe e organize documentos PDF com uma interface mais eficiente.</p>
-                    <div class="card-footer">
-                        <div class="card-tag">Documentos</div>
-                        <button type="button" class="btn-access">Abrir</button>
+                    <div class="card-content">
+                        <h3 class="card-title">Gerador QR Trivalor</h3>
+                        <p class="card-desc">Gere códigos QR fiscais de forma rápida e padronizada.</p>
                     </div>
-                </div>
-            </article>
+                    <span class="card-chevron" aria-hidden="true"></span>
+                </article>
 
-            <article class="modern-card card-tone-4" data-url="Convert">
-                <h3 class="card-title">Conversor de Imagens</h3>
-                <div class="card-icon" aria-hidden="true">
-                    <img src="/images/IMAGE-PDF.png" alt="">
-                </div>
-                <div class="card-content">
-                    <span class="card-number">#03</span>
-                    <p class="card-desc">Converta imagens em PDF com organização visual, pré-visualização e ordem personalizada.</p>
-                    <div class="card-footer">
-                        <div class="card-tag">Conversão</div>
-                        <button type="button" class="btn-access">Abrir</button>
+                <article class="modern-card show card-tone-3" data-url="SplitPDF" data-category="documentos" data-search="editar pdfs documentos merge split">
+                    <div class="card-icon card-icon--app" aria-hidden="true">
+                        <img src="/images/portal-icons/02-pdf.png" alt="">
                     </div>
-                </div>
-            </article>
-
-            <article class="modern-card card-tone-5" data-url="ServinformSite">
-                <h3 class="card-title">Calculadora IVA</h3>
-                <div class="card-icon" aria-hidden="true">
-                    <img src="/images/calculadora.png" alt="">
-                </div>
-                <div class="card-content">
-                    <span class="card-number">#04</span>
-                    <p class="card-desc">Calcule IVA de forma precisa para faturação, despesas e conferência de valores.</p>
-                    <div class="card-footer">
-                        <div class="card-tag">Financeiro</div>
-                        <button type="button" class="btn-access">Abrir</button>
+                    <div class="card-content">
+                        <h3 class="card-title">Editar PDFs</h3>
+                        <p class="card-desc">Mescle, separe e organize documentos PDF.</p>
                     </div>
-                </div>
-            </article>
+                    <span class="card-chevron" aria-hidden="true"></span>
+                </article>
 
-            <article class="modern-card card-tone-1" data-url="winzinkemails">
-                <h3 class="card-title">Distribuição de Custos</h3>
-                <div class="card-icon" aria-hidden="true">
-                    <img src="/pages/icons/custos.svg" alt="">
-                </div>
-                <div class="card-content">
-                    <span class="card-number">#05</span>
-                    <p class="card-desc">Edite e gere ficheiros de distribuição de custos com fluxo claro, validações e exportação alinhada à operação.</p>
-                    <div class="card-footer">
-                        <div class="card-tag">Custos</div>
-                        <button type="button" class="btn-access">Abrir</button>
+                <article class="modern-card show card-tone-4" data-url="Convert" data-category="documentos" data-search="conversor imagens pdf">
+                    <div class="card-icon card-icon--app" aria-hidden="true">
+                        <img src="/images/portal-icons/03-imagens.png" alt="">
                     </div>
-                </div>
-            </article>
-
-            <article class="modern-card card-tone-2" data-url="buscarcidades">
-                <h3 class="card-title">Encontrar Cidades</h3>
-                <div class="card-icon" aria-hidden="true">
-                    <img src="/images/image.png" alt="">
-                </div>
-                <div class="card-content">
-                    <span class="card-number">#06</span>
-                    <p class="card-desc">Localize cidades e regiões em Portugal com uma experiência rápida e intuitiva.</p>
-                    <div class="card-footer">
-                        <div class="card-tag">Utilitário</div>
-                        <button type="button" class="btn-access">Abrir</button>
+                    <div class="card-content">
+                        <h3 class="card-title">Conversor de Imagens</h3>
+                        <p class="card-desc">Converta imagens em PDF com pré-visualização e ordem.</p>
                     </div>
-                </div>
-            </article>
+                    <span class="card-chevron" aria-hidden="true"></span>
+                </article>
 
-            <article class="modern-card card-tone-1" data-url="Pedidos">
-                <h3 class="card-title">Pedidos</h3>
-                <div class="card-icon" aria-hidden="true">
-                    <img src="/pages/icons/email.svg" alt="">
-                </div>
-                <div class="card-content">
-                    <span class="card-number">#07</span>
-                    <p class="card-desc">Consulte empresas, tipos de pedido e e-mails de destino com cópia rápida para a área de transferência.</p>
-                    <div class="card-footer">
-                        <div class="card-tag">Contactos</div>
-                        <button type="button" class="btn-access">Abrir</button>
+                <article class="modern-card show card-tone-5" data-url="ServinformSite" data-category="fiscal" data-search="calculadora iva financeiro">
+                    <div class="card-icon card-icon--app" aria-hidden="true">
+                        <img src="/images/portal-icons/04-iva.png" alt="">
                     </div>
-                </div>
-            </article>
-
-            <article class="modern-card card-tone-2" data-url="Manuais">
-                <h3 class="card-title">Manuais</h3>
-                <div class="card-icon" aria-hidden="true">
-                    <img src="/pages/icons/pdf.svg" alt="">
-                </div>
-                <div class="card-content">
-                    <span class="card-number">#08</span>
-                    <p class="card-desc">Fluxo interativo de gestão de facturas Trivalor — mailroom, Papel Zero e codificação.</p>
-                    <div class="card-footer">
-                        <div class="card-tag">Documentação</div>
-                        <button type="button" class="btn-access">Abrir</button>
+                    <div class="card-content">
+                        <h3 class="card-title">Calculadora IVA</h3>
+                        <p class="card-desc">Calcule IVA para faturação e conferência de valores.</p>
                     </div>
-                </div>
-            </article>
+                    <span class="card-chevron" aria-hidden="true"></span>
+                </article>
 
-            <article class="modern-card card-tone-3" data-url="AlmocoAnisabel">
-                <h3 class="card-title">Almoço Anisabel</h3>
-                <div class="card-icon" aria-hidden="true">
-                    <img src="/pages/icons/almoco.svg" alt="">
-                </div>
-                <div class="card-content">
-                    <span class="card-number">#09</span>
-                    <p class="card-desc">Alarme às 14:00 (seg–sex) com som e contagem de 1 hora no relógio após confirmar o almoço.</p>
-                    <div class="card-footer">
-                        <div class="card-tag">Rotina</div>
-                        <button type="button" class="btn-access">Abrir</button>
+                <article class="modern-card show card-tone-1" data-url="winzinkemails" data-category="fiscal" data-search="distribuicao custos">
+                    <div class="card-icon card-icon--app" aria-hidden="true">
+                        <img src="/images/portal-icons/05-custos.png" alt="">
                     </div>
-                </div>
-            </article>
-        </section>
-
-        <!--
-            Feature: Newsletter / destaques internos (carrossel horizontal premium)
-            - Secção informativa antes do footer; estilos .tools-nl em Style-tools.css;
-              lógica do carrossel em JScripts/tools-newsletter.js (setas, snap, progresso,
-              dots, autoplay com pausa ao hover, teclado e prefers-reduced-motion).
-        -->
-        <section
-            class="tools-nl"
-            id="tools-newsletter"
-            aria-labelledby="tools-nl-title"
-            aria-roledescription="Carrossel"
-        >
-            <div class="tools-nl__panel">
-                <header class="tools-nl__header">
-                    <div class="tools-nl__header-row">
-                        <span class="tools-nl__badge">Novidades</span>
-                        <p class="tools-nl__kicker">Comunicados internos</p>
-                        <button id="refresh-newsletter-btn" type="button" hidden>Atualizar newsletter</button>
+                    <div class="card-content">
+                        <h3 class="card-title">Distribuição de Custos</h3>
+                        <p class="card-desc">Edite e exporte ficheiros de distribuição de custos.</p>
                     </div>
-                    <h2 class="tools-nl__title" id="tools-nl-title">Destaques &amp; novidades</h2>
-                    <p class="tools-nl__subtitle">
-                        Acompanhe marcos da equipa, evolução da plataforma e atualizações das ferramentas.
-                    </p>
-                </header>
+                    <span class="card-chevron" aria-hidden="true"></span>
+                </article>
 
-                <div class="tools-nl__carousel" data-tools-nl-carousel>
-                    <button
-                        type="button"
-                        class="tools-nl__arrow tools-nl__arrow--prev"
-                        aria-label="Anterior"
-                        data-tools-nl-prev
-                    >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
+                <article class="modern-card show card-tone-2" data-url="buscarcidades" data-category="utilitarios" data-search="encontrar cidades norte sul">
+                    <div class="card-icon card-icon--app" aria-hidden="true">
+                        <img src="/images/portal-icons/06-cidades.png" alt="">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Encontrar Cidades</h3>
+                        <p class="card-desc">Identifique rapidamente Norte, Sul ou Ilhas.</p>
+                    </div>
+                    <span class="card-chevron" aria-hidden="true"></span>
+                </article>
 
-                    <div class="tools-nl__viewport" tabindex="0">
-                        <div class="tools-nl__track" data-tools-nl-track>
-                            <article class="tools-nl__card">
-                                <span class="tools-nl__cat">Marco</span>
-                                <div class="tools-nl__card-top">
-                                    <span class="tools-nl__icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>
-                                    </span>
-                                    <h3 class="tools-nl__card-title">Marco Histórico</h3>
-                                </div>
-                                <p class="tools-nl__card-text">
-                                    A equipa atingiu um máximo de 6.000 faturas/mês contabilizadas em sistema, refletindo o esforço e compromisso de todos.
-                                </p>
-                            </article>
+                <article class="modern-card show card-tone-1" data-url="Pedidos" data-category="utilitarios" data-search="pedidos contactos email">
+                    <div class="card-icon card-icon--app" aria-hidden="true">
+                        <img src="/images/portal-icons/07-pedidos.png" alt="">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Pedidos</h3>
+                        <p class="card-desc">Consulte contactos e copie e-mails de pedido.</p>
+                    </div>
+                    <span class="card-chevron" aria-hidden="true"></span>
+                </article>
 
-                            <article class="tools-nl__card">
-                                <span class="tools-nl__cat">Equipa</span>
-                                <div class="tools-nl__card-top">
-                                    <span class="tools-nl__icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M20 12v10H4V12M2 7h20v5H2V7zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
-                                    </span>
-                                    <h3 class="tools-nl__card-title">1 Ano de Equipa</h3>
-                                </div>
-                                <p class="tools-nl__card-text">
-                                    Parabéns à Anisabel, que celebra 1 ano de trabalho connosco na Trivalor. Obrigado pela dedicação e contributo.
-                                </p>
-                            </article>
+                <article class="modern-card show card-tone-2" data-url="Manuais" data-category="documentos" data-search="manuais documentacao facturas">
+                    <div class="card-icon card-icon--app" aria-hidden="true">
+                        <img src="/images/portal-icons/08-manuais.png" alt="">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Manuais</h3>
+                        <p class="card-desc">Fluxos de facturas, Papel Zero e codificação.</p>
+                    </div>
+                    <span class="card-chevron" aria-hidden="true"></span>
+                </article>
 
-                            <article class="tools-nl__card">
-                                <span class="tools-nl__cat">Atualização</span>
-                                <div class="tools-nl__card-top">
-                                    <span class="tools-nl__icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09zM12 15l-3-3a22 22 0 012-3 17 17 0 014-4 17 17 0 014 4 17 17 0 012 3"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M15 12h5s-.55-3.03-2-4c-1.62-1.08-5 0-5 0"/></svg>
-                                    </span>
-                                    <h3 class="tools-nl__card-title">Plataforma Renovada</h3>
-                                </div>
-                                <p class="tools-nl__card-text">
-                                    A página de ferramentas online foi renovada e evoluiu de 2 para 7 ferramentas, com uma experiência mais moderna, dinâmica e eficiente.
-                                </p>
-                            </article>
+                <article class="modern-card show card-tone-3" data-url="AlmocoAnisabel" data-category="utilitarios" data-search="almoco anisabel alarme rotina">
+                    <div class="card-icon card-icon--app" aria-hidden="true">
+                        <img src="/images/portal-icons/09-almoco.png" alt="">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Almoço Anisabel</h3>
+                        <p class="card-desc">Alarme às 14:00 (seg–sex) com contagem de 1 hora.</p>
+                    </div>
+                    <span class="card-chevron" aria-hidden="true"></span>
+                </article>
+            </section>
 
-                            <article class="tools-nl__card">
-                                <span class="tools-nl__cat">Ferramenta · Novidade</span>
-                                <div class="tools-nl__card-top">
-                                    <span class="tools-nl__icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                                    </span>
-                                    <h3 class="tools-nl__card-title">Gerador QR Trivalor</h3>
-                                </div>
-                                <p class="tools-nl__card-text">
-                                    Geração rápida de QR fiscais (média ~295 por mês). <strong>Novo:</strong> pesquisa de fornecedores estrangeiros pelo nome, alimentada pelo XML em <code class="tools-nl__inline-code">/data/faturas_strong_sqr.xml</code>; ao escolher uma sugestão, o sistema preenche NIF vendedor, NIF empresa, tipologia FT, país e espaço fiscal (a base isenta continua manual). A lista remove duplicados; ao substituir o ficheiro no servidor, basta voltar a este separador ou executar <code class="tools-nl__inline-code">TrivalorForeignVendorXml.reload()</code> na consola para atualizar.
-                                </p>
-                            </article>
-
-                            <article class="tools-nl__card">
-                                <span class="tools-nl__cat">Ferramenta</span>
-                                <div class="tools-nl__card-top">
-                                    <span class="tools-nl__icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-                                    </span>
-                                    <h3 class="tools-nl__card-title">Edição de PDFs</h3>
-                                </div>
-                                <p class="tools-nl__card-text">
-                                    Ferramenta criada para juntar, dividir e organizar PDFs, facilitando especialmente o tratamento de faturas com anexos.
-                                </p>
-                            </article>
-
-                            <article class="tools-nl__card">
-                                <span class="tools-nl__cat">Ferramenta</span>
-                                <div class="tools-nl__card-top">
-                                    <span class="tools-nl__icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21.21 15.89A10 10 0 118 2.83"/><path d="M22 12A10 10 0 0012 2v10z"/></svg>
-                                    </span>
-                                    <h3 class="tools-nl__card-title">Distribuição de Custos</h3>
-                                </div>
-                                <p class="tools-nl__card-text">
-                                    Ajuda na redistribuição e validação de valores, com exportação orientada à operação.
-                                </p>
-                            </article>
-
-                            <article class="tools-nl__card">
-                                <span class="tools-nl__cat">Ferramenta</span>
-                                <div class="tools-nl__card-top">
-                                    <span class="tools-nl__icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                                    </span>
-                                    <h3 class="tools-nl__card-title">Encontrar Cidades</h3>
-                                </div>
-                                <p class="tools-nl__card-text">
-                                    Permite identificar rapidamente se localidades em Portugal pertencem ao Norte ou Sul, apoiando classificações operacionais.
-                                </p>
-                            </article>
+            <aside class="tools-nl portal-updates" id="tools-newsletter" aria-labelledby="tools-nl-title">
+                <div class="tools-nl__panel portal-updates-panel">
+                    <header class="portal-updates-header">
+                        <h2 class="tools-nl__title" id="tools-nl-title">Últimas atualizações</h2>
+                        <div class="portal-updates-actions">
+                            <button type="button" class="portal-updates-all" id="portal-updates-toggle">Ver todas</button>
+                            <button type="button" class="portal-updates-refresh" id="refresh-newsletter-btn" title="Atualizar newsletter">Atualizar</button>
                         </div>
-                    </div>
-
-                    <button
-                        type="button"
-                        class="tools-nl__arrow tools-nl__arrow--next"
-                        aria-label="Seguinte"
-                        data-tools-nl-next
-                    >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="tools-nl__progress-wrap" aria-hidden="true">
-                    <div class="tools-nl__progress-track">
-                        <div class="tools-nl__progress-fill" data-tools-nl-progress></div>
+                    </header>
+                    <div class="tools-nl__viewport portal-updates-viewport">
+                        <div class="tools-nl__track portal-updates-track" data-tools-nl-track></div>
                     </div>
                 </div>
+            </aside>
+        </div>
 
-                <div class="tools-nl__dots" data-tools-nl-dots role="tablist" aria-label="Posição no carrossel"></div>
-            </div>
-        </section>
-
-        <!-- FOOTER -->
-        <footer class="main-footer glass-panel">
+        <footer class="main-footer portal-footer">
             <div class="footer-container">
                 <img src="/images/imagen.png" alt="Servinform Logo" class="footer-logo">
                 <div class="footer-info">
@@ -469,17 +244,11 @@
         </footer>
     </main>
 
-    <div class="weather-floating" aria-label="Temperatura atual em Lisboa">
-    <span class="weather-city">Lisboa</span>
-    <strong class="weather-temp" id="weatherTemp">--°C</strong>
-    <span class="weather-dot"></span>
-</div>
-
     <script src="/JScripts/core/app-config.js"></script>
     <script src="/JScripts/SidebarMenu.js"></script>
     <script src="/JScripts/changelog-data.js"></script>
     <script src="/JScripts/tools-changelog.js"></script>
     <script src="/JScripts/script-tools.js"></script>
-    <script src="/JScripts/tools-newsletter.js"></script>
+    <script src="/JScripts/tools-home.js"></script>
 </body>
 </html>
