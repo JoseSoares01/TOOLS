@@ -202,8 +202,37 @@ class SidebarMenu {
         layer.className = "page-transition";
         layer.setAttribute("aria-hidden", "true");
         layer.innerHTML = `
-            <div class="page-transition__veil"></div>
-            <div class="page-transition__sheen"></div>
+            <div class="page-skeleton" role="presentation">
+                <div class="page-skeleton__rail"></div>
+                <div class="page-skeleton__main">
+                    <div class="page-skeleton__top">
+                        <div class="sk sk-title"></div>
+                        <div class="sk sk-search"></div>
+                        <div class="page-skeleton__pills">
+                            <span class="sk sk-pill"></span>
+                            <span class="sk sk-pill"></span>
+                            <span class="sk sk-pill"></span>
+                            <span class="sk sk-pill"></span>
+                        </div>
+                    </div>
+                    <div class="page-skeleton__body">
+                        <div class="page-skeleton__grid">
+                            <div class="sk sk-card"></div>
+                            <div class="sk sk-card"></div>
+                            <div class="sk sk-card"></div>
+                            <div class="sk sk-card"></div>
+                            <div class="sk sk-card"></div>
+                            <div class="sk sk-card"></div>
+                        </div>
+                        <aside class="page-skeleton__aside">
+                            <div class="sk sk-aside-title"></div>
+                            <div class="sk sk-aside-card"></div>
+                            <div class="sk sk-aside-card"></div>
+                            <div class="sk sk-aside-card"></div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
         `;
         document.body.appendChild(layer);
         return layer;
@@ -215,7 +244,7 @@ class SidebarMenu {
 
         if (!shouldAnimate || this.prefersReducedMotion()) {
             document.body.classList.add("page-enter");
-            window.setTimeout(() => document.body.classList.remove("page-enter"), 520);
+            window.setTimeout(() => document.body.classList.remove("page-enter"), 480);
             return;
         }
 
@@ -226,7 +255,7 @@ class SidebarMenu {
         window.setTimeout(() => {
             layer.classList.remove("is-active", "is-entering");
             document.body.classList.remove("page-enter");
-        }, 520);
+        }, 620);
     }
 
     playLeaveTransition(href) {
@@ -234,7 +263,7 @@ class SidebarMenu {
         this._navigating = true;
 
         const reduced = this.prefersReducedMotion();
-        const duration = reduced ? 140 : 420;
+        const duration = reduced ? 120 : 380;
 
         try {
             sessionStorage.setItem("svf-page-transition", "1");
@@ -244,7 +273,7 @@ class SidebarMenu {
 
         const layer = this.ensureTransitionLayer();
         layer.classList.add("is-active", "is-leaving");
-        document.body.classList.add("page-leave", "fade-out");
+        document.body.classList.add("page-leave");
 
         window.setTimeout(() => {
             window.location.href = href;
@@ -279,7 +308,7 @@ class SidebarMenu {
 
         sidebar.innerHTML = `
             <div class="sidebar-shell">
-                <div class="sidebar-top">
+                <div class="sidebar-dock" role="presentation">
                     <a
                         class="sidebar-brand"
                         href="${this.resolveUrl("/pages/Tools.html")}"
@@ -289,21 +318,19 @@ class SidebarMenu {
                         <img class="sidebar-brand-logo" src="${this.resolveUrl("/images/Logo-Lateral.png")}" alt="Servinform">
                         <span class="sidebar-brand-text">Ferramentas</span>
                     </a>
-                </div>
 
-                <nav class="sidebar-nav" aria-label="Páginas">
-                    <div class="sidebar-dock" role="presentation">
+                    <nav class="sidebar-nav" aria-label="Páginas">
                         <ul class="sidebar-list">
                             ${navItemsHtml}
                         </ul>
-                    </div>
-                </nav>
+                    </nav>
 
-                <div class="sidebar-bottom">
-                    <button class="logout-btn" type="button" title="Logout" aria-label="Logout">
-                        <span class="logout-icon" aria-hidden="true"></span>
-                        <span class="logout-label">Logout</span>
-                    </button>
+                    <div class="sidebar-bottom">
+                        <button class="logout-btn" type="button" title="Logout" aria-label="Logout">
+                            <span class="logout-icon" aria-hidden="true"></span>
+                            <span class="logout-label">Logout</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         `;
@@ -408,11 +435,11 @@ class SidebarMenu {
 
         const layer = this.ensureTransitionLayer();
         layer.classList.add("is-active", "is-leaving");
-        document.body.classList.add("page-leave", "fade-out");
+        document.body.classList.add("page-leave");
 
         window.setTimeout(() => {
             window.location.replace(dest);
-        }, this.prefersReducedMotion() ? 140 : 420);
+        }, this.prefersReducedMotion() ? 120 : 380);
     }
 }
 
