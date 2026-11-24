@@ -155,10 +155,10 @@ class SidebarMenu {
                 icon: "/pages/icons/manuais.svg"
             },
             {
-                key: "AlmocoAnisabel",
-                label: "Almoço Anisabel",
-                href: "/pages/AlmocoAnisabel.html",
-                icon: "/pages/icons/almoco.svg"
+                key: "SAPAjustador",
+                label: "SAP Ajustador",
+                href: "/pages/SAPAjustador.html",
+                icon: "/pages/icons/sap-ajustador.svg"
             }
         ];
 

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>SAP Ajustador · Distribuição e IVA | Servinform</title>
+    <link rel="icon" type="image/svg+xml" href="/pages/icons/sap-ajustador.svg">
+    <link rel="stylesheet" href="/css/SidebarMenu.css">
+    <link rel="stylesheet" href="/css/SAPAjustador.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        const usuarioLogado = localStorage.getItem("usuarioLogado");
+        if (!usuarioLogado) {
+            alert("Você precisa fazer login para acessar esta página.");
+            window.location.href = "/index.html";
+        }
+    </script>
+</head>
+<body class="sap-ajustador-page sidebar-collapsed">
+<div class="sap-ajustador">
+<div class="app-shell">
+<aside class="sap-rail">
+    <div class="brand">
+        <span class="brand-mark">S<span class="brand-mark-dot">.</span></span>
+        <span><b>SAP Ajustador</b><small>Distribuição inteligente</small></span>
+    </div>
+    <div class="side-section">PROCESSO</div>
+    <div class="step active"><span>01</span> Importar dados</div>
+    <div class="step"><span>02</span> Definir valores</div>
+    <div class="step"><span>03</span> Otimizar linhas</div>
+    <div class="side-bottom">
+        <div class="secure-icon">⌁</div>
+        <b>Processamento local</b>
+        <p>Os valores da fatura são calculados no teu navegador. Nada é enviado para servidores.</p>
+        <div class="mini-version">v1.0 · IVA por linha</div>
+    </div>
+</aside>
+<div class="sap-main">
+    <header class="top">
+        <div class="breadcrumb">Ferramentas <span>/</span> SAP Ajustador</div>
+        <div class="top-state"><span class="green-dot"></span> Calculadora ativa</div>
+    </header>
+    <div class="content">
+        <div class="hero">
+            <div class="eyebrow">OTIMIZAÇÃO DE DISTRIBUIÇÃO</div>
+            <h1>Acerta os totais.<br><em>Altera o mínimo.</em></h1>
+            <p>Importa o ficheiro do SAP, indica o valor sem IVA e o total pretendido. A calculadora procura as menores alterações possíveis nas percentagens, respeitando os arredondamentos e as taxas de IVA.</p>
+        </div>
+        <div class="workspace">
+            <section class="panel upload-panel">
+                <div class="section-head">
+                    <span class="section-num">01</span>
+                    <div>
+                        <h2>Importar dados da fatura</h2>
+                        <p>Excel do SAP, CSV ou linhas coladas do Excel.</p>
+                    </div>
+                    <button id="demoBtn" class="btn subtle" type="button">Experimentar exemplo</button>
+                </div>
+                <div class="upload-zone" id="dropzone" tabindex="0" role="button" aria-label="Carregar ficheiro Excel">
+                    <div class="upload-glyph">⇧</div>
+                    <strong>Arrasta o ficheiro para aqui</strong>
+                    <span>ou <u>seleciona no computador</u></span>
+                    <small>.XLS · .XLSX · .CSV · .TSV</small>
+                    <input id="fileInput" type="file" accept=".xls,.xlsx,.csv,.tsv,.txt" hidden>
+                </div>
+                <div class="file-info" id="fileInfo" hidden></div>
+                <details class="paste-details">
+                    <summary>Ou colar dados diretamente <span>+</span></summary>
+                    <p>Cola as células copiadas do Excel/SAP, incluindo os cabeçalhos. Também podes usar o formato <code>% ; sem IVA ; IVA ; descrição ; total</code>.</p>
+                    <textarea id="pasteArea" rows="5" placeholder="%&#9;Total S/IVA&#9;IVA&#9;Centro Custo&#9;Total&#10;2.0215&#9;12.00&#9;23&#9;Assistência&#9;14.76"></textarea>
+                    <button class="btn outline" id="pasteBtn" type="button">Importar texto</button>
+                </details>
+                <div class="mapping" id="mapping" hidden>
+                    <h3>Identificação das colunas</h3>
+                    <p>Confirma quais colunas do ficheiro correspondem aos valores do SAP.</p>
+                    <div class="mapping-grid">
+                        <label>Percentagem (%)<select id="mapPercent"></select></label>
+                        <label>Sem IVA (€)<select id="mapNet"></select></label>
+                        <label>Taxa IVA (%)<select id="mapRate"></select></label>
+                        <label>Com IVA (€) <small>opcional</small><select id="mapGross"></select></label>
+                        <label>Descrição <small>opcional</small><select id="mapDescription"></select></label>
+                    </div>
+                    <div class="mapping-actions">
+                        <label>Linha dos cabeçalhos <input type="number" id="headerRow" min="0" value="1" style="max-width:85px"></label>
+                        <button class="btn primary" id="mapApply" type="button">Aplicar importação</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel" id="dataPanel" hidden>
+                <div class="section-head">
+                    <span class="section-num">02</span>
+                    <div>
+                        <h2>Linhas identificadas</h2>
+                        <p id="rowsCount">Confere os dados importados antes de calcular.</p>
+                    </div>
+                    <button class="btn subtle" id="addRow" type="button">+ Adicionar linha</button>
+                </div>
+                <div class="table-scroll">
+                    <table id="sourceTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Descrição / centro de custo</th>
+                                <th>% SAP</th>
+                                <th>Sem IVA</th>
+                                <th>IVA %</th>
+                                <th>Com IVA</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="table-footer" id="currentFooter"></div>
+            </section>
+
+            <section class="panel" id="targetPanel" hidden>
+                <div class="section-head">
+                    <span class="section-num">03</span>
+                    <div>
+                        <h2>Valores pretendidos</h2>
+                        <p>Os totais que devem aparecer no SAP no fim do ajuste.</p>
+                    </div>
+                </div>
+                <div class="target-grid">
+                    <label class="target-field">
+                        <span>Sem IVA pretendido</span>
+                        <div class="input-wrap"><input type="text" inputmode="decimal" id="targetNet" placeholder="593,63"><b>€</b></div>
+                    </label>
+                    <label class="target-field">
+                        <span>Com IVA pretendido</span>
+                        <div class="input-wrap"><input type="text" inputmode="decimal" id="targetGross" placeholder="730,16"><b>€</b></div>
+                    </label>
+                </div>
+                <div class="groups-head">
+                    <div>
+                        <strong>Subtotais por taxa de IVA</strong>
+                        <p>Podes proteger os valores por taxa, mesmo que as linhas sejam redistribuídas.</p>
+                    </div>
+                    <label class="switch">
+                        <input id="lockGroups" type="checkbox" checked>
+                        <span class="track"></span>
+                        <small>Preservar subtotais</small>
+                    </label>
+                </div>
+                <div class="groups-grid" id="groupsGrid"></div>
+                <details class="advanced">
+                    <summary>Definições avançadas <span>⌄</span></summary>
+                    <div class="advanced-inner">
+                        <label>Variação pesquisada por linha (cêntimos) <input id="maxStep" type="number" min="3" max="200" value="35" step="1"></label>
+                        <p>Começa por ajustes pequenos. Aumenta apenas se não existir uma solução. Alterações maiores exigidas pelos subtotais são consideradas automaticamente.</p>
+                    </div>
+                </details>
+                <div class="action-row">
+                    <div class="algorithm-note">✦ Prioridade: menos linhas alteradas → menos cêntimos movidos → menor alteração percentual.</div>
+                    <button id="calculateBtn" class="btn primary large" type="button">Calcular ajuste <span>→</span></button>
+                </div>
+            </section>
+
+            <section class="panel results" id="resultPanel" hidden>
+                <div class="section-head">
+                    <span class="section-num">04</span>
+                    <div>
+                        <h2>Alterações recomendadas</h2>
+                        <p>Percentagens prontas para introduzir no SAP.</p>
+                    </div>
+                    <span id="statusPill" class="status-pill">Cálculo validado</span>
+                </div>
+                <div id="resultsBody"></div>
+            </section>
+        </div>
+        <footer>Ferramenta independente de apoio ao SAP · Confirma o recálculo final no próprio sistema antes de guardar a fatura. Exemplo em <code>/data/sap-ajustador/</code>.</footer>
+    </div>
+</div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="/JScripts/core/app-config.js"></script>
+<script src="/JScripts/SidebarMenu.js"></script>
+<script src="/JScripts/sap-ajustador-solver.js"></script>
+<script src="/JScripts/sap-ajustador.js"></script>
+</body>
+</html>
