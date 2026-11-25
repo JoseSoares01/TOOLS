@@ -35,7 +35,7 @@
         <div class="secure-icon">⌁</div>
         <b>Processamento local</b>
         <p>Os valores da fatura são calculados no teu navegador. Nada é enviado para servidores.</p>
-        <div class="mini-version">v1.0 · IVA por linha</div>
+        <div class="mini-version">v1.2 · XML SAP · divisão de linha única</div>
     </div>
 </aside>
 <div class="sap-main">
@@ -55,16 +55,17 @@
                     <span class="section-num">01</span>
                     <div>
                         <h2>Importar dados da fatura</h2>
-                        <p>Excel do SAP, CSV ou linhas coladas do Excel.</p>
+                        <p>Excel ou XML original do SAP, CSV ou linhas coladas.</p>
                     </div>
+                    <button id="demoSingleBtn" class="btn subtle" type="button">Exemplo: 1 linha</button>
                     <button id="demoBtn" class="btn subtle" type="button">Experimentar exemplo</button>
                 </div>
-                <div class="upload-zone" id="dropzone" tabindex="0" role="button" aria-label="Carregar ficheiro Excel">
+                <div class="upload-zone" id="dropzone" tabindex="0" role="button" aria-label="Carregar ficheiro Excel ou XML SAP">
                     <div class="upload-glyph">⇧</div>
                     <strong>Arrasta o ficheiro para aqui</strong>
                     <span>ou <u>seleciona no computador</u></span>
-                    <small>.XLS · .XLSX · .CSV · .TSV</small>
-                    <input id="fileInput" type="file" accept=".xls,.xlsx,.csv,.tsv,.txt" hidden>
+                    <small>.XLS · .XLSX · .XML SAP · .CSV · .TSV</small>
+                    <input id="fileInput" type="file" accept=".xls,.xlsx,.xml,.csv,.tsv,.txt" hidden>
                 </div>
                 <div class="file-info" id="fileInfo" hidden></div>
                 <details class="paste-details">
@@ -129,13 +130,14 @@
                 <div class="target-grid">
                     <label class="target-field">
                         <span>Sem IVA pretendido</span>
-                        <div class="input-wrap"><input type="text" inputmode="decimal" id="targetNet" placeholder="593,63"><b>€</b></div>
+                        <div class="input-wrap"><input type="text" inputmode="decimal" id="targetNet" placeholder="486,61"><b>€</b></div>
                     </label>
                     <label class="target-field">
                         <span>Com IVA pretendido</span>
-                        <div class="input-wrap"><input type="text" inputmode="decimal" id="targetGross" placeholder="730,16"><b>€</b></div>
+                        <div class="input-wrap"><input type="text" inputmode="decimal" id="targetGross" placeholder="598,53"><b>€</b></div>
                     </label>
                 </div>
+                <p class="invoice-hint">O total com IVA é sugerido automaticamente pelo IVA calculado por subtotal de taxa. Podes alterá-lo para o valor exato da fatura.</p>
                 <div class="groups-head">
                     <div>
                         <strong>Subtotais por taxa de IVA</strong>
@@ -148,6 +150,17 @@
                     </label>
                 </div>
                 <div class="groups-grid" id="groupsGrid"></div>
+                <div class="single-line-box" id="singleLineBox" hidden>
+                    <div>
+                        <strong>✂ Fatura com uma única linha</strong>
+                        <p>Quando só existe uma linha, podemos dividi-la em duas parcelas próximas de 50% e redistribuir os cêntimos para acertar o IVA, preservando a base e a taxa. Para aplicar, é necessário criar a segunda linha no SAP.</p>
+                    </div>
+                    <select id="singleLineMode" aria-label="Divisão da linha única">
+                        <option value="auto">Automático · se necessário</option>
+                        <option value="always">Dividir sempre em duas</option>
+                        <option value="off">Não dividir</option>
+                    </select>
+                </div>
                 <details class="advanced">
                     <summary>Definições avançadas <span>⌄</span></summary>
                     <div class="advanced-inner">
@@ -156,7 +169,7 @@
                     </div>
                 </details>
                 <div class="action-row">
-                    <div class="algorithm-note">✦ Prioridade: menos linhas alteradas → menos cêntimos movidos → menor alteração percentual.</div>
+                    <div class="algorithm-note">✦ Prioridade: menos linhas alteradas → menos cêntimos movidos → menor alteração percentual. Com uma única linha, pode criar duas parcelas.</div>
                     <button id="calculateBtn" class="btn primary large" type="button">Calcular ajuste <span>→</span></button>
                 </div>
             </section>
@@ -173,7 +186,7 @@
                 <div id="resultsBody"></div>
             </section>
         </div>
-        <footer>Ferramenta independente de apoio ao SAP · Confirma o recálculo final no próprio sistema antes de guardar a fatura. Exemplo em <code>/data/sap-ajustador/</code>.</footer>
+        <footer>Ferramenta independente de apoio ao SAP · Confirma o recálculo final no próprio sistema antes de guardar a fatura. Exemplos em <code>/data/sap-ajustador/</code>.</footer>
     </div>
 </div>
 </div>

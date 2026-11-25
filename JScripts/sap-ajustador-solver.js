@@ -1,3 +1,4 @@
+
 /* SAP Ajustador - motor de cálculo em cêntimos, sem dependências externas. */
 (function(root){
 'use strict';
@@ -52,6 +53,17 @@ function assignPct(rows,amounts,targetNet,changedIndices){
  if(units.reduce((a,b)=>a+b,0)!==UNITS)return null;
  if(units.some((u,i)=>fromPct(targetNet,u)!==amounts[i]))return null;
  return units;
+}
+// Cria duas parcelas perto de 50% sem perder cêntimos ou precisão no SAP.
+function splitOne(row,targetNet){
+ if(!row||row.net<2||!Number.isInteger(targetNet)||targetNet<=0)return null;
+ const a=Math.floor(row.net/2),b=row.net-a;
+ const halves=[
+  {...row,sourceRow:row.sourceRow,splitPart:'A',label:row.label+' · Parcela A',units:500000,net:a},
+  {...row,sourceRow:row.sourceRow,splitPart:'B',label:row.label+' · Parcela B',units:500000,net:b}
+ ];
+ const assigned=assignPct(halves,[a,b],targetNet,[0,1]);
+ return assigned?halves.map((r,i)=>({...r,units:assigned[i]})):null;
 }
 function solve(input){
  const {rows,targetNet,targetGross,groupTargets=null,lockGroups=true,maxStep=35}=input;
@@ -168,5 +180,6 @@ function solve(input){
    return {rows:updated,changes:updated.filter(r=>r.newUnits!==r.units||r.newNet!==r.net),targetNet,targetGross,currentNet,currentGross,percentTotal:sourcePct,newPercentTotal:updated.reduce((s,r)=>s+r.newUnits,0),sourceMatchesBase:allSourceValid,totalChanges:best.score[0],amountMoved:best.score[1],groups:groups.map(k=>({rate:Number(k),current:existing[k],target:lockGroups?targets[k]:updated.filter(r=>r.rate.toFixed(2)===k).reduce((s,r)=>s+r.newNet,0)}))};
  }
 }
-root.SapSolver={solve,gross,fromPct,bounds,money};
+root.SapSolver={solve,splitOne,gross,fromPct,bounds,money};
 })(typeof window!=='undefined'?window:globalThis);
+

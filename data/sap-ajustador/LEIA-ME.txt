@@ -1,28 +1,17 @@
-SAP AJUSTADOR — DISTRIBUIÇÃO DE CUSTOS E IVA
+SAP Ajustador v1.2 — Novidade: divisão de linha única
 
-O QUE FAZ
-- Importa ficheiros .XLS, .XLSX, .CSV ou texto colado do Excel.
-- Calcula os totais com IVA arredondado a 2 casas por linha.
-- Permite definir o total sem IVA, o total com IVA e subtotais por taxa (4%, 6%, 22%, 23% ou outras).
-- Procura soluções exatas alterando o menor número de linhas possível; depois minimiza a quantidade de dinheiro movido e a variação das percentagens.
-- Apresenta as percentagens corrigidas com 4 casas e exporta para CSV ou Excel.
+INSTRUÇÕES
+1. Abrir index.html ou o ficheiro autónomo SAP_Ajustador_v1_2.html no navegador.
+2. Importar XML do SAP, CSV ou Excel.
+3. Confirmar valor sem IVA e com IVA pretendido.
+4. Se o ficheiro só tiver uma linha, selecionar:
+   - Automático: divide só se não houver solução numa linha.
+   - Dividir sempre: cria 2 parcelas a partir de 50%/50% e ajusta.
+   - Não dividir: mantém lógica anterior.
+5. Calcular ajuste e inserir as percentagens indicadas no SAP.
+6. Para divisão, criar segunda linha com mesma conta razão, centro de custo, IVA e texto.
 
-COMO ABRIR
-1. Extrai todo o conteúdo do ZIP para uma pasta.
-2. Abre o ficheiro index.html no Chrome, Edge ou Safari.
-3. Carrega o teu Excel do SAP; identifica as colunas se for preciso.
-4. Confirma as linhas, indica os totais pretendidos e, caso existam várias taxas, confirma os subtotais por taxa de IVA.
-5. Clica em "Calcular ajuste". Altera no SAP apenas as percentagens indicadas e confirma o recálculo no SAP.
-
-TESTAR O EXEMPLO
-- Clica em "Experimentar exemplo" para carregar 6 linhas automaticamente.
-- Total sem IVA: 593,63 €; atual com IVA: 730,17 €; pretendido: 730,16 €.
-- O resultado esperado altera só as linhas 1 e 4.
-- Também podes importar o ficheiro Exemplo_Importacao_SAP.xlsx.
-
-IMPORTANTE
-- A ferramenta usa arredondamento comercial linha a linha e base de cálculo comum à distribuição. O SAP pode aplicar parametrizações diferentes; confirma antes de guardar.
-- A importação de .XLS/.XLSX e a exportação .XLSX dependem da biblioteca XLSX obtida por CDN, pelo que normalmente exigem ligação à internet. Para funcionar sem internet, utiliza CSV ou texto colado; os cálculos são sempre executados localmente.
-- Os teus dados não são enviados pela aplicação a qualquer servidor.
-- O campo "Sem IVA" na tabela de importação deve representar o valor de cada linha, não o valor total da fatura.
-- Se o total pretendido não for matematicamente possível com poucos ajustes, a ferramenta avisa, em vez de apresentar uma solução inválida.
+Exemplo_Uma_Linha_SAP.xml: 52,76 € sem IVA, 23%, 64,89 € com IVA.
+ATENÇÃO: a importação preserva a linha original; a duplicação é uma proposta de alteração manual no SAP.
+A biblioteca XLSX requer internet. XML e CSV funcionam sem internet.
+Confirma sempre o resultado no SAP antes de guardar.

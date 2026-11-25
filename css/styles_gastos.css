@@ -8,10 +8,7 @@ body {
     font-family: Arial, sans-serif;
     min-height: 100vh;
     position: relative;
-    background-image: url("/images/BG-Toolss.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background: #e8f0ec;
     padding: 20px;
 }
 
