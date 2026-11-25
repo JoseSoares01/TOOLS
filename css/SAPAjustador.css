@@ -42,3 +42,51 @@ body.sap-ajustador-page > .sidebar {
 @media (max-width: 730px) {
     .sap-ajustador .sap-rail { display: none; }
 }
+
+
+/* Linha e faixa de total COM IVA nos resultados */
+.sap-ajustador .result-table .result-total-row td {
+    background: #e7f6ee;
+    border-top: 2px solid #b7dfc8;
+    color: #145a45;
+    font-size: 12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+.sap-ajustador .total-iva-banner {
+    margin-top: 12px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+}
+.sap-ajustador .total-iva-banner strong {
+    font-size: 18px;
+    letter-spacing: -0.4px;
+}
+.sap-ajustador .total-iva-banner small {
+    font-size: 12px;
+    font-weight: 650;
+}
+.sap-ajustador .total-iva-banner.is-match {
+    background: #e8f8ef;
+    border: 1px solid #b7dfc8;
+    color: #145a45;
+}
+.sap-ajustador .total-iva-banner.is-mismatch {
+    background: #fff6e8;
+    border: 1px solid #f0d29a;
+    color: #7a5a18;
+}
+@media (max-width: 730px) {
+    .sap-ajustador .total-iva-banner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
