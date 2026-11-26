@@ -89,6 +89,13 @@ function renderResult(r){
  if(isSplit){
   html+=`<div class="split-notice"><strong>✂ Dividir a linha original em duas</strong><p>A linha original tinha <b>${pct(r.splitInfo.source.units)}%</b>, <b>${fmt(r.splitInfo.source.net)} €</b> sem IVA e <b>${rateFmt(r.splitInfo.source.rate)}%</b> de IVA. No SAP, mantém a primeira linha, cria uma segunda com a <b>mesma conta razão, centro de custo, texto e taxa de IVA</b> e introduz as duas novas percentagens abaixo. O arredondamento é calculado individualmente em cada parcela.</p></div>`;
  }
+ if(r.unlockedGroups){
+  html+=`<div class="notice">ℹ Para atingir <b>${fmt(r.targetGross)} €</b> com IVA foi necessário mover valor entre taxas de IVA diferentes. Os subtotais por taxa deixam de ser os originais — confirma no SAP antes de guardar.</div>`;
+  if($('lockGroups') && $('lockGroups').checked){
+   $('lockGroups').checked=false;
+   renderGroups();
+  }
+ }
  if(!r.sourceMatchesBase)html+=`<div class="notice">⚠ As percentagens iniciais não reproduzem os valores importados com a base indicada. Confirma o total e a distribuição no SAP.</div>`;
  if(!changes.length){
   const allGross=all.reduce((s,l)=>s+(l.newGross||0),0);

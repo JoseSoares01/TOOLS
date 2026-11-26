@@ -87,8 +87,11 @@ function solve(input){
    if(lockGroups){const subt={};for(let i=0;i<n;i++)subt[keys[i]]=(subt[keys[i]]||0)+result[i];for(const k of groups)if(subt[k]!==targets[k])return}
    let sumGross=0;for(let i=0;i<n;i++)sumGross+=gross(result[i],rows[i].rate);
    if(sumGross!==targetGross)return;
-   // Inclui uma linha de percentagem sem alteração monetária apenas se necessário.
-   const trySets=[ids];if(!ids.length)for(let i=0;i<n;i++)trySets.push([i]);
+   // Percentagens do SAP muitas vezes não somam 100,0000% nem reproduzem os montantes.
+   // Tenta o menor conjunto; se falhar, recalcula todas as percentagens.
+   const trySets=[ids];
+   if(!ids.length){for(let i=0;i<n;i++)trySets.push([i])}
+   if(n>1)trySets.push([...Array(n).keys()]);
    let unitResult=null;
    for(const set of trySets){unitResult=assignPct(rows,result,targetNet,set);if(unitResult)break}
    if(!unitResult)return;
@@ -172,7 +175,17 @@ function solve(input){
    const byDelta={};for(const p of first)(byDelta[p.delta]??=[]).push(p);
    for(const p of first){const matching=byDelta[requiredGross-p.delta]||[];for(const q of matching){if(p.i===q.i||p.i===q.j||p.j===q.i||p.j===q.j)continue;consider({[p.i]:p.d,[p.j]:-p.d,[q.i]:q.d,[q.j]:-q.d});break}}
  }
- if(!best)return {error:'Não encontrei uma combinação exata com até 4 linhas e o limite de variação definido. Aumenta a pesquisa em cêntimos, revê os subtotais por IVA ou confirma que o SAP arredonda por linha.',currentNet,currentGross,percentTotal:rows.reduce((s,r)=>s+r.units,0)};
+ if(!best){
+   // Com subtotais bloqueados, +1 cêntimo de IVA exige muitas vezes mover valor entre taxas diferentes.
+   if(lockGroups){
+     const unlocked=solve({rows,targetNet,targetGross,groupTargets,lockGroups:false,maxStep});
+     if(!unlocked.error){
+       return {...unlocked, unlockedGroups:true};
+     }
+     return {error:'Não encontrei ajuste exato preservando os subtotais por IVA. Sem preservar subtotais também falhou: '+(unlocked.error||'sem solução')+'. Aumenta a pesquisa em cêntimos ou revê os totais.',currentNet,currentGross,percentTotal:rows.reduce((s,r)=>s+r.units,0)};
+   }
+   return {error:'Não encontrei uma combinação exata com até 4 linhas e o limite de variação definido. Aumenta a pesquisa em cêntimos, revê os subtotais por IVA ou confirma que o SAP arredonda por linha.',currentNet,currentGross,percentTotal:rows.reduce((s,r)=>s+r.units,0)};
+ }
  return output();
  function output(){
    const updated=rows.map((r,i)=>({...r,newNet:best.amounts[i],newUnits:best.units[i],oldGross:gross(r.net,r.rate),newGross:gross(best.amounts[i],r.rate)}));
